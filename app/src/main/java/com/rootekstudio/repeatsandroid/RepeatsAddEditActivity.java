@@ -12,19 +12,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
-public class RepeatsAddEditActivity extends AppCompatActivity {
-
+public class RepeatsAddEditActivity extends AppCompatActivity
+{
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repeats_add_edit);
 
-        final Button btn = findViewById(R.id.button2);
+        final Button add = findViewById(R.id.addLayout);
+        final Button save = findViewById(R.id.saveButton);
 
-        final Button btn5 = findViewById(R.id.button5);
         final LayoutInflater inflater = LayoutInflater.from(this);
-        btn.setOnClickListener(new View.OnClickListener()
+        add.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View view)
             {
@@ -32,6 +34,26 @@ public class RepeatsAddEditActivity extends AppCompatActivity {
                 inflater.inflate(R.layout.addrepeatslistitem, parent);
             }
         });
-    }
 
+        save.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                EditText name = view.findViewById(R.id.projectname);
+                final ViewGroup par = view.findViewById(R.id.AddRepeatsLinear);
+                int itemscount = par.getChildCount();
+                itemscount--;
+
+                for (int i = 0; i <= itemscount; i++)
+                {
+                    View v = par.getChildAt(i);
+
+                    EditText q = v.findViewById(R.id.questionBox);
+                    EditText a = v.findViewById(R.id.answerBox);
+                    String question = q.getText().toString();
+                    String answer = a.getText().toString();
+                }
+            }
+        });
+    }
 }

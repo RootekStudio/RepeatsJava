@@ -15,7 +15,7 @@
         android:inputType="textPersonName"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/addLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ADD"
@@ -27,7 +27,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/button2">
+        android:layout_below="@id/addLayout">
 
         <LinearLayout
             android:id="@+id/AddRepeatsLinear"
@@ -37,11 +37,11 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/projectname"
-        android:layout_toEndOf="@+id/button2"
+        android:layout_toEndOf="@+id/addLayout"
         android:text="SAVE"
-        android:layout_toRightOf="@+id/button2" />
+        android:layout_toRightOf="@+id/addLayout" />
 </RelativeLayout>
