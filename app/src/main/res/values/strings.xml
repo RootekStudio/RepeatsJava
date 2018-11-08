@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Repeats</string>
+    <string name="title_activity_repeats_add_edit">RepeatsAddEditActivity</string>
 </resources>
