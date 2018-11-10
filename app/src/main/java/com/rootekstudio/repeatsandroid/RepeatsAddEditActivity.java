@@ -1,5 +1,8 @@
 package com.rootekstudio.repeatsandroid;
 
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -14,8 +17,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Set;
+
 public class RepeatsAddEditActivity extends AppCompatActivity
 {
+    public static String TITLE;
+    private DatabaseHelper DB;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -24,6 +33,10 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
         final Button add = findViewById(R.id.addLayout);
         final Button save = findViewById(R.id.saveButton);
+
+        DB = new DatabaseHelper(this);
+
+        final Intent intent = new Intent(this, MainActivity.class);
 
         final LayoutInflater inflater = LayoutInflater.from(this);
         add.setOnClickListener(new View.OnClickListener()
@@ -39,10 +52,15 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         {
             public void onClick(View view)
             {
-                EditText name = view.findViewById(R.id.projectname);
-                final ViewGroup par = view.findViewById(R.id.AddRepeatsLinear);
+                final ViewGroup par = findViewById(R.id.AddRepeatsLinear);
                 int itemscount = par.getChildCount();
                 itemscount--;
+
+                SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
+                String SetName = "R" + s.format(new Date());
+                TITLE = SetName;
+
+                DB.CreateSet(SetName);
 
                 for (int i = 0; i <= itemscount; i++)
                 {
@@ -52,8 +70,25 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     EditText a = v.findViewById(R.id.answerBox);
                     String question = q.getText().toString();
                     String answer = a.getText().toString();
+                    String image = "";
+
+                    RepeatsSingleSetDB set = new RepeatsSingleSetDB(question, answer, image);
+                    DB.AddSet(set);
                 }
+
+                EditText name = findViewById(R.id.projectname);
+                String TableName = name.getText().toString();
+
+                SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
+                String CreateDate = s1.format(new Date());
+
+                RepeatsListDB ListDB = new RepeatsListDB(SetName, TableName, CreateDate, "true", "test");
+                DB.AddName(ListDB);
+
+                startActivity(intent);
             }
         });
+
+
     }
 }
