@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -26,6 +27,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 {
     public static String TITLE;
     private DatabaseHelper DB;
+    private ViewGroup parent;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -34,8 +36,13 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
         final Button add = findViewById(R.id.addLayout);
         final Button save = findViewById(R.id.saveButton);
-        final Button delete = findViewById(R.id.deleteButton);
+        final Button deleteALL = findViewById(R.id.deleteButton);
+        parent = findViewById(R.id.AddRepeatsLinear);
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        final Intent intent = new Intent(this, MainActivity.class);
         final EditText name = findViewById(R.id.projectname);
+
+
 
         Intent THISintent = getIntent();
         final String x = THISintent.getStringExtra("ISEDIT");
@@ -43,15 +50,17 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
         DB = new DatabaseHelper(this);
 
-        final Intent intent = new Intent(this, MainActivity.class);
-
-        final LayoutInflater inflater = LayoutInflater.from(this);
         add.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View view)
             {
                 ViewGroup parent = findViewById(R.id.AddRepeatsLinear);
                 inflater.inflate(R.layout.addrepeatslistitem, parent);
+                int items = parent.getChildCount();
+                items--;
+                View v = parent.getChildAt(items);
+                Button B = v.findViewById(R.id.deleteItem);
+                Delete_Button(B);
             }
         });
 
@@ -103,8 +112,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             }
         });
 
-
-
         if(!x.equals("FALSE"))
         {
             name.setText(n);
@@ -119,18 +126,28 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 String Answer = Single.getAnswer();
                 String Image = Single.getImag();
 
-                ViewGroup parent = findViewById(R.id.AddRepeatsLinear);
+
                 View view = inflater.inflate(R.layout.addrepeatslistitem, parent);
                 View child = parent.getChildAt(i);
 
                 EditText Q = child.findViewById(R.id.questionBox);
                 EditText A = child.findViewById(R.id.answerBox);
+                Button B = child.findViewById(R.id.deleteItem);
+                Delete_Button(B);
+
                 Q.setText(Question);
                 A.setText(Answer);
             }
         }
+        else
+        {
+            inflater.inflate(R.layout.addrepeatslistitem, parent);
+            View v = parent.getChildAt(0);
+            final Button deleteItem = v.findViewById(R.id.deleteItem);
+            Delete_Button(deleteItem);
+        }
 
-        delete.setOnClickListener(new View.OnClickListener()
+        deleteALL.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -138,6 +155,20 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 DB.deleteOneFromList(x);
                 DB.DeleteSet();
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void Delete_Button(Button button)
+    {
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ViewParent view = v.getParent();
+                int a = parent.indexOfChild((View) view);
+                parent.removeViewAt(a);
             }
         });
     }

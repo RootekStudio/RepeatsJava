@@ -161,11 +161,4 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
         return ALL;
     }
-
-    public void deleteOneFromSet(int id)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(NAME, "id = ?", new String[]{String.valueOf(id)});
-        db.close();
-    }
 }

@@ -13,7 +13,7 @@
         app:srcCompat="@mipmap/ic_launcher_round"/>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/deleteItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -21,11 +21,11 @@
         android:layout_below="@id/imageView"/>
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/addImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/button3"
+        android:layout_below="@id/deleteItem"
         android:text="IMAGE" />
 
     <EditText
@@ -35,10 +35,10 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Pytanie"
-        android:layout_toLeftOf="@id/button4"
+        android:layout_toLeftOf="@id/addImage"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_toStartOf="@id/button4"
+        android:layout_toStartOf="@id/addImage"
         android:layout_below="@id/imageView"/>
 
     <EditText
@@ -49,8 +49,8 @@
         android:inputType="textPersonName"
         android:layout_below="@id/questionBox"
         android:hint="Odpowiedz"
-        android:layout_toLeftOf="@id/button4"
+        android:layout_toLeftOf="@id/addImage"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_toStartOf="@id/button4" />
+        android:layout_toStartOf="@id/addImage" />
 </RelativeLayout>
