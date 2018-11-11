@@ -19,6 +19,7 @@ import android.widget.EditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 public class RepeatsAddEditActivity extends AppCompatActivity
@@ -33,6 +34,12 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
         final Button add = findViewById(R.id.addLayout);
         final Button save = findViewById(R.id.saveButton);
+        final Button delete = findViewById(R.id.deleteButton);
+        final EditText name = findViewById(R.id.projectname);
+
+        Intent THISintent = getIntent();
+        final String x = THISintent.getStringExtra("ISEDIT");
+        final String n = THISintent.getStringExtra("NAME");
 
         DB = new DatabaseHelper(this);
 
@@ -76,7 +83,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     DB.AddSet(set);
                 }
 
-                EditText name = findViewById(R.id.projectname);
+
                 String TableName = name.getText().toString();
 
                 SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
@@ -85,10 +92,53 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 RepeatsListDB ListDB = new RepeatsListDB(SetName, TableName, CreateDate, "true", "test");
                 DB.AddName(ListDB);
 
+                if(!x.equals("FALSE"))
+                {
+                    TITLE = x;
+                    DB.deleteOneFromList(x);
+                    DB.DeleteSet();
+                }
+
                 startActivity(intent);
             }
         });
 
 
+
+        if(!x.equals("FALSE"))
+        {
+            name.setText(n);
+            TITLE = x;
+            List<RepeatsSingleSetDB> SET = DB.AllItemsSET();
+            int ItemsCount = SET.size();
+
+            for(int i = 0; i<ItemsCount; i++)
+            {
+                RepeatsSingleSetDB Single = SET.get(i);
+                String Question = Single.getQuestion();
+                String Answer = Single.getAnswer();
+                String Image = Single.getImag();
+
+                ViewGroup parent = findViewById(R.id.AddRepeatsLinear);
+                View view = inflater.inflate(R.layout.addrepeatslistitem, parent);
+                View child = parent.getChildAt(i);
+
+                EditText Q = child.findViewById(R.id.questionBox);
+                EditText A = child.findViewById(R.id.answerBox);
+                Q.setText(Question);
+                A.setText(Answer);
+            }
+        }
+
+        delete.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                DB.deleteOneFromList(x);
+                DB.DeleteSet();
+                startActivity(intent);
+            }
+        });
     }
 }

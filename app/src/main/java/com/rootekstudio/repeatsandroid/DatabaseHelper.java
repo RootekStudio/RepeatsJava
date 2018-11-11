@@ -103,11 +103,11 @@ public class DatabaseHelper extends SQLiteOpenHelper
         db.close();
     }
 
-    public void deleteOneFromList(RepeatsListDB List)
+    public void deleteOneFromList(String Title)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(NAME, "id = ?", new String[]{String.valueOf(List.getitle())});
-        db.close();
+        String DELETE_NAME = "DELETE FROM TitleTable WHERE title =" + "\"" + Title + "\"";
+        db.execSQL(DELETE_NAME);
     }
 
 
@@ -155,10 +155,11 @@ public class DatabaseHelper extends SQLiteOpenHelper
                 list.setQuestion(cursor.getString(1));
                 list.setAnswer(cursor.getString(2));
                 list.setImag(cursor.getString(3));
+                ALL.add(list);
             } while (cursor.moveToNext());
         }
 
-        return AllItemsSET();
+        return ALL;
     }
 
     public void deleteOneFromSet(int id)

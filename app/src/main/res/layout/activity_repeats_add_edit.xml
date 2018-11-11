@@ -44,4 +44,12 @@
         android:layout_toEndOf="@+id/addLayout"
         android:text="SAVE"
         android:layout_toRightOf="@+id/addLayout" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/projectname"
+        android:layout_toEndOf="@+id/saveButton"
+        android:text="DELETE" />
 </RelativeLayout>
