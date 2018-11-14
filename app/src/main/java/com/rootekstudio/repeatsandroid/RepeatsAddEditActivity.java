@@ -1,8 +1,10 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
@@ -29,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -198,7 +201,13 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             if (resultCode == RESULT_OK)
             {
                 Uri selectedImage = data.getData();
+                String d = getPath(this, selectedImage);
+                Intent Data = data;
+                Bundle ex = data.getExtras();
+                File file = new File(String.valueOf(selectedImage));
                 String ab = selectedImage.getPath();
+//                File file = new File(String.valueOf(selectedImage));
+                int i = 0;
                 final InputStream imageStream;
                 try
                 {
@@ -206,6 +215,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     String u = selectedImage.toString();
                     imageStream = getContentResolver().openInputStream(selectedImage);
                     final Bitmap selected = BitmapFactory.decodeStream(imageStream);
+
                     imageView.setImageBitmap(selected);
                     imageView.setTag(ab);
                 }
@@ -231,6 +241,16 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         });
     }
 
+    private String getPath(Context context, Uri contentUri)
+    {
+        Cursor cursor = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+        int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(index);
+    }
+
     private void Image_Button(Button button)
     {
         button.setOnClickListener(new View.OnClickListener()
@@ -242,8 +262,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 RelativeLayout rel = (RelativeLayout) view;
                 imageView = rel.findViewById(R.id.imageView);
 
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(photoPickerIntent, 1);
             }
         });
