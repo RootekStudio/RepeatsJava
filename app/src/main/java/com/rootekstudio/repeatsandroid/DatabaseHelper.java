@@ -86,6 +86,8 @@ public class DatabaseHelper extends SQLiteOpenHelper
                 ALL.add(list);
             } while (cursor.moveToNext());
         }
+
+        db.close();
         return ALL;
     }
 
@@ -108,6 +110,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
         String DELETE_NAME = "DELETE FROM TitleTable WHERE title =" + "\"" + Title + "\"";
         db.execSQL(DELETE_NAME);
+        db.close();
     }
 
 
@@ -116,6 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
         String CREATE_SET = "CREATE TABLE IF NOT EXISTS " + name + " (id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, answer TEXT, image TEXT)";
         db.execSQL(CREATE_SET);
+        db.close();
     }
 
     public void DeleteSet()
@@ -124,6 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         String SETNAME = RepeatsAddEditActivity.TITLE;
         String DELETE_SET = "DROP TABLE " + SETNAME;
         db.execSQL(DELETE_SET);
+        db.close();
     }
 
     public void AddSet(RepeatsSingleSetDB Set)
@@ -139,10 +144,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
         db.close();
     }
 
-    public List<RepeatsSingleSetDB> AllItemsSET()
+    public List<RepeatsSingleSetDB> AllItemsSET(String SETNAME)
     {
         List<RepeatsSingleSetDB> ALL = new LinkedList<RepeatsSingleSetDB>();
-        String SETNAME = RepeatsAddEditActivity.TITLE;
         String query = "SELECT * FROM " + SETNAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -158,7 +162,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
                 ALL.add(list);
             } while (cursor.moveToNext());
         }
-
+        db.close();
         return ALL;
     }
 }
