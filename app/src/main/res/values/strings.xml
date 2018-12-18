@@ -5,4 +5,5 @@
     <string name="Tag_id_1">1</string>
     <string name="CH1">Powiadomienia z pytaniem</string>
     <string name="CH2">Chyba nie trzeba dalszych wyjaśnień, nie?</string>
+    <string name="ReplyText">Odpowiedz na pytanie</string>
 </resources>

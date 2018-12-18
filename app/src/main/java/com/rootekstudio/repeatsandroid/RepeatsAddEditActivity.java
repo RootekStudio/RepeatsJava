@@ -1,9 +1,11 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
@@ -31,6 +33,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.SystemClock;
 import android.os.strictmode.IntentReceiverLeakedViolation;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -78,7 +81,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         Intent THISintent = getIntent();
         final String x = THISintent.getStringExtra("ISEDIT");
         final String n = THISintent.getStringExtra("NAME");
-        final ComponentName comp = new ComponentName(this, JobNotification.class);
 
         DB = new DatabaseHelper(this);
 
@@ -157,8 +159,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 }
 
                 createNotificationChannel();
-                View view1 = getLayoutInflater().inflate(R.layout.asktime, null);
-                ALERTbuilder.setView(view);
+                final View view1 = getLayoutInflater().inflate(R.layout.asktime, null);
+                ALERTbuilder.setView(view1);
                 ALERTbuilder.setMessage("Co ile mają przychodzić powiadomienia (w minutach)?");
                 ALERTbuilder.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
                     @Override
@@ -172,14 +174,20 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        JobInfo.Builder builder = new JobInfo.Builder(12, comp);
-                        builder.setMinimumLatency(10000);
-                        builder.setOverrideDeadline(120000);
-                        JobScheduler tm = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-                        tm.schedule(builder.build());
-                        startActivity(intent);
+                        Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 0, intent, 0);
+                        AlarmManager alarmManager = (AlarmManager)cnt.getSystemService(Context.ALARM_SERVICE);
+                        EditText editText = view1.findViewById(R.id.EditAsk);
+                        String text = editText.getText().toString();
+                        int time = Integer.parseInt(text);
+                        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                                SystemClock.elapsedRealtime() + 1000 * 60 * time,
+                                SystemClock.elapsedRealtime() + 1000 * 60 * time,
+                                pendingIntent);
                     }
                 });
+
+               ALERTbuilder.show();
 
             }
         });

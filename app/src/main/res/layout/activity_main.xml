@@ -19,7 +19,6 @@
 
     </androidx.core.widget.NestedScrollView>
 
-
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bar"
         style="@style/Widget.MaterialComponents.BottomAppBar"
