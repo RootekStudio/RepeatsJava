@@ -36,6 +36,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.SystemClock;
 import android.os.strictmode.IntentReceiverLeakedViolation;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -159,10 +160,12 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 }
 
                 createNotificationChannel();
-                final View view1 = getLayoutInflater().inflate(R.layout.asktime, null);
+                final View view1 = getLayoutInflater().inflate(R.layout.ask, null);
+                final EditText editText = view1.findViewById(R.id.EditAsk);
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
                 ALERTbuilder.setView(view1);
-                ALERTbuilder.setMessage("Co ile mają przychodzić powiadomienia (w minutach)?");
-                ALERTbuilder.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
+                ALERTbuilder.setMessage(R.string.QuestionFreq);
+                ALERTbuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
@@ -170,19 +173,18 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     }
                 });
 
-                ALERTbuilder.setPositiveButton("Zapisz", new DialogInterface.OnClickListener() {
+                ALERTbuilder.setPositiveButton(R.string.Save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
                         Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 0, intent, 0);
                         AlarmManager alarmManager = (AlarmManager)cnt.getSystemService(Context.ALARM_SERVICE);
-                        EditText editText = view1.findViewById(R.id.EditAsk);
                         String text = editText.getText().toString();
                         int time = Integer.parseInt(text);
                         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                                 SystemClock.elapsedRealtime() + 1000 * 60 * time,
-                                SystemClock.elapsedRealtime() + 1000 * 60 * time,
+                                1000 * 60 * time,
                                 pendingIntent);
                     }
                 });
@@ -260,9 +262,10 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.CH1);
-            String description = getString(R.string.CH2);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            CharSequence name =getString(R.string.ChannelTitle);
+            String description = getString(R.string.ChannelDescription);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
             channel.setDescription(description);

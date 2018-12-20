@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void createNotificationChannel()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
             CharSequence name = getString(R.string.CH1);
             String description = getString(R.string.CH2);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;

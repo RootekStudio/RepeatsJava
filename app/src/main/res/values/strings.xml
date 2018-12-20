@@ -6,4 +6,16 @@
     <string name="CH1">Powiadomienia z pytaniem</string>
     <string name="CH2">Chyba nie trzeba dalszych wyjaśnień, nie?</string>
     <string name="ReplyText">Odpowiedz na pytanie</string>
+    <string name="Reply">Odpowiedz</string>
+    <string name="CorrectAnswer1">Umiesz to!</string>
+    <string name="CorrectAnswer2">Brawo! To poprawna odpowiedź</string>
+    <string name="IncorrectAnswer1">To nie była poprawna odpowiedź</string>
+    <string name="IncorrectAnswer2">Poprawna odpowiedź to:</string>
+    <string name="Next">Następne pytanie</string>
+    <string name="Cancel">Odrzuć</string>
+    <string name="Check">Sprawdź</string>
+    <string name="Save">Zapisz</string>
+    <string name="QuestionFreq">Co ile minut mają przychodzić powiadomienia?</string>
+    <string name="ChannelTitle">Powiadomienia z pytaniem</string>
+    <string name="ChannelDescription">Aplikacja wysyła powiadomienie z pytaniem</string>
 </resources>
