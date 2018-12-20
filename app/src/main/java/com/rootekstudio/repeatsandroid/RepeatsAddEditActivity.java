@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -39,6 +40,7 @@ import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -69,10 +71,9 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repeats_add_edit);
+        BottomAppBar bottomAppBar = findViewById(R.id.AddQuestionBar);
+        bottomAppBar.replaceMenu(R.menu.bottomappbar_addset);
 
-        final Button add = findViewById(R.id.addLayout);
-        final Button save = findViewById(R.id.saveButton);
-        final Button deleteALL = findViewById(R.id.deleteButton);
         parent = findViewById(R.id.AddRepeatsLinear);
         final LayoutInflater inflater = LayoutInflater.from(this);
         final Intent intent = new Intent(this, MainActivity.class);
@@ -83,116 +84,27 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         final String x = THISintent.getStringExtra("ISEDIT");
         final String n = THISintent.getStringExtra("NAME");
 
-        DB = new DatabaseHelper(this);
-
-        add.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
+        FloatingActionButton fab = findViewById(R.id.AddQuestionFAB);
+        fab.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
                 ViewGroup parent = findViewById(R.id.AddRepeatsLinear);
                 inflater.inflate(R.layout.addrepeatslistitem, parent);
                 int items = parent.getChildCount();
                 items--;
-                View v = parent.getChildAt(items);
-                Button B = v.findViewById(R.id.deleteItem);
-                Button I = v.findViewById(R.id.addImage);
+                View v2 = parent.getChildAt(items);
+                Button B = v2.findViewById(R.id.deleteItem);
+                Button I = v2.findViewById(R.id.addImage);
                 Delete_Button(B);
                 Image_Button(I);
             }
         });
 
+        DB = new DatabaseHelper(this);
+
         final Context cnt = this;
-
-        save.setOnClickListener(new View.OnClickListener()
-        {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            public void onClick(View view)
-            {
-                final ViewGroup par = findViewById(R.id.AddRepeatsLinear);
-                int itemscount = par.getChildCount();
-                itemscount--;
-
-                SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-                String SetName = "R" + s.format(new Date());
-                String SetImage = SetName.replace("R", "I");
-                TITLE = SetName;
-
-                DB.CreateSet(SetName);
-
-                for (int i = 0; i <= itemscount; i++)
-                {
-                    View v = par.getChildAt(i);
-
-                    EditText q = v.findViewById(R.id.questionBox);
-                    EditText a = v.findViewById(R.id.answerBox);
-                    ImageView img = v.findViewById(R.id.imageView);
-                    String question = q.getText().toString();
-                    String answer = a.getText().toString();
-//                    String image = img.getTag(R.string.Tag_id_0).toString();
-//                    String imageName = img.getTag(R.string.Tag_id_1).toString();
-
-//                    if(!image.equals(""))
-//                    {
-//                        Uri IMAGE = Uri.parse(image);
-//
-//                            Drawable drawable = img.getDrawable();
-//                            BitmapDrawable bitdraw = (BitmapDrawable) drawable;
-//                            Bitmap bitmap = bitdraw.getBitmap();
-//
-//                            File file = new File(image);
-//
-//                    }
-
-                    RepeatsSingleSetDB set = new RepeatsSingleSetDB(question, answer, "");
-                    DB.AddSet(set);
-                }
-
-                String TableName = name.getText().toString();
-                SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
-                String CreateDate = s1.format(new Date());
-
-                RepeatsListDB ListDB = new RepeatsListDB(SetName, TableName, CreateDate, "true", "test");
-                DB.AddName(ListDB);
-
-                if (!x.equals("FALSE"))
-                {
-                    TITLE = x;
-                    DB.deleteOneFromList(x);
-                    DB.DeleteSet();
-                }
-
-                createNotificationChannel();
-                final View view1 = getLayoutInflater().inflate(R.layout.ask, null);
-                final EditText editText = view1.findViewById(R.id.EditAsk);
-                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                ALERTbuilder.setView(view1);
-                ALERTbuilder.setMessage(R.string.QuestionFreq);
-                ALERTbuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-
-                    }
-                });
-
-                ALERTbuilder.setPositiveButton(R.string.Save, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 0, intent, 0);
-                        AlarmManager alarmManager = (AlarmManager)cnt.getSystemService(Context.ALARM_SERVICE);
-                        String text = editText.getText().toString();
-                        int time = Integer.parseInt(text);
-                        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                                SystemClock.elapsedRealtime() + 1000 * 60 * time,
-                                1000 * 60 * time,
-                                pendingIntent);
-                    }
-                });
-
-               ALERTbuilder.show();
-
-            }
-        });
 
         if (!x.equals("FALSE"))
         {
@@ -248,12 +160,107 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             Image_Button(I);
             }
 
-        deleteALL.setOnClickListener(new View.OnClickListener() {
+
+        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                DB.deleteOneFromList(x);
-                DB.DeleteSet();
-                startActivity(intent);
+            public boolean onMenuItemClick(MenuItem item)
+            {
+                if(item.getItemId() == R.id.deleteButton)
+                {
+                    DB.deleteOneFromList(x);
+                    DB.DeleteSet();
+                    startActivity(intent);
+                }
+                else if(item.getItemId() == R.id.saveButton)
+                {
+                    final ViewGroup par = findViewById(R.id.AddRepeatsLinear);
+                    int itemscount = par.getChildCount();
+                    itemscount--;
+
+                    SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
+                    String SetName = "R" + s.format(new Date());
+                    String SetImage = SetName.replace("R", "I");
+                    TITLE = SetName;
+
+                    DB.CreateSet(SetName);
+
+                    for (int i = 0; i <= itemscount; i++)
+                    {
+                        View v = par.getChildAt(i);
+
+                        EditText q = v.findViewById(R.id.questionBox);
+                        EditText a = v.findViewById(R.id.answerBox);
+                        ImageView img = v.findViewById(R.id.imageView);
+                        String question = q.getText().toString();
+                        String answer = a.getText().toString();
+//                    String image = img.getTag(R.string.Tag_id_0).toString();
+//                    String imageName = img.getTag(R.string.Tag_id_1).toString();
+
+//                    if(!image.equals(""))
+//                    {
+//                        Uri IMAGE = Uri.parse(image);
+//
+//                            Drawable drawable = img.getDrawable();
+//                            BitmapDrawable bitdraw = (BitmapDrawable) drawable;
+//                            Bitmap bitmap = bitdraw.getBitmap();
+//
+//                            File file = new File(image);
+//
+//                    }
+
+                        RepeatsSingleSetDB set = new RepeatsSingleSetDB(question, answer, "");
+                        DB.AddSet(set);
+                    }
+
+                    String TableName = name.getText().toString();
+                    SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
+                    String CreateDate = s1.format(new Date());
+
+                    RepeatsListDB ListDB = new RepeatsListDB(SetName, TableName, CreateDate, "true", "test");
+                    DB.AddName(ListDB);
+
+                    if (!x.equals("FALSE"))
+                    {
+                        TITLE = x;
+                        DB.deleteOneFromList(x);
+                        DB.DeleteSet();
+                    }
+
+                    createNotificationChannel();
+                    final View view1 = getLayoutInflater().inflate(R.layout.ask, null);
+                    final EditText editText = view1.findViewById(R.id.EditAsk);
+                    editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    ALERTbuilder.setView(view1);
+                    ALERTbuilder.setMessage(R.string.QuestionFreq);
+                    ALERTbuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+
+                        }
+                    });
+
+                    ALERTbuilder.setPositiveButton(R.string.Save, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 0, intent, 0);
+                            AlarmManager alarmManager = (AlarmManager)cnt.getSystemService(Context.ALARM_SERVICE);
+                            String text = editText.getText().toString();
+                            int time = Integer.parseInt(text);
+                            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                                    SystemClock.elapsedRealtime() + 1000 * 60 * time,
+                                    1000 * 60 * time,
+                                    pendingIntent);
+                        }
+                    });
+
+                    ALERTbuilder.show();
+
+                }
+                return true;
             }
         });
     }

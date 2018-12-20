@@ -1,55 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RepeatsAddEditActivity">
 
-    <EditText
-        android:id="@+id/projectname"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Nazwa zestawu"
-        android:inputType="textPersonName"/>
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/addLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ADD"
-        tools:layout_editor_absoluteX="169dp"
-        tools:layout_editor_absoluteY="538dp"
-        android:layout_below="@id/projectname"/>
-
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/addLayout">
-
-        <LinearLayout
-            android:id="@+id/AddRepeatsLinear"
+        <EditText
+            android:id="@+id/projectname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+            android:ems="10"
+            android:hint="Nazwa zestawu"
+            android:inputType="textPersonName"/>
 
-    <Button
-        android:id="@+id/saveButton"
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/projectname">
+
+            <LinearLayout
+                android:id="@+id/AddRepeatsLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </androidx.core.widget.NestedScrollView>
+
+    </RelativeLayout>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/AddQuestionBar"
+        style="@style/Widget.MaterialComponents.BottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/colorPrimary"
+        app:fabAlignmentMode="end"
+        app:hideOnScroll="true" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/AddQuestionFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/projectname"
-        android:layout_toEndOf="@+id/addLayout"
-        android:text="SAVE"
-        android:layout_toRightOf="@+id/addLayout" />
-
-    <Button
-        android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/projectname"
-        android:layout_toEndOf="@+id/saveButton"
-        android:text="DELETE" />
-</RelativeLayout>
+        android:src="@drawable/ic_add_white_24dp"
+        app:layout_anchor="@id/AddQuestionBar"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
