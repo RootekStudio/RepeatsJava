@@ -1,44 +1,19 @@
 package com.rootekstudio.repeatsandroid;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.media.ImageWriter;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-
-import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.os.SystemClock;
-import android.os.strictmode.IntentReceiverLeakedViolation;
 import android.provider.MediaStore;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,17 +24,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import java.io.File;
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class RepeatsAddEditActivity extends AppCompatActivity
 {
@@ -68,22 +45,30 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     private DatabaseHelper DB;
     private ViewGroup parent;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repeats_add_edit);
+
+        final Context cnt = this;
+        DB = new DatabaseHelper(cnt);
+
         BottomAppBar bottomAppBar = findViewById(R.id.AddQuestionBar);
         bottomAppBar.replaceMenu(R.menu.bottomappbar_addset);
 
         parent = findViewById(R.id.AddRepeatsLinear);
-        final LayoutInflater inflater = LayoutInflater.from(this);
-        final Intent intent = new Intent(this, MainActivity.class);
+
+        final LayoutInflater inflater = LayoutInflater.from(cnt);
+        final Intent intent = new Intent(cnt, MainActivity.class);
         final EditText name = findViewById(R.id.projectname);
-        final AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(this);
+
+        final AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(cnt);
 
         Intent THISintent = getIntent();
         final String x = THISintent.getStringExtra("ISEDIT");
         final String n = THISintent.getStringExtra("NAME");
 
+        //region FAB Action
         FloatingActionButton fab = findViewById(R.id.AddQuestionFAB);
         fab.setOnClickListener(new View.OnClickListener()
         {
@@ -101,11 +86,9 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 Image_Button(I);
             }
         });
+        //endregion
 
-        DB = new DatabaseHelper(this);
-
-        final Context cnt = this;
-
+        //region Read set from Database
         if (!x.equals("FALSE"))
         {
             name.setText(n);
@@ -113,7 +96,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             List<RepeatsSingleSetDB> SET = DB.AllItemsSET(TITLE);
             int ItemsCount = SET.size();
 
-            for (int i = 0; i < ItemsCount; i++) {
+            for (int i = 0; i < ItemsCount; i++)
+            {
                 RepeatsSingleSetDB Single = SET.get(i);
                 String Question = Single.getQuestion();
                 String Answer = Single.getAnswer();
@@ -150,6 +134,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 A.setText(Answer);
             }
         }
+        //endregion
+        //region If not editable, add new question
         else
             {
             inflater.inflate(R.layout.addrepeatslistitem, parent);
@@ -159,19 +145,33 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             Delete_Button(deleteItem);
             Image_Button(I);
             }
-
+            //endregion
 
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener()
         {
             @Override
             public boolean onMenuItemClick(MenuItem item)
             {
+                //region Delete set
                 if(item.getItemId() == R.id.deleteButton)
                 {
-                    DB.deleteOneFromList(x);
-                    DB.DeleteSet();
-                    startActivity(intent);
+                    if(!x.equals("FALSE"))
+                    {
+                        DB.deleteOneFromList(x);
+                        DB.DeleteSet();
+                        List<RepeatsListDB> a = DB.AllItemsLIST();
+                        int size = a.size();
+
+                        if(size == 0)
+                        {
+                            RepeatsHelper.CancelNotifications(cnt);
+                        }
+
+                        startActivity(intent);
+                    }
                 }
+                //endregion
+                //region Save set
                 else if(item.getItemId() == R.id.saveButton)
                 {
                     final ViewGroup par = findViewById(R.id.AddRepeatsLinear);
@@ -210,7 +210,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 //                    }
 
                         RepeatsSingleSetDB set = new RepeatsSingleSetDB(question, answer, "");
-                        DB.AddSet(set);
+                        DB.AddSet(set, TITLE);
                     }
 
                     String TableName = name.getText().toString();
@@ -227,7 +227,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         DB.DeleteSet();
                     }
 
-                    createNotificationChannel();
                     final View view1 = getLayoutInflater().inflate(R.layout.ask, null);
                     final EditText editText = view1.findViewById(R.id.EditAsk);
                     editText.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -254,34 +253,36 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                                     SystemClock.elapsedRealtime() + 1000 * 60 * time,
                                     1000 * 60 * time,
                                     pendingIntent);
+
+                            Intent main = new Intent(cnt, MainActivity.class);
+                            startActivity(main);
                         }
                     });
-
                     ALERTbuilder.show();
-
                 }
+                //endregion
+
                 return true;
             }
         });
     }
 
-    private void createNotificationChannel()
+    //region Delete Single Question
+    private void Delete_Button(Button button)
     {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        button.setOnClickListener(new View.OnClickListener()
         {
-            CharSequence name =getString(R.string.ChannelTitle);
-            String description = getString(R.string.ChannelDescription);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+            @Override
+            public void onClick(View v)
+            {
+                ViewParent view = v.getParent();
+                int a = parent.indexOfChild((View) view);
+                parent.removeViewAt(a);
+            }
+        });
     }
+
+    //endregion
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -317,19 +318,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         }
     }
 
-    private void Delete_Button(Button button)
-    {
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                ViewParent view = v.getParent();
-                int a = parent.indexOfChild((View) view);
-                parent.removeViewAt(a);
-            }
-        });
-    }
+
 
     private String getPath(Context context, Uri contentUri)
     {
@@ -343,19 +332,19 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
     private void Image_Button(Button button)
     {
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                ViewParent view = v.getParent();
-                RelativeLayout rel = (RelativeLayout) view;
-                imageView = rel.findViewById(R.id.imageView);
-
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(photoPickerIntent, 1);
-            }
-        });
+//        button.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                ViewParent view = v.getParent();
+//                RelativeLayout rel = (RelativeLayout) view;
+//                imageView = rel.findViewById(R.id.imageView);
+//
+//                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(photoPickerIntent, 1);
+//            }
+//        });
 
     }
 }

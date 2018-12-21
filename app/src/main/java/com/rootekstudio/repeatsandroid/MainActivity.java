@@ -3,12 +3,16 @@ package com.rootekstudio.repeatsandroid;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,15 +28,30 @@ import android.widget.TextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity
+{
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+        File file = new File(getFilesDir(), "ProjectsNameM.txt");
+        File file2 = new File(getFilesDir(), "ProjectsName.txt");
+
+        final Context cnt = this;
+
+        if(!file.exists() && file2.exists())
+        {
+            SetsMigrationTool.MigrateFromOldVersion(this);
+        }
+
         setContentView(R.layout.activity_main);
         BottomAppBar bottomAppBar = findViewById(R.id.bar);
         bottomAppBar.inflateMenu(R.menu.bottomappbarmain);
@@ -41,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item)
             {
+                if(item.getItemId() == R.id.app_bar_search)
+                {
+                    RepeatsHelper.CancelNotifications(cnt);
+                }
                 return true;
             }
         });
@@ -90,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, List);
-
+//
         final FloatingActionButton btn = findViewById(R.id.fab);
         btn.setOnClickListener(new View.OnClickListener()
         {
@@ -106,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
-            CharSequence name = getString(R.string.CH1);
-            String description = getString(R.string.CH2);
+            CharSequence name =getString(R.string.ChannelTitle);
+            String description = getString(R.string.ChannelDescription);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("RepeatsQuestionChannel", name, importance);
             channel.setDescription(description);

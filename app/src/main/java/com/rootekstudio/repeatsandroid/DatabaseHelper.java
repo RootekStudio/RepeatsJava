@@ -131,7 +131,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         db.close();
     }
 
-    public void AddSet(RepeatsSingleSetDB Set)
+    public void AddSet(RepeatsSingleSetDB Set, String Title)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -139,8 +139,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         values.put(KEY_A, Set.getAnswer());
         values.put(KEY_I, Set.getImag());
 
-        String SETNAME = RepeatsAddEditActivity.TITLE;
-        db.insert(SETNAME, null, values);
+        db.insert(Title, null, values);
         db.close();
     }
 
