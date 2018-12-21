@@ -1,12 +1,12 @@
 package com.rootekstudio.repeatsandroid;
-
 import android.content.Context;
-
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,28 +16,36 @@ public class SetsMigrationTool
     {
         try
         {
-            BufferedReader reader = new BufferedReader(new FileReader("ProjectsName.txt"));
-            File control = new File(context.getFilesDir(), "ProjectsNameM.txt");
+            FileInputStream stream = context.openFileInput("ProjectsName.txt");
+            InputStreamReader streamReader = new InputStreamReader(stream);
 
+            BufferedReader reader = new BufferedReader(streamReader);
+
+            int cnt = 0;
             String name;
             while ((name = reader.readLine()) != null)
             {
+                cnt++;
                 SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-                String SetName = "R" + s.format(new Date());
+                String SetName = "R" + cnt + s.format(new Date());
 
                 DatabaseHelper DB = new DatabaseHelper(context);
                 DB.CreateSet(SetName);
 
-                BufferedReader readSet = new BufferedReader(new FileReader(name + ".txt"));
+                FileInputStream SetStream = context.openFileInput(name + ".txt");
+                InputStreamReader SetReader = new InputStreamReader(SetStream);
+
+                BufferedReader readSet = new BufferedReader(SetReader);
+
                 String Questions = readSet.readLine();
                 int count = Integer.parseInt(Questions);
 
-                for(int i = 0; i < count; i++)
+                for(int i = 1; i <= count; i++)
                 {
                     String readQ = readSet.readLine();
                     String readA = readSet.readLine();
-                    readQ = readQ.replace("r1Q: ", "");
-                    readA = readA.replace("r1A: ", "");
+                    readQ = readQ.replace("r" + i +"Q: ", "");
+                    readA = readA.replace("r" + i +"A: ", "");
 
                     RepeatsSingleSetDB Single = new RepeatsSingleSetDB(readQ, readA, "");
                     DB.AddSet(Single, SetName);
@@ -50,6 +58,7 @@ public class SetsMigrationTool
                 DB.AddName(ListDB);
             }
 
+            File control = new File(context.getFilesDir(), "MigrationCompleted.txt");
             boolean bool = control.createNewFile();
 
         } catch (FileNotFoundException e)

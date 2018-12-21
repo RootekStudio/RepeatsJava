@@ -248,14 +248,17 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 0, intent, 0);
                             AlarmManager alarmManager = (AlarmManager)cnt.getSystemService(Context.ALARM_SERVICE);
                             String text = editText.getText().toString();
-                            int time = Integer.parseInt(text);
-                            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                                    SystemClock.elapsedRealtime() + 1000 * 60 * time,
-                                    1000 * 60 * time,
-                                    pendingIntent);
+                            if(!text.equals(""))
+                            {
+                                int time = Integer.parseInt(text);
+                                alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                                        SystemClock.elapsedRealtime() + 1000 * 60 * time,
+                                        1000 * 60 * time,
+                                        pendingIntent);
 
-                            Intent main = new Intent(cnt, MainActivity.class);
-                            startActivity(main);
+                                Intent main = new Intent(cnt, MainActivity.class);
+                                startActivity(main);
+                            }
                         }
                     });
                     ALERTbuilder.show();
