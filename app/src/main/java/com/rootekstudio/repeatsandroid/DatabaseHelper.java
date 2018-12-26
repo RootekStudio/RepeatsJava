@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -68,8 +69,33 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
     public List<RepeatsListDB> AllItemsLIST()
     {
-        List<RepeatsListDB> ALL = new LinkedList<RepeatsListDB>();
+        List<RepeatsListDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM " + NAME;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        RepeatsListDB list = null;
+
+        if(cursor.moveToFirst())
+        {
+            do {
+                list = new RepeatsListDB();
+                list.setTitle(cursor.getString(1));
+                list.setTableName(cursor.getString(2));
+                list.setCreateDate(cursor.getString(3));
+                list.setIsEnabled(cursor.getString(4));
+                list.setAvatar(cursor.getString(5));
+                ALL.add(list);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return ALL;
+    }
+
+    public List<RepeatsListDB> ALLEnabledSets()
+    {
+        List<RepeatsListDB> ALL = new LinkedList<>();
+        String query = "SELECT * FROM TitleTable WHERE IsEnabled='true'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         RepeatsListDB list = null;
@@ -108,7 +134,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
     public void deleteOneFromList(String Title)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        String DELETE_NAME = "DELETE FROM TitleTable WHERE title =" + "\"" + Title + "\"";
+        String DELETE_NAME = "DELETE FROM TitleTable WHERE TableName =" + "\"" + Title + "\"";
         db.execSQL(DELETE_NAME);
         db.close();
     }
@@ -122,10 +148,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
         db.close();
     }
 
-    public void DeleteSet()
+    public void DeleteSet(String SETNAME)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        String SETNAME = RepeatsAddEditActivity.TITLE;
         String DELETE_SET = "DROP TABLE " + SETNAME;
         db.execSQL(DELETE_SET);
         db.close();
@@ -145,7 +170,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
     public List<RepeatsSingleSetDB> AllItemsSET(String SETNAME)
     {
-        List<RepeatsSingleSetDB> ALL = new LinkedList<RepeatsSingleSetDB>();
+        List<RepeatsSingleSetDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM " + SETNAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -153,7 +178,8 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
         if(cursor.moveToFirst())
         {
-            do {
+            do
+                {
                 list = new RepeatsSingleSetDB();
                 list.setQuestion(cursor.getString(1));
                 list.setAnswer(cursor.getString(2));
@@ -163,5 +189,35 @@ public class DatabaseHelper extends SQLiteOpenHelper
         }
         db.close();
         return ALL;
+    }
+
+    void UpdateTable(String TABLE, String WHAT, String WHERE)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String Command;
+
+        if(!WHERE.equals(""))
+        {
+            Command = "UPDATE " + TABLE + " SET " + WHAT + " WHERE " + WHERE;
+        }
+        else
+        {
+            Command = "UPDATE " + TABLE + " SET " + WHAT;
+        }
+
+        db.execSQL(Command);
+        db.close();
+    }
+
+    void ResetEnabled()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String Command;
+
+        Command = "UPDATE TitleTable SET IsEnabled='true'";
+
+        db.execSQL(Command);
+        db.close();
     }
 }

@@ -6,13 +6,17 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.renderscript.ScriptGroup;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,16 +31,23 @@ import android.widget.RelativeLayout;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 public class RepeatsAddEditActivity extends AppCompatActivity
 {
@@ -128,7 +139,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     {
                         e.printStackTrace();
                     }
-
                 }
                 Q.setText(Question);
                 A.setText(Answer);
@@ -158,7 +168,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     if(!x.equals("FALSE"))
                     {
                         DB.deleteOneFromList(x);
-                        DB.DeleteSet();
+                        DB.DeleteSet(x);
                         List<RepeatsListDB> a = DB.AllItemsLIST();
                         int size = a.size();
 
@@ -205,10 +215,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 //                            BitmapDrawable bitdraw = (BitmapDrawable) drawable;
 //                            Bitmap bitmap = bitdraw.getBitmap();
 //
-//                            File file = new File(image);
-//
 //                    }
-
                         RepeatsSingleSetDB set = new RepeatsSingleSetDB(question, answer, "");
                         DB.AddSet(set, TITLE);
                     }
@@ -217,51 +224,19 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
                     String CreateDate = s1.format(new Date());
 
-                    RepeatsListDB ListDB = new RepeatsListDB(SetName, TableName, CreateDate, "true", "test");
+                    RepeatsListDB ListDB = new RepeatsListDB(TableName, SetName, CreateDate, "true", "test");
                     DB.AddName(ListDB);
 
                     if (!x.equals("FALSE"))
                     {
                         TITLE = x;
                         DB.deleteOneFromList(x);
-                        DB.DeleteSet();
+                        DB.DeleteSet(x);
                     }
 
-                    final View view1 = getLayoutInflater().inflate(R.layout.ask, null);
-                    final EditText editText = view1.findViewById(R.id.EditAsk);
-                    editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    ALERTbuilder.setView(view1);
-                    ALERTbuilder.setMessage(R.string.QuestionFreq);
-                    ALERTbuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
+                    RepeatsHelper.AskAboutTime(cnt, true);
 
-                        }
-                    });
 
-                    ALERTbuilder.setPositiveButton(R.string.Save, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
-                            PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 0, intent, 0);
-                            AlarmManager alarmManager = (AlarmManager)cnt.getSystemService(Context.ALARM_SERVICE);
-                            String text = editText.getText().toString();
-                            if(!text.equals(""))
-                            {
-                                int time = Integer.parseInt(text);
-                                alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                                        SystemClock.elapsedRealtime() + 1000 * 60 * time,
-                                        1000 * 60 * time,
-                                        pendingIntent);
-
-                                Intent main = new Intent(cnt, MainActivity.class);
-                                startActivity(main);
-                            }
-                        }
-                    });
-                    ALERTbuilder.show();
                 }
                 //endregion
 
@@ -287,6 +262,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
     //endregion
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -299,10 +275,12 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 final InputStream imageStream;
                 try
                 {
+//                    List<InputStream> inputStreams = new List<InputStream>();s
                     String PATH = getPath(getApplicationContext(), selectedImage);
                     imageView.setVisibility(View.VISIBLE);
                     String u = selectedImage.getPath();
                     imageStream = getContentResolver().openInputStream(selectedImage);
+//                    inputStreams.add(imageStream);
                     final Bitmap selected = BitmapFactory.decodeStream(imageStream);
 
                     imageView.setImageBitmap(selected);
@@ -320,8 +298,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             }
         }
     }
-
-
 
     private String getPath(Context context, Uri contentUri)
     {

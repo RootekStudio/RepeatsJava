@@ -54,11 +54,11 @@ public class SetsMigrationTool
                 SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
                 String CreateDate = s1.format(new Date());
 
-                RepeatsListDB ListDB = new RepeatsListDB(SetName, name, CreateDate, "true", "");
+                RepeatsListDB ListDB = new RepeatsListDB(name, SetName, CreateDate, "true", "");
                 DB.AddName(ListDB);
             }
 
-            File control = new File(context.getFilesDir(), "MigrationCompleted.txt");
+            File control = new File(context.getFilesDir(), "SetsMigrationCompleted.txt");
             boolean bool = control.createNewFile();
 
         } catch (FileNotFoundException e)

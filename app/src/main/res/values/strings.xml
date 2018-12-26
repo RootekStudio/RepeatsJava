@@ -21,4 +21,18 @@
     <string name="Search">Szukaj</string>
     <string name="Settings">Ustawienia</string>
     <string name="DeleteSet">Usuń zestaw</string>
+    <string name="notifications">Powiadomienia</string>
+    <string name="feedback">Feedback</string>
+    <string name="EnableTitle">Powiadomienia z konkretnych zestawów</string>
+    <string name="EnableSummary">Określ z których zestawów mają przychodzić powiadomienia</string>
+    <string name="FreqAskPref">Zmień częstotliwość wysyłania powiadomień</string>
+    <string name="FreqText">Powiadomienia przychodzą co</string>
+    <string name="minutes">minut</string>
+    <string name="resetTitle">Resetuj powiadomienia</string>
+    <string name="resetSummary">Jeśli powiadomienia nie przychodzą lub nie wyświetlają się prawidłowo, spróbuj je zresetować</string>
+    <string name="changeTheme">Zmień motyw</string>
+    <string name="Theme">Motyw</string>
+    <string name="Light">Jasny</string>
+    <string name="Dark">Ciemny</string>
+    <string name="ResetSuccessfully">Zresetowano pomyślnie</string>
 </resources>

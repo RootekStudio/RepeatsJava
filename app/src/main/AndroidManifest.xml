@@ -35,9 +35,13 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".AnswerActivity"
-            android:theme="@style/transculentTheme"
-            android:label=""/>
+        <activity
+            android:name=".AnswerActivity"
+            android:label=""
+            android:theme="@style/transculentTheme" />
+        <activity android:name=".SettingsActivity"
+            android:label="@string/Settings"/>
+        <activity android:name=".EnableSetsList"></activity>
     </application>
 
 </manifest>

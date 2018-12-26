@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="notifications_category"
+        android:title="@string/notifications">
+
+        <SwitchPreferenceCompat
+            android:key="notifications"
+            android:title="@string/notifications"/>
+
+        <EditTextPreference
+            android:key="frequency"
+            android:title="@string/"/>
+
+        <Preference
+            android:key="EnableSets"
+            android:title="@string/EnableTitle"
+            android:summary="@string/EnableSummary"/>
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

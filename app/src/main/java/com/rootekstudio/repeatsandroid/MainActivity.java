@@ -1,7 +1,9 @@
 package com.rootekstudio.repeatsandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -9,6 +11,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        File file = new File(getFilesDir(), "MigrationCompleted.txt");
+        File file = new File(getFilesDir(), "SetsMigrationCompleted.txt");
         File file2 = new File(getFilesDir(), "ProjectsName.txt");
 
         final Context cnt = this;
@@ -66,11 +70,18 @@ public class MainActivity extends AppCompatActivity
             {
                 if(item.getItemId() == R.id.app_bar_search)
                 {
-                    RepeatsHelper.CancelNotifications(cnt);
+                    //RepeatsHelper.CancelNotifications(cnt);
+                }
+                else if(item.getItemId() == R.id.app_bar_settings)
+                {
+                    Intent settings = new Intent(cnt, SettingsActivity.class);
+                    startActivity(settings);
                 }
                 return true;
             }
         });
+
+
 
         createNotificationChannel();
 
@@ -91,8 +102,8 @@ public class MainActivity extends AppCompatActivity
             inflater.inflate(R.layout.mainactivitylistitem, linear);
             View view = linear.getChildAt(i);
             Button but = view.findViewById(R.id.TempButton);
-            but.setText(ALL.get(i).getTableName());
-            but.setTag(ALL.get(i).getitle());
+            but.setText(ALL.get(i).getitle());
+            but.setTag(ALL.get(i).getTableName());
             but.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -127,6 +138,24 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String theme = sharedPreferences.getString("theme", "0");
+
+        if(theme.equals("0"))
+        {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        else
+        {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
     }
 
     private void createNotificationChannel()
