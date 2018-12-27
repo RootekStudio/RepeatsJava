@@ -39,9 +39,12 @@
             android:name=".AnswerActivity"
             android:label=""
             android:theme="@style/transculentTheme" />
-        <activity android:name=".SettingsActivity"
-            android:label="@string/Settings"/>
-        <activity android:name=".EnableSetsList"></activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/Settings" />
+        <activity android:name=".EnableSetsList" />
+        <activity android:name=".TestActivity" />
+        <activity android:name=".TestResults"></activity>
     </application>
 
 </manifest>

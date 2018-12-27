@@ -1,55 +1,40 @@
 package com.rootekstudio.repeatsandroid;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.Toolbar;
-import androidx.preference.PreferenceManager;
-
-import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import android.widget.GridLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity
 {
+    static boolean IsDark;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        NightMode(this);
         File file = new File(getFilesDir(), "SetsMigrationCompleted.txt");
         File file2 = new File(getFilesDir(), "ProjectsName.txt");
 
@@ -91,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         DatabaseHelper DB = new DatabaseHelper(this);
 
         final Intent intent = new Intent(this, RepeatsAddEditActivity.class);
-        final LinearLayout linear = findViewById(R.id.mainLinear);
+        final GridLayout gridLayout = findViewById(R.id.mainGrid);
         final LayoutInflater inflater = LayoutInflater.from(this);
         final List<RepeatsListDB> ALL  = DB.AllItemsLIST();
         int ItemsCounts = ALL.size();
@@ -99,19 +84,58 @@ public class MainActivity extends AppCompatActivity
         int a = 0;
         for(int i = 0; i < ItemsCounts; i++)
         {
-            inflater.inflate(R.layout.mainactivitylistitem, linear);
-            View view = linear.getChildAt(i);
-            Button but = view.findViewById(R.id.TempButton);
-            but.setText(ALL.get(i).getitle());
-            but.setTag(ALL.get(i).getTableName());
+            RepeatsListDB Item = ALL.get(i);
+
+            inflater.inflate(R.layout.mainactivitylistitem, gridLayout);
+            View view = gridLayout.getChildAt(i);
+            final RelativeLayout but = view.findViewById(R.id.RelativeMAIN);
+            Button TakeTest = view.findViewById(R.id.Test);
+
+            String tablename = Item.getTableName();
+            String title = Item.getitle();
+
+            if(IsDark)
+            {
+                but.setBackgroundColor(getResources().getColor(R.color.darkMainItem));
+            }
+
+            but.setTag(R.string.Tag_id_0, tablename);
+            but.setTag(R.string.Tag_id_1, title);
+
+            TakeTest.setTag(R.string.Tag_id_0, tablename);
+            TakeTest.setTag(R.string.Tag_id_1, title);
+
+            TakeTest.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Button button = (Button) v;
+                    String s0 = button.getTag(R.string.Tag_id_0).toString();
+                    String s1 = button.getTag(R.string.Tag_id_1).toString();
+
+                    Intent intent = new Intent(cnt, TestActivity.class);
+                    intent.putExtra("TableName", s0);
+                    intent.putExtra("title", s1);
+                    startActivity(intent);
+
+                }
+            });
+
+            TextView Name = view.findViewById(R.id.NameTextView);
+            TextView Date = view.findViewById(R.id.DateTextView);
+
+            Name.setText(Item.getitle());
+            Date.setText(Item.getCreateDate());
+
             but.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    Button btn = (Button) v;
-                    String TITLE = v.getTag().toString();
-                    String TABLE_NAME = btn.getText().toString();
+                    RelativeLayout btn = (RelativeLayout) v;
+                    String TITLE = v.getTag(R.string.Tag_id_0).toString();
+                    String TABLE_NAME = v.getTag(R.string.Tag_id_1).toString();
                     intent.putExtra("ISEDIT", TITLE);
                     intent.putExtra("NAME", TABLE_NAME);
                     startActivity(intent);
@@ -119,16 +143,6 @@ public class MainActivity extends AppCompatActivity
             });
         }
 
-        ArrayList<String> List = new ArrayList<String>();
-
-        for(int i = 0; i < ItemsCounts; i++)
-        {
-            String Name = ALL.get(i).getTableName();
-            List.add(Name);
-        }
-
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, List);
-//
         final FloatingActionButton btn = findViewById(R.id.fab);
         btn.setOnClickListener(new View.OnClickListener()
         {
@@ -145,16 +159,23 @@ public class MainActivity extends AppCompatActivity
     {
         super.onStart();
 
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        NightMode(this);
+    }
+
+    static void NightMode(Context context)
+    {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String theme = sharedPreferences.getString("theme", "0");
 
         if(theme.equals("0"))
         {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            IsDark = false;
         }
         else
         {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            IsDark = true;
         }
     }
 

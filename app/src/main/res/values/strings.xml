@@ -35,4 +35,11 @@
     <string name="Light">Jasny</string>
     <string name="Dark">Ciemny</string>
     <string name="ResetSuccessfully">Zresetowano pomyślnie</string>
+    <string name="Test">Sprawdzian</string>
+    <string name="AnswerHere">Tutaj wpisz odpowiedź</string>
+    <string name="CorrectAnswers">Poprawnych odpowiedzi:</string>
+    <string name="IncorrectAnswers">Niepoprawnych odpowiedzi:</string>
+    <string name="AllAnswers">Wszystkich odpowiedzi:</string>
+    <string name="CorrectAnswer">Poprawna odpowiedź:</string>
+    <string name="YourAnswer">Twoja odpowiedź:</string>
 </resources>

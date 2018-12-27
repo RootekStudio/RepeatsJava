@@ -193,10 +193,41 @@ public class Preference_Screen extends PreferenceFragmentCompat
         }
     }
 
-    void AskTimeAlarm()
+
+    @Override
+    public void onResume()
     {
-        final Context cnt = getContext();
-
-
+        super.onResume();
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener()
+        {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+            {
+                if(key.equals("frequency"))
+                {
+                    int frequency = sharedPreferences.getInt("frequency", 0);
+                    findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
+                }
+            }
+        });
     }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener()
+        {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+            {
+                if(key.equals("frequency"))
+                {
+                    int frequency = sharedPreferences.getInt("frequency", 0);
+                    findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
+                }
+            }
+        });
+    }
+
 }

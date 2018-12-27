@@ -9,6 +9,7 @@
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/app_bar_settings"
+        android:icon="@drawable/ic_settings_white"
         android:title="@string/Settings"
         app:showAsAction="never"/>
 </menu>

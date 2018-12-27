@@ -1,16 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/RelativeMAIN"
+        android:layout_width="132dp"
+        android:layout_height="182dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@color/lightMainItem"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp">
 
-    <Button
-        android:id="@+id/TempButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="Button"
-        android:textAllCaps="false"
-        android:layout_marginLeft="5dp" />
-</LinearLayout>
+        <ImageView
+            android:id="@+id/Avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@mipmap/ic_launcher_round"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/NameTextView"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/Avatar"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:maxLines="2"
+            android:lines="2"/>
+
+        <Button
+            android:id="@+id/Test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Test"
+            android:layout_below="@id/NameTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"/>
+
+        <TextView
+            android:id="@+id/DateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="TextView"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"/>
+
+    </RelativeLayout>

@@ -16,8 +16,13 @@ import android.widget.EditText;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import androidx.preference.PreferenceManager;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 public class RepeatsHelper
 {
@@ -55,6 +60,9 @@ public class RepeatsHelper
         AlarmManager alarmManager = (AlarmManager)cnt.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
 
+//        UUID compressionWorkId = compressionWork.getId();
+//        WorkManager.getInstance().cancelWorkById(compressionWorkId);
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("notifications", false);
@@ -73,6 +81,10 @@ public class RepeatsHelper
                 SystemClock.elapsedRealtime() + 1000 * 60 * time,
                 1000 * 60 * time,
                 pendingIntent);
+
+//        PeriodicWorkRequest.Builder notificationWork = new PeriodicWorkRequest.Builder(NotificationWork.class, time, TimeUnit.MINUTES);
+//        PeriodicWorkRequest request = notificationWork.build();
+//        WorkManager.getInstance().enqueue(request);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("notifications", true);
