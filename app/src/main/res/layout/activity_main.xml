@@ -11,12 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp">
 
-        <GridLayout
-            android:id="@+id/mainGrid"
+        <LinearLayout
+            android:id="@+id/mainList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:rowCount="10"
-            android:columnCount="3" />
+            android:orientation="vertical" />
 
     </androidx.core.widget.NestedScrollView>
 

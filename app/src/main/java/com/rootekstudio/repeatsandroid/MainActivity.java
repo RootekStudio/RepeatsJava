@@ -12,6 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -55,7 +58,8 @@ public class MainActivity extends AppCompatActivity
             {
                 if(item.getItemId() == R.id.app_bar_search)
                 {
-                    //RepeatsHelper.CancelNotifications(cnt);
+                    Intent intent = new Intent(cnt, SearchActivity.class);
+                    startActivity(intent);
                 }
                 else if(item.getItemId() == R.id.app_bar_settings)
                 {
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         DatabaseHelper DB = new DatabaseHelper(this);
 
         final Intent intent = new Intent(this, RepeatsAddEditActivity.class);
-        final GridLayout gridLayout = findViewById(R.id.mainGrid);
+        final LinearLayout listLayout = findViewById(R.id.mainList);
         final LayoutInflater inflater = LayoutInflater.from(this);
         final List<RepeatsListDB> ALL  = DB.AllItemsLIST();
         int ItemsCounts = ALL.size();
@@ -86,10 +90,11 @@ public class MainActivity extends AppCompatActivity
         {
             RepeatsListDB Item = ALL.get(i);
 
-            inflater.inflate(R.layout.mainactivitylistitem, gridLayout);
-            View view = gridLayout.getChildAt(i);
+            inflater.inflate(R.layout.mainactivitylistitem, listLayout);
+            View view = listLayout.getChildAt(i);
+
             final RelativeLayout but = view.findViewById(R.id.RelativeMAIN);
-            Button TakeTest = view.findViewById(R.id.Test);
+            ImageButton TakeTest = view.findViewById(R.id.Test);
 
             String tablename = Item.getTableName();
             String title = Item.getitle();
@@ -110,7 +115,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
-                    Button button = (Button) v;
+                    ImageButton button = (ImageButton) v;
                     String s0 = button.getTag(R.string.Tag_id_0).toString();
                     String s1 = button.getTag(R.string.Tag_id_1).toString();
 

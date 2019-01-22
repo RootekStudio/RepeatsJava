@@ -34,9 +34,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -55,6 +57,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     private ImageView imageView;
     private DatabaseHelper DB;
     private ViewGroup parent;
+    List<Bitmap> bitmaps = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -130,8 +133,9 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     img.setVisibility(View.VISIBLE);
                     try
                     {
-                        FileInputStream inputStream;
-                        inputStream = openFileInput(Image);
+                        File file = new File(getFilesDir(), Image);
+                        FileInputStream inputStream = new FileInputStream(file);
+
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                         img.setImageBitmap(bitmap);
                     }
@@ -195,28 +199,46 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                     DB.CreateSet(SetName);
 
+                    int cBitmap = 0;
+
                     for (int i = 0; i <= itemscount; i++)
                     {
                         View v = par.getChildAt(i);
-
                         EditText q = v.findViewById(R.id.questionBox);
                         EditText a = v.findViewById(R.id.answerBox);
                         ImageView img = v.findViewById(R.id.imageView);
                         String question = q.getText().toString();
                         String answer = a.getText().toString();
-//                    String image = img.getTag(R.string.Tag_id_0).toString();
-//                    String imageName = img.getTag(R.string.Tag_id_1).toString();
+                        RepeatsSingleSetDB set = null;
 
-//                    if(!image.equals(""))
-//                    {
-//                        Uri IMAGE = Uri.parse(image);
-//
-//                            Drawable drawable = img.getDrawable();
-//                            BitmapDrawable bitdraw = (BitmapDrawable) drawable;
-//                            Bitmap bitmap = bitdraw.getBitmap();
-//
-//                    }
-                        RepeatsSingleSetDB set = new RepeatsSingleSetDB(question, answer, "");
+                        if(img.getTag().toString().equals("Y"))
+                        {
+                            SetImage = SetImage + cBitmap + ".png";
+                            Bitmap bitmap = bitmaps.get(i);
+                            try
+                            {
+                                File control = new File(cnt.getFilesDir(), SetImage);
+                                boolean bool = control.createNewFile();
+
+                                FileOutputStream out = new FileOutputStream(control);
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                            } catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+
+                            set = new RepeatsSingleSetDB(question, answer, SetImage);
+                            cBitmap++;
+
+                        }
+                        else
+                        {
+                            set = new RepeatsSingleSetDB(question, answer, "");
+                        }
+
+
+
                         DB.AddSet(set, TITLE);
                     }
 
@@ -275,21 +297,19 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 final InputStream imageStream;
                 try
                 {
-//                    List<InputStream> inputStreams = new List<InputStream>();s
                     String PATH = getPath(getApplicationContext(), selectedImage);
                     imageView.setVisibility(View.VISIBLE);
                     String u = selectedImage.getPath();
                     imageStream = getContentResolver().openInputStream(selectedImage);
-//                    inputStreams.add(imageStream);
-                    final Bitmap selected = BitmapFactory.decodeStream(imageStream);
 
+                    final Bitmap selected = BitmapFactory.decodeStream(imageStream);
+                    bitmaps.add(selected);
                     imageView.setImageBitmap(selected);
 
                     SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
                     String SetName = "I" + s.format(new Date());
 
-                    imageView.setTag(R.string.Tag_id_0, PATH);
-                    imageView.setTag(R.string.Tag_id_1, SetName);
+                    imageView.setTag("Y");
                 }
                 catch (FileNotFoundException e)
                 {
@@ -311,19 +331,19 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
     private void Image_Button(Button button)
     {
-//        button.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                ViewParent view = v.getParent();
-//                RelativeLayout rel = (RelativeLayout) view;
-//                imageView = rel.findViewById(R.id.imageView);
-//
-//                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(photoPickerIntent, 1);
-//            }
-//        });
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ViewParent view = v.getParent();
+                RelativeLayout rel = (RelativeLayout) view;
+                imageView = rel.findViewById(R.id.imageView);
+
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(photoPickerIntent, 1);
+            }
+        });
 
     }
 }

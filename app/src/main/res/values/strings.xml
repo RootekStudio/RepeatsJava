@@ -42,4 +42,5 @@
     <string name="AllAnswers">Wszystkich odpowiedzi:</string>
     <string name="CorrectAnswer">Poprawna odpowiedź:</string>
     <string name="YourAnswer">Twoja odpowiedź:</string>
+    <string name="search_hint">Wyszukaj</string>
 </resources>
