@@ -3,8 +3,13 @@ package com.rootekstudio.repeatsandroid;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Random;
 
@@ -24,6 +29,7 @@ class RepeatsNotificationTemplate
         String Question = RepeatsHelper.Question;
         String Answer = RepeatsHelper.Answer;
         String tablename = RepeatsHelper.tablename;
+        String picturename = RepeatsHelper.PictureName;
 
         Random random = new Random();
         int rnd = random.nextInt();
@@ -32,6 +38,7 @@ class RepeatsNotificationTemplate
         answerActivity.putExtra("Title", tablename);
         answerActivity.putExtra("Question", Question);
         answerActivity.putExtra("Correct", Answer);
+        answerActivity.putExtra("Image", picturename);
         answerActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,rnd, answerActivity,0);
 
@@ -44,6 +51,25 @@ class RepeatsNotificationTemplate
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
+
+        if(!picturename.equals(""))
+        {
+            File file = new File(context.getFilesDir(), picturename);
+            FileInputStream inputStream = null;
+            try
+            {
+                inputStream = new FileInputStream(file);
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+            mBuilder.setStyle(new NotificationCompat.BigPictureStyle()
+                    .bigPicture(bitmap));
+        }
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {

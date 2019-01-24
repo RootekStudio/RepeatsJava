@@ -3,14 +3,20 @@ package com.rootekstudio.repeatsandroid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -30,8 +36,6 @@ public class TestActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        Timer timer = new Timer();
-
         linearLayout = findViewById(R.id.LinearTest);
         Intent thisintent = getIntent();
         String TableName = thisintent.getStringExtra("TableName");
@@ -47,6 +51,27 @@ public class TestActivity extends AppCompatActivity
             RepeatsSingleSetDB set = Single.get(i);
             String Question = set.getQuestion();
             String Answer = set.getAnswer();
+            String Image = set.getImag();
+
+            if(!Image.equals(""))
+            {
+                File file = new File(getFilesDir(), Image);
+                FileInputStream inputStream = null;
+                try
+                {
+                    inputStream = new FileInputStream(file);
+                }
+                catch (FileNotFoundException e)
+                {
+                    e.printStackTrace();
+                }
+
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                ImageView imgView = view.findViewById(R.id.imageViewTest);
+                imgView.setImageBitmap(bitmap);
+                imgView.setVisibility(View.VISIBLE);
+            }
 
             TextView TextQuestion = view.findViewById(R.id.TestQuestion);
             EditText EditAnswer = view.findViewById(R.id.TestAnswer);

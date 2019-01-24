@@ -6,10 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import javax.sql.ConnectionPoolDataSource;
 
@@ -25,12 +32,13 @@ public class AnswerActivity extends AppCompatActivity
         Intent intent = getIntent();
         String Title = intent.getStringExtra("Title");
         String Question = intent.getStringExtra("Question");
+        String Image = intent.getStringExtra("Image");
         correct = intent.getStringExtra("Correct");
 
-        alarmDialog(Title, Question, getString(R.string.Check), true);
+        alarmDialog(Title, Question, getString(R.string.Check), true, Image);
     }
 
-    void alarmDialog(String Title, String Message, final String Positive, boolean First)
+    void alarmDialog(String Title, String Message, final String Positive, boolean First, String ImageName)
     {
         if(!First && Positive.equals(getString(R.string.Check)))
         {
@@ -38,12 +46,34 @@ public class AnswerActivity extends AppCompatActivity
             Title = RepeatsHelper.tablename;
             Message = RepeatsHelper.Question;
             correct = RepeatsHelper.Answer;
+            ImageName = RepeatsHelper.PictureName;
         }
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View view = getLayoutInflater().inflate(R.layout.ask, null);
         final EditText userAnswer = view.findViewById(R.id.EditAsk);
+
+        if(!ImageName.equals(""))
+        {
+            final ImageView imgView = view.findViewById(R.id.imageViewQuestion);
+            imgView.setVisibility(View.VISIBLE);
+
+            File file = new File(getFilesDir(), ImageName);
+            FileInputStream inputStream = null;
+            try
+            {
+                inputStream = new FileInputStream(file);
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+            imgView.setImageBitmap(bitmap);
+        }
 
         if(Positive.equals(getString(R.string.Check)))
         {
@@ -74,18 +104,18 @@ public class AnswerActivity extends AppCompatActivity
                             if(correct.equals(uAnswerString))
                             {
                                 dialog.dismiss();
-                                alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Next), false);
+                                alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Next), false, "");
                             }
                             else
                             {
                                 dialog.dismiss();
-                                alarmDialog(getString(R.string.IncorrectAnswer1), getString(R.string.IncorrectAnswer2) + " " + correct, getString(R.string.Next), false);
+                                alarmDialog(getString(R.string.IncorrectAnswer1), getString(R.string.IncorrectAnswer2) + " " + correct, getString(R.string.Next), false, "");
                             }
                         }
                         else
                         {
                             dialog.dismiss();
-                            alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Check), false);
+                            alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Check), false, "");
                         }
                     }
                 })

@@ -15,9 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@xml/searchable" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

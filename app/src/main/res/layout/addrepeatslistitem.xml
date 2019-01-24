@@ -10,24 +10,35 @@
         android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:tag="test"
+        android:visibility="gone"
+        android:layout_alignParentLeft="true" />
+
+    <ImageButton
+        android:id="@+id/deleteImage"
+        android:layout_toRightOf="@id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/imageView"
+        android:src="@drawable/ic_clear"
         android:visibility="gone"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/deleteItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:text="DELETE"
+        android:src="@drawable/ic_delete"
         android:layout_below="@id/imageView"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/addImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/deleteItem"
-        android:text="IMAGE" />
+        android:text="IMAGE"
+        android:src="@drawable/ic_image"/>
 
     <EditText
         android:id="@+id/questionBox"

@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -54,10 +55,14 @@ import androidx.preference.PreferenceManager;
 public class RepeatsAddEditActivity extends AppCompatActivity
 {
     public static String TITLE;
-    private ImageView imageView;
     private DatabaseHelper DB;
     private ViewGroup parent;
+    ViewParent view;
+
     List<Bitmap> bitmaps = new ArrayList<>();
+    List<String> ReadImages = new ArrayList<>();
+    List<String> ImgToDelete = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -94,8 +99,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 int items = parent.getChildCount();
                 items--;
                 View v2 = parent.getChildAt(items);
-                Button B = v2.findViewById(R.id.deleteItem);
-                Button I = v2.findViewById(R.id.addImage);
+                ImageButton B = v2.findViewById(R.id.deleteItem);
+                ImageButton I = v2.findViewById(R.id.addImage);
                 Delete_Button(B);
                 Image_Button(I);
             }
@@ -122,15 +127,21 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                 EditText Q = child.findViewById(R.id.questionBox);
                 EditText A = child.findViewById(R.id.answerBox);
-                Button B = child.findViewById(R.id.deleteItem);
-                Button I = child.findViewById(R.id.addImage);
+                ImageButton B = child.findViewById(R.id.deleteItem);
+                ImageButton I = child.findViewById(R.id.addImage);
                 ImageView img = child.findViewById(R.id.imageView);
+                ImageButton imgbut = child.findViewById(R.id.deleteImage);
+
                 Delete_Button(B);
                 Image_Button(I);
 
                 if(!Image.equals(""))
                 {
+                    ReadImages.add(Image);
+
                     img.setVisibility(View.VISIBLE);
+                    img.setTag(Image);
+                    imgbut.setVisibility(View.VISIBLE);
                     try
                     {
                         File file = new File(getFilesDir(), Image);
@@ -143,6 +154,25 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     {
                         e.printStackTrace();
                     }
+
+                    imgbut.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            View pView = (View) v.getParent();
+                            ImageView img = pView.findViewById(R.id.imageView);
+                            ImageButton imgBut = pView.findViewById(R.id.deleteImage);
+                            ImageButton imgAdd = pView.findViewById(R.id.addImage);
+                            String tag = img.getTag().toString();
+                            ImgToDelete.add(tag);
+                            ReadImages.remove(tag);
+                            img.setVisibility(View.GONE);
+                            img.setTag(null);
+                            imgBut.setVisibility(View.GONE);
+                            imgAdd.setEnabled(true);
+                        }
+                    });
                 }
                 Q.setText(Question);
                 A.setText(Answer);
@@ -154,12 +184,15 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             {
             inflater.inflate(R.layout.addrepeatslistitem, parent);
             View v = parent.getChildAt(0);
-            final Button deleteItem = v.findViewById(R.id.deleteItem);
-            Button I = v.findViewById(R.id.addImage);
+            final ImageButton deleteItem = v.findViewById(R.id.deleteItem);
+            ImageButton I = v.findViewById(R.id.addImage);
             Delete_Button(deleteItem);
             Image_Button(I);
             }
             //endregion
+
+        List<String> sth = ReadImages;
+        int a = 0;
 
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener()
         {
@@ -169,10 +202,12 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 //region Delete set
                 if(item.getItemId() == R.id.deleteButton)
                 {
+                    int i =  0;
                     if(!x.equals("FALSE"))
                     {
                         DB.deleteOneFromList(x);
                         DB.DeleteSet(x);
+
                         List<RepeatsListDB> a = DB.AllItemsLIST();
                         int size = a.size();
 
@@ -181,6 +216,17 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                             RepeatsHelper.CancelNotifications(cnt);
                         }
 
+                        int count = ReadImages.size();
+
+                        if(count != 0)
+                        {
+                            for(int j = 0; j < count; j++)
+                            {
+                                String imgName = ReadImages.get(j);
+                                File file = new File(getFilesDir(), imgName);
+                                boolean bool = file.delete();
+                            }
+                        }
                         startActivity(intent);
                     }
                 }
@@ -199,7 +245,10 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                     DB.CreateSet(SetName);
 
-                    int cBitmap = 0;
+                    String ImageName = "";
+                    int cImages = 0;
+                    int cBitmaps = 0;
+                    int cRead = 0;
 
                     for (int i = 0; i <= itemscount; i++)
                     {
@@ -211,35 +260,60 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         String answer = a.getText().toString();
                         RepeatsSingleSetDB set = null;
 
-                        if(img.getTag().toString().equals("Y"))
+                        if(img.getTag() != null)
                         {
-                            SetImage = SetImage + cBitmap + ".png";
-                            Bitmap bitmap = bitmaps.get(i);
-                            try
-                            {
-                                File control = new File(cnt.getFilesDir(), SetImage);
-                                boolean bool = control.createNewFile();
+                            ImageName = SetImage + cImages + ".png";
 
-                                FileOutputStream out = new FileOutputStream(control);
-                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-
-                            } catch (IOException e)
+                            String TAG = img.getTag().toString();
+                            if(TAG.equals("Y"))
                             {
-                                e.printStackTrace();
+                                Bitmap bitmap = bitmaps.get(cBitmaps);
+                                try
+                                {
+                                    File control = new File(cnt.getFilesDir(), ImageName);
+                                    boolean bool = control.createNewFile();
+
+                                    FileOutputStream out = new FileOutputStream(control);
+                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                                } catch (IOException e)
+                                {
+                                    e.printStackTrace();
+                                }
+
+                                cBitmaps++;
+                            }
+                            else
+                            {
+                                String filename = ReadImages.get(cRead);
+                                String[]files = getFilesDir().list();
+                                File control = new File(cnt.getFilesDir(), filename);
+                                boolean bool = control.renameTo(new File(cnt.getFilesDir(), ImageName));
+
+                                cRead++;
                             }
 
-                            set = new RepeatsSingleSetDB(question, answer, SetImage);
-                            cBitmap++;
-
+                            set = new RepeatsSingleSetDB(question, answer, ImageName);
+                            cImages++;
                         }
                         else
                         {
                             set = new RepeatsSingleSetDB(question, answer, "");
                         }
 
-
-
                         DB.AddSet(set, TITLE);
+                    }
+
+                    int delSize = ImgToDelete.size();
+
+                    if(delSize != 0)
+                    {
+                        for(int j = 0; j < delSize; j++)
+                        {
+                            String toDel = ImgToDelete.get(j);
+                            File file = new File(cnt.getFilesDir(), toDel);
+                            boolean del = file.delete();
+                        }
                     }
 
                     String TableName = name.getText().toString();
@@ -256,8 +330,17 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         DB.DeleteSet(x);
                     }
 
-                    RepeatsHelper.AskAboutTime(cnt, true);
-
+                    final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
+                    int freq = sharedPreferences.getInt("frequency", 0);
+                    if(freq == 0)
+                    {
+                        RepeatsHelper.AskAboutTime(cnt, true);
+                    }
+                    else
+                    {
+                        Intent main = new Intent(cnt, MainActivity.class);
+                        cnt.startActivity(main);
+                    }
 
                 }
                 //endregion
@@ -268,22 +351,29 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     }
 
     //region Delete Single Question
-    private void Delete_Button(Button button)
+    private void Delete_Button(ImageButton button)
     {
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                ViewParent view = v.getParent();
-                int a = parent.indexOfChild((View) view);
+                View view = (View)v.getParent();
+                int a = parent.indexOfChild(view);
+                ImageView imgView = view.findViewById(R.id.imageView);
+
+                if(imgView.getVisibility() == View.VISIBLE)
+                {
+                    String TAG = imgView.getTag().toString();
+                    ImgToDelete.add(TAG);
+                    ReadImages.remove(TAG);
+                }
+
                 parent.removeViewAt(a);
             }
         });
     }
-
     //endregion
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -297,6 +387,9 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 final InputStream imageStream;
                 try
                 {
+                    RelativeLayout rel = (RelativeLayout) view;
+                    final ImageView imageView = rel.findViewById(R.id.imageView);
+
                     String PATH = getPath(getApplicationContext(), selectedImage);
                     imageView.setVisibility(View.VISIBLE);
                     String u = selectedImage.getPath();
@@ -310,6 +403,20 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     String SetName = "I" + s.format(new Date());
 
                     imageView.setTag("Y");
+                    final ImageButton imgbut = rel.findViewById(R.id.deleteImage);
+                    imgbut.setVisibility(View.VISIBLE);
+                    imgbut.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            imageView.setVisibility(View.GONE);
+                            imageView.setImageBitmap(null);
+                            imageView.setTag(null);
+                            imgbut.setVisibility(View.GONE);
+                        }
+                    });
+
                 }
                 catch (FileNotFoundException e)
                 {
@@ -329,21 +436,19 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         return cursor.getString(index);
     }
 
-    private void Image_Button(Button button)
+    private void Image_Button(ImageButton button)
     {
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                ViewParent view = v.getParent();
-                RelativeLayout rel = (RelativeLayout) view;
-                imageView = rel.findViewById(R.id.imageView);
+                view = v.getParent();
+
 
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(photoPickerIntent, 1);
             }
         });
-
     }
 }

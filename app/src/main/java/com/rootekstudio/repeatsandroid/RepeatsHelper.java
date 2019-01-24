@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Picture;
 import android.os.SystemClock;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ public class RepeatsHelper
     static String Question;
     static String Answer;
     static String tablename;
+    static String PictureName = "";
 
     static void GetQuestionFromDatabase(Context context)
     {
@@ -51,6 +53,7 @@ public class RepeatsHelper
         RepeatsSingleSetDB singleSetDB = set.get(randomsetint);
         Question = singleSetDB.getQuestion();
         Answer = singleSetDB.getAnswer();
+        PictureName = singleSetDB.getImag();
     }
 
     static void CancelNotifications(Context cnt)
