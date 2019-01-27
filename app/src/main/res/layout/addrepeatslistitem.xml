@@ -2,7 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/layout_mainshape"
+    android:layout_margin="5dp"
+    android:id="@+id/RelativeAddItem">
 
     <ImageView
         android:id="@+id/imageView"
@@ -11,7 +14,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:visibility="gone"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="5dp"/>
 
     <ImageButton
         android:id="@+id/deleteImage"
@@ -29,7 +33,10 @@
         android:layout_alignParentRight="true"
         android:text="DELETE"
         android:src="@drawable/ic_delete"
-        android:layout_below="@id/imageView"/>
+        android:layout_below="@id/imageView"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="10dp"/>
 
     <ImageButton
         android:id="@+id/addImage"
@@ -38,7 +45,9 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/deleteItem"
         android:text="IMAGE"
-        android:src="@drawable/ic_image"/>
+        android:src="@drawable/ic_image"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp" />
 
     <EditText
         android:id="@+id/questionBox"
@@ -51,7 +60,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_toStartOf="@id/addImage"
-        android:layout_below="@id/imageView"/>
+        android:layout_below="@id/imageView"
+        android:layout_margin="5dp"/>
 
     <EditText
         android:id="@+id/answerBox"
@@ -64,5 +74,6 @@
         android:layout_toLeftOf="@id/addImage"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_toStartOf="@id/addImage" />
+        android:layout_toStartOf="@id/addImage"
+        android:layout_margin="5dp"/>
 </RelativeLayout>

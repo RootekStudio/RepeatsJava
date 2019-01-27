@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -70,8 +71,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
-
         createNotificationChannel();
 
 //        BottomAppBar bottomAppBar = findViewById(R.id.bar);
@@ -94,14 +93,15 @@ public class MainActivity extends AppCompatActivity
             View view = listLayout.getChildAt(i);
 
             final RelativeLayout but = view.findViewById(R.id.RelativeMAIN);
-            ImageButton TakeTest = view.findViewById(R.id.Test);
+            RelativeLayout TakeTest = view.findViewById(R.id.Test);
 
             String tablename = Item.getTableName();
             String title = Item.getitle();
 
             if(IsDark)
             {
-                but.setBackgroundColor(getResources().getColor(R.color.darkMainItem));
+                but.setBackgroundResource(R.drawable.layout_mainshape_dark);
+                TakeTest.setBackgroundResource(R.drawable.layout_buttonshape_dark);
             }
 
             but.setTag(R.string.Tag_id_0, tablename);
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
-                    ImageButton button = (ImageButton) v;
+                    RelativeLayout button = (RelativeLayout) v;
                     String s0 = button.getTag(R.string.Tag_id_0).toString();
                     String s1 = button.getTag(R.string.Tag_id_1).toString();
 
@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity
         else
         {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            context.setTheme(R.style.DarkAppTheme);
             IsDark = true;
         }
     }

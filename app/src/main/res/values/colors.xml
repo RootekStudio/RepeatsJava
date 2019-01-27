@@ -3,6 +3,8 @@
     <color name="colorPrimary">#247ee6</color>
     <color name="colorPrimaryDark">#247ee6</color>
     <color name="colorAccent">#247ee6</color>
-    <color name="darkMainItem">#FF444444</color>
-    <color name="lightMainItem">#FFEBEBEB</color>
+    <color name="darkMainItem">#353535</color>
+    <color name="lightMainItem">#E0E0E0</color>
+    <color name="buttonLight">#CCCCCC</color>
+    <color name="buttonDark">#303030</color>
 </resources>

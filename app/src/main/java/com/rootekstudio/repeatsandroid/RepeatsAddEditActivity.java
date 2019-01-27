@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -49,6 +50,7 @@ import java.util.ListIterator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
 
@@ -58,6 +60,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     private DatabaseHelper DB;
     private ViewGroup parent;
     ViewParent view;
+    static Boolean IsDark;
 
     List<Bitmap> bitmaps = new ArrayList<>();
     List<String> ReadImages = new ArrayList<>();
@@ -69,6 +72,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repeats_add_edit);
 
+        NightMode(this);
         final Context cnt = this;
         DB = new DatabaseHelper(cnt);
 
@@ -101,6 +105,13 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 View v2 = parent.getChildAt(items);
                 ImageButton B = v2.findViewById(R.id.deleteItem);
                 ImageButton I = v2.findViewById(R.id.addImage);
+
+                if(IsDark)
+                {
+                    RelativeLayout RL = v2.findViewById(R.id.RelativeAddItem);
+                    RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
+                }
+
                 Delete_Button(B);
                 Image_Button(I);
             }
@@ -124,6 +135,12 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                 View view = inflater.inflate(R.layout.addrepeatslistitem, parent);
                 View child = parent.getChildAt(i);
+
+                if(IsDark)
+                {
+                    RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
+                    RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
+                }
 
                 EditText Q = child.findViewById(R.id.questionBox);
                 EditText A = child.findViewById(R.id.answerBox);
@@ -184,6 +201,11 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             {
             inflater.inflate(R.layout.addrepeatslistitem, parent);
             View v = parent.getChildAt(0);
+                if(IsDark)
+                {
+                    RelativeLayout RL = v.findViewById(R.id.RelativeAddItem);
+                    RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
+                }
             final ImageButton deleteItem = v.findViewById(R.id.deleteItem);
             ImageButton I = v.findViewById(R.id.addImage);
             Delete_Button(deleteItem);
@@ -450,5 +472,23 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 startActivityForResult(photoPickerIntent, 1);
             }
         });
+    }
+
+    static void NightMode(Context context)
+    {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String theme = sharedPreferences.getString("theme", "0");
+
+        if(theme.equals("0"))
+        {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            IsDark = false;
+        }
+        else
+        {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            context.setTheme(R.style.AppThemeDark);
+            IsDark = true;
+        }
     }
 }

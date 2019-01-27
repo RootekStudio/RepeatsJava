@@ -25,10 +25,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="@android:color/white"
         android:backgroundTint="@color/colorPrimary"
         app:fabAlignmentMode="center"
-        app:hideOnScroll="true"
-        app:navigationIcon="@drawable/ic_menu_white_24dp" />
+        app:hideOnScroll="true" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
