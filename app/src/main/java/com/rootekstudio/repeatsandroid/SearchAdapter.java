@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class SearchAdapter extends BaseAdapter
     LayoutInflater inflater;
     List<SearchItem> items;
     ArrayList<SearchItem> arrayItems;
+    Boolean IsDark;
 
     public SearchAdapter(Context context, List<SearchItem> items)
     {
@@ -26,6 +28,7 @@ public class SearchAdapter extends BaseAdapter
         this.items = items;
         this.arrayItems = new ArrayList<>();
         this.arrayItems.addAll(items);
+        IsDark = RepeatsHelper.DarkTheme(context);
     }
 
     @Override

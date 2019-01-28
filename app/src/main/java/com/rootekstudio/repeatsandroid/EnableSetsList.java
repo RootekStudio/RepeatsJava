@@ -18,6 +18,7 @@ public class EnableSetsList extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        RepeatsHelper.DarkTheme(this);
         setContentView(R.layout.activity_enable_sets_list);
 
         final DatabaseHelper DB = new DatabaseHelper(this);

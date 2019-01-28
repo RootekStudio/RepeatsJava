@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,6 +26,7 @@ import java.util.TimerTask;
 public class TestActivity extends AppCompatActivity
 {
     LinearLayout linearLayout;
+    Boolean IsDark;
     static List<String> AllQuestions;
     static List<String> UserAnswers;
     static List<String> CorrectAnswers;
@@ -34,6 +36,7 @@ public class TestActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        IsDark = RepeatsHelper.DarkTheme(this);
         setContentView(R.layout.activity_test);
 
         linearLayout = findViewById(R.id.LinearTest);
@@ -46,12 +49,24 @@ public class TestActivity extends AppCompatActivity
 
         for(int i = 0; i < count; i++)
         {
-            View view = getLayoutInflater().inflate(R.layout.testitem, null);
+            getLayoutInflater().inflate(R.layout.test_item, linearLayout);
+            View view = linearLayout.getChildAt(i);
 
             RepeatsSingleSetDB set = Single.get(i);
             String Question = set.getQuestion();
             String Answer = set.getAnswer();
             String Image = set.getImag();
+
+            RelativeLayout relativeLayout = view.findViewById(R.id.RelativeTitem);
+
+            if(IsDark)
+            {
+                relativeLayout.setBackgroundResource(R.drawable.layout_mainshape_dark);
+            }
+            else
+            {
+                relativeLayout.setBackgroundResource(R.drawable.layout_mainshape);
+            }
 
             if(!Image.equals(""))
             {
@@ -77,8 +92,6 @@ public class TestActivity extends AppCompatActivity
             EditText EditAnswer = view.findViewById(R.id.TestAnswer);
             TextQuestion.setText(Question);
             EditAnswer.setTag(Answer);
-
-            linearLayout.addView(view);
         }
 
         FloatingActionButton fab = findViewById(R.id.fabTest);
@@ -110,6 +123,7 @@ public class TestActivity extends AppCompatActivity
             View child = linearLayout.getChildAt(i);
             TextView q = child.findViewById(R.id.TestQuestion);
             EditText e = child.findViewById(R.id.TestAnswer);
+
 
             String question = q.getText().toString();
             String user = e.getText().toString();

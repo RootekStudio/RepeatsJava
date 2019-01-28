@@ -2,29 +2,23 @@ package com.rootekstudio.repeatsandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 public class SettingsActivity extends AppCompatActivity
 {
+    static FragmentActivity activity;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        activity = this;
 
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String theme = sharedPreferences.getString("theme", "0");
-
-        if(theme.equals("0"))
-        {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-        else
-        {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
+        RepeatsHelper.DarkTheme(this);
 
         getSupportFragmentManager()
                 .beginTransaction()

@@ -24,7 +24,7 @@ class SearchItem
     String TableName;
     String AllItem;
 
-    public SearchItem(String Question, String Answer, String Title, String TableName)
+    SearchItem(String Question, String Answer, String Title, String TableName)
     {
         this.Question = Question;
         this.Answer = Answer;
@@ -50,8 +50,12 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     SearchAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+
+        RepeatsHelper.DarkTheme(this);
+
         setContentView(R.layout.activity_search);
 
         DatabaseHelper DB = new DatabaseHelper(this);

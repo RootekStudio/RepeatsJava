@@ -52,6 +52,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 
 public class RepeatsAddEditActivity extends AppCompatActivity
@@ -61,6 +62,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     private ViewGroup parent;
     ViewParent view;
     static Boolean IsDark;
+    FragmentActivity activity;
 
     List<Bitmap> bitmaps = new ArrayList<>();
     List<String> ReadImages = new ArrayList<>();
@@ -70,9 +72,12 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        activity = this;
+
+        IsDark = RepeatsHelper.DarkTheme(this);
+
         setContentView(R.layout.activity_repeats_add_edit);
 
-        NightMode(this);
         final Context cnt = this;
         DB = new DatabaseHelper(cnt);
 
@@ -145,7 +150,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 EditText Q = child.findViewById(R.id.questionBox);
                 EditText A = child.findViewById(R.id.answerBox);
                 ImageButton B = child.findViewById(R.id.deleteItem);
-                ImageButton I = child.findViewById(R.id.addImage);
+                final ImageButton I = child.findViewById(R.id.addImage);
                 ImageView img = child.findViewById(R.id.imageView);
                 ImageButton imgbut = child.findViewById(R.id.deleteImage);
 
@@ -154,6 +159,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                 if(!Image.equals(""))
                 {
+                    I.setEnabled(false);
                     ReadImages.add(Image);
 
                     img.setVisibility(View.VISIBLE);
@@ -188,6 +194,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                             img.setTag(null);
                             imgBut.setVisibility(View.GONE);
                             imgAdd.setEnabled(true);
+                            I.setEnabled(true);
                         }
                     });
                 }
@@ -249,7 +256,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                                 boolean bool = file.delete();
                             }
                         }
-                        startActivity(intent);
+                        onBackPressed();
                     }
                 }
                 //endregion
@@ -356,12 +363,11 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     int freq = sharedPreferences.getInt("frequency", 0);
                     if(freq == 0)
                     {
-                        RepeatsHelper.AskAboutTime(cnt, true);
+                        RepeatsHelper.AskAboutTime(cnt, true, activity);
                     }
                     else
                     {
-                        Intent main = new Intent(cnt, MainActivity.class);
-                        cnt.startActivity(main);
+                        onBackPressed();
                     }
 
                 }
@@ -380,18 +386,21 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                View view = (View)v.getParent();
-                int a = parent.indexOfChild(view);
-                ImageView imgView = view.findViewById(R.id.imageView);
-
-                if(imgView.getVisibility() == View.VISIBLE)
+                if(parent.getChildCount() > 1)
                 {
-                    String TAG = imgView.getTag().toString();
-                    ImgToDelete.add(TAG);
-                    ReadImages.remove(TAG);
-                }
+                    View view = (View)v.getParent();
+                    int a = parent.indexOfChild(view);
+                    ImageView imgView = view.findViewById(R.id.imageView);
 
-                parent.removeViewAt(a);
+                    if(imgView.getVisibility() == View.VISIBLE)
+                    {
+                        String TAG = imgView.getTag().toString();
+                        ImgToDelete.add(TAG);
+                        ReadImages.remove(TAG);
+                    }
+
+                    parent.removeViewAt(a);
+                }
             }
         });
     }
@@ -405,27 +414,34 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             if (resultCode == RESULT_OK)
             {
                 Uri selectedImage = data.getData();
-//                String d = getPath(this, selectedImage);
                 final InputStream imageStream;
                 try
                 {
                     RelativeLayout rel = (RelativeLayout) view;
                     final ImageView imageView = rel.findViewById(R.id.imageView);
 
-                    String PATH = getPath(getApplicationContext(), selectedImage);
                     imageView.setVisibility(View.VISIBLE);
-                    String u = selectedImage.getPath();
                     imageStream = getContentResolver().openInputStream(selectedImage);
 
-                    final Bitmap selected = BitmapFactory.decodeStream(imageStream);
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeStream(imageStream, null, options);
+                    options.inSampleSize = calculateInSampleSize(options, 500, 500);
+                    options.inJustDecodeBounds = false;
+
+                    InputStream is = getContentResolver().openInputStream(selectedImage);
+                    final Bitmap selected = BitmapFactory.decodeStream(is, null, options);
+
                     bitmaps.add(selected);
                     imageView.setImageBitmap(selected);
 
                     SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-                    String SetName = "I" + s.format(new Date());
 
                     imageView.setTag("Y");
                     final ImageButton imgbut = rel.findViewById(R.id.deleteImage);
+                    final ImageButton addimg = rel.findViewById(R.id.addImage);
+                    addimg.setEnabled(false);
+
                     imgbut.setVisibility(View.VISIBLE);
                     imgbut.setOnClickListener(new View.OnClickListener()
                     {
@@ -436,6 +452,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                             imageView.setImageBitmap(null);
                             imageView.setTag(null);
                             imgbut.setVisibility(View.GONE);
+                            addimg.setEnabled(true);
+
                         }
                     });
 
@@ -443,19 +461,12 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 catch (FileNotFoundException e)
                 {
                     e.printStackTrace();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
                 }
             }
         }
-    }
-
-    private String getPath(Context context, Uri contentUri)
-    {
-        Cursor cursor = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-        int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(index);
     }
 
     private void Image_Button(ImageButton button)
@@ -467,28 +478,33 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             {
                 view = v.getParent();
 
-
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(photoPickerIntent, 1);
             }
         });
     }
 
-    static void NightMode(Context context)
-    {
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String theme = sharedPreferences.getString("theme", "0");
 
-        if(theme.equals("0"))
-        {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            IsDark = false;
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
         }
-        else
-        {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            context.setTheme(R.style.AppThemeDark);
-            IsDark = true;
-        }
+
+        return inSampleSize;
     }
 }

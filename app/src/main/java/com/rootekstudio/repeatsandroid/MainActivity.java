@@ -26,9 +26,7 @@ import java.io.File;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
-import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -37,8 +35,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        IsDark = RepeatsHelper.DarkTheme(this);
+    }
 
-        NightMode(this);
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        IsDark = RepeatsHelper.DarkTheme(this);
         File file = new File(getFilesDir(), "SetsMigrationCompleted.txt");
         File file2 = new File(getFilesDir(), "ProjectsName.txt");
 
@@ -157,32 +162,6 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-    }
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-
-        NightMode(this);
-    }
-
-    static void NightMode(Context context)
-    {
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String theme = sharedPreferences.getString("theme", "0");
-
-        if(theme.equals("0"))
-        {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            IsDark = false;
-        }
-        else
-        {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            context.setTheme(R.style.DarkAppTheme);
-            IsDark = true;
-        }
     }
 
     private void createNotificationChannel()

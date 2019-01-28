@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.InputType;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
@@ -30,6 +32,9 @@ import androidx.preference.SwitchPreferenceCompat;
 
 public class Preference_Screen extends PreferenceFragmentCompat
 {
+    static Boolean ThemeChanged = false;
+
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
     {
@@ -88,7 +93,7 @@ public class Preference_Screen extends PreferenceFragmentCompat
             @Override
             public boolean onPreferenceClick(Preference preference)
             {
-                RepeatsHelper.AskAboutTime(context, false);
+                RepeatsHelper.AskAboutTime(context, false, SettingsActivity.activity);
                 return true;
             }
         });
@@ -152,19 +157,13 @@ public class Preference_Screen extends PreferenceFragmentCompat
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
-                String value = (String)newValue;
-                if(value.equals("1"))
-                {
-                    getActivity().finish();
-                    Intent intent = new Intent(context, SettingsActivity.class);
-                    startActivity(intent);
-                }
-                else
-                {
-                    getActivity().finish();
-                    Intent intent = new Intent(context, SettingsActivity.class);
-                    startActivity(intent);
-                }
+                ThemeChanged = true;
+
+                getActivity().finish();
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
                 return true;
             }
         });

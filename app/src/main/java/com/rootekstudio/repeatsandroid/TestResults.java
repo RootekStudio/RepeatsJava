@@ -20,6 +20,7 @@ public class TestResults extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        RepeatsHelper.DarkTheme(this);
         setContentView(R.layout.activity_test_results);
 
         Intent intent = getIntent();

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@drawable/layout_mainshape"
+    android:layout_margin="5dp"
+    android:id="@+id/RelativeTitem">
 
     <TextView
         android:id="@+id/TestQuestion"
@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="20sp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp" />
+        android:layout_margin="12dp"
+        android:layout_alignParentTop="true"/>
 
     <ImageView
         android:id="@+id/imageViewTest"
@@ -21,13 +21,16 @@
         android:layout_height="200dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/TestQuestion"/>
 
     <EditText
         android:id="@+id/TestAnswer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/AnswerHere"
-        android:layout_marginBottom="10dp" />
+        android:layout_margin="10dp"
+        android:layout_below="@id/imageViewTest"/>
 
-</LinearLayout>
+</RelativeLayout>

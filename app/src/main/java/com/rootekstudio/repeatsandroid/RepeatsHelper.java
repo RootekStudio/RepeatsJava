@@ -20,6 +20,8 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -102,7 +104,7 @@ public class RepeatsHelper
         editor.apply();
     }
 
-    static void AskAboutTime(Context context, final boolean IsSet)
+    static void AskAboutTime(final Context context, final boolean IsSet, final FragmentActivity activity)
     {
         final Context cnt = context;
 
@@ -122,8 +124,7 @@ public class RepeatsHelper
             {
                 if(IsSet)
                 {
-                    Intent main = new Intent(cnt, MainActivity.class);
-                    cnt.startActivity(main);
+                    activity.onBackPressed();
                 }
 
             }
@@ -146,12 +147,29 @@ public class RepeatsHelper
 
                     if(IsSet)
                     {
-                        Intent main = new Intent(cnt, MainActivity.class);
-                        cnt.startActivity(main);
+                        activity.onBackPressed();
                     }
 
             }
         });
         ALERTbuilder.show();
+    }
+
+    static Boolean DarkTheme(Context context)
+    {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String theme = sharedPreferences.getString("theme", "0");
+
+        if(theme.equals("0"))
+        {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            return false;
+        }
+        else
+        {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            context.setTheme(R.style.DarkAppTheme);
+            return true;
+        }
     }
 }
