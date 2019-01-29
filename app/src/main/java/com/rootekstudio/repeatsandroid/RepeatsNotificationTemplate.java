@@ -1,5 +1,6 @@
 package com.rootekstudio.repeatsandroid;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +23,10 @@ class RepeatsNotificationTemplate
 {
     static final String KEY_TEXT_REPLY = "UsersAnswer";
 
-    static void NotifiTemplate(Context context)
+    static void NotifiTemplate(Context context, Boolean IsNext)
     {
+        NotificationCompat.Builder mBuilder;
+
         RepeatsHelper.GetQuestionFromDatabase(context);
 
         String Question = RepeatsHelper.Question;
@@ -42,13 +45,26 @@ class RepeatsNotificationTemplate
         answerActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,rnd, answerActivity,0);
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "RepeatsQuestionChannel")
+        if(IsNext)
+        {
+            mBuilder = new NotificationCompat.Builder(context, "RepeatsNextChannel");
+            mBuilder.setDefaults(Notification.DEFAULT_LIGHTS);
+        }
+        else
+        {
+            mBuilder = new NotificationCompat.Builder(context, "RepeatsQuestionChannel");
+            mBuilder.setDefaults(Notification.DEFAULT_ALL);
+        }
+
+        mBuilder
                 .setSmallIcon(R.drawable.ic_notifi_icon)
                 .setContentTitle(tablename)
                 .setContentText(Question)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(Question))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setColor(context.getResources().getColor(R.color.colorAccent))
+                .setColorized(true)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
@@ -98,6 +114,7 @@ class RepeatsNotificationTemplate
     static void AnswerNotifi(Context context, String Title, String Text)
     {
         Intent intent1 = new Intent(context, RepeatsQuestionSend.class);
+        intent1.putExtra("IsNext", true);
         PendingIntent replyPendingIntent = PendingIntent.getBroadcast(context,
                 11, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -105,14 +122,16 @@ class RepeatsNotificationTemplate
                 context.getString(R.string.Next), replyPendingIntent)
                 .build();
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "RepeatsQuestionChannel")
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "RepeatsAnswerChannel")
                 .setSmallIcon(R.drawable.ic_notifi_icon)
                 .setContentTitle(Title)
                 .setContentText(Text)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(Text))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setDefaults(-1)
+                .setColor(context.getResources().getColor(R.color.colorAccent))
+                .setColorized(true)
+                .setDefaults(Notification.DEFAULT_LIGHTS)
                 .addAction(action);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);

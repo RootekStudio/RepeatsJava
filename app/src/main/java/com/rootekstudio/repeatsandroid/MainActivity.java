@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         IsDark = RepeatsHelper.DarkTheme(this);
+        createNotificationChannel();
     }
 
     @Override
@@ -76,7 +77,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        createNotificationChannel();
 
 //        BottomAppBar bottomAppBar = findViewById(R.id.bar);
 //        bottomAppBar.replaceMenu();
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
-            CharSequence name =getString(R.string.ChannelTitle);
+            CharSequence name = getString(R.string.ChannelTitle);
             String description = getString(R.string.ChannelDescription);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("RepeatsQuestionChannel", name, importance);
@@ -176,6 +176,25 @@ public class MainActivity extends AppCompatActivity
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
+
+            CharSequence name2 = getString(R.string.channelname2);
+            String description2 = getString(R.string.channeldesc2);
+            int importance2 = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel2 = new NotificationChannel("RepeatsAnswerChannel", name2, importance2);
+            channel2.setDescription(description2);
+
+            NotificationManager notificationManager2 = getSystemService(NotificationManager.class);
+            notificationManager2.createNotificationChannel(channel2);
+
+            CharSequence name3 = getString(R.string.channelname3);
+            String description3 = getString(R.string.channeldesc3);
+            int importance3 = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel3 = new NotificationChannel("RepeatsNextChannel", name3, importance3);
+            channel3.setDescription(description3);
+
+            NotificationManager notificationManager3 = getSystemService(NotificationManager.class);
+            notificationManager3.createNotificationChannel(channel3);
+
         }
     }
 }

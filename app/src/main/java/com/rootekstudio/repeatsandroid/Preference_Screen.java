@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentActivity;
@@ -41,8 +43,11 @@ public class Preference_Screen extends PreferenceFragmentCompat
         final Context context = getPreferenceManager().getContext();
         PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
 
+        DatabaseHelper DB = new DatabaseHelper(context);
+        List<RepeatsListDB> all = DB.AllItemsLIST();
+
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int freq = sharedPreferences.getInt("frequency", 0);
+        final int freq = sharedPreferences.getInt("frequency", 0);
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener()
         {
@@ -57,29 +62,46 @@ public class Preference_Screen extends PreferenceFragmentCompat
             }
         });
 
-        SwitchPreferenceCompat notificationPreference = new SwitchPreferenceCompat(context);
+        final SwitchPreferenceCompat notificationPreference = new SwitchPreferenceCompat(context);
         notificationPreference.setKey("notifications");
         notificationPreference.setTitle(R.string.notifications);
+        if(all.size() == 0)
+        {
+            notificationPreference.setEnabled(false);
+        }
         notificationPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
         {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
-                if((boolean)newValue)
-                {
-                    RepeatsHelper.RegisterNotifications(context);
-                    findPreference("timeAsk").setVisible(true);
-                    findPreference("EnableSets").setVisible(true);
-                    findPreference("reset").setVisible(true);
+                    if((boolean)newValue)
+                    {
+                        int f = sharedPreferences.getInt("frequency", 0);
+                        if(f == 0)
+                        {
+                            RepeatsHelper.AskAboutTime(context, false, SettingsActivity.activity);
+                        }
+                        else
+                        {
+                            RepeatsHelper.RegisterNotifications(context);
+                        }
 
-                }
-                else
-                {
-                    RepeatsHelper.CancelNotifications(context);
-                    findPreference("timeAsk").setVisible(false);
-                    findPreference("EnableSets").setVisible(false);
-                    findPreference("reset").setVisible(false);
-                }
+                        findPreference("timeAsk").setVisible(true);
+                        findPreference("EnableSets").setVisible(true);
+                        findPreference("reset").setVisible(true);
+
+                    }
+                    else
+                    {
+                        if(freq != 0)
+                        {
+                            RepeatsHelper.CancelNotifications(context);
+                        }
+
+                        findPreference("timeAsk").setVisible(false);
+                        findPreference("EnableSets").setVisible(false);
+                        findPreference("reset").setVisible(false);
+                    }
                 return true;
             }
         });

@@ -17,6 +17,8 @@ public class RepeatsQuestionSend extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        RepeatsNotificationTemplate.NotifiTemplate(context);
+        Boolean isNext = intent.getBooleanExtra("IsNext", false);
+
+        RepeatsNotificationTemplate.NotifiTemplate(context, isNext);
     }
 }

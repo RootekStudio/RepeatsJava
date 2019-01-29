@@ -17,7 +17,7 @@ public class NotificationWork extends Worker
     @Override
     public Result doWork()
     {
-        RepeatsNotificationTemplate.NotifiTemplate(getApplicationContext());
+        RepeatsNotificationTemplate.NotifiTemplate(getApplicationContext(), false);
         return Result.success();
     }
 }

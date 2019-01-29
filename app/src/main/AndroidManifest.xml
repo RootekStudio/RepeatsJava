@@ -13,18 +13,17 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".SplashScreen"
             android:theme="@style/AppTheme.Launcher">
+        </activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-
-        </activity>
         <activity
             android:name=".RepeatsAddEditActivity"
-            android:label="@string/title_activity_repeats_add_edit" />
-
+            android:label="@string/title_activity_repeats_add_edit"
+            android:screenOrientation="locked"/>
         <receiver
             android:name=".RepeatsQuestionSend"
             android:enabled="true"
@@ -42,7 +41,8 @@
             android:name=".SettingsActivity"
             android:label="@string/Settings" />
         <activity android:name=".EnableSetsList" />
-        <activity android:name=".TestActivity" />
+        <activity android:name=".TestActivity"
+            android:screenOrientation="locked"/>
         <activity android:name=".TestResults" />
         <activity android:name=".SearchActivity">
             <intent-filter>

@@ -4,7 +4,7 @@
     <string name="Tag_id_0">0</string>
     <string name="Tag_id_1">1</string>
     <string name="CH1">Powiadomienia z pytaniem</string>
-    <string name="CH2">Chyba nie trzeba dalszych wyjaśnień, nie?</string>
+    <string name="CH2">Ten kanał odpowiada za dostarczanie powiadomień z pytaniem</string>
     <string name="ReplyText">Odpowiedz na pytanie</string>
     <string name="Reply">Odpowiedz</string>
     <string name="CorrectAnswer1">Umiesz to!</string>
@@ -43,4 +43,8 @@
     <string name="CorrectAnswer">Poprawna odpowiedź:</string>
     <string name="YourAnswer">Twoja odpowiedź:</string>
     <string name="search_hint">Wyszukaj</string>
+    <string name="channelname2">Powiadomienia z odpowiedzią</string>
+    <string name="channeldesc2">Ten kanał odpowiada za dostrczenie powiadomienia z odpowiedzią</string>
+    <string name="channelname3">Powiadomienia funkcji Następne pytanie</string>
+    <string name="channeldesc3">Ten kanał odpowiada za funkcję Następne pytanie</string>
 </resources>
