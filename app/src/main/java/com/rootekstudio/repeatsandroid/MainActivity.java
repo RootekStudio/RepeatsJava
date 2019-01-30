@@ -5,6 +5,9 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +30,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -55,8 +59,10 @@ public class MainActivity extends AppCompatActivity
             SetsMigrationTool.MigrateFromOldVersion(this);
         }
 
+//        ColorStateList colorStateList = new ColorStateList()
         setContentView(R.layout.activity_main);
         BottomAppBar bottomAppBar = findViewById(R.id.bar);
+//        ViewCompat.setBackgroundTintList(bottomAppBar, getColorStateList(R.color.colorstatelist));
         bottomAppBar.inflateMenu(R.menu.bottomappbarmain);
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener()
         {
@@ -72,6 +78,25 @@ public class MainActivity extends AppCompatActivity
                 {
                     Intent settings = new Intent(cnt, SettingsActivity.class);
                     startActivity(settings);
+                }
+                else if(item.getItemId() == R.id.app_bar_feedback)
+                {
+                    PackageInfo pInfo = null;
+                    try
+                    {
+                        pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    } catch (PackageManager.NameNotFoundException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    String version = pInfo.versionName;
+
+                    Intent send = new Intent(Intent.ACTION_SEND);
+                    send.setType("plain/text");
+                    send.putExtra(Intent.EXTRA_EMAIL, new String[]{"rootekstudio@outlook.com"});
+                    send.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.FeedbackSubject)+ " " + version);
+
+                    startActivity(Intent.createChooser(send, getString(R.string.SendFeedback)));
                 }
                 return true;
             }

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Repeats</string>
     <string name="title_activity_repeats_add_edit">Zestaw</string>
+    <string name="Question">Pytanie</string>
+    <string name="Answer">Odpowiedź</string>
     <string name="Tag_id_0">0</string>
     <string name="Tag_id_1">1</string>
     <string name="CH1">Powiadomienia z pytaniem</string>
@@ -47,4 +49,6 @@
     <string name="channeldesc2">Ten kanał odpowiada za dostrczenie powiadomienia z odpowiedzią</string>
     <string name="channelname3">Powiadomienia funkcji Następne pytanie</string>
     <string name="channeldesc3">Ten kanał odpowiada za funkcję Następne pytanie</string>
+    <string name="SendFeedback">Prześlij opinię</string>
+    <string name="FeedbackSubject">Opinia o Repeats na Androida wersja </string>
 </resources>
