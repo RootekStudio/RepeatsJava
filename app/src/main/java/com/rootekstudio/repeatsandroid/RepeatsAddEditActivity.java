@@ -62,6 +62,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     private ViewGroup parent;
     ViewParent view;
     static Boolean IsDark;
+    static Boolean IsTimeAsk = false;
     FragmentActivity activity;
 
     List<Bitmap> bitmaps = new ArrayList<>();
@@ -89,8 +90,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         final LayoutInflater inflater = LayoutInflater.from(cnt);
         final Intent intent = new Intent(cnt, MainActivity.class);
         final EditText name = findViewById(R.id.projectname);
-
-        final AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(cnt);
 
         Intent THISintent = getIntent();
         final String x = THISintent.getStringExtra("ISEDIT");
@@ -231,132 +230,167 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 //region Delete set
                 if(item.getItemId() == R.id.deleteButton)
                 {
-                    int i =  0;
-                    if(!x.equals("FALSE"))
+                    AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(cnt);
+
+                    ALERTbuilder.setMessage(R.string.WantDelete);
+                    ALERTbuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener()
                     {
-                        DB.deleteOneFromList(x);
-                        DB.DeleteSet(x);
-
-                        List<RepeatsListDB> a = DB.AllItemsLIST();
-                        int size = a.size();
-
-                        if(size == 0)
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
                         {
-                            RepeatsHelper.CancelNotifications(cnt);
+
                         }
+                    });
 
-                        int count = ReadImages.size();
-
-                        if(count != 0)
+                    ALERTbuilder.setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
                         {
-                            for(int j = 0; j < count; j++)
+                            if(!x.equals("FALSE"))
                             {
-                                String imgName = ReadImages.get(j);
-                                File file = new File(getFilesDir(), imgName);
-                                boolean bool = file.delete();
+                                DB.deleteOneFromList(x);
+                                DB.DeleteSet(x);
+
+                                List<RepeatsListDB> a = DB.AllItemsLIST();
+                                int size = a.size();
+
+                                if(size == 0)
+                                {
+                                    RepeatsHelper.CancelNotifications(cnt);
+                                }
+
+                                int count = ReadImages.size();
+
+                                if(count != 0)
+                                {
+                                    for(int j = 0; j < count; j++)
+                                    {
+                                        String imgName = ReadImages.get(j);
+                                        File file = new File(getFilesDir(), imgName);
+                                        boolean bool = file.delete();
+                                    }
+                                }
                             }
+                            RepeatsAddEditActivity.super.onBackPressed();
                         }
-                        onBackPressed();
-                    }
+                    });
+                    ALERTbuilder.show();
+
+
                 }
                 //endregion
                 //region Save set
                 else if(item.getItemId() == R.id.saveButton)
                 {
-                    final ViewGroup par = findViewById(R.id.AddRepeatsLinear);
-                    int itemscount = par.getChildCount();
-                    itemscount--;
-
-                    SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-                    String SetName = "R" + s.format(new Date());
-                    String SetImage = SetName.replace("R", "I");
-                    TITLE = SetName;
-
-                    DB.CreateSet(SetName);
-
-                    String ImageName = "";
-                    int cImages = 0;
-                    int cBitmaps = 0;
-                    int cRead = 0;
-
-                    for (int i = 0; i <= itemscount; i++)
+                    Thread thread = new Thread(new Runnable()
                     {
-                        View v = par.getChildAt(i);
-                        EditText q = v.findViewById(R.id.questionBox);
-                        EditText a = v.findViewById(R.id.answerBox);
-                        ImageView img = v.findViewById(R.id.imageView);
-                        String question = q.getText().toString();
-                        String answer = a.getText().toString();
-                        RepeatsSingleSetDB set = null;
-
-                        if(img.getTag() != null)
+                        @Override
+                        public void run()
                         {
-                            ImageName = SetImage + cImages + ".png";
+                            final ViewGroup par = findViewById(R.id.AddRepeatsLinear);
+                            int itemscount = par.getChildCount();
+                            itemscount--;
 
-                            String TAG = img.getTag().toString();
-                            if(TAG.equals("Y"))
+                            SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
+                            String SetName = "R" + s.format(new Date());
+                            String SetImage = SetName.replace("R", "I");
+                            TITLE = SetName;
+
+                            DB.CreateSet(SetName);
+
+                            String ImageName = "";
+                            int cImages = 0;
+                            int cBitmaps = 0;
+                            int cRead = 0;
+
+                            for (int i = 0; i <= itemscount; i++)
                             {
-                                Bitmap bitmap = bitmaps.get(cBitmaps);
-                                try
-                                {
-                                    File control = new File(cnt.getFilesDir(), ImageName);
-                                    boolean bool = control.createNewFile();
+                                View v = par.getChildAt(i);
+                                EditText q = v.findViewById(R.id.questionBox);
+                                EditText a = v.findViewById(R.id.answerBox);
+                                ImageView img = v.findViewById(R.id.imageView);
+                                String question = q.getText().toString();
+                                String answer = a.getText().toString();
+                                RepeatsSingleSetDB set = null;
 
-                                    FileOutputStream out = new FileOutputStream(control);
-                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-
-                                } catch (IOException e)
+                                if(img.getTag() != null)
                                 {
-                                    e.printStackTrace();
+                                    ImageName = SetImage + cImages + ".png";
+
+                                    String TAG = img.getTag().toString();
+                                    if(TAG.equals("Y"))
+                                    {
+                                        Bitmap bitmap = bitmaps.get(cBitmaps);
+                                        try
+                                        {
+                                            File control = new File(cnt.getFilesDir(), ImageName);
+                                            boolean bool = control.createNewFile();
+
+                                            FileOutputStream out = new FileOutputStream(control);
+                                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                                        } catch (IOException e)
+                                        {
+                                            e.printStackTrace();
+                                        }
+
+                                        cBitmaps++;
+                                    }
+                                    else
+                                    {
+                                        String filename = ReadImages.get(cRead);
+                                        File control = new File(cnt.getFilesDir(), filename);
+                                        boolean bool = control.renameTo(new File(cnt.getFilesDir(), ImageName));
+
+                                        cRead++;
+                                    }
+
+                                    set = new RepeatsSingleSetDB(question, answer, ImageName);
+                                    cImages++;
+                                }
+                                else
+                                {
+                                    set = new RepeatsSingleSetDB(question, answer, "");
                                 }
 
-                                cBitmaps++;
+                                DB.AddSet(set, TITLE);
                             }
-                            else
+
+                            int delSize = ImgToDelete.size();
+
+                            if(delSize != 0)
                             {
-                                String filename = ReadImages.get(cRead);
-                                String[]files = getFilesDir().list();
-                                File control = new File(cnt.getFilesDir(), filename);
-                                boolean bool = control.renameTo(new File(cnt.getFilesDir(), ImageName));
-
-                                cRead++;
+                                for(int j = 0; j < delSize; j++)
+                                {
+                                    String toDel = ImgToDelete.get(j);
+                                    File file = new File(cnt.getFilesDir(), toDel);
+                                    boolean del = file.delete();
+                                }
                             }
 
-                            set = new RepeatsSingleSetDB(question, answer, ImageName);
-                            cImages++;
+                            String TableName = name.getText().toString();
+                            SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
+                            String CreateDate = s1.format(new Date());
+
+                            RepeatsListDB ListDB = new RepeatsListDB(TableName, SetName, CreateDate, "true", "test");
+                            DB.AddName(ListDB);
+
+                            if (!x.equals("FALSE"))
+                            {
+                                TITLE = x;
+                                DB.deleteOneFromList(x);
+                                DB.DeleteSet(x);
+                            }
                         }
-                        else
-                        {
-                            set = new RepeatsSingleSetDB(question, answer, "");
-                        }
-
-                        DB.AddSet(set, TITLE);
-                    }
-
-                    int delSize = ImgToDelete.size();
-
-                    if(delSize != 0)
+                    });
+                    thread.start();
+                    try
                     {
-                        for(int j = 0; j < delSize; j++)
-                        {
-                            String toDel = ImgToDelete.get(j);
-                            File file = new File(cnt.getFilesDir(), toDel);
-                            boolean del = file.delete();
-                        }
-                    }
-
-                    String TableName = name.getText().toString();
-                    SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
-                    String CreateDate = s1.format(new Date());
-
-                    RepeatsListDB ListDB = new RepeatsListDB(TableName, SetName, CreateDate, "true", "test");
-                    DB.AddName(ListDB);
-
-                    if (!x.equals("FALSE"))
+                        thread.join();
+                    } catch (InterruptedException e)
                     {
-                        TITLE = x;
-                        DB.deleteOneFromList(x);
-                        DB.DeleteSet(x);
+                        e.printStackTrace();
                     }
 
                     final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
@@ -364,10 +398,11 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     if(freq == 0)
                     {
                         RepeatsHelper.AskAboutTime(cnt, true, activity);
+                        IsTimeAsk = true;
                     }
                     else
                     {
-                        onBackPressed();
+                        RepeatsAddEditActivity.super.onBackPressed();
                     }
 
                 }
@@ -487,7 +522,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
+
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
@@ -497,8 +532,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             final int halfHeight = height / 2;
             final int halfWidth = width / 2;
 
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
             while ((halfHeight / inSampleSize) >= reqHeight
                     && (halfWidth / inSampleSize) >= reqWidth) {
                 inSampleSize *= 2;
@@ -506,5 +539,30 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         }
 
         return inSampleSize;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if(!IsTimeAsk)
+        {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.WantLeave)
+                    .setNegativeButton(R.string.Cancel, null)
+                    .setPositiveButton(R.string.Leave, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            RepeatsAddEditActivity.super.onBackPressed();
+                        }
+                    }).create().show();
+
+            IsTimeAsk = false;
+        }
+        else
+        {
+            RepeatsAddEditActivity.super.onBackPressed();
+        }
+
     }
 }

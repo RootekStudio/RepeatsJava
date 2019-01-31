@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Picture;
 import android.os.SystemClock;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,6 +116,7 @@ public class RepeatsHelper
         final View view1 = layoutInflater.inflate(R.layout.ask, null);
         final EditText editText = view1.findViewById(R.id.EditAsk);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(4)});
         ALERTbuilder.setView(view1);
         ALERTbuilder.setMessage(R.string.QuestionFreq);
         ALERTbuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener()

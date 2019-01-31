@@ -14,7 +14,9 @@ import java.util.List;
 public class TestResults extends AppCompatActivity
 {
     List<String> Headers;
+    ExpandableListView expandableListView;
     HashMap<String, List<String>> Children;
+    List<Integer> ToExpand = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,11 +48,18 @@ public class TestResults extends AppCompatActivity
 
         txtSummary.setText(txt2);
 
+        expandableListView = findViewById(R.id.Expandable);
+
         LoadList();
 
-        ExpandableListView expandableListView = findViewById(R.id.Expandable);
         ExpandableListAdapter adapter = new ExpandableListAdapter(this, Headers, Children);
         expandableListView.setAdapter(adapter);
+
+        for(int i = 0; i < ToExpand.size(); i++)
+        {
+            int expand = ToExpand.get(i);
+            expandableListView.expandGroup(expand);
+        }
     }
 
     void LoadList()
@@ -65,9 +74,16 @@ public class TestResults extends AppCompatActivity
         int count = AllQuestions.size();
         for(int i = 0; i < count; i++)
         {
+            String correct = CorrectAnswers.get(i);
+            String userAnswer = UserAnswers.get(i);
             List<String> UserAndCorrect = new ArrayList<>();
-            UserAndCorrect.add(getString(R.string.CorrectAnswer) + " " + CorrectAnswers.get(i));
-            UserAndCorrect.add(getString(R.string.YourAnswer) + " " + UserAnswers.get(i));
+            UserAndCorrect.add(getString(R.string.CorrectAnswer) + " " + correct);
+            UserAndCorrect.add(getString(R.string.YourAnswer) + " " + userAnswer);
+
+            if(!correct.equals(userAnswer))
+            {
+                ToExpand.add(i);
+            }
 
             Children.put(AllQuestions.get(i), UserAndCorrect);
         }

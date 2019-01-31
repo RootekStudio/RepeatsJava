@@ -2,8 +2,9 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
     <item android:drawable="@color/colorPrimary"/>
     <item>
-        <bitmap android:src="@drawable/repeats_logo"
-            android:gravity="center"/>
+        <bitmap
+            android:src="@drawable/repeats_logo_android"
+            android:gravity="center" />
     </item>
 
 </layer-list>

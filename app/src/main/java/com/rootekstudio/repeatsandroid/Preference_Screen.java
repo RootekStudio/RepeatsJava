@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -198,6 +200,49 @@ public class Preference_Screen extends PreferenceFragmentCompat
 
         setPreferenceScreen(screen);
 
+        PackageInfo pInfo = null;
+        try
+        {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        final String version = pInfo.versionName;
+
+        Preference About = new Preference(context);
+        About.setKey("about");
+        About.setTitle(null);
+        About.setSummary("Repeats v." + version + "\n" + "Developer: Jakub Sieradzki");
+
+        Preference SendFeedback = new Preference(context);
+        SendFeedback.setKey("feedback");
+        SendFeedback.setTitle(R.string.SendFeedback);
+        SendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(Preference preference)
+            {
+                Intent send = new Intent(Intent.ACTION_SEND);
+                send.setType("plain/text");
+                send.putExtra(Intent.EXTRA_EMAIL, new String[]{"rootekstudio@outlook.com"});
+                send.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.FeedbackSubject)+ " " + version);
+
+                startActivity(Intent.createChooser(send, getString(R.string.SendFeedback)));
+
+                return true;
+            }
+        });
+
+
+        PreferenceCategory about_cat = new PreferenceCategory(context);
+        about_cat.setKey("about_cat");
+        about_cat.setTitle(R.string.About);
+        screen.addPreference(about_cat);
+        about_cat.addPreference(About);
+        about_cat.addPreference(SendFeedback);
+
         boolean notifiEnabled = sharedPreferences.getBoolean("notifications", false);
 
         if(notifiEnabled)
@@ -244,8 +289,12 @@ public class Preference_Screen extends PreferenceFragmentCompat
             {
                 if(key.equals("frequency"))
                 {
-                    int frequency = sharedPreferences.getInt("frequency", 0);
-                    findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
+                    try
+                    {
+                        int frequency = sharedPreferences.getInt("frequency", 0);
+                        findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
+                    }
+                    catch (Exception o) {}
                 }
             }
         });

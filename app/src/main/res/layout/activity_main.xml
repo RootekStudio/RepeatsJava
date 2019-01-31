@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@android:color/white"
-        android:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
         app:fabAlignmentMode="center"
         app:hideOnScroll="true" />
 
@@ -36,5 +36,31 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_white_24dp"
         app:layout_anchor="@id/bar"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="45dp"
+        android:visibility="gone"
+        android:id="@+id/EmptyHereText">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😃"
+            android:layout_centerHorizontal="true"
+            android:textSize="80sp"
+            android:id="@+id/TextEmoji"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/EmptyHere"
+            android:gravity="center"
+            android:layout_below="@id/TextEmoji"/>
+
+
+    </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
