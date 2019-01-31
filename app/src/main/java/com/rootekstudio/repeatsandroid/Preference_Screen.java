@@ -214,7 +214,7 @@ public class Preference_Screen extends PreferenceFragmentCompat
         Preference About = new Preference(context);
         About.setKey("about");
         About.setTitle(null);
-        About.setSummary("Repeats v." + version + "\n" + "Developer: Jakub Sieradzki");
+        About.setSummary("Repeats " + version + "\n" + "Developer: Jakub Sieradzki");
 
         Preference SendFeedback = new Preference(context);
         SendFeedback.setKey("feedback");

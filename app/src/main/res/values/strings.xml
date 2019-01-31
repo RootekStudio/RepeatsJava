@@ -57,4 +57,5 @@
     <string name="Leave">Leave</string>
     <string name="CorrectAnswer1">Congrats!</string>
     <string name="About">About</string>
+    <string name="SetName">The name of set</string>
 </resources>

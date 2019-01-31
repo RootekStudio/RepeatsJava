@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Nazwa zestawu"
+            android:hint="@string/SetName"
             android:inputType="textPersonName"/>
 
         <androidx.core.widget.NestedScrollView
@@ -29,6 +29,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
         </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

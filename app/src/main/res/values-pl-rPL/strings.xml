@@ -52,8 +52,9 @@
     <string name="FeedbackSubject">"Opinia o Repeats na Androida wersja "</string>
     <string name="WantDelete">Czy na pewno chcesz usunąć cały zestaw?</string>
     <string name="Delete">Usuń</string>
-    <string name="EmptyHere">\\nTrochę tu pusto...\\nAby dodać nowy zestaw kliknij na +</string>
+    <string name="EmptyHere">\nTrochę tu pusto...\nAby dodać nowy zestaw kliknij na +</string>
     <string name="WantLeave">Czy na pewno chcesz wyjść bez zapisywania zmian?</string>
     <string name="Leave">Wyjdź</string>
     <string name="About">O aplikacji</string>
+    <string name="SetName">Nazwa zestawu</string>
 </resources>

@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -283,11 +284,17 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 //region Save set
                 else if(item.getItemId() == R.id.saveButton)
                 {
+                    final ProgressBar progressBar = findViewById(R.id.ProgressBar);
+                    progressBar.setVisibility(View.VISIBLE);
+
+
                     Thread thread = new Thread(new Runnable()
                     {
                         @Override
                         public void run()
                         {
+                            progressBar.setVisibility(View.VISIBLE);
+
                             final ViewGroup par = findViewById(R.id.AddRepeatsLinear);
                             int itemscount = par.getChildCount();
                             itemscount--;
@@ -393,6 +400,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         e.printStackTrace();
                     }
 
+                    progressBar.setVisibility(View.GONE);
                     final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
                     int freq = sharedPreferences.getInt("frequency", 0);
                     if(freq == 0)
