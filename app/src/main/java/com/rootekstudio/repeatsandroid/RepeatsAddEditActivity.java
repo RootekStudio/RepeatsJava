@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -69,6 +70,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     List<Bitmap> bitmaps = new ArrayList<>();
     List<String> ReadImages = new ArrayList<>();
     List<String> ImgToDelete = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
