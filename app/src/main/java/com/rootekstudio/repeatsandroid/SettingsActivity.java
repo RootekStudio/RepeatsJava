@@ -1,13 +1,9 @@
 package com.rootekstudio.repeatsandroid;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.FragmentActivity;
-import androidx.preference.PreferenceManager;
-
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 public class SettingsActivity extends AppCompatActivity
 {

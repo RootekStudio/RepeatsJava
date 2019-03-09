@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/layout_mainshape"
@@ -32,12 +31,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="DELETE"
         android:src="@drawable/ic_delete"
         android:layout_below="@id/imageView"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true" />
 
     <ImageButton
         android:id="@+id/addImage"
@@ -45,10 +44,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/deleteItem"
-        android:text="IMAGE"
         android:src="@drawable/ic_image"
         android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp" />
+        android:layout_marginEnd="5dp"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:id="@+id/questionBox"

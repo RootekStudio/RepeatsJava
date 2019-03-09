@@ -1,6 +1,5 @@
 package com.rootekstudio.repeatsandroid;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -8,28 +7,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Picture;
 import android.os.SystemClock;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 public class RepeatsHelper
 {
@@ -91,10 +81,6 @@ public class RepeatsHelper
                 1000 * 60 * time,
                 pendingIntent);
 
-//        PeriodicWorkRequest.Builder notificationWork = new PeriodicWorkRequest.Builder(NotificationWork.class, time, TimeUnit.MINUTES);
-//        PeriodicWorkRequest request = notificationWork.build();
-//        WorkManager.getInstance().enqueue(request);
-
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("notifications", true);
         editor.apply();
@@ -110,11 +96,10 @@ public class RepeatsHelper
 
     static void AskAboutTime(final Context context, final boolean IsSet, final FragmentActivity activity)
     {
-        final Context cnt = context;
 
-        AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(cnt);
+        AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(context);
 
-        LayoutInflater layoutInflater = LayoutInflater.from(cnt);
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
 
         final View view1 = layoutInflater.inflate(R.layout.ask, null);
         final EditText editText = view1.findViewById(R.id.EditAsk);
@@ -145,9 +130,9 @@ public class RepeatsHelper
                     {
                         int frequency = Integer.parseInt(text);
 
-                        RepeatsHelper.SaveFrequency(cnt, frequency);
-                        RepeatsHelper.CancelNotifications(cnt);
-                        RepeatsHelper.RegisterNotifications(cnt);
+                        RepeatsHelper.SaveFrequency(context, frequency);
+                        RepeatsHelper.CancelNotifications(context);
+                        RepeatsHelper.RegisterNotifications(context);
                     }
 
                     if(IsSet)
@@ -163,7 +148,7 @@ public class RepeatsHelper
     static Boolean DarkTheme(Context context)
     {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String theme = sharedPreferences.getString("theme", "0");
+        String theme = sharedPreferences.getString("theme", "1");
 
         if(theme.equals("0"))
         {

@@ -5,8 +5,6 @@
     <string name="Answer">Answer</string>
     <string name="Tag_id_0" translatable="false">0</string>
     <string name="Tag_id_1" translatable="false">1</string>
-    <string name="CH1">Notifications with question</string>
-    <string name="CH2">This channel is responsible for delivery notifications with question</string>
     <string name="ReplyText">Answer the question</string>
     <string name="Reply">Answer</string>
     <string name="CorrectAnswer2">Congrats! This is the correct answer!</string>
@@ -23,7 +21,6 @@
     <string name="Settings">Settings</string>
     <string name="DeleteSet">Delete set</string>
     <string name="notifications">Notifications</string>
-    <string name="feedback">Feedback</string>
     <string name="EnableTitle">Notifications from specific sets</string>
     <string name="EnableSummary">Select specific set from which will be sending notifications</string>
     <string name="FreqAskPref">Change frequency of sending notifications</string>
@@ -50,7 +47,7 @@
     <string name="channeldesc3">This channel is responsible for Next Question feature</string>
     <string name="SendFeedback">Send feedback</string>
     <string name="FeedbackSubject">Feedback about Repeats for Android version</string>
-    <string name="EmptyHere">\nIt\'s a bit empty here...\nCreate new set by clicking on +</string>
+    <string name="EmptyHere">\nIt\'s a bit empty here…\nCreate new set by clicking on +</string>
     <string name="WantDelete">Are you sure you want to delete the entire set?</string>
     <string name="Delete">Delete</string>
     <string name="WantLeave">Are you sure you want to leave without saving changes?</string>

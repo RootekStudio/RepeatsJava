@@ -1,33 +1,23 @@
 package com.rootekstudio.repeatsandroid;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.MediaStore;
-import android.renderscript.ScriptGroup;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -41,18 +31,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.time.temporal.IsoFields;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
@@ -308,7 +291,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                             DB.CreateSet(SetName);
 
-                            String ImageName = "";
+                            String ImageName;
                             int cImages = 0;
                             int cBitmaps = 0;
                             int cRead = 0;
@@ -321,7 +304,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                                 ImageView img = v.findViewById(R.id.imageView);
                                 String question = q.getText().toString();
                                 String answer = a.getText().toString();
-                                RepeatsSingleSetDB set = null;
+                                RepeatsSingleSetDB set;
 
                                 if(img.getTag() != null)
                                 {
@@ -504,9 +487,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                 }
                 catch (FileNotFoundException e)
-                {
-                    e.printStackTrace();
-                } catch (IOException e)
                 {
                     e.printStackTrace();
                 }

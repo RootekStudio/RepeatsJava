@@ -1,12 +1,10 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.content.Context;
-import android.graphics.Picture;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,12 +14,12 @@ import java.util.Locale;
 public class SearchAdapter extends BaseAdapter
 {
     Context context;
-    LayoutInflater inflater;
-    List<SearchItem> items;
-    ArrayList<SearchItem> arrayItems;
-    Boolean IsDark;
+    private LayoutInflater inflater;
+    private List<SearchItem> items;
+    private ArrayList<SearchItem> arrayItems;
+    private Boolean IsDark;
 
-    public SearchAdapter(Context context, List<SearchItem> items)
+    SearchAdapter(Context context, List<SearchItem> items)
     {
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -65,7 +63,7 @@ public class SearchAdapter extends BaseAdapter
         return convertView;
     }
 
-    public void search(String text)
+    void search(String text)
     {
         text = text.toLowerCase(Locale.getDefault());
         items.clear();

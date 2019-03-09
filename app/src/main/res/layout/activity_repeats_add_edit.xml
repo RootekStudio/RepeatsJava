@@ -15,8 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/SetName"
-            android:inputType="textPersonName"/>
+            android:hint="@string/SetName" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

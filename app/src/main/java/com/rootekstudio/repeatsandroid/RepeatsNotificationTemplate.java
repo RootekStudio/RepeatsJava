@@ -11,17 +11,15 @@ import android.os.Build;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.Random;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.RemoteInput;
 
 class RepeatsNotificationTemplate
 {
-    static final String KEY_TEXT_REPLY = "UsersAnswer";
+    private static final String KEY_TEXT_REPLY = "UsersAnswer";
 
     static void NotifiTemplate(Context context, Boolean IsNext)
     {

@@ -4,8 +4,6 @@
     <string name="title_activity_repeats_add_edit">Zestaw</string>
     <string name="Question">Pytanie</string>
     <string name="Answer">Odpowiedź</string>
-    <string name="CH1">Powiadomienia z pytaniem</string>
-    <string name="CH2">Ten kanał odpowiada za dostarczanie powiadomień z pytaniem</string>
     <string name="ReplyText">Odpowiedz na pytanie</string>
     <string name="Reply">Odpowiedz</string>
     <string name="CorrectAnswer1">Umiesz to</string>
@@ -23,7 +21,6 @@
     <string name="Settings">Ustawienia</string>
     <string name="DeleteSet">Usuń zestaw</string>
     <string name="notifications">Powiadomienia</string>
-    <string name="feedback">Opinia</string>
     <string name="EnableTitle">Powiadomienia z konkretnych zestawów</string>
     <string name="EnableSummary">Określ z których zestawów mają przychodzić powiadomienia</string>
     <string name="FreqAskPref">Zmień częstotliwość wysyłania powiadomień</string>
@@ -52,7 +49,7 @@
     <string name="FeedbackSubject">"Opinia o Repeats na Androida wersja "</string>
     <string name="WantDelete">Czy na pewno chcesz usunąć cały zestaw?</string>
     <string name="Delete">Usuń</string>
-    <string name="EmptyHere">\nTrochę tu pusto...\nAby dodać nowy zestaw kliknij na +</string>
+    <string name="EmptyHere">\nTrochę tu pusto…\nAby dodać nowy zestaw kliknij na +</string>
     <string name="WantLeave">Czy na pewno chcesz wyjść bez zapisywania zmian?</string>
     <string name="Leave">Wyjdź</string>
     <string name="About">O aplikacji</string>

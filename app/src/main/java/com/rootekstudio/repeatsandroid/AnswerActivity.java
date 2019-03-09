@@ -1,15 +1,11 @@
 package com.rootekstudio.repeatsandroid;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,12 +14,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import javax.sql.ConnectionPoolDataSource;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class AnswerActivity extends AppCompatActivity
 {
     static String correct;
-    static Context context;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

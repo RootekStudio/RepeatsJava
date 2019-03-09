@@ -1,17 +1,13 @@
 package com.rootekstudio.repeatsandroid;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.preference.PreferenceManager;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper
 {
@@ -29,7 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
     private static final String[] COLUMNS2 = { KEY_Q, KEY_A, KEY_I};
 
 
-    public DatabaseHelper(Context context)
+    DatabaseHelper(Context context)
     {
         super (context, "repeats", null, 1);
     }
@@ -64,16 +60,17 @@ public class DatabaseHelper extends SQLiteOpenHelper
         list.setIsEnabled(cursor.getString(4));
         list.setAvatar(cursor.getString(5));
 
+        cursor.close();
         return list;
     }
 
-    public List<RepeatsListDB> AllItemsLIST()
+    List<RepeatsListDB> AllItemsLIST()
     {
         List<RepeatsListDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM " + NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        RepeatsListDB list = null;
+        RepeatsListDB list;
 
         if(cursor.moveToFirst())
         {
@@ -89,16 +86,17 @@ public class DatabaseHelper extends SQLiteOpenHelper
         }
 
         db.close();
+        cursor.close();
         return ALL;
     }
 
-    public List<RepeatsListDB> ALLEnabledSets()
+    List<RepeatsListDB> ALLEnabledSets()
     {
         List<RepeatsListDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM TitleTable WHERE IsEnabled='true'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        RepeatsListDB list = null;
+        RepeatsListDB list;
 
         if(cursor.moveToFirst())
         {
@@ -114,10 +112,11 @@ public class DatabaseHelper extends SQLiteOpenHelper
         }
 
         db.close();
+        cursor.close();
         return ALL;
     }
 
-    public void AddName(RepeatsListDB List)
+    void AddName(RepeatsListDB List)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -131,7 +130,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         db.close();
     }
 
-    public void deleteOneFromList(String Title)
+    void deleteOneFromList(String Title)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         String DELETE_NAME = "DELETE FROM TitleTable WHERE TableName =" + "\"" + Title + "\"";
@@ -140,7 +139,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
     }
 
 
-    public void CreateSet(String name)
+    void CreateSet(String name)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         String CREATE_SET = "CREATE TABLE IF NOT EXISTS " + name + " (id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, answer TEXT, image TEXT)";
@@ -148,7 +147,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         db.close();
     }
 
-    public void DeleteSet(String SETNAME)
+    void DeleteSet(String SETNAME)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         String DELETE_SET = "DROP TABLE " + SETNAME;
@@ -156,7 +155,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         db.close();
     }
 
-    public void AddSet(RepeatsSingleSetDB Set, String Title)
+    void AddSet(RepeatsSingleSetDB Set, String Title)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -168,13 +167,13 @@ public class DatabaseHelper extends SQLiteOpenHelper
         db.close();
     }
 
-    public List<RepeatsSingleSetDB> AllItemsSET(String SETNAME)
+    List<RepeatsSingleSetDB> AllItemsSET(String SETNAME)
     {
         List<RepeatsSingleSetDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM " + SETNAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        RepeatsSingleSetDB list = null;
+        RepeatsSingleSetDB list;
 
         if(cursor.moveToFirst())
         {
@@ -188,6 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
             } while (cursor.moveToNext());
         }
         db.close();
+        cursor.close();
         return ALL;
     }
 

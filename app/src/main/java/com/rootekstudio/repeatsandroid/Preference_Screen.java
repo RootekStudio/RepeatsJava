@@ -1,32 +1,16 @@
 package com.rootekstudio.repeatsandroid;
 
-import android.app.AlarmManager;
-import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.ContactsContract;
-import android.text.InputType;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.FragmentActivity;
-import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
-import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
@@ -36,7 +20,7 @@ import androidx.preference.SwitchPreferenceCompat;
 
 public class Preference_Screen extends PreferenceFragmentCompat
 {
-    static Boolean ThemeChanged = false;
+    private static Boolean ThemeChanged = false;
 
 
     @Override
@@ -175,7 +159,7 @@ public class Preference_Screen extends PreferenceFragmentCompat
         theme.setTitle(R.string.changeTheme);
         theme.setEntries(R.array.themes);
         theme.setEntryValues(R.array.ThemeValues);
-        theme.setValue("0");
+        theme.setValue("1");
         theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
         {
             @Override

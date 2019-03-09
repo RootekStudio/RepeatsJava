@@ -3,26 +3,20 @@ package com.rootekstudio.repeatsandroid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Vector;
 
 class SearchItem
 {
-    String Question;
-    String Answer;
-    String Title;
-    String TableName;
-    String AllItem;
+    private String Question;
+    private String Answer;
+    private String Title;
+    private String TableName;
+    private String AllItem;
 
     SearchItem(String Question, String Answer, String Title, String TableName)
     {
@@ -72,7 +66,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             List<RepeatsSingleSetDB> single = DB.AllItemsSET(TableName);
 
             int singlecount = single.size();
-            for (int j = 0; j < singlecount; j++) {
+            for (int j = 0; j < singlecount; j++)
+            {
                 RepeatsSingleSetDB singleSetDB = single.get(j);
                 String Q = singleSetDB.getQuestion();
                 String A = singleSetDB.getAnswer();

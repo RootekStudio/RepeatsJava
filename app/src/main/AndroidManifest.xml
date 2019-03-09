@@ -10,8 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning"
-        android:resizeableActivity="false">
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".SplashScreen"
             android:theme="@style/SplashScreenTheme"
             android:noHistory="true">
@@ -52,9 +51,6 @@
             android:label="@string/Test"/>
         <activity android:name=".SearchActivity"
             android:label="@string/Search">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
         </activity>
     </application>
 

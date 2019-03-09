@@ -1,7 +1,5 @@
 package com.rootekstudio.repeatsandroid;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,8 +18,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class TestActivity extends AppCompatActivity
 {

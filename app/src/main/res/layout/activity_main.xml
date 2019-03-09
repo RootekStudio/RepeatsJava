@@ -5,19 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
-
-        <LinearLayout
-            android:id="@+id/mainList"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
 
-    </androidx.core.widget.NestedScrollView>
+            <LinearLayout
+                android:id="@+id/mainList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" />
+
+        </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bar"
@@ -38,6 +37,7 @@
         app:layout_anchor="@id/bar"/>
 
     <RelativeLayout
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -59,7 +59,6 @@
             android:text="@string/EmptyHere"
             android:gravity="center"
             android:layout_below="@id/TextEmoji"/>
-
 
     </RelativeLayout>
 
