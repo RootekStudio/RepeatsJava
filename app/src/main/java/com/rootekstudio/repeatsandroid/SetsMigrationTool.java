@@ -54,7 +54,7 @@ class SetsMigrationTool
                 SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
                 String CreateDate = s1.format(new Date());
 
-                RepeatsListDB ListDB = new RepeatsListDB(name, SetName, CreateDate, "true", "");
+                RepeatsListDB ListDB = new RepeatsListDB(name, SetName, CreateDate, "true", "", "false");
                 DB.AddName(ListDB);
             }
 

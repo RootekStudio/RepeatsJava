@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ import androidx.preference.PreferenceManager;
 public class RepeatsAddEditActivity extends AppCompatActivity
 {
     public static String TITLE;
+    public String IgnoreChars = "false";
     private DatabaseHelper DB;
     private ViewGroup parent;
     ViewParent view;
@@ -74,12 +76,18 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         parent = findViewById(R.id.AddRepeatsLinear);
 
         final LayoutInflater inflater = LayoutInflater.from(cnt);
-        final Intent intent = new Intent(cnt, MainActivity.class);
         final EditText name = findViewById(R.id.projectname);
 
         Intent THISintent = getIntent();
         final String x = THISintent.getStringExtra("ISEDIT");
         final String n = THISintent.getStringExtra("NAME");
+        final String ignore = THISintent.getStringExtra("IGNORE_CHARS");
+
+        if(ignore.equals("true"))
+        {
+            IgnoreChars = "true";
+            bottomAppBar.getMenu().findItem(R.id.ignoreCharsItem).setChecked(true);
+        }
 
         //region FAB Action
         FloatingActionButton fab = findViewById(R.id.AddQuestionFAB);
@@ -123,7 +131,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 String Answer = Single.getAnswer();
                 String Image = Single.getImag();
 
-                View view = inflater.inflate(R.layout.addrepeatslistitem, parent);
+                inflater.inflate(R.layout.addrepeatslistitem, parent);
                 View child = parent.getChildAt(i);
 
                 if(IsDark)
@@ -205,8 +213,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             }
             //endregion
 
-        List<String> sth = ReadImages;
-        int a = 0;
 
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener()
         {
@@ -365,7 +371,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                             SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
                             String CreateDate = s1.format(new Date());
 
-                            RepeatsListDB ListDB = new RepeatsListDB(TableName, SetName, CreateDate, "true", "test");
+                            RepeatsListDB ListDB = new RepeatsListDB(TableName, SetName, CreateDate, "true", "test", IgnoreChars);
                             DB.AddName(ListDB);
 
                             if (!x.equals("FALSE"))
@@ -400,6 +406,20 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                 }
                 //endregion
+
+                if(item.getItemId() == R.id.ignoreCharsItem)
+                {
+                    if(item.isChecked())
+                    {
+                        IgnoreChars = "false";
+                        item.setChecked(false);
+                    }
+                    else
+                    {
+                        IgnoreChars = "true";
+                        item.setChecked(true);
+                    }
+                }
 
                 return true;
             }

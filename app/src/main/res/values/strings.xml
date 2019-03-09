@@ -55,4 +55,6 @@
     <string name="CorrectAnswer1">Congrats!</string>
     <string name="About">About</string>
     <string name="SetName">The name of set</string>
+    <string name="IngoreChars">Ignore special characters</string>
+    <string name="Tag_id_2" translatable="false">2</string>
 </resources>

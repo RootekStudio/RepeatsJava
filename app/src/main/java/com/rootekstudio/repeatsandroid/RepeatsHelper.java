@@ -27,6 +27,7 @@ public class RepeatsHelper
     static String Answer;
     static String tablename;
     static String PictureName = "";
+    static String IgnoreChars;
 
     static void GetQuestionFromDatabase(Context context)
     {
@@ -40,6 +41,7 @@ public class RepeatsHelper
 
         tablename = single.getitle();
         String Title = single.getTableName();
+        IgnoreChars = single.getIgnoreChars();
 
         List<RepeatsSingleSetDB> set = DB.AllItemsSET(Title);
         int setcount = set.size();

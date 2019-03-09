@@ -65,7 +65,7 @@ public class SearchAdapter extends BaseAdapter
 
     void search(String text)
     {
-        text = text.toLowerCase(Locale.getDefault());
+        text = text.toLowerCase(Locale.getDefault()).replaceAll("[^A-Za-z0-9]", "");
         items.clear();
 
         if(text.length() == 0)

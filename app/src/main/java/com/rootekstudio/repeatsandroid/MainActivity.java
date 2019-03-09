@@ -72,10 +72,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
-//        BottomAppBar bottomAppBar = findViewById(R.id.bar);
-//        bottomAppBar.replaceMenu();
-
         DatabaseHelper DB = new DatabaseHelper(this);
 
         final Intent intent = new Intent(this, RepeatsAddEditActivity.class);
@@ -96,6 +92,7 @@ public class MainActivity extends AppCompatActivity
 
             String tablename = Item.getTableName();
             String title = Item.getitle();
+            String IgnoreChars = Item.getIgnoreChars();
 
             if(IsDark)
             {
@@ -105,9 +102,11 @@ public class MainActivity extends AppCompatActivity
 
             but.setTag(R.string.Tag_id_0, tablename);
             but.setTag(R.string.Tag_id_1, title);
+            but.setTag(R.string.Tag_id_2, IgnoreChars);
 
             TakeTest.setTag(R.string.Tag_id_0, tablename);
             TakeTest.setTag(R.string.Tag_id_1, title);
+            TakeTest.setTag(R.string.Tag_id_2, IgnoreChars);
 
             TakeTest.setOnClickListener(new View.OnClickListener()
             {
@@ -117,10 +116,12 @@ public class MainActivity extends AppCompatActivity
                     RelativeLayout button = (RelativeLayout) v;
                     String s0 = button.getTag(R.string.Tag_id_0).toString();
                     String s1 = button.getTag(R.string.Tag_id_1).toString();
+                    String s2 = button.getTag(R.string.Tag_id_2).toString();
 
                     Intent intent = new Intent(cnt, TestActivity.class);
                     intent.putExtra("TableName", s0);
                     intent.putExtra("title", s1);
+                    intent.putExtra("IgnoreChars", s2);
                     startActivity(intent);
 
                 }
@@ -140,8 +141,10 @@ public class MainActivity extends AppCompatActivity
                     RelativeLayout btn = (RelativeLayout) v;
                     String TITLE = v.getTag(R.string.Tag_id_0).toString();
                     String TABLE_NAME = v.getTag(R.string.Tag_id_1).toString();
+                    String IGNORE_CHARS = v.getTag(R.string.Tag_id_2).toString();
                     intent.putExtra("ISEDIT", TITLE);
                     intent.putExtra("NAME", TABLE_NAME);
+                    intent.putExtra("IGNORE_CHARS", IGNORE_CHARS);
                     startActivity(intent);
                 }
             });

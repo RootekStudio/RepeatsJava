@@ -17,6 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
     private static final String KEY_DATE = "CreateDate";
     private static final String KEY_ENABLED = "IsEnabled";
     private static final String KEY_AVATAR = "Avatar";
+    private static final String KEY_IGNORE_CHARS = "IgnoreChars";
     private static final String[] COLUMNS = { KEY_TITLE, KEY_TNAME, KEY_DATE, KEY_ENABLED, KEY_AVATAR };
 
     private static final String KEY_Q = "question";
@@ -27,20 +28,26 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
     DatabaseHelper(Context context)
     {
-        super (context, "repeats", null, 1);
+        super (context, "repeats", null, 2);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        String CREATE_TITLETABLE = "CREATE TABLE IF NOT EXISTS TitleTable (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, TableName TEXT, CreateDate TEXT, IsEnabled TEXT, Avatar TEXT)";
+        String CREATE_TITLETABLE = "CREATE TABLE IF NOT EXISTS TitleTable (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, TableName TEXT, CreateDate TEXT, IsEnabled TEXT, Avatar TEXT, IgnoreChars TEXT)";
         db.execSQL(CREATE_TITLETABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-
+        if(oldVersion == 1)
+        {
+            String command = "ALTER TABLE TitleTable ADD COLUMN IgnoreChars TEXT";
+            String command2 = "UPDATE TitleTable SET IgnoreChars='false'";
+            db.execSQL(command);
+            db.execSQL(command2);
+        }
     }
 
     public RepeatsListDB getSingleItemLIST (RepeatsListDB List)
@@ -59,6 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         list.setCreateDate(cursor.getString(3));
         list.setIsEnabled(cursor.getString(4));
         list.setAvatar(cursor.getString(5));
+        list.setIgnoreChars(cursor.getString(6));
 
         cursor.close();
         return list;
@@ -81,6 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
                 list.setCreateDate(cursor.getString(3));
                 list.setIsEnabled(cursor.getString(4));
                 list.setAvatar(cursor.getString(5));
+                list.setIgnoreChars(cursor.getString(6));
                 ALL.add(list);
             } while (cursor.moveToNext());
         }
@@ -107,6 +116,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
                 list.setCreateDate(cursor.getString(3));
                 list.setIsEnabled(cursor.getString(4));
                 list.setAvatar(cursor.getString(5));
+                list.setIgnoreChars(cursor.getString(6));
                 ALL.add(list);
             } while (cursor.moveToNext());
         }
@@ -125,6 +135,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         values.put(KEY_DATE, List.getCreateDate());
         values.put(KEY_ENABLED, List.getIsEnabled());
         values.put(KEY_AVATAR, List.getAvatar());
+        values.put(KEY_IGNORE_CHARS, List.getIgnoreChars());
 
         db.insert(NAME, null, values);
         db.close();

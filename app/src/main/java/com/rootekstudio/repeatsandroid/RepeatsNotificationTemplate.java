@@ -31,6 +31,7 @@ class RepeatsNotificationTemplate
         String Answer = RepeatsHelper.Answer;
         String tablename = RepeatsHelper.tablename;
         String picturename = RepeatsHelper.PictureName;
+        String ignorechars = RepeatsHelper.IgnoreChars;
 
         Random random = new Random();
         int rnd = random.nextInt();
@@ -40,6 +41,7 @@ class RepeatsNotificationTemplate
         answerActivity.putExtra("Question", Question);
         answerActivity.putExtra("Correct", Answer);
         answerActivity.putExtra("Image", picturename);
+        answerActivity.putExtra("IgnoreChars", ignorechars);
         answerActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,rnd, answerActivity,0);
 
@@ -94,6 +96,8 @@ class RepeatsNotificationTemplate
 
             Intent intent1 = new Intent(context, UserReply.class);
             intent1.putExtra("Correct", Answer);
+            intent1.putExtra("IgnoreChars", ignorechars);
+
             PendingIntent replyPendingIntent = PendingIntent.getBroadcast(context,
                     11, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
 

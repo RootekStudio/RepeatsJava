@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import java.text.Normalizer;
+import java.util.Locale;
+
 import androidx.annotation.RequiresApi;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
@@ -18,6 +21,15 @@ public class UserReply extends BroadcastReceiver
         String UserAnswer = getMessageText(intent).toString();
         String Correct = intent.getStringExtra("Correct");
 
+        String ReallyCorrect = Correct;
+        String IgnoreChars = intent.getStringExtra("IgnoreChars");
+
+        if(IgnoreChars.equals("true"))
+        {
+            String test = Normalizer.normalize(UserAnswer, Normalizer.Form.NFKD);
+            Correct = Correct.toLowerCase(Locale.getDefault()).replaceAll("[^A-Za-z0-9]", "");
+        }
+
         if(UserAnswer.equals(Correct))
         {
             RepeatsNotificationTemplate.AnswerNotifi(context,
@@ -28,7 +40,7 @@ public class UserReply extends BroadcastReceiver
         {
             RepeatsNotificationTemplate.AnswerNotifi(context,
                     context.getString(R.string.IncorrectAnswer1),
-                    context.getString(R.string.IncorrectAnswer2) + " " + Correct);
+                    context.getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect);
         }
     }
 
