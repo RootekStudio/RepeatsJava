@@ -16,8 +16,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +27,7 @@ public class TestActivity extends AppCompatActivity
 {
     LinearLayout linearLayout;
     Boolean IsDark;
+    String ignore = "false";
     static List<String> AllQuestions;
     static List<String> UserAnswers;
     static List<String> CorrectAnswers;
@@ -41,6 +44,7 @@ public class TestActivity extends AppCompatActivity
         Intent thisintent = getIntent();
         String TableName = thisintent.getStringExtra("TableName");
         String title = thisintent.getStringExtra("title");
+        ignore = thisintent.getStringExtra("IgnoreChars");
         DatabaseHelper DB = new DatabaseHelper(this);
         List<RepeatsSingleSetDB> Single = DB.AllItemsSET(TableName);
         int count = Single.size();
@@ -126,6 +130,25 @@ public class TestActivity extends AppCompatActivity
             String question = q.getText().toString();
             String user = e.getText().toString();
             String correct = e.getTag().toString();
+            String reallyCorrect = correct;
+            String reallyUser = user;
+
+            if(ignore.equals("true"))
+            {
+                user = Normalizer.normalize(user, Normalizer.Form.NFD)
+                        .replaceAll(" ", "")
+                        .replaceAll("Ł","l")
+                        .replaceAll("ł", "l")
+                        .replaceAll("[^\\p{ASCII}]", "")
+                        .toLowerCase(Locale.getDefault());
+
+                correct = Normalizer.normalize(correct, Normalizer.Form.NFD)
+                        .replaceAll(" ", "")
+                        .replaceAll("Ł","l")
+                        .replaceAll("ł", "l")
+                        .replaceAll("[^\\p{ASCII}]", "")
+                        .toLowerCase(Locale.getDefault());
+            }
 
             if(user.equals(correct))
             {
@@ -139,8 +162,8 @@ public class TestActivity extends AppCompatActivity
             }
 
             AllQuestions.add(question);
-            UserAnswers.add(user);
-            CorrectAnswers.add(correct);
+            UserAnswers.add(reallyUser);
+            CorrectAnswers.add(reallyCorrect);
         }
 
         Intent intent = new Intent(this, TestResults.class);

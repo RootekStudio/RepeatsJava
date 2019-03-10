@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.text.Normalizer;
 import java.util.Locale;
 
 import androidx.appcompat.app.AlertDialog;
@@ -106,8 +107,19 @@ public class AnswerActivity extends AppCompatActivity
 
                             if(IGNORE.equals("true"))
                             {
-                                uAnswerString = uAnswerString.toLowerCase(Locale.getDefault()).replaceAll("[^A-Za-z0-9]", "");
-                                correct = correct.toLowerCase(Locale.getDefault()).replaceAll("[^A-Za-z0-9]", "");
+                                uAnswerString = Normalizer.normalize(uAnswerString, Normalizer.Form.NFD)
+                                        .replaceAll(" ", "")
+                                        .replaceAll("Ł","l")
+                                        .replaceAll("ł", "l")
+                                        .replaceAll("[^\\p{ASCII}]", "")
+                                        .toLowerCase(Locale.getDefault());
+
+                                correct = Normalizer.normalize(correct, Normalizer.Form.NFD)
+                                        .replaceAll(" ", "")
+                                        .replaceAll("Ł","l")
+                                        .replaceAll("ł", "l")
+                                        .replaceAll("[^\\p{ASCII}]", "")
+                                        .toLowerCase(Locale.getDefault());
                             }
 
                             if(correct.equals(uAnswerString))

@@ -26,8 +26,19 @@ public class UserReply extends BroadcastReceiver
 
         if(IgnoreChars.equals("true"))
         {
-            String test = Normalizer.normalize(UserAnswer, Normalizer.Form.NFKD);
-            Correct = Correct.toLowerCase(Locale.getDefault()).replaceAll("[^A-Za-z0-9]", "");
+            UserAnswer = Normalizer.normalize(UserAnswer, Normalizer.Form.NFD)
+                    .replaceAll(" ", "")
+                    .replaceAll("Ł","l")
+                    .replaceAll("ł", "l")
+                    .replaceAll("[^\\p{ASCII}]", "")
+                    .toLowerCase(Locale.getDefault());
+
+            Correct = Normalizer.normalize(Correct, Normalizer.Form.NFD)
+                    .replaceAll(" ", "")
+                    .replaceAll("Ł","l")
+                    .replaceAll("ł", "l")
+                    .replaceAll("[^\\p{ASCII}]", "")
+                    .toLowerCase(Locale.getDefault());
         }
 
         if(UserAnswer.equals(Correct))
