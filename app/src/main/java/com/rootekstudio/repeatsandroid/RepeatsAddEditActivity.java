@@ -80,7 +80,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
         Intent THISintent = getIntent();
         final String x = THISintent.getStringExtra("ISEDIT");
-        final String n = THISintent.getStringExtra("NAME");
         final String ignore = THISintent.getStringExtra("IGNORE_CHARS");
 
         if(ignore.equals("true"))
@@ -119,6 +118,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         //region Read set from Database
         if (!x.equals("FALSE"))
         {
+            String n = THISintent.getStringExtra("NAME");
             name.setText(n);
             TITLE = x;
             List<RepeatsSingleSetDB> SET = DB.AllItemsSET(TITLE);

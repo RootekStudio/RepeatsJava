@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 intent.putExtra("ISEDIT", "FALSE");
+                intent.putExtra("IGNORE_CHARS", "false");
                 startActivity(intent);
             }
         });
