@@ -207,7 +207,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/editor/ic_text_fields_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_arrow_downward_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -218,7 +218,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_text_fields" />
+                            <entry key="outputName" value="ic_arrow_download" />
                             <entry key="sourceFile" value="C:\Users\jakub" />
                           </map>
                         </option>

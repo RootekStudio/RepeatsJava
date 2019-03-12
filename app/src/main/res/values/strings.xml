@@ -57,4 +57,7 @@
     <string name="SetName">The name of set</string>
     <string name="IngoreChars">Ignore special characters</string>
     <string name="Tag_id_2" translatable="false">2</string>
+    <string name="CreateNew">Create new set</string>
+    <string name="LoadSet">Load already created set</string>
+    <string name="AddSet">Add set</string>
 </resources>

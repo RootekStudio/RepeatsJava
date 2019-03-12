@@ -1,8 +1,10 @@
 package com.rootekstudio.repeatsandroid;
 
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -155,9 +157,28 @@ public class MainActivity extends AppCompatActivity
         {
             public void onClick(View view)
             {
-                intent.putExtra("ISEDIT", "FALSE");
-                intent.putExtra("IGNORE_CHARS", "false");
-                startActivity(intent);
+                final AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(cnt);
+                LayoutInflater layoutInflater = LayoutInflater.from(cnt);
+                final View view1 = layoutInflater.inflate(R.layout.addnew_item, null);
+                ALERTbuilder.setView(view1);
+
+                ALERTbuilder.setMessage(R.string.AddSet);
+                final AlertDialog alert = ALERTbuilder.show();
+
+                RelativeLayout relA = view1.findViewById(R.id.relAdd);
+                RelativeLayout relR = view1.findViewById(R.id.relRead);
+
+                relA.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        intent.putExtra("ISEDIT", "FALSE");
+                        intent.putExtra("IGNORE_CHARS", "false");
+                        startActivity(intent);
+                        alert.dismiss();
+                    }
+                });
             }
         });
 

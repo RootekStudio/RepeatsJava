@@ -55,4 +55,7 @@
     <string name="About">O aplikacji</string>
     <string name="SetName">Nazwa zestawu</string>
     <string name="IngoreChars">Ignoruj znaki specjalne</string>
+    <string name="CreateNew">Utwórz nowy zestaw</string>
+    <string name="LoadSet">Wczytaj zestaw</string>
+    <string name="AddSet">Dodawanie zestawu</string>
 </resources>

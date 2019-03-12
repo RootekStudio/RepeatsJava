@@ -54,5 +54,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_white_24dp"
-        app:layout_anchor="@id/AddQuestionBar"/>
+        app:layout_anchor="@id/AddQuestionBar"
+        android:tint="#FFFFFF"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
