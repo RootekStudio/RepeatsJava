@@ -60,4 +60,7 @@
     <string name="CreateNew">Create new set</string>
     <string name="LoadSet">Load already created set</string>
     <string name="AddSet">Add set</string>
+    <string name="share">Share</string>
+    <string name="notifiFromSets">Notifications from sets</string>
+    <string name="WantLeaveTest">Are you sure you want to leave without checking answers?</string>
 </resources>

@@ -43,7 +43,7 @@
             android:name=".SettingsActivity"
             android:label="@string/Settings" />
         <activity android:name=".EnableSetsList"
-            android:label="@string/Settings"/>
+            android:label="@string/notifiFromSets"/>
         <activity android:name=".TestActivity"
             android:screenOrientation="locked"
             android:label="@string/Test"/>

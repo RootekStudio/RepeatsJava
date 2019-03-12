@@ -3,6 +3,7 @@ package com.rootekstudio.repeatsandroid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -51,6 +52,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         RepeatsHelper.DarkTheme(this);
 
         setContentView(R.layout.activity_search);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         DatabaseHelper DB = new DatabaseHelper(this);
         List<SearchItem> sItem = new ArrayList<>();
@@ -83,6 +85,15 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         listView.setAdapter(adapter);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == android.R.id.home)
+        {
+            onBackPressed();
+        }
+        return true;
+    }
 
     @Override
     public boolean onQueryTextSubmit(String query)

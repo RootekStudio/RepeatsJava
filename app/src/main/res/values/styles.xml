@@ -11,7 +11,6 @@
         <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
     </style>
 
-
     <style name="DarkAppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -23,6 +22,11 @@
     <style name="MyActionButtonOverflow" parent="Base.Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">#FFFFFF</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.ActionBar" parent="Base.Widget.AppCompat.ActionBar">
+        <item name="android:tint">#000000</item>
+        <item name="android:textColorSecondary">#000000</item>
     </style>
 
     <style name="transculentTheme" parent="Theme.AppCompat.DayNight.NoActionBar">

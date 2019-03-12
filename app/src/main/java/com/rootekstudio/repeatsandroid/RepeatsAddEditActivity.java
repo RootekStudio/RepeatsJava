@@ -66,6 +66,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         IsDark = RepeatsHelper.DarkTheme(this);
 
         setContentView(R.layout.activity_repeats_add_edit);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Context cnt = this;
         DB = new DatabaseHelper(cnt);
@@ -549,6 +550,16 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         }
 
         return inSampleSize;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == android.R.id.home)
+        {
+            onBackPressed();
+        }
+        return true;
     }
 
     @Override

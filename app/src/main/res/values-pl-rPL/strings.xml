@@ -58,4 +58,7 @@
     <string name="CreateNew">Utwórz nowy zestaw</string>
     <string name="LoadSet">Wczytaj zestaw</string>
     <string name="AddSet">Dodawanie zestawu</string>
+    <string name="share">Udostępnij</string>
+    <string name="notifiFromSets">Powiadomienia z zestawów</string>
+    <string name="WantLeaveTest">Czy na pewno chcesz wyjść bez sprawdzenia wyników?</string>
 </resources>

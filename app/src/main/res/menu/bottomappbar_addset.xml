@@ -19,6 +19,13 @@
             android:title="@string/IngoreChars"
             app:showAsAction="never"
             android:checkable="true"/>
+
+        <item
+            android:id="@+id/share"
+            android:icon="@drawable/ic_text_fields"
+            android:title="@string/share"
+            app:showAsAction="never"
+            android:checkable="false"/>
     </group>
 
 </menu>

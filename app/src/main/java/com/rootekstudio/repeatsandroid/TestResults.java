@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class TestResults extends AppCompatActivity
         super.onCreate(savedInstanceState);
         RepeatsHelper.DarkTheme(this);
         setContentView(R.layout.activity_test_results);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         int all = intent.getIntExtra("All", 0);
@@ -87,5 +89,15 @@ public class TestResults extends AppCompatActivity
 
             Children.put(AllQuestions.get(i), UserAndCorrect);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == android.R.id.home)
+        {
+            onBackPressed();
+        }
+        return true;
     }
 }

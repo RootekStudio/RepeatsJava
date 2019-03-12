@@ -1,9 +1,12 @@
 package com.rootekstudio.repeatsandroid;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,6 +42,7 @@ public class TestActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         IsDark = RepeatsHelper.DarkTheme(this);
         setContentView(R.layout.activity_test);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         linearLayout = findViewById(R.id.LinearTest);
         Intent thisintent = getIntent();
@@ -173,5 +177,31 @@ public class TestActivity extends AppCompatActivity
 
         finish();
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == android.R.id.home)
+        {
+            onBackPressed();
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.WantLeaveTest)
+                    .setNegativeButton(R.string.Cancel, null)
+                    .setPositiveButton(R.string.Leave, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            TestActivity.super.onBackPressed();
+                        }
+                    }).create().show();
+
     }
 }
