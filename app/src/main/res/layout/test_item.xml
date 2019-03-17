@@ -23,7 +23,8 @@
         android:layout_marginTop="10dp"
         android:visibility="gone"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/TestQuestion"/>
+        android:layout_below="@id/TestQuestion"
+        android:tint="@android:color/transparent"/>
 
     <EditText
         android:id="@+id/TestAnswer"

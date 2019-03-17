@@ -17,6 +17,12 @@
             android:ems="10"
             android:hint="@string/SetName" />
 
+        <ImageView
+            android:id="@+id/TESTIMAGE"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:tint="@android:color/transparent"/>
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -28,14 +34,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
         </androidx.core.widget.NestedScrollView>
-
-        <ProgressBar
-            android:id="@+id/ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone" />
 
     </RelativeLayout>
 

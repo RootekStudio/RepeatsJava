@@ -14,7 +14,8 @@
         android:layout_alignParentTop="true"
         android:visibility="gone"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:tint="@android:color/transparent"/>
 
     <ImageButton
         android:id="@+id/deleteImage"

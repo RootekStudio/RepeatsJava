@@ -10,7 +10,8 @@
         android:id="@+id/imageViewQuestion"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:tint="@android:color/transparent"/>
 
     <EditText
         android:layout_width="match_parent"
