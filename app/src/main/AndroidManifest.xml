@@ -11,6 +11,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.rootekstudio.repeatsandroid.RepeatsAddEditActivity"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
         <activity android:name=".SplashScreen"
             android:theme="@style/SplashScreenTheme"
             android:noHistory="true">
@@ -20,7 +29,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity">
-
         </activity>
         <activity
             android:name=".RepeatsAddEditActivity"

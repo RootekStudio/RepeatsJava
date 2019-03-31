@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +38,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 
@@ -312,14 +314,17 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                     File questions = new File(cnt.getFilesDir(), "Questions.txt");
                     File answers = new File(cnt.getFilesDir(), "Answers.txt");
+                    List<String> files = new ArrayList<>();
+                    files.add(questions.getPath());
+                    files.add(answers.getPath());
 
                     try
                     {
-                        FileWriter Qwriter = new FileWriter(questions);
-                        FileWriter Awriter = new FileWriter(answers);
-
                         questions.createNewFile();
                         answers.createNewFile();
+
+                        FileWriter Qwriter = new FileWriter(questions);
+                        FileWriter Awriter = new FileWriter(answers);
 
                         DatabaseHelper DB = new DatabaseHelper(cnt);
                         List<RepeatsSingleSetDB> list = DB.AllItemsSET(TITLE);
@@ -327,7 +332,9 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                         String NAME = name.getText().toString();
                         Qwriter.append(NAME);
+                        Qwriter.append(System.getProperty("line.separator"));
                         Awriter.append(NAME);
+                        Awriter.append(System.getProperty("line.separator"));
 
                         Qwriter.flush();
                         Awriter.flush();
@@ -336,28 +343,18 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         {
                             RepeatsSingleSetDB single = list.get(i);
                             Qwriter.append(single.getQuestion());
+                            Qwriter.append(System.getProperty("line.separator"));
                             Awriter.append(single.getAnswer());
+                            Awriter.append(System.getProperty("line.separator"));
 
                             String image = single.getImag();
 
                             if(!image.equals(""))
                             {
                                 File file = new File(cnt.getFilesDir(), image);
-                                File file1 = file;
-                                boolean rename = file1.renameTo(new File(cnt.getFilesDir(), Integer.toString(i) + ".png"));
-                                boolean create = file1.createNewFile();
-
-
-                                File test = new File(cnt.getFilesDir(), image);
-                                File test2 = new File(cnt.getFilesDir(), Integer.toString(i) + ".png");
-
-                                boolean testExists = test.exists();
-                                boolean test2Exists = test2.exists();
-                                int sth = 0;
-
-                                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                                ImageView img = findViewById(R.id.TESTIMAGE);
-                                img.setImageBitmap(bitmap);
+                                File copyImage = new File(cnt.getFilesDir(), Integer.toString(i) + ".png");
+                                copyFileUsingStream(file, copyImage);
+                                files.add(copyImage.getPath());
                             }
 
                             Qwriter.flush();
@@ -366,13 +363,28 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                         Qwriter.close();
                         Awriter.close();
+
+                        File zipFile = new File(getFilesDir(), NAME + ".zip");
+                        Boolean created = zipFile.createNewFile();
+                        Boolean set = zipFile.setWritable(true);
+
+                        ShareSet.zip(files, zipFile);
+
+                        Boolean check = zipFile.exists();
+
+                        Uri uri = FileProvider.getUriForFile(cnt, "com.rootekstudio.repeatsandroid.RepeatsAddEditActivity", zipFile);
+
+                        Intent share = new Intent();
+                        share.setAction(Intent.ACTION_SEND);
+                        share.putExtra(Intent.EXTRA_STREAM, uri);
+                        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        share.setType("application/zip");
+                        startActivity(Intent.createChooser(share,"Test"));
                     }
                     catch (IOException e)
                     {
                         e.printStackTrace();
                     }
-
-
                 }
 
                 return true;
@@ -387,7 +399,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             @Override
             public void run()
             {
-
                 final ViewGroup par = findViewById(R.id.AddRepeatsLinear);
                 int itemscount = par.getChildCount();
                 itemscount--;
@@ -478,7 +489,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                 if (!x.equals("FALSE"))
                 {
-                    TITLE = x;
                     DB.deleteOneFromList(x);
                     DB.DeleteSet(x);
                 }
@@ -581,6 +591,36 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             }
         }
     }
+
+
+    private static void copyFileUsingStream(File source, File dest)
+    {
+        InputStream is;
+        OutputStream os;
+        try
+        {
+            is = new FileInputStream(source);
+            os = new FileOutputStream(dest);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0)
+            {
+                os.write(buffer, 0, length);
+            }
+
+            is.close();
+            os.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     private void Image_Button(ImageButton button)
     {
