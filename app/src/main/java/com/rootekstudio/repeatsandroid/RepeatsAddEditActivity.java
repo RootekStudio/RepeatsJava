@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     static Boolean IsDark;
     static Boolean IsTimeAsk = false;
     FragmentActivity activity;
+   List<String> filesToShare;
 
     List<Bitmap> bitmaps = new ArrayList<>();
     List<String> ReadImages = new ArrayList<>();
@@ -83,6 +86,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         Intent THISintent = getIntent();
         final String x = THISintent.getStringExtra("ISEDIT");
         final String ignore = THISintent.getStringExtra("IGNORE_CHARS");
+        final Boolean shared = THISintent.getBooleanExtra("LoadShared", false);
 
         if(ignore.equals("true"))
         {
@@ -198,6 +202,107 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             }
         }
         //endregion
+        else if(shared)
+        {
+            File dir = new File(getFilesDir(), "shared");
+            File questions = new File(dir, "Questions.txt");
+            Boolean q = questions.exists();
+            File answers = new File(dir, "Answers.txt");
+            Boolean a = answers.exists();
+            try
+            {
+                FileInputStream questionStream = new FileInputStream(questions);
+                FileInputStream answerStream = new FileInputStream(answers);
+                BufferedReader Qreader = new BufferedReader(new InputStreamReader(questionStream));
+                BufferedReader Areader = new BufferedReader(new InputStreamReader(answerStream));
+                String lineQ = Qreader.readLine();
+                name.setText(lineQ);
+                TITLE = lineQ;
+                String lineA = Areader.readLine();
+                lineQ = Qreader.readLine();
+                lineA = Areader.readLine();
+                int i = 0;
+                while(lineQ != null)
+                {
+                    inflater.inflate(R.layout.addrepeatslistitem, parent);
+                    View child = parent.getChildAt(i);
+
+                    if(IsDark)
+                    {
+                        RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
+                        RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
+                    }
+
+                    EditText Q = child.findViewById(R.id.questionBox);
+                    EditText A = child.findViewById(R.id.answerBox);
+                    ImageButton B = child.findViewById(R.id.deleteItem);
+                    final ImageButton I = child.findViewById(R.id.addImage);
+                    ImageView img = child.findViewById(R.id.imageView);
+                    ImageButton imgbut = child.findViewById(R.id.deleteImage);
+
+                    Delete_Button(B);
+                    Image_Button(I);
+
+//                    if(!Image.equals(""))
+//                    {
+//                        I.setEnabled(false);
+//                        ReadImages.add(Image);
+//
+//                        img.setVisibility(View.VISIBLE);
+//                        img.setTag(Image);
+//                        imgbut.setVisibility(View.VISIBLE);
+//                        try
+//                        {
+//                            File file = new File(getFilesDir(), Image);
+//                            FileInputStream inputStream = new FileInputStream(file);
+//
+//                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//                            img.setImageBitmap(bitmap);
+//                        }
+//                        catch (IOException e)
+//                        {
+//                            e.printStackTrace();
+//                        }
+//
+//                        imgbut.setOnClickListener(new View.OnClickListener()
+//                        {
+//                            @Override
+//                            public void onClick(View v)
+//                            {
+//                                View pView = (View) v.getParent();
+//                                ImageView img = pView.findViewById(R.id.imageView);
+//                                ImageButton imgBut = pView.findViewById(R.id.deleteImage);
+//                                ImageButton imgAdd = pView.findViewById(R.id.addImage);
+//                                String tag = img.getTag().toString();
+//                                ImgToDelete.add(tag);
+//                                ReadImages.remove(tag);
+//                                img.setVisibility(View.GONE);
+//                                img.setTag(null);
+//                                imgBut.setVisibility(View.GONE);
+//                                imgAdd.setEnabled(true);
+//                                I.setEnabled(true);
+//                            }
+//                        });
+//                    }
+                    Q.setText(lineQ);
+                    A.setText(lineA);
+
+                    lineQ = Qreader.readLine();
+                    lineA = Areader.readLine();
+                    i++;
+                }
+
+                Boolean delQ = questions.delete();
+                Boolean delA = answers.delete();
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
         //region If not editable, add new question
         else
             {
@@ -310,13 +415,33 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                 if(item.getItemId() == R.id.share)
                 {
+                    File directory = new File(getFilesDir(), "shared");
+
+                    if(!directory.exists())
+                    {
+                        Boolean c = directory.mkdir();
+                    }
+                    else
+                    {
+                        String[] files = directory.list();
+                        int count = files.length;
+                        if(count != 0)
+                        {
+                            for(int i = 0; i < count; i++)
+                            {
+                                File toDel = new File(directory, files[i]);
+                                Boolean delete = toDel.delete();
+                            }
+                        }
+                    }
+
                     SaveSetThread(cnt, name, x);
 
-                    File questions = new File(cnt.getFilesDir(), "Questions.txt");
-                    File answers = new File(cnt.getFilesDir(), "Answers.txt");
-                    List<String> files = new ArrayList<>();
-                    files.add(questions.getPath());
-                    files.add(answers.getPath());
+                    File questions = new File(directory, "Questions.txt");
+                    File answers = new File(directory, "Answers.txt");
+                    filesToShare = new ArrayList<>();
+                    filesToShare.add(questions.getPath());
+                    filesToShare.add(answers.getPath());
 
                     try
                     {
@@ -352,9 +477,9 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                             if(!image.equals(""))
                             {
                                 File file = new File(cnt.getFilesDir(), image);
-                                File copyImage = new File(cnt.getFilesDir(), Integer.toString(i) + ".png");
+                                File copyImage = new File(directory, "S" + Integer.toString(i) + ".png");
                                 copyFileUsingStream(file, copyImage);
-                                files.add(copyImage.getPath());
+                                filesToShare.add(copyImage.getPath());
                             }
 
                             Qwriter.flush();
@@ -364,11 +489,11 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         Qwriter.close();
                         Awriter.close();
 
-                        File zipFile = new File(getFilesDir(), NAME + ".zip");
+                        File zipFile = new File(directory, NAME + ".zip");
                         Boolean created = zipFile.createNewFile();
                         Boolean set = zipFile.setWritable(true);
 
-                        ShareSet.zip(files, zipFile);
+                        ShareSet.zip(filesToShare, zipFile);
 
                         Boolean check = zipFile.exists();
 
@@ -379,7 +504,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         share.putExtra(Intent.EXTRA_STREAM, uri);
                         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         share.setType("application/zip");
-                        startActivity(Intent.createChooser(share,"Test"));
+                        startActivityForResult(Intent.createChooser(share,"Test"), 10);
                     }
                     catch (IOException e)
                     {

@@ -6,8 +6,10 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,9 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -179,6 +184,37 @@ public class MainActivity extends AppCompatActivity
                         alert.dismiss();
                     }
                 });
+
+                relR.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        File file = new File(getFilesDir(), "shared");
+                        if(file.exists())
+                        {
+                            String[] files = file.list();
+                            int count = files.length;
+                            if (count != 0)
+                            {
+                                for(int i = 0; i < count; i++)
+                                {
+                                    File toDel = new File(file, files[i]);
+                                    Boolean delete = toDel.delete();
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                           Boolean dir = file.mkdir();
+                        }
+                        Intent zipPickerIntent  = new Intent(Intent.ACTION_GET_CONTENT);
+                        zipPickerIntent.setType("application/zip");
+                        startActivityForResult(zipPickerIntent, 1);
+                        alert.dismiss();
+                    }
+                });
             }
         });
 
@@ -189,7 +225,34 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void createNotificationChannel()
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == 1)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                Uri selectedZip = data.getData();
+                try
+                {
+                    InputStream inputStream = getContentResolver().openInputStream(selectedZip);
+                    ShareSet.UnZip(inputStream, new File(getFilesDir(), "shared"));
+                    Intent intent = new Intent(this, RepeatsAddEditActivity.class);
+                    intent.putExtra("ISEDIT", "FALSE");
+                    intent.putExtra("IGNORE_CHARS", "false");
+                    intent.putExtra("LoadShared", true);
+                    startActivity(intent);
+                }
+                catch (FileNotFoundException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+                private void createNotificationChannel()
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {

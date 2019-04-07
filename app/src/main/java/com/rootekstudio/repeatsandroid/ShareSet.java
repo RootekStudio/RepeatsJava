@@ -1,5 +1,8 @@
 package com.rootekstudio.repeatsandroid;
 
+import android.content.Context;
+import android.widget.ProgressBar;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -7,8 +10,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class ShareSet
@@ -27,7 +32,7 @@ public class ShareSet
                 FileInputStream fi = new FileInputStream(file);
                 origin = new BufferedInputStream(fi, 1024);
 
-                ZipEntry entry = new ZipEntry(file.substring(file.lastIndexOf("/")));
+                ZipEntry entry = new ZipEntry(file.substring(file.lastIndexOf("/")).replace("/",""));
                 out.putNextEntry(entry);
                 int count;
                 while ((count = origin.read(data, 0, 1024)) != -1) {
@@ -45,5 +50,34 @@ public class ShareSet
             e.printStackTrace();
         }
 
+    }
+
+    public static void UnZip(InputStream Zip, File directory)
+    {
+        try
+        {
+            ZipInputStream zis = new ZipInputStream(Zip);
+            ZipEntry ze;
+
+            while((ze = zis.getNextEntry()) != null)
+            {
+                FileOutputStream fos = new FileOutputStream(directory + "/"+ ze.getName());
+                for(int i = zis.read(); i != -1; i = zis.read())
+                {
+                    fos.write(i);
+                }
+
+                zis.closeEntry();
+                fos.close();
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
