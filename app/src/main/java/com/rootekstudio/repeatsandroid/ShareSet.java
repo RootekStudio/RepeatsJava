@@ -62,12 +62,20 @@ public class ShareSet
             while((ze = zis.getNextEntry()) != null)
             {
                 FileOutputStream fos = new FileOutputStream(directory + "/"+ ze.getName());
-                for(int i = zis.read(); i != -1; i = zis.read())
+
+                BufferedInputStream inputStream = new BufferedInputStream(zis);
+                BufferedOutputStream outputStream = new BufferedOutputStream(fos, 1024);
+
+                byte data[] = new byte[1024];
+                int count;
+                while ((count = inputStream.read(data, 0, 1024)) != -1)
                 {
-                    fos.write(i);
+                    outputStream.write(data, 0, count);
                 }
 
                 zis.closeEntry();
+                outputStream.flush();
+                outputStream.close();
                 fos.close();
             }
         }

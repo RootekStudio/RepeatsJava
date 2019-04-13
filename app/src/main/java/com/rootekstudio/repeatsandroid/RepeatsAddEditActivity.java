@@ -202,7 +202,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             }
         }
         //endregion
-        else if(shared)
+        else if (shared)
         {
             File dir = new File(getFilesDir(), "shared");
             File questions = new File(dir, "Questions.txt");
@@ -222,6 +222,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 lineQ = Qreader.readLine();
                 lineA = Areader.readLine();
                 int i = 0;
+                int int_image = 0;
                 while(lineQ != null)
                 {
                     inflater.inflate(R.layout.addrepeatslistitem, parent);
@@ -243,47 +244,53 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     Delete_Button(B);
                     Image_Button(I);
 
-//                    if(!Image.equals(""))
-//                    {
-//                        I.setEnabled(false);
-//                        ReadImages.add(Image);
-//
-//                        img.setVisibility(View.VISIBLE);
-//                        img.setTag(Image);
-//                        imgbut.setVisibility(View.VISIBLE);
-//                        try
-//                        {
-//                            File file = new File(getFilesDir(), Image);
-//                            FileInputStream inputStream = new FileInputStream(file);
-//
-//                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//                            img.setImageBitmap(bitmap);
-//                        }
-//                        catch (IOException e)
-//                        {
-//                            e.printStackTrace();
-//                        }
-//
-//                        imgbut.setOnClickListener(new View.OnClickListener()
-//                        {
-//                            @Override
-//                            public void onClick(View v)
-//                            {
-//                                View pView = (View) v.getParent();
-//                                ImageView img = pView.findViewById(R.id.imageView);
-//                                ImageButton imgBut = pView.findViewById(R.id.deleteImage);
-//                                ImageButton imgAdd = pView.findViewById(R.id.addImage);
-//                                String tag = img.getTag().toString();
-//                                ImgToDelete.add(tag);
-//                                ReadImages.remove(tag);
-//                                img.setVisibility(View.GONE);
-//                                img.setTag(null);
-//                                imgBut.setVisibility(View.GONE);
-//                                imgAdd.setEnabled(true);
-//                                I.setEnabled(true);
-//                            }
-//                        });
-//                    }
+                    File image = new File(dir, "S"+i+".png");
+                    if (image.exists())
+                    {
+                        I.setEnabled(false);
+
+                        img.setVisibility(View.VISIBLE);
+                        img.setTag("Y");
+
+                        imgbut.setVisibility(View.VISIBLE);
+                        imgbut.setTag(int_image);
+                        int_image++;
+                        try
+                        {
+                            FileInputStream inputStream = new FileInputStream(image);
+
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            img.setImageBitmap(bitmap);
+                            bitmaps.add(bitmap);
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                        imgbut.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                View pView = (View) v.getParent();
+                                ImageView img = pView.findViewById(R.id.imageView);
+                                ImageButton imgBut = pView.findViewById(R.id.deleteImage);
+                                ImageButton imgAdd = pView.findViewById(R.id.addImage);
+                                String tag = img.getTag().toString();
+                                int rem = Integer.parseInt(imgBut.getTag().toString());
+                                ImgToDelete.add(tag);
+                                ReadImages.remove(tag);
+                                bitmaps.remove(rem);
+                                img.setVisibility(View.GONE);
+                                img.setTag(null);
+                                imgBut.setVisibility(View.GONE);
+                                imgAdd.setEnabled(true);
+                                I.setEnabled(true);
+                            }
+                        });
+                    }
+
                     Q.setText(lineQ);
                     A.setText(lineA);
 
