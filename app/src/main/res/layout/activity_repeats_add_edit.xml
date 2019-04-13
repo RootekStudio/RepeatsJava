@@ -15,7 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/SetName" />
+            android:hint="@string/SetName"
+            android:singleLine="true"
+            android:imeOptions="actionNext"/>
 
         <ImageView
             android:id="@+id/TESTIMAGE"

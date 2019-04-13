@@ -54,7 +54,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     static Boolean IsDark;
     static Boolean IsTimeAsk = false;
     FragmentActivity activity;
-   List<String> filesToShare;
 
     List<Bitmap> bitmaps = new ArrayList<>();
     List<String> ReadImages = new ArrayList<>();
@@ -86,7 +85,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         Intent THISintent = getIntent();
         final String x = THISintent.getStringExtra("ISEDIT");
         final String ignore = THISintent.getStringExtra("IGNORE_CHARS");
-        final Boolean shared = THISintent.getBooleanExtra("LoadShared", false);
+        final boolean shared = THISintent.getBooleanExtra("LoadShared", false);
 
         if(ignore.equals("true"))
         {
@@ -244,7 +243,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     Delete_Button(B);
                     Image_Button(I);
 
-                    File image = new File(dir, "S"+i+".png");
+                    File image = new File(dir, "S" + i + ".png");
                     if (image.exists())
                     {
                         I.setEnabled(false);
@@ -422,101 +421,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                 if(item.getItemId() == R.id.share)
                 {
-                    File directory = new File(getFilesDir(), "shared");
-
-                    if(!directory.exists())
-                    {
-                        Boolean c = directory.mkdir();
-                    }
-                    else
-                    {
-                        String[] files = directory.list();
-                        int count = files.length;
-                        if(count != 0)
-                        {
-                            for(int i = 0; i < count; i++)
-                            {
-                                File toDel = new File(directory, files[i]);
-                                Boolean delete = toDel.delete();
-                            }
-                        }
-                    }
-
-                    SaveSetThread(cnt, name, x);
-
-                    File questions = new File(directory, "Questions.txt");
-                    File answers = new File(directory, "Answers.txt");
-                    filesToShare = new ArrayList<>();
-                    filesToShare.add(questions.getPath());
-                    filesToShare.add(answers.getPath());
-
-                    try
-                    {
-                        questions.createNewFile();
-                        answers.createNewFile();
-
-                        FileWriter Qwriter = new FileWriter(questions);
-                        FileWriter Awriter = new FileWriter(answers);
-
-                        DatabaseHelper DB = new DatabaseHelper(cnt);
-                        List<RepeatsSingleSetDB> list = DB.AllItemsSET(TITLE);
-                        int count = list.size();
-
-                        String NAME = name.getText().toString();
-                        Qwriter.append(NAME);
-                        Qwriter.append(System.getProperty("line.separator"));
-                        Awriter.append(NAME);
-                        Awriter.append(System.getProperty("line.separator"));
-
-                        Qwriter.flush();
-                        Awriter.flush();
-
-                        for(int i = 0; i < count; i++)
-                        {
-                            RepeatsSingleSetDB single = list.get(i);
-                            Qwriter.append(single.getQuestion());
-                            Qwriter.append(System.getProperty("line.separator"));
-                            Awriter.append(single.getAnswer());
-                            Awriter.append(System.getProperty("line.separator"));
-
-                            String image = single.getImag();
-
-                            if(!image.equals(""))
-                            {
-                                File file = new File(cnt.getFilesDir(), image);
-                                File copyImage = new File(directory, "S" + Integer.toString(i) + ".png");
-                                copyFileUsingStream(file, copyImage);
-                                filesToShare.add(copyImage.getPath());
-                            }
-
-                            Qwriter.flush();
-                            Awriter.flush();
-                        }
-
-                        Qwriter.close();
-                        Awriter.close();
-
-                        File zipFile = new File(directory, NAME + ".zip");
-                        Boolean created = zipFile.createNewFile();
-                        Boolean set = zipFile.setWritable(true);
-
-                        ShareSet.zip(filesToShare, zipFile);
-
-                        Boolean check = zipFile.exists();
-
-                        Uri uri = FileProvider.getUriForFile(cnt, "com.rootekstudio.repeatsandroid.RepeatsAddEditActivity", zipFile);
-
-                        Intent share = new Intent();
-                        share.setAction(Intent.ACTION_SEND);
-                        share.putExtra(Intent.EXTRA_STREAM, uri);
-                        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        share.setType("application/zip");
-                        startActivityForResult(Intent.createChooser(share,"Test"), 10);
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
+                    ShareButton.ShareClick(cnt,name, x, TITLE);
                 }
 
                 return true;
@@ -724,36 +629,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         }
     }
 
-
-    private static void copyFileUsingStream(File source, File dest)
-    {
-        InputStream is;
-        OutputStream os;
-        try
-        {
-            is = new FileInputStream(source);
-            os = new FileOutputStream(dest);
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = is.read(buffer)) > 0)
-            {
-                os.write(buffer, 0, length);
-            }
-
-            is.close();
-            os.close();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-
     private void Image_Button(ImageButton button)
     {
         button.setOnClickListener(new View.OnClickListener()
@@ -770,9 +645,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     }
 
 
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-
+    public static int calculateInSampleSize (BitmapFactory.Options options, int reqWidth, int reqHeight)
+    {
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;

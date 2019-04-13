@@ -61,9 +61,6 @@ public class RepeatsHelper
         AlarmManager alarmManager = (AlarmManager)cnt.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
 
-//        UUID compressionWorkId = compressionWork.getId();
-//        WorkManager.getInstance().cancelWorkById(compressionWorkId);
-
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("notifications", false);

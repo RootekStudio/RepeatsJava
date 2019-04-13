@@ -1,8 +1,5 @@
 package com.rootekstudio.repeatsandroid;
 
-import android.content.Context;
-import android.widget.ProgressBar;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -42,6 +39,7 @@ public class ShareSet
 
             origin.close();
             out.close();
+            
         } catch (FileNotFoundException e)
         {
             e.printStackTrace();
