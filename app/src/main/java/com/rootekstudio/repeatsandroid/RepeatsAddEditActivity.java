@@ -55,7 +55,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     List<String> ReadImages = new ArrayList<>();
     List<String> ImgToDelete = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -121,6 +120,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         //region Read set from Database
         if (!ISEDIT.equals("FALSE"))
         {
+
             String n = THISintent.getStringExtra("NAME");
             name.setText(n);
             TITLE = ISEDIT;
@@ -179,18 +179,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v)
                         {
-                            View pView = (View) v.getParent();
-                            ImageView img = pView.findViewById(R.id.imageView);
-                            ImageButton imgBut = pView.findViewById(R.id.deleteImage);
-                            ImageButton imgAdd = pView.findViewById(R.id.addImage);
-                            String tag = img.getTag().toString();
-                            ImgToDelete.add(tag);
-                            ReadImages.remove(tag);
-                            img.setVisibility(View.GONE);
-                            img.setTag(null);
-                            imgBut.setVisibility(View.GONE);
-                            imgAdd.setEnabled(true);
-                            I.setEnabled(true);
+                            DeleteImage_Button(v, I);
                         }
                     });
                 }
@@ -220,7 +209,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 lineA = Areader.readLine();
                 int i = 0;
                 int int_image = 0;
-                while(lineQ != null)
+                while (lineQ != null)
                 {
                     inflater.inflate(R.layout.addrepeatslistitem, parent);
                     View child = parent.getChildAt(i);
@@ -270,20 +259,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                             @Override
                             public void onClick(View v)
                             {
-                                View pView = (View) v.getParent();
-                                ImageView img = pView.findViewById(R.id.imageView);
-                                ImageButton imgBut = pView.findViewById(R.id.deleteImage);
-                                ImageButton imgAdd = pView.findViewById(R.id.addImage);
-                                String tag = img.getTag().toString();
-                                int rem = Integer.parseInt(imgBut.getTag().toString());
-                                ImgToDelete.add(tag);
-                                ReadImages.remove(tag);
-                                bitmaps.remove(rem);
-                                img.setVisibility(View.GONE);
-                                img.setTag(null);
-                                imgBut.setVisibility(View.GONE);
-                                imgAdd.setEnabled(true);
-                                I.setEnabled(true);
+                                DeleteImage_Button(v, I);
                             }
                         });
                     }
@@ -302,7 +278,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             catch (FileNotFoundException e)
             {
                 e.printStackTrace();
-            } catch (IOException e)
+            }
+            catch (IOException e)
             {
                 e.printStackTrace();
             }
@@ -312,18 +289,19 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             {
             inflater.inflate(R.layout.addrepeatslistitem, parent);
             View v = parent.getChildAt(0);
-                if(IsDark)
+
+                if (IsDark)
                 {
                     RelativeLayout RL = v.findViewById(R.id.RelativeAddItem);
                     RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
                 }
+
             final ImageButton deleteItem = v.findViewById(R.id.deleteItem);
             ImageButton I = v.findViewById(R.id.addImage);
             Delete_Button(deleteItem);
             Image_Button(I);
             }
             //endregion
-
 
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener()
         {
@@ -360,16 +338,16 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         }
                     });
                     ALERTbuilder.show();
-
-
                 }
                 //endregion
                 //region Save set
                 else if(item.getItemId() == R.id.saveButton)
                 {
+
+
                     String TableName = name.getText().toString();
 
-                    EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars);
+                    EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars, DB);
                     EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
 
                     final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
@@ -383,7 +361,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     {
                         RepeatsAddEditActivity.super.onBackPressed();
                     }
-
                 }
                 //endregion
 
@@ -405,15 +382,32 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 {
                     String TableName = name.getText().toString();
 
-                    EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars);
+                    EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars, DB);
                     EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
 
                     ShareButton.ShareClick(cnt, TableName, TITLE);
                 }
-
                 return true;
             }
         });
+    }
+
+    private void DeleteImage_Button(View v, ImageButton I)
+    {
+        View pView = (View) v.getParent();
+        ImageView img = pView.findViewById(R.id.imageView);
+        ImageButton imgBut = pView.findViewById(R.id.deleteImage);
+        ImageButton imgAdd = pView.findViewById(R.id.addImage);
+        String tag = img.getTag().toString();
+        int rem = Integer.parseInt(imgBut.getTag().toString());
+        ImgToDelete.add(tag);
+        ReadImages.remove(tag);
+        bitmaps.remove(rem);
+        img.setVisibility(View.GONE);
+        img.setTag(null);
+        imgBut.setVisibility(View.GONE);
+        imgAdd.setEnabled(true);
+        I.setEnabled(true);
     }
 
     //region Delete Single Question
@@ -464,7 +458,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = true;
                     BitmapFactory.decodeStream(imageStream, null, options);
-                    options.inSampleSize = calculateInSampleSize(options, 500, 500);
+                    options.inSampleSize = RepeatsHelper.calculateInSampleSize(options, 500, 500);
                     options.inJustDecodeBounds = false;
 
                     InputStream is = getContentResolver().openInputStream(selectedImage);
@@ -491,7 +485,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                             imageView.setTag(null);
                             imgbut.setVisibility(View.GONE);
                             addimg.setEnabled(true);
-
                         }
                     });
 
@@ -517,27 +510,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 startActivityForResult(photoPickerIntent, 1);
             }
         });
-    }
-
-
-    public static int calculateInSampleSize (BitmapFactory.Options options, int reqWidth, int reqHeight)
-    {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            while ((halfHeight / inSampleSize) >= reqHeight
-                    && (halfWidth / inSampleSize) >= reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
     }
 
     @Override

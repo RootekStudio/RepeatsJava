@@ -3,6 +3,7 @@ package com.rootekstudio.repeatsandroid;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +33,7 @@ import androidx.appcompat.widget.Toolbar;
 public class MainActivity extends AppCompatActivity
 {
     static boolean IsDark;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -130,7 +132,6 @@ public class MainActivity extends AppCompatActivity
                     intent.putExtra("title", s1);
                     intent.putExtra("IgnoreChars", s2);
                     startActivity(intent);
-
                 }
             });
 
@@ -145,7 +146,6 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
-                    RelativeLayout btn = (RelativeLayout) v;
                     String TITLE = v.getTag(R.string.Tag_id_0).toString();
                     String TABLE_NAME = v.getTag(R.string.Tag_id_1).toString();
                     String IGNORE_CHARS = v.getTag(R.string.Tag_id_2).toString();
@@ -203,7 +203,6 @@ public class MainActivity extends AppCompatActivity
                                     Boolean delete = toDel.delete();
                                 }
                             }
-
                         }
                         else
                         {
@@ -251,8 +250,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-                private void createNotificationChannel()
+    private void createNotificationChannel()
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {

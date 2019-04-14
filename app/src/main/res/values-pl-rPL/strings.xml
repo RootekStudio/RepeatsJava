@@ -61,4 +61,6 @@
     <string name="share">Udostępnij</string>
     <string name="notifiFromSets">Powiadomienia z zestawów</string>
     <string name="WantLeaveTest">Czy na pewno chcesz wyjść bez sprawdzenia wyników?</string>
+    <string name="saving">Zapisywanie...</string>
+    <string name="loading">Wczytywanie...</string>
 </resources>

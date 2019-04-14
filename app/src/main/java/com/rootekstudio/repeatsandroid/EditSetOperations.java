@@ -3,6 +3,7 @@ package com.rootekstudio.repeatsandroid;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -19,90 +20,97 @@ class EditSetOperations
 {
     static void SaveSetThread(final Context cnt,
                               final String name,
-                              Activity activity,
-                              List<Bitmap> bitmaps,
-                              List<String> ReadImages,
-                              String IgnoreChars)
+                              final Activity activity,
+                              final List<Bitmap> bitmaps,
+                              final List<String> ReadImages,
+                              final String IgnoreChars,
+                              final DatabaseHelper DB)
     {
-        final ViewGroup par = activity.findViewById(R.id.AddRepeatsLinear);
-
-        DatabaseHelper DB = new DatabaseHelper(cnt);
-
-        int itemscount = par.getChildCount();
-        itemscount--;
-
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-        String SetName = "R" + s.format(new Date());
-        String SetImage = SetName.replace("R", "I");
-        String TITLE = SetName;
-
-        DB.CreateSet(SetName);
-
-        String ImageName;
-        int cImages = 0;
-        int cBitmaps = 0;
-        int cRead = 0;
-
-        for (int i = 0; i <= itemscount; i++)
+        Thread thread = new Thread(new Runnable()
         {
-            View v = par.getChildAt(i);
-            EditText q = v.findViewById(R.id.questionBox);
-            EditText a = v.findViewById(R.id.answerBox);
-            ImageView img = v.findViewById(R.id.imageView);
-            String question = q.getText().toString();
-            String answer = a.getText().toString();
-            RepeatsSingleSetDB set;
-
-            if(img.getTag() != null)
+            @Override
+            public void run()
             {
-                ImageName = SetImage + cImages + ".png";
+                //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
-                String TAG = img.getTag().toString();
-                if(TAG.equals("Y"))
+                final ViewGroup par = activity.findViewById(R.id.AddRepeatsLinear);
+
+                int itemscount = par.getChildCount();
+                itemscount--;
+
+                SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
+                String SetName = "R" + s.format(new Date());
+                String SetImage = SetName.replace("R", "I");
+                String TITLE = SetName;
+
+                DB.CreateSet(SetName);
+
+                String ImageName;
+                int cImages = 0;
+                int cBitmaps = 0;
+                int cRead = 0;
+
+                for (int i = 0; i <= itemscount; i++)
                 {
-                    Bitmap bitmap = bitmaps.get(cBitmaps);
-                    try
-                    {
-                        File control = new File(cnt.getFilesDir(), ImageName);
-                        boolean bool = control.createNewFile();
+                    View v = par.getChildAt(i);
+                    EditText q = v.findViewById(R.id.questionBox);
+                    EditText a = v.findViewById(R.id.answerBox);
+                    ImageView img = v.findViewById(R.id.imageView);
+                    String question = q.getText().toString();
+                    String answer = a.getText().toString();
+                    RepeatsSingleSetDB set;
 
-                        FileOutputStream out = new FileOutputStream(control);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-
-                    } catch (IOException e)
+                    if(img.getTag() != null)
                     {
-                        e.printStackTrace();
+                        ImageName = SetImage + cImages + ".png";
+
+                        String TAG = img.getTag().toString();
+                        if(TAG.equals("Y"))
+                        {
+                            Bitmap bitmap = bitmaps.get(cBitmaps);
+                            try
+                            {
+                                File control = new File(cnt.getFilesDir(), ImageName);
+                                boolean bool = control.createNewFile();
+
+                                FileOutputStream out = new FileOutputStream(control);
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                            } catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+
+                            cBitmaps++;
+                        }
+                        else
+                        {
+                            String filename = ReadImages.get(cRead);
+                            File control = new File(cnt.getFilesDir(), filename);
+                            boolean bool = control.renameTo(new File(cnt.getFilesDir(), ImageName));
+
+                            cRead++;
+                        }
+
+                        set = new RepeatsSingleSetDB(question, answer, ImageName);
+                        cImages++;
+                    }
+                    else
+                    {
+                        set = new RepeatsSingleSetDB(question, answer, "");
                     }
 
-                    cBitmaps++;
-                }
-                else
-                {
-                    String filename = ReadImages.get(cRead);
-                    File control = new File(cnt.getFilesDir(), filename);
-                    boolean bool = control.renameTo(new File(cnt.getFilesDir(), ImageName));
-
-                    cRead++;
+                    DB.AddSet(set, TITLE);
                 }
 
-                set = new RepeatsSingleSetDB(question, answer, ImageName);
-                cImages++;
+                SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
+                String CreateDate = s1.format(new Date());
+
+                RepeatsListDB ListDB = new RepeatsListDB(name, SetName, CreateDate, "true", "", IgnoreChars);
+                DB.AddName(ListDB);
             }
-            else
-            {
-                set = new RepeatsSingleSetDB(question, answer, "");
-            }
-
-            DB.AddSet(set, TITLE);
-        }
-
-        SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
-        String CreateDate = s1.format(new Date());
-
-        RepeatsListDB ListDB = new RepeatsListDB(name, SetName, CreateDate, "true", "", IgnoreChars);
-        DB.AddName(ListDB);
-
-
+        });
+        thread.start();
     }
 
     static void DeleteOldSet(String x, Context cnt, List<String> ImgToDelete)
