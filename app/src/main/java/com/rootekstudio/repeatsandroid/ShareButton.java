@@ -20,7 +20,7 @@ import androidx.core.content.FileProvider;
 
 public class ShareButton
 {
-    static void ShareClick(Context context, EditText name, String x, String TITLE)
+    static void ShareClick(Context context, String name, String TITLE)
     {
         File directory = new File(context.getFilesDir(), "shared");
 
@@ -62,10 +62,9 @@ public class ShareButton
             List<RepeatsSingleSetDB> list = DB.AllItemsSET(TITLE);
             int count = list.size();
 
-            String NAME = name.getText().toString();
-            Qwriter.append(NAME);
+            Qwriter.append(name);
             Qwriter.append(System.getProperty("line.separator"));
-            Awriter.append(NAME);
+            Awriter.append(name);
             Awriter.append(System.getProperty("line.separator"));
 
             Qwriter.flush();
@@ -96,7 +95,7 @@ public class ShareButton
             Qwriter.close();
             Awriter.close();
 
-            File zipFile = new File(directory, NAME + ".zip");
+            File zipFile = new File(directory, name + ".zip");
             Boolean created = zipFile.createNewFile();
             Boolean set = zipFile.setWritable(true);
 

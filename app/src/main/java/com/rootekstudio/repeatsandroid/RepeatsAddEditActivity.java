@@ -1,5 +1,6 @@
 package com.rootekstudio.repeatsandroid;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,20 +28,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 
@@ -48,8 +44,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 {
     public static String TITLE;
     public String IgnoreChars = "false";
-    private DatabaseHelper DB;
-    private ViewGroup parent;
+    DatabaseHelper DB;
+    ViewGroup parent;
     ViewParent view;
     static Boolean IsDark;
     static Boolean IsTimeAsk = false;
@@ -77,13 +73,15 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         BottomAppBar bottomAppBar = findViewById(R.id.AddQuestionBar);
         bottomAppBar.replaceMenu(R.menu.bottomappbar_addset);
 
+        final Activity repeatsAddEditActivity = this;
+
         parent = findViewById(R.id.AddRepeatsLinear);
 
         final LayoutInflater inflater = LayoutInflater.from(cnt);
         final EditText name = findViewById(R.id.projectname);
 
         Intent THISintent = getIntent();
-        final String x = THISintent.getStringExtra("ISEDIT");
+        final String ISEDIT = THISintent.getStringExtra("ISEDIT");
         final String ignore = THISintent.getStringExtra("IGNORE_CHARS");
         final boolean shared = THISintent.getBooleanExtra("LoadShared", false);
 
@@ -121,11 +119,11 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         //endregion
 
         //region Read set from Database
-        if (!x.equals("FALSE"))
+        if (!ISEDIT.equals("FALSE"))
         {
             String n = THISintent.getStringExtra("NAME");
             name.setText(n);
-            TITLE = x;
+            TITLE = ISEDIT;
             List<RepeatsSingleSetDB> SET = DB.AllItemsSET(TITLE);
             int ItemsCount = SET.size();
 
@@ -338,24 +336,16 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(cnt);
 
                     ALERTbuilder.setMessage(R.string.WantDelete);
-                    ALERTbuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-
-                        }
-                    });
+                    ALERTbuilder.setNegativeButton(R.string.Cancel, null);
 
                     ALERTbuilder.setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener()
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which)
                         {
-                            if(!x.equals("FALSE"))
+                            if(!ISEDIT.equals("FALSE"))
                             {
-                                DB.deleteOneFromList(x);
-                                DB.DeleteSet(x);
+                                EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
 
                                 List<RepeatsListDB> a = DB.AllItemsLIST();
                                 int size = a.size();
@@ -364,19 +354,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                                 {
                                     RepeatsHelper.CancelNotifications(cnt);
                                 }
-
-                                int count = ReadImages.size();
-
-                                if(count != 0)
-                                {
-                                    for(int j = 0; j < count; j++)
-                                    {
-                                        String imgName = ReadImages.get(j);
-                                        File file = new File(getFilesDir(), imgName);
-                                        boolean bool = file.delete();
-                                    }
-                                }
                             }
+
                             RepeatsAddEditActivity.super.onBackPressed();
                         }
                     });
@@ -388,7 +367,10 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 //region Save set
                 else if(item.getItemId() == R.id.saveButton)
                 {
-                    SaveSetThread(cnt, name, x);
+                    String TableName = name.getText().toString();
+
+                    EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars);
+                    EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
 
                     final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
                     int freq = sharedPreferences.getInt("frequency", 0);
@@ -421,124 +403,17 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                 if(item.getItemId() == R.id.share)
                 {
-                    ShareButton.ShareClick(cnt,name, x, TITLE);
+                    String TableName = name.getText().toString();
+
+                    EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars);
+                    EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
+
+                    ShareButton.ShareClick(cnt, TableName, TITLE);
                 }
 
                 return true;
             }
         });
-    }
-
-    void SaveSetThread(final Context cnt, final EditText name, final String x)
-    {
-        Thread thread = new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                final ViewGroup par = findViewById(R.id.AddRepeatsLinear);
-                int itemscount = par.getChildCount();
-                itemscount--;
-
-                SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-                String SetName = "R" + s.format(new Date());
-                String SetImage = SetName.replace("R", "I");
-                TITLE = SetName;
-
-                DB.CreateSet(SetName);
-
-                String ImageName;
-                int cImages = 0;
-                int cBitmaps = 0;
-                int cRead = 0;
-
-                for (int i = 0; i <= itemscount; i++)
-                {
-                    View v = par.getChildAt(i);
-                    EditText q = v.findViewById(R.id.questionBox);
-                    EditText a = v.findViewById(R.id.answerBox);
-                    ImageView img = v.findViewById(R.id.imageView);
-                    String question = q.getText().toString();
-                    String answer = a.getText().toString();
-                    RepeatsSingleSetDB set;
-
-                    if(img.getTag() != null)
-                    {
-                        ImageName = SetImage + cImages + ".png";
-
-                        String TAG = img.getTag().toString();
-                        if(TAG.equals("Y"))
-                        {
-                            Bitmap bitmap = bitmaps.get(cBitmaps);
-                            try
-                            {
-                                File control = new File(cnt.getFilesDir(), ImageName);
-                                boolean bool = control.createNewFile();
-
-                                FileOutputStream out = new FileOutputStream(control);
-                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-
-                            } catch (IOException e)
-                            {
-                                e.printStackTrace();
-                            }
-
-                            cBitmaps++;
-                        }
-                        else
-                        {
-                            String filename = ReadImages.get(cRead);
-                            File control = new File(cnt.getFilesDir(), filename);
-                            boolean bool = control.renameTo(new File(cnt.getFilesDir(), ImageName));
-
-                            cRead++;
-                        }
-
-                        set = new RepeatsSingleSetDB(question, answer, ImageName);
-                        cImages++;
-                    }
-                    else
-                    {
-                        set = new RepeatsSingleSetDB(question, answer, "");
-                    }
-
-                    DB.AddSet(set, TITLE);
-                }
-
-                int delSize = ImgToDelete.size();
-
-                if(delSize != 0)
-                {
-                    for(int j = 0; j < delSize; j++)
-                    {
-                        String toDel = ImgToDelete.get(j);
-                        File file = new File(cnt.getFilesDir(), toDel);
-                        boolean del = file.delete();
-                    }
-                }
-
-                String TableName = name.getText().toString();
-                SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");
-                String CreateDate = s1.format(new Date());
-
-                RepeatsListDB ListDB = new RepeatsListDB(TableName, SetName, CreateDate, "true", "test", IgnoreChars);
-                DB.AddName(ListDB);
-
-                if (!x.equals("FALSE"))
-                {
-                    DB.deleteOneFromList(x);
-                    DB.DeleteSet(x);
-                }
-            }
-        });
-        thread.start();
-        try
-        {
-            thread.join();
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
     }
 
     //region Delete Single Question
@@ -697,6 +572,5 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         {
             RepeatsAddEditActivity.super.onBackPressed();
         }
-
     }
 }
