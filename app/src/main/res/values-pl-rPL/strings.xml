@@ -63,4 +63,6 @@
     <string name="WantLeaveTest">Czy na pewno chcesz wyjść bez sprawdzenia wyników?</string>
     <string name="saving">Zapisywanie...</string>
     <string name="loading">Wczytywanie...</string>
+    <string name="github">Zobacz kod aplikacji na GitHub</string>
+    <string name="rate">Oceń aplikację w Google Play</string>
 </resources>
