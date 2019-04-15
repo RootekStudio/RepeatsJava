@@ -389,6 +389,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
 
                     ShareButton.ShareClick(cnt, TableName, TITLE);
+
+                    RepeatsAddEditActivity.super.onBackPressed();
                 }
                 //endregion
 

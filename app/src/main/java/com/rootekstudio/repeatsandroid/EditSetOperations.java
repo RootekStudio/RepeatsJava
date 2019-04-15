@@ -93,6 +93,7 @@ class EditSetOperations
 
         RepeatsListDB ListDB = new RepeatsListDB(name, SetName, CreateDate, "true", "", IgnoreChars);
         DB.AddName(ListDB);
+        RepeatsAddEditActivity.TITLE = SetName;
     }
 
     static void DeleteOldSet(String x, Context cnt, List<String> ImgToDelete)
