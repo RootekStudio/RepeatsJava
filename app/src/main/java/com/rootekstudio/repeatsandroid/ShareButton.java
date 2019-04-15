@@ -3,7 +3,6 @@ package com.rootekstudio.repeatsandroid;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.widget.EditText;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,29 +17,13 @@ import java.util.List;
 
 import androidx.core.content.FileProvider;
 
-public class ShareButton
+class ShareButton
 {
     static void ShareClick(Context context, String name, String TITLE)
     {
-        File directory = new File(context.getFilesDir(), "shared");
 
-        if(!directory.exists())
-        {
-            Boolean c = directory.mkdir();
-        }
-        else
-        {
-            String[] files = directory.list();
-            int count = files.length;
-            if(count != 0)
-            {
-                for (String file : files)
-                {
-                    File toDel = new File(directory, file);
-                    Boolean delete = toDel.delete();
-                }
-            }
-        }
+        RepeatsHelper.CheckDir(context);
+        File directory = new File(context.getFilesDir(), "shared");
 
         //SaveSetThread(context, name, x);
 

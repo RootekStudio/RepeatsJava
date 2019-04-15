@@ -1,11 +1,8 @@
 package com.rootekstudio.repeatsandroid;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import java.io.File;
 import java.util.List;
 import java.util.Random;
 
@@ -184,5 +182,27 @@ public class RepeatsHelper
         }
 
         return inSampleSize;
+    }
+
+    static void CheckDir(Context cnt)
+    {
+        File file = new File(cnt.getFilesDir(), "shared");
+        if(file.exists())
+        {
+            String[] files = file.list();
+            int count = files.length;
+            if (count != 0)
+            {
+                for(int i = 0; i < count; i++)
+                {
+                    File toDel = new File(file, files[i]);
+                    Boolean delete = toDel.delete();
+                }
+            }
+        }
+        else
+        {
+            Boolean dir = file.mkdir();
+        }
     }
 }

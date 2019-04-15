@@ -188,6 +188,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
             }
         }
         //endregion
+        //region Read From Zip
         else if (shared)
         {
             File dir = new File(getFilesDir(), "shared");
@@ -284,6 +285,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 e.printStackTrace();
             }
         }
+        //endregion
         //region If not editable, add new question
         else
             {
@@ -363,7 +365,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     }
                 }
                 //endregion
-
+                //region Ignore special characters
                 if(item.getItemId() == R.id.ignoreCharsItem)
                 {
                     if(item.isChecked())
@@ -377,7 +379,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         item.setChecked(true);
                     }
                 }
-
+                //endregion
+                //region Share button
                 if(item.getItemId() == R.id.share)
                 {
                     String TableName = name.getText().toString();
@@ -387,6 +390,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                     ShareButton.ShareClick(cnt, TableName, TITLE);
                 }
+                //endregion
+
                 return true;
             }
         });

@@ -190,24 +190,9 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onClick(View v)
                     {
-                        File file = new File(getFilesDir(), "shared");
-                        if(file.exists())
-                        {
-                            String[] files = file.list();
-                            int count = files.length;
-                            if (count != 0)
-                            {
-                                for(int i = 0; i < count; i++)
-                                {
-                                    File toDel = new File(file, files[i]);
-                                    Boolean delete = toDel.delete();
-                                }
-                            }
-                        }
-                        else
-                        {
-                           Boolean dir = file.mkdir();
-                        }
+
+                        RepeatsHelper.CheckDir(cnt);
+
                         Intent zipPickerIntent  = new Intent(Intent.ACTION_GET_CONTENT);
                         zipPickerIntent.setType("application/zip");
                         startActivityForResult(zipPickerIntent, 1);

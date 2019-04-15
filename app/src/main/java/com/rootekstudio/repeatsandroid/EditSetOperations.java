@@ -3,7 +3,6 @@ package com.rootekstudio.repeatsandroid;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
