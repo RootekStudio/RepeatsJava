@@ -6,6 +6,7 @@ In addition to this, Repeats has built-in Test feature which help you check your
 
 ### Download app
 Google Play: https://play.google.com/store/apps/details?id=com.rootekstudio.repeatsandroid
+
 Microsoft Store: https://www.microsoft.com/store/productId/9NXLCWT9DQF2
 
 In Repeats, you must create your own database with questions & answers to use the app.
