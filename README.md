@@ -6,4 +6,4 @@ In addition to this, Repeats has built-in Test feature which help you check your
 
 In Repeats, you must create your own database with questions & answers to use the app.
 ### It's my first time on GitHub...
-...and in open source community. And also, Repeats is my first big project (I've been programming for 3 years as a hobby). I will be grateful for any comments to my code.
+...and in open source community. Also, Repeats is my first big project (I've been programming for 3 years as a hobby). I will be grateful for any comments to my code.
