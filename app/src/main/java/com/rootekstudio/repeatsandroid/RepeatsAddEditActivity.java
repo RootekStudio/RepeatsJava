@@ -8,7 +8,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -37,6 +41,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 
@@ -64,6 +69,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         IsDark = RepeatsHelper.DarkTheme(this);
 
         setContentView(R.layout.activity_repeats_add_edit);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Context cnt = this;
@@ -120,7 +126,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         //region Read set from Database
         if (!ISEDIT.equals("FALSE"))
         {
-
             String n = THISintent.getStringExtra("NAME");
             name.setText(n);
             TITLE = ISEDIT;
