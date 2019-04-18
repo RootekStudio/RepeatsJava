@@ -78,6 +78,11 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         BottomAppBar bottomAppBar = findViewById(R.id.AddQuestionBar);
         bottomAppBar.replaceMenu(R.menu.bottomappbar_addset);
 
+        if(!IsDark)
+        {
+            bottomAppBar.setBackgroundTint(ContextCompat.getColorStateList(this, R.color.DayColorPrimaryDark));
+        }
+
         final Activity repeatsAddEditActivity = this;
 
         parent = findViewById(R.id.AddRepeatsLinear);

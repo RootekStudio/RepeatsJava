@@ -154,6 +154,7 @@ public class RepeatsHelper
         if(theme.equals("0"))
         {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            context.setTheme(R.style.AppTheme);
             return false;
         }
         else

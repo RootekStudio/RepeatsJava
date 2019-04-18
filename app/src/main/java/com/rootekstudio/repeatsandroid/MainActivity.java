@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -32,6 +33,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
         getSupportActionBar().setCustomView(R.layout.logo);
 
 
@@ -86,6 +89,11 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
+
+        if(!IsDark)
+        {
+            bottomAppBar.setBackgroundTint(ContextCompat.getColorStateList(this, R.color.DayColorPrimaryDark));
+        }
 
         DatabaseHelper DB = new DatabaseHelper(this);
 

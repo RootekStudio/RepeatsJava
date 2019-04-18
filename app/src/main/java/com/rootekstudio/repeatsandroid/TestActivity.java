@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class TestActivity extends AppCompatActivity
 {
@@ -52,6 +54,12 @@ public class TestActivity extends AppCompatActivity
         DatabaseHelper DB = new DatabaseHelper(this);
         List<RepeatsSingleSetDB> Single = DB.AllItemsSET(TableName);
         int count = Single.size();
+
+        if(!IsDark)
+        {
+            BottomAppBar appBar = findViewById(R.id.barTest);
+            appBar.setBackgroundTint(ContextCompat.getColorStateList(this, R.color.DayColorPrimaryDark));
+        }
 
         for(int i = 0; i < count; i++)
         {
