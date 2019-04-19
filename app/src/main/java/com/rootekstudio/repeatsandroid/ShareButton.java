@@ -21,8 +21,6 @@ class ShareButton
 {
     static void ShareClick(Context context, String name, String TITLE)
     {
-
-        RepeatsHelper.CheckDir(context);
         File directory = new File(context.getFilesDir(), "shared");
 
         File questions = new File(directory, "Questions.txt");
@@ -80,7 +78,7 @@ class ShareButton
             Boolean created = zipFile.createNewFile();
             Boolean set = zipFile.setWritable(true);
 
-            ShareSet.zip(filesToShare, zipFile);
+            ZipSet.zip(filesToShare, zipFile);
 
             Boolean check = zipFile.exists();
 
@@ -91,7 +89,7 @@ class ShareButton
             share.putExtra(Intent.EXTRA_STREAM, uri);
             share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             share.setType("application/zip");
-            context.startActivity(Intent.createChooser(share,"Test"));
+            context.startActivity(Intent.createChooser(share, context.getString(R.string.share)));
         }
         catch (IOException e)
         {

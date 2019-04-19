@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         IsDark = RepeatsHelper.DarkTheme(this);
+        RepeatsHelper.CheckDir(this);
         createNotificationChannel();
     }
 
@@ -197,9 +198,6 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onClick(View v)
                     {
-
-                        RepeatsHelper.CheckDir(cnt);
-
                         Intent zipPickerIntent  = new Intent(Intent.ACTION_GET_CONTENT);
                         zipPickerIntent.setType("application/zip");
                         startActivityForResult(zipPickerIntent, 1);
@@ -227,7 +225,7 @@ public class MainActivity extends AppCompatActivity
                 try
                 {
                     InputStream inputStream = getContentResolver().openInputStream(selectedZip);
-                    ShareSet.UnZip(inputStream, new File(getFilesDir(), "shared"));
+                    ZipSet.UnZip(inputStream, new File(getFilesDir(), "shared"));
                     Intent intent = new Intent(this, RepeatsAddEditActivity.class);
                     intent.putExtra("ISEDIT", "FALSE");
                     intent.putExtra("IGNORE_CHARS", "false");

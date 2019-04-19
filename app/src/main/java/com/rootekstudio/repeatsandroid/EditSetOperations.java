@@ -54,7 +54,8 @@ class EditSetOperations
                 int cBitmaps = 0;
                 int cRead = 0;
 
-                for (int i = 0; i <= itemscount; i++) {
+                for (int i = 0; i <= itemscount; i++)
+                {
                     View v = par.getChildAt(i);
                     EditText q = v.findViewById(R.id.questionBox);
                     EditText a = v.findViewById(R.id.answerBox);
@@ -63,25 +64,32 @@ class EditSetOperations
                     String answer = a.getText().toString();
                     RepeatsSingleSetDB set;
 
-                    if (img.getTag() != null) {
+                    if (img.getTag() != null)
+                    {
                         ImageName = SetImage + cImages + ".png";
 
                         String TAG = img.getTag().toString();
-                        if (TAG.equals("Y")) {
+                        if (TAG.equals("Y"))
+                        {
                             Bitmap bitmap = bitmaps.get(cBitmaps);
-                            try {
+                            try
+                            {
                                 File control = new File(cnt.getFilesDir(), ImageName);
                                 boolean bool = control.createNewFile();
 
                                 FileOutputStream out = new FileOutputStream(control);
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
-                            } catch (IOException e) {
+                            }
+                            catch (IOException e)
+                            {
                                 e.printStackTrace();
                             }
 
                             cBitmaps++;
-                        } else {
+                        }
+                        else
+                            {
                             String filename = ReadImages.get(cRead);
                             File control = new File(cnt.getFilesDir(), filename);
                             boolean bool = control.renameTo(new File(cnt.getFilesDir(), ImageName));
@@ -100,19 +108,23 @@ class EditSetOperations
             }
         });
 
+        thread.start();
+
         if(IsShare)
         {
-            RepeatsAddEditActivity.TITLE = SetName;
             try
             {
                 thread.join();
+
             }
             catch (InterruptedException e)
             {
                 e.printStackTrace();
             }
+
+            RepeatsAddEditActivity.TITLE = SetName;
         }
-        thread.start();
+
     }
 
     static void DeleteOldSet(String x, Context cnt, List<String> ImgToDelete)
@@ -133,6 +145,28 @@ class EditSetOperations
                 String toDel = ImgToDelete.get(j);
                 File file = new File(cnt.getFilesDir(), toDel);
                 boolean del = file.delete();
+            }
+        }
+    }
+
+    static void DeleteSet(String x, Context cnt, List<String> ReadImages)
+    {
+        DatabaseHelper DB = new DatabaseHelper(cnt);
+        if (!x.equals("FALSE"))
+        {
+            DB.deleteOneFromList(x);
+            DB.DeleteSet(x);
+        }
+
+        int count = ReadImages.size();
+
+        if(count != 0)
+        {
+            for(int j = 0; j < count; j++)
+            {
+                String imgName = ReadImages.get(j);
+                File file = new File(cnt.getFilesDir(), imgName);
+                boolean bool = file.delete();
             }
         }
     }

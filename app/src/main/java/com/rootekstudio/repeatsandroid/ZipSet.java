@@ -13,9 +13,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-public class ShareSet
+class ZipSet
 {
-    public static void zip(List<String> files, File zipFile)
+    static void zip(List<String> files, File zipFile)
     {
         BufferedInputStream origin = null;
         try
@@ -50,7 +50,7 @@ public class ShareSet
 
     }
 
-    public static void UnZip(InputStream Zip, File directory)
+    static void UnZip(InputStream Zip, File directory)
     {
         try
         {

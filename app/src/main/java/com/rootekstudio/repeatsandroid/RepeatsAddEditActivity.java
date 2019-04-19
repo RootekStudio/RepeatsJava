@@ -379,7 +379,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         {
                             if(!ISEDIT.equals("FALSE"))
                             {
-                                EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
+                                EditSetOperations.DeleteSet(ISEDIT, cnt, ReadImages);
 
                                 List<RepeatsListDB> a = DB.AllItemsLIST();
                                 int size = a.size();
@@ -399,8 +399,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 //region Save set
                 else if(item.getItemId() == R.id.saveButton)
                 {
-
-
                     String TableName = name.getText().toString();
 
                     EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars, DB, false);
