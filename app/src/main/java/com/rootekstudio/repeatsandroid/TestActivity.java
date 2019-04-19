@@ -49,11 +49,10 @@ public class TestActivity extends AppCompatActivity
         linearLayout = findViewById(R.id.LinearTest);
         Intent thisintent = getIntent();
         String TableName = thisintent.getStringExtra("TableName");
-        String title = thisintent.getStringExtra("title");
         ignore = thisintent.getStringExtra("IgnoreChars");
         DatabaseHelper DB = new DatabaseHelper(this);
-        List<RepeatsSingleSetDB> Single = DB.AllItemsSET(TableName);
-        int count = Single.size();
+        final List<RepeatsSingleSetDB> Single = DB.AllItemsSET(TableName);
+        final int count = Single.size();
 
         if(!IsDark)
         {
@@ -61,52 +60,73 @@ public class TestActivity extends AppCompatActivity
             appBar.setBackgroundTint(ContextCompat.getColorStateList(this, R.color.DayColorPrimaryDark));
         }
 
-        for(int i = 0; i < count; i++)
+        float density = getResources().getDisplayMetrics().density;
+        int marginPX = (int)(5 * density);
+
+        final RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.setMargins(marginPX ,marginPX, marginPX, marginPX);
+
+        Thread thread = new Thread(new Runnable()
         {
-            getLayoutInflater().inflate(R.layout.test_item, linearLayout);
-            View view = linearLayout.getChildAt(i);
-
-            RepeatsSingleSetDB set = Single.get(i);
-            String Question = set.getQuestion();
-            String Answer = set.getAnswer();
-            String Image = set.getImag();
-
-            RelativeLayout relativeLayout = view.findViewById(R.id.RelativeTitem);
-
-            if(IsDark)
+            @Override
+            public void run()
             {
-                relativeLayout.setBackgroundResource(R.drawable.layout_mainshape_dark);
-            }
-            else
-            {
-                relativeLayout.setBackgroundResource(R.drawable.layout_mainshape);
-            }
-
-            if(!Image.equals(""))
-            {
-                File file = new File(getFilesDir(), Image);
-                FileInputStream inputStream = null;
-                try
+                for(int i = 0; i < count; i++)
                 {
-                    inputStream = new FileInputStream(file);
-                }
-                catch (FileNotFoundException e)
-                {
-                    e.printStackTrace();
-                }
+                    final RelativeLayout view = (RelativeLayout) getLayoutInflater().inflate(R.layout.test_item, null);
+                    view.setLayoutParams(layoutParams);
 
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    RepeatsSingleSetDB set = Single.get(i);
+                    String Question = set.getQuestion();
+                    String Answer = set.getAnswer();
+                    String Image = set.getImag();
 
-                ImageView imgView = view.findViewById(R.id.imageViewTest);
-                imgView.setImageBitmap(bitmap);
-                imgView.setVisibility(View.VISIBLE);
+                    if(IsDark)
+                    {
+                        view.setBackgroundResource(R.drawable.layout_mainshape_dark);
+                    }
+                    else
+                    {
+                        view.setBackgroundResource(R.drawable.layout_mainshape);
+                    }
+
+                    if(!Image.equals(""))
+                    {
+                        File file = new File(getFilesDir(), Image);
+                        FileInputStream inputStream = null;
+                        try
+                        {
+                            inputStream = new FileInputStream(file);
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                        ImageView imgView = view.findViewById(R.id.imageViewTest);
+                        imgView.setImageBitmap(bitmap);
+                        imgView.setVisibility(View.VISIBLE);
+                    }
+
+                    TextView TextQuestion = view.findViewById(R.id.TestQuestion);
+                    EditText EditAnswer = view.findViewById(R.id.TestAnswer);
+                    TextQuestion.setText(Question);
+                    EditAnswer.setTag(Answer);
+
+                    runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            linearLayout.addView(view);
+                        }
+                    });
+                }
             }
-
-            TextView TextQuestion = view.findViewById(R.id.TestQuestion);
-            EditText EditAnswer = view.findViewById(R.id.TestAnswer);
-            TextQuestion.setText(Question);
-            EditAnswer.setTag(Answer);
-        }
+        });
+        thread.start();
 
         FloatingActionButton fab = findViewById(R.id.fabTest);
         fab.setOnClickListener(new View.OnClickListener()

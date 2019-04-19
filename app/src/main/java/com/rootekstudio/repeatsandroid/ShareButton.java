@@ -25,8 +25,6 @@ class ShareButton
         RepeatsHelper.CheckDir(context);
         File directory = new File(context.getFilesDir(), "shared");
 
-        //SaveSetThread(context, name, x);
-
         File questions = new File(directory, "Questions.txt");
         File answers = new File(directory, "Answers.txt");
         List<String> filesToShare = new ArrayList<>();
@@ -66,7 +64,7 @@ class ShareButton
                 if(!image.equals(""))
                 {
                     File file = new File(context.getFilesDir(), image);
-                    File copyImage = new File(directory, "S" + Integer.toString(i) + ".png");
+                    File copyImage = new File(directory, "S" + i + ".png");
                     copyFileUsingStream(file, copyImage);
                     filesToShare.add(copyImage.getPath());
                 }

@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.view.ViewParent;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -90,7 +92,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         final LayoutInflater inflater = LayoutInflater.from(cnt);
         final EditText name = findViewById(R.id.projectname);
 
-        Intent THISintent = getIntent();
+        final Intent THISintent = getIntent();
         final String ISEDIT = THISintent.getStringExtra("ISEDIT");
         final String ignore = THISintent.getStringExtra("IGNORE_CHARS");
         final boolean shared = THISintent.getBooleanExtra("LoadShared", false);
@@ -131,169 +133,216 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         //region Read set from Database
         if (!ISEDIT.equals("FALSE"))
         {
-            String n = THISintent.getStringExtra("NAME");
-            name.setText(n);
-            TITLE = ISEDIT;
-            List<RepeatsSingleSetDB> SET = DB.AllItemsSET(TITLE);
-            int ItemsCount = SET.size();
-
-            for (int i = 0; i < ItemsCount; i++)
+            Thread readFromDatabase = new Thread(new Runnable()
             {
-                RepeatsSingleSetDB Single = SET.get(i);
-                String Question = Single.getQuestion();
-                String Answer = Single.getAnswer();
-                String Image = Single.getImag();
-
-                inflater.inflate(R.layout.addrepeatslistitem, parent);
-                View child = parent.getChildAt(i);
-
-                if(IsDark)
+                @Override
+                public void run()
                 {
-                    RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
-                    RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
-                }
+                    String n = THISintent.getStringExtra("NAME");
+                    name.setText(n);
+                    TITLE = ISEDIT;
+                    List<RepeatsSingleSetDB> SET = DB.AllItemsSET(TITLE);
+                    int ItemsCount = SET.size();
 
-                EditText Q = child.findViewById(R.id.questionBox);
-                EditText A = child.findViewById(R.id.answerBox);
-                ImageButton B = child.findViewById(R.id.deleteItem);
-                final ImageButton I = child.findViewById(R.id.addImage);
-                ImageView img = child.findViewById(R.id.imageView);
-                ImageButton imgbut = child.findViewById(R.id.deleteImage);
+                    float density = getResources().getDisplayMetrics().density;
+                    int marginPX = (int)(5 * density);
 
-                Delete_Button(B);
-                Image_Button(I);
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    layoutParams.setMargins(marginPX ,marginPX, marginPX, marginPX);
 
-                if(!Image.equals(""))
-                {
-                    I.setEnabled(false);
-                    ReadImages.add(Image);
-
-                    img.setVisibility(View.VISIBLE);
-                    img.setTag(Image);
-                    imgbut.setVisibility(View.VISIBLE);
-                    try
+                    for (int i = 0; i < ItemsCount; i++)
                     {
-                        File file = new File(getFilesDir(), Image);
-                        FileInputStream inputStream = new FileInputStream(file);
+                        RepeatsSingleSetDB Single = SET.get(i);
+                        String Question = Single.getQuestion();
+                        String Answer = Single.getAnswer();
+                        String Image = Single.getImag();
 
-                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                        img.setImageBitmap(bitmap);
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
+                        final RelativeLayout child = (RelativeLayout) inflater.inflate(R.layout.addrepeatslistitem, null);
+                        child.setLayoutParams(layoutParams);
 
-                    imgbut.setOnClickListener(new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View v)
+                        if(IsDark)
                         {
-                            DeleteImage_Button(v, I);
+                            RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
+                            RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
                         }
-                    });
+
+                        EditText Q = child.findViewById(R.id.questionBox);
+                        EditText A = child.findViewById(R.id.answerBox);
+                        ImageButton B = child.findViewById(R.id.deleteItem);
+                        final ImageButton I = child.findViewById(R.id.addImage);
+                        ImageView img = child.findViewById(R.id.imageView);
+                        ImageButton imgbut = child.findViewById(R.id.deleteImage);
+
+                        Delete_Button(B);
+                        Image_Button(I);
+
+                        if(!Image.equals(""))
+                        {
+                            I.setEnabled(false);
+                            ReadImages.add(Image);
+
+                            img.setVisibility(View.VISIBLE);
+                            img.setTag(Image);
+                            imgbut.setVisibility(View.VISIBLE);
+                            try
+                            {
+                                File file = new File(getFilesDir(), Image);
+                                FileInputStream inputStream = new FileInputStream(file);
+
+                                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                img.setImageBitmap(bitmap);
+                            }
+                            catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+
+                            imgbut.setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    DeleteImage_Button(v, I);
+                                }
+                            });
+                        }
+                        Q.setText(Question);
+                        A.setText(Answer);
+
+                        runOnUiThread(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                parent.addView(child);
+                            }
+                        });
+                    }
                 }
-                Q.setText(Question);
-                A.setText(Answer);
-            }
+            });
+            readFromDatabase.start();
         }
         //endregion
         //region Read From Zip
         else if (shared)
         {
-            File dir = new File(getFilesDir(), "shared");
-            File questions = new File(dir, "Questions.txt");
-            Boolean q = questions.exists();
-            File answers = new File(dir, "Answers.txt");
-            Boolean a = answers.exists();
-            try
+            Thread readFromZip = new Thread(new Runnable()
             {
-                FileInputStream questionStream = new FileInputStream(questions);
-                FileInputStream answerStream = new FileInputStream(answers);
-                BufferedReader Qreader = new BufferedReader(new InputStreamReader(questionStream));
-                BufferedReader Areader = new BufferedReader(new InputStreamReader(answerStream));
-                String lineQ = Qreader.readLine();
-                name.setText(lineQ);
-                TITLE = lineQ;
-                String lineA = Areader.readLine();
-                lineQ = Qreader.readLine();
-                lineA = Areader.readLine();
-                int i = 0;
-                int int_image = 0;
-                while (lineQ != null)
+                @Override
+                public void run()
                 {
-                    inflater.inflate(R.layout.addrepeatslistitem, parent);
-                    View child = parent.getChildAt(i);
+                    File dir = new File(getFilesDir(), "shared");
+                    File questions = new File(dir, "Questions.txt");
+                    Boolean q = questions.exists();
+                    File answers = new File(dir, "Answers.txt");
+                    Boolean a = answers.exists();
 
-                    if(IsDark)
+                    float density = getResources().getDisplayMetrics().density;
+                    int marginPX = (int)(5 * density);
+
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    layoutParams.setMargins(marginPX ,marginPX, marginPX, marginPX);
+                    try
                     {
-                        RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
-                        RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
-                    }
-
-                    EditText Q = child.findViewById(R.id.questionBox);
-                    EditText A = child.findViewById(R.id.answerBox);
-                    ImageButton B = child.findViewById(R.id.deleteItem);
-                    final ImageButton I = child.findViewById(R.id.addImage);
-                    ImageView img = child.findViewById(R.id.imageView);
-                    ImageButton imgbut = child.findViewById(R.id.deleteImage);
-
-                    Delete_Button(B);
-                    Image_Button(I);
-
-                    File image = new File(dir, "S" + i + ".png");
-                    if (image.exists())
-                    {
-                        I.setEnabled(false);
-
-                        img.setVisibility(View.VISIBLE);
-                        img.setTag("Y");
-
-                        imgbut.setVisibility(View.VISIBLE);
-                        imgbut.setTag(int_image);
-                        int_image++;
-                        try
+                        FileInputStream questionStream = new FileInputStream(questions);
+                        FileInputStream answerStream = new FileInputStream(answers);
+                        BufferedReader Qreader = new BufferedReader(new InputStreamReader(questionStream));
+                        BufferedReader Areader = new BufferedReader(new InputStreamReader(answerStream));
+                        String lineQ = Qreader.readLine();
+                        name.setText(lineQ);
+                        TITLE = lineQ;
+                        String lineA = Areader.readLine();
+                        lineQ = Qreader.readLine();
+                        lineA = Areader.readLine();
+                        int i = 0;
+                        int int_image = 0;
+                        while (lineQ != null)
                         {
-                            FileInputStream inputStream = new FileInputStream(image);
+                            final RelativeLayout child = (RelativeLayout) inflater.inflate(R.layout.addrepeatslistitem, null);
+                            child.setLayoutParams(layoutParams);
 
-                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                            img.setImageBitmap(bitmap);
-                            bitmaps.add(bitmap);
-                        }
-                        catch (IOException e)
-                        {
-                            e.printStackTrace();
-                        }
-
-                        imgbut.setOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(View v)
+                            if(IsDark)
                             {
-                                DeleteImage_Button(v, I);
+                                RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
+                                RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
                             }
-                        });
+
+                            EditText Q = child.findViewById(R.id.questionBox);
+                            EditText A = child.findViewById(R.id.answerBox);
+                            ImageButton B = child.findViewById(R.id.deleteItem);
+                            final ImageButton I = child.findViewById(R.id.addImage);
+                            ImageView img = child.findViewById(R.id.imageView);
+                            ImageButton imgbut = child.findViewById(R.id.deleteImage);
+
+                            Delete_Button(B);
+                            Image_Button(I);
+
+                            File image = new File(dir, "S" + i + ".png");
+                            if (image.exists())
+                            {
+                                I.setEnabled(false);
+
+                                img.setVisibility(View.VISIBLE);
+                                img.setTag("Y");
+
+                                imgbut.setVisibility(View.VISIBLE);
+                                imgbut.setTag(int_image);
+                                int_image++;
+                                try
+                                {
+                                    FileInputStream inputStream = new FileInputStream(image);
+
+                                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                    img.setImageBitmap(bitmap);
+                                    bitmaps.add(bitmap);
+                                }
+                                catch (IOException e)
+                                {
+                                    e.printStackTrace();
+                                }
+
+                                imgbut.setOnClickListener(new View.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(View v)
+                                    {
+                                        DeleteImage_Button(v, I);
+                                    }
+                                });
+                            }
+
+                            Q.setText(lineQ);
+                            A.setText(lineA);
+
+                            lineQ = Qreader.readLine();
+                            lineA = Areader.readLine();
+                            i++;
+
+                            runOnUiThread(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    parent.addView(child);
+                                }
+                            });
+                        }
+
+                        Boolean delQ = questions.delete();
+                        Boolean delA = answers.delete();
                     }
-
-                    Q.setText(lineQ);
-                    A.setText(lineA);
-
-                    lineQ = Qreader.readLine();
-                    lineA = Areader.readLine();
-                    i++;
+                    catch (FileNotFoundException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
+            });
 
-                Boolean delQ = questions.delete();
-                Boolean delA = answers.delete();
-            }
-            catch (FileNotFoundException e)
-            {
-                e.printStackTrace();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            readFromZip.start();
         }
         //endregion
         //region If not editable, add new question
@@ -359,7 +408,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                     String TableName = name.getText().toString();
 
-                    EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars, DB);
+                    EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars, DB, false);
                     EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
 
                     final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
@@ -395,7 +444,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 {
                     String TableName = name.getText().toString();
 
-                    EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars, DB);
+                    EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars, DB, true);
                     EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
 
                     ShareButton.ShareClick(cnt, TableName, TITLE);
