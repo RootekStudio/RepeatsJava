@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -215,27 +216,61 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data)
     {
         if (requestCode == 1)
         {
             if (resultCode == RESULT_OK)
             {
-                Uri selectedZip = data.getData();
-                try
+                final Context context = this;
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                final LayoutInflater layoutInflater = LayoutInflater.from(context);
+                final View view1 = layoutInflater.inflate(R.layout.progress, null);
+
+                builder.setView(view1);
+                builder.setMessage(R.string.loading);
+                builder.setCancelable(false);
+
+                TextView textView = view1.findViewById(R.id.textProgress);
+                textView.setVisibility(View.GONE);
+                ProgressBar progressBar = view1.findViewById(R.id.progressBar);
+                progressBar.setIndeterminate(true);
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
+                Thread thread = new Thread(new Runnable()
                 {
-                    InputStream inputStream = getContentResolver().openInputStream(selectedZip);
-                    ZipSet.UnZip(inputStream, new File(getFilesDir(), "shared"));
-                    Intent intent = new Intent(this, RepeatsAddEditActivity.class);
-                    intent.putExtra("ISEDIT", "FALSE");
-                    intent.putExtra("IGNORE_CHARS", "false");
-                    intent.putExtra("LoadShared", true);
-                    startActivity(intent);
-                }
-                catch (FileNotFoundException e)
-                {
-                    e.printStackTrace();
-                }
+                    @Override
+                    public void run()
+                    {
+                        Uri selectedZip = data.getData();
+                        try
+                        {
+                            InputStream inputStream = getContentResolver().openInputStream(selectedZip);
+                            ZipSet.UnZip(inputStream, new File(getFilesDir(), "shared"));
+                            Intent intent = new Intent(context, RepeatsAddEditActivity.class);
+                            intent.putExtra("ISEDIT", "FALSE");
+                            intent.putExtra("IGNORE_CHARS", "false");
+                            intent.putExtra("LoadShared", true);
+                            runOnUiThread(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    dialog.dismiss();
+                                }
+                            });
+                            startActivity(intent);
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                thread.start();
             }
         }
     }
@@ -270,7 +305,6 @@ public class MainActivity extends AppCompatActivity
 
             NotificationManager notificationManager3 = getSystemService(NotificationManager.class);
             notificationManager3.createNotificationChannel(channel3);
-
         }
     }
 }

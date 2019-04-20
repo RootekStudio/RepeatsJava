@@ -44,14 +44,16 @@ import java.util.List;
 
 public class RepeatsAddEditActivity extends AppCompatActivity
 {
-    public static String TITLE;
     public String IgnoreChars = "false";
     DatabaseHelper DB;
     ViewGroup parent;
     ViewParent view;
     static Boolean IsDark;
     static Boolean IsTimeAsk = false;
+    static String ISEDIT;
     FragmentActivity activity;
+    static String NewName;
+    static int element = -1;
 
     List<Bitmap> bitmaps = new ArrayList<>();
     List<String> ReadImages = new ArrayList<>();
@@ -88,7 +90,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         final EditText name = findViewById(R.id.projectname);
 
         final Intent THISintent = getIntent();
-        final String ISEDIT = THISintent.getStringExtra("ISEDIT");
+        ISEDIT = THISintent.getStringExtra("ISEDIT");
         final String ignore = THISintent.getStringExtra("IGNORE_CHARS");
         final boolean shared = THISintent.getBooleanExtra("LoadShared", false);
 
@@ -113,12 +115,16 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 ImageButton B = v2.findViewById(R.id.deleteItem);
                 ImageButton I = v2.findViewById(R.id.addImage);
 
+                element++;
+                RelativeLayout RL = v2.findViewById(R.id.RelativeAddItem);
+                RL.setTag(element);
+
                 if(IsDark)
                 {
-                    RelativeLayout RL = v2.findViewById(R.id.RelativeAddItem);
                     RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
                 }
 
+                bitmaps.add(null);
                 Delete_Button(B);
                 Image_Button(I);
             }
@@ -135,8 +141,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 {
                     String n = THISintent.getStringExtra("NAME");
                     name.setText(n);
-                    TITLE = ISEDIT;
-                    List<RepeatsSingleSetDB> SET = DB.AllItemsSET(TITLE);
+                    List<RepeatsSingleSetDB> SET = DB.AllItemsSET(ISEDIT);
                     int ItemsCount = SET.size();
 
                     float density = getResources().getDisplayMetrics().density;
@@ -155,9 +160,12 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         final RelativeLayout child = (RelativeLayout) inflater.inflate(R.layout.addrepeatslistitem, null);
                         child.setLayoutParams(layoutParams);
 
+                        element++;
+                        RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
+                        RL.setTag(element);
+
                         if(IsDark)
                         {
-                            RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
                             RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
                         }
 
@@ -170,6 +178,8 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                         Delete_Button(B);
                         Image_Button(I);
+
+                        bitmaps.add(null);
 
                         if(!Image.equals(""))
                         {
@@ -245,7 +255,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         BufferedReader Areader = new BufferedReader(new InputStreamReader(answerStream));
                         String lineQ = Qreader.readLine();
                         name.setText(lineQ);
-                        TITLE = lineQ;
                         String lineA = Areader.readLine();
                         lineQ = Qreader.readLine();
                         lineA = Areader.readLine();
@@ -256,9 +265,12 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                             final RelativeLayout child = (RelativeLayout) inflater.inflate(R.layout.addrepeatslistitem, null);
                             child.setLayoutParams(layoutParams);
 
+                            element++;
+                            RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
+                            RL.setTag(element);
+
                             if(IsDark)
                             {
-                                RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
                                 RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
                             }
 
@@ -272,7 +284,9 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                             Delete_Button(B);
                             Image_Button(I);
 
-                            File image = new File(dir, "S" + i + ".png");
+                            bitmaps.add(null);
+
+                            final File image = new File(dir, "S" + i + ".png");
                             if (image.exists())
                             {
                                 I.setEnabled(false);
@@ -289,7 +303,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                                     img.setImageBitmap(bitmap);
-                                    bitmaps.add(bitmap);
+                                    bitmaps.set(element, bitmap);
                                 }
                                 catch (IOException e)
                                 {
@@ -301,7 +315,19 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                                     @Override
                                     public void onClick(View v)
                                     {
-                                        DeleteImage_Button(v, I);
+                                        View pView = (View) v.getParent();
+                                        ImageView imageView = pView.findViewById(R.id.imageView);
+                                        ImageButton imgbut = pView.findViewById(R.id.deleteImage);
+                                        ImageButton addimg = pView.findViewById(R.id.addImage);
+
+                                        int e = Integer.parseInt(pView.getTag().toString());
+                                        bitmaps.set(e, null);
+
+                                        imageView.setVisibility(View.GONE);
+                                        imageView.setImageBitmap(null);
+                                        imageView.setTag(null);
+                                        imgbut.setVisibility(View.GONE);
+                                        addimg.setEnabled(true);
                                     }
                                 });
                             }
@@ -344,18 +370,21 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         else
             {
             inflater.inflate(R.layout.addrepeatslistitem, parent);
+            element++;
             View v = parent.getChildAt(0);
+            RelativeLayout RL = v.findViewById(R.id.RelativeAddItem);
+            RL.setTag(element);
 
-                if (IsDark)
-                {
-                    RelativeLayout RL = v.findViewById(R.id.RelativeAddItem);
-                    RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
-                }
+            if (IsDark)
+            {
+                RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
+            }
 
             final ImageButton deleteItem = v.findViewById(R.id.deleteItem);
             ImageButton I = v.findViewById(R.id.addImage);
             Delete_Button(deleteItem);
             Image_Button(I);
+            bitmaps.add(null);
             }
             //endregion
 
@@ -404,17 +433,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars, DB, false);
                     EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
 
-                    final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
-                    int freq = sharedPreferences.getInt("frequency", 0);
-                    if(freq == 0)
-                    {
-                        RepeatsHelper.AskAboutTime(cnt, true, activity);
-                        IsTimeAsk = true;
-                    }
-                    else
-                    {
-                        RepeatsAddEditActivity.super.onBackPressed();
-                    }
+
                 }
                 //endregion
                 //region Ignore special characters
@@ -435,14 +454,10 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 //region Share button
                 if(item.getItemId() == R.id.share)
                 {
-                    String TableName = name.getText().toString();
-
+                    final String TableName = name.getText().toString();
                     EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars, DB, true);
                     EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
-
-                    ShareButton.ShareClick(cnt, TableName, TITLE);
-
-                    RepeatsAddEditActivity.super.onBackPressed();
+                    ShareButton.ShareClick(cnt, TableName, NewName, activity);
                 }
                 //endregion
 
@@ -458,10 +473,10 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         ImageButton imgBut = pView.findViewById(R.id.deleteImage);
         ImageButton imgAdd = pView.findViewById(R.id.addImage);
         String tag = img.getTag().toString();
-        int rem = Integer.parseInt(imgBut.getTag().toString());
+        int e = Integer.parseInt(pView.getTag().toString());
         ImgToDelete.add(tag);
         ReadImages.remove(tag);
-        bitmaps.remove(rem);
+        bitmaps.set(e, null);
         img.setVisibility(View.GONE);
         img.setTag(null);
         imgBut.setVisibility(View.GONE);
@@ -482,12 +497,14 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     View view = (View)v.getParent();
                     int a = parent.indexOfChild(view);
                     ImageView imgView = view.findViewById(R.id.imageView);
+                    int e = Integer.parseInt(view.getTag().toString());
 
                     if(imgView.getVisibility() == View.VISIBLE)
                     {
                         String TAG = imgView.getTag().toString();
                         ImgToDelete.add(TAG);
                         ReadImages.remove(TAG);
+                        bitmaps.set(e, null);
                     }
 
                     parent.removeViewAt(a);
@@ -539,11 +556,19 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v)
                         {
-                            imageView.setVisibility(View.GONE);
-                            imageView.setImageBitmap(null);
-                            imageView.setTag(null);
-                            imgbut.setVisibility(View.GONE);
-                            addimg.setEnabled(true);
+                            View pView = (View)v.getParent();
+
+                            int e = Integer.parseInt(pView.getTag().toString());
+                            bitmaps.set(e, null);
+
+                            ImageView img = pView.findViewById(R.id.imageView);
+                            ImageButton imgBut = pView.findViewById(R.id.deleteImage);
+                            ImageButton imgAdd = pView.findViewById(R.id.addImage);
+                            img.setVisibility(View.GONE);
+                            img.setImageBitmap(null);
+                            img.setTag(null);
+                            imgBut.setVisibility(View.GONE);
+                            imgAdd.setEnabled(true);
                         }
                     });
 
@@ -553,6 +578,10 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
             }
+        }
+        else if(requestCode == 111)
+        {
+            RepeatsAddEditActivity.super.onBackPressed();
         }
     }
 

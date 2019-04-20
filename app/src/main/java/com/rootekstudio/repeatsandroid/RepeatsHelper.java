@@ -1,5 +1,6 @@
 package com.rootekstudio.repeatsandroid;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Random;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 
@@ -95,7 +97,7 @@ public class RepeatsHelper
         editor.apply();
     }
 
-    static void AskAboutTime(final Context context, final boolean IsSet, final FragmentActivity activity)
+    static void AskAboutTime(final Context context, final boolean IsSet, final Activity activity)
     {
 
         AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(context);

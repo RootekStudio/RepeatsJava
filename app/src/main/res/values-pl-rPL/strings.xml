@@ -65,4 +65,7 @@
     <string name="loading">Wczytywanie...</string>
     <string name="github">Zobacz kod aplikacji na GitHub</string>
     <string name="rate">Oceń aplikację w Google Play</string>
+    <string name="savingToDB">Zapisywanie zestawu</string>
+    <string name="savingInProgress">Trwa zapisywanie zestawu...</string>
+    <string name="saved">Zapisano</string>
 </resources>

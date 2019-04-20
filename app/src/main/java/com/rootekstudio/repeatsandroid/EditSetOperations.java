@@ -1,12 +1,19 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import androidx.preference.PreferenceManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,8 +31,18 @@ class EditSetOperations
                               final List<String> ReadImages,
                               final String IgnoreChars,
                               final DatabaseHelper DB,
-                              Boolean IsShare)
+                              final Boolean IsShare)
     {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(cnt);
+        final LayoutInflater layoutInflater = LayoutInflater.from(cnt);
+        final View view1 = layoutInflater.inflate(R.layout.progress, null);
+        builder.setView(view1);
+        builder.setMessage(R.string.savingInProgress);
+        builder.setCancelable(false);
+        final AlertDialog dialog = builder.create();
+
+
         SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
         final String SetName = "R" + s.format(new Date());
         final String SetImage = SetName.replace("R", "I");
@@ -45,7 +62,25 @@ class EditSetOperations
                 final ViewGroup par = activity.findViewById(R.id.AddRepeatsLinear);
 
                 int itemscount = par.getChildCount();
-                itemscount--;
+
+                final int PROGRESS_MAX = itemscount;
+
+                if(!IsShare)
+                {
+                    activity.runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            TextView textView = view1.findViewById(R.id.textProgress);
+                            ProgressBar progressBar = view1.findViewById(R.id.progressBar);
+                            String progressText = "0%";
+                            textView.setText(progressText);
+                            progressBar.setMax(PROGRESS_MAX);
+                            dialog.show();
+                        }
+                    });
+                }
 
                 DB.CreateSet(SetName);
 
@@ -54,8 +89,24 @@ class EditSetOperations
                 int cBitmaps = 0;
                 int cRead = 0;
 
-                for (int i = 0; i <= itemscount; i++)
+                for (int i = 0; i < itemscount; i++)
                 {
+                    final int progress = i;
+                    final int percent = (progress * 100) / itemscount;
+
+                    activity.runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            ProgressBar bar = view1.findViewById(R.id.progressBar);
+                            TextView textView = view1.findViewById(R.id.textProgress);
+                            bar.setProgress(progress);
+                            String progress = percent + "%";
+                            textView.setText(progress);
+                        }
+                    });
+
                     View v = par.getChildAt(i);
                     EditText q = v.findViewById(R.id.questionBox);
                     EditText a = v.findViewById(R.id.answerBox);
@@ -71,7 +122,8 @@ class EditSetOperations
                         String TAG = img.getTag().toString();
                         if (TAG.equals("Y"))
                         {
-                            Bitmap bitmap = bitmaps.get(cBitmaps);
+                            int el = Integer.parseInt(v.getTag().toString());
+                            Bitmap bitmap = bitmaps.get(el);
                             try
                             {
                                 File control = new File(cnt.getFilesDir(), ImageName);
@@ -105,6 +157,25 @@ class EditSetOperations
 
                     DB.AddSet(set, TITLE);
                 }
+
+                if(!IsShare)
+                {
+                    activity.runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            activity.runOnUiThread(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    dialog.dismiss();
+                                }
+                            });
+                        }
+                    });
+                }
             }
         });
 
@@ -115,16 +186,28 @@ class EditSetOperations
             try
             {
                 thread.join();
-
             }
             catch (InterruptedException e)
             {
                 e.printStackTrace();
             }
 
-            RepeatsAddEditActivity.TITLE = SetName;
+            RepeatsAddEditActivity.NewName = SetName;
         }
-
+        else
+        {
+            final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
+            int freq = sharedPreferences.getInt("frequency", 0);
+            if(freq == 0)
+            {
+                RepeatsHelper.AskAboutTime(cnt, true, activity);
+                RepeatsAddEditActivity.IsTimeAsk = true;
+            }
+            else
+            {
+                activity.onBackPressed();
+            }
+        }
     }
 
     static void DeleteOldSet(String x, Context cnt, List<String> ImgToDelete)
