@@ -43,7 +43,7 @@
     <string name="search_hint">Search</string>
     <string name="channelname2">Notifications with answer</string>
     <string name="channeldesc2">This channel is responsible for delivery notification with answer</string>
-    <string name="channelname3" translatable="false">Next Question Notifications</string>
+    <string name="channelname3">Next Question Notifications</string>
     <string name="channeldesc3">This channel is responsible for Next Question feature</string>
     <string name="SendFeedback">Send feedback</string>
     <string name="FeedbackSubject">Feedback about Repeats for Android version</string>
@@ -70,4 +70,6 @@
     <string name="savingToDB">Saving set</string>
     <string name="savingInProgress">Saving set in progress</string>
     <string name="saved">Saved</string>
+    <string name="exploratorNotFound">File explorer was not found. Repeats can\'t read set from file.</string>
+    <string name="storeNotFound">Google Play Store was not found</string>
 </resources>

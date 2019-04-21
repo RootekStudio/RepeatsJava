@@ -1,5 +1,6 @@
 package com.rootekstudio.repeatsandroid;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -244,7 +245,14 @@ public class Preference_Screen extends PreferenceFragmentCompat
             public boolean onPreferenceClick(Preference preference)
             {
                 Intent send = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.rootekstudio.repeatsandroid"));
-                startActivity(send);
+                try
+                {
+                    startActivity(send);
+                }
+                catch (ActivityNotFoundException e)
+                {
+                    Toast.makeText(context, R.string.storeNotFound, Toast.LENGTH_LONG).show();
+                }
 
                 return true;
             }

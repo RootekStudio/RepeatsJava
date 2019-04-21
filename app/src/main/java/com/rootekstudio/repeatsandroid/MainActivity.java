@@ -1,9 +1,11 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -201,7 +204,14 @@ public class MainActivity extends AppCompatActivity
                     {
                         Intent zipPickerIntent  = new Intent(Intent.ACTION_GET_CONTENT);
                         zipPickerIntent.setType("application/zip");
-                        startActivityForResult(zipPickerIntent, 1);
+                        try
+                        {
+                            startActivityForResult(zipPickerIntent, 1);
+                        }
+                        catch(ActivityNotFoundException e)
+                        {
+                            Toast.makeText(cnt, R.string.exploratorNotFound, Toast.LENGTH_LONG).show();
+                        }
                         alert.dismiss();
                     }
                 });

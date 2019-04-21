@@ -68,4 +68,6 @@
     <string name="savingToDB">Zapisywanie zestawu</string>
     <string name="savingInProgress">Trwa zapisywanie zestawu...</string>
     <string name="saved">Zapisano</string>
+    <string name="exploratorNotFound">Explorator plików nie został znaleziony. Nie można wczytać zestawu z pliku.</string>
+    <string name="storeNotFound">Sklep Google Play nie został zainstalowany na urządzeniu</string>
 </resources>

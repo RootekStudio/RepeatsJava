@@ -181,7 +181,7 @@ class EditSetOperations
                                     }
                                     else
                                     {
-                                        activity.onBackPressed();
+                                        activity.finish();
                                     }
                                 }
                             });
