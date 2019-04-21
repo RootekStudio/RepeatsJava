@@ -5,12 +5,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Debug;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +27,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,7 +53,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     static String ISEDIT;
     FragmentActivity activity;
     static String NewName;
-    static int element = -1;
+    static int element;
 
     List<Bitmap> bitmaps = new ArrayList<>();
     List<String> ReadImages = new ArrayList<>();
@@ -62,6 +62,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        element = -1;
         super.onCreate(savedInstanceState);
         activity = this;
 
@@ -432,8 +433,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
 
                     EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars, DB, false);
                     EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
-
-
                 }
                 //endregion
                 //region Ignore special characters
@@ -473,10 +472,11 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         ImageButton imgBut = pView.findViewById(R.id.deleteImage);
         ImageButton imgAdd = pView.findViewById(R.id.addImage);
         String tag = img.getTag().toString();
-        int e = Integer.parseInt(pView.getTag().toString());
+        int elementIndex = Integer.parseInt(pView.getTag().toString());
         ImgToDelete.add(tag);
         ReadImages.remove(tag);
-        bitmaps.set(e, null);
+        bitmaps.set(elementIndex, null);
+
         img.setVisibility(View.GONE);
         img.setTag(null);
         imgBut.setVisibility(View.GONE);
@@ -540,7 +540,9 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     InputStream is = getContentResolver().openInputStream(selectedImage);
                     final Bitmap selected = BitmapFactory.decodeStream(is, null, options);
 
-                    bitmaps.add(selected);
+                    int elementIndex = Integer.parseInt(rel.getTag().toString());
+
+                    bitmaps.set(elementIndex, selected);
                     imageView.setImageBitmap(selected);
 
                     SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");

@@ -171,6 +171,18 @@ class EditSetOperations
                                 public void run()
                                 {
                                     dialog.dismiss();
+
+                                    final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
+                                    int freq = sharedPreferences.getInt("frequency", 0);
+                                    if(freq == 0)
+                                    {
+                                        RepeatsHelper.AskAboutTime(cnt, true, activity);
+                                        RepeatsAddEditActivity.IsTimeAsk = true;
+                                    }
+                                    else
+                                    {
+                                        activity.onBackPressed();
+                                    }
                                 }
                             });
                         }
@@ -193,20 +205,6 @@ class EditSetOperations
             }
 
             RepeatsAddEditActivity.NewName = SetName;
-        }
-        else
-        {
-            final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
-            int freq = sharedPreferences.getInt("frequency", 0);
-            if(freq == 0)
-            {
-                RepeatsHelper.AskAboutTime(cnt, true, activity);
-                RepeatsAddEditActivity.IsTimeAsk = true;
-            }
-            else
-            {
-                activity.onBackPressed();
-            }
         }
     }
 
