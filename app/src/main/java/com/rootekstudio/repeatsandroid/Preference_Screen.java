@@ -258,6 +258,19 @@ public class Preference_Screen extends PreferenceFragmentCompat
             }
         });
 
+        Preference whatsNew = new Preference(context);
+        whatsNew.setKey("whatsnew");
+        whatsNew.setTitle(R.string.whatsNew);
+        whatsNew.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(Preference preference)
+            {
+                RepeatsHelper.whatsNew(context, true);
+                return true;
+            }
+        });
+
 
         PreferenceCategory about_cat = new PreferenceCategory(context);
         about_cat.setKey("about_cat");
@@ -266,6 +279,7 @@ public class Preference_Screen extends PreferenceFragmentCompat
         about_cat.addPreference(github);
         about_cat.addPreference(rate);
         about_cat.addPreference(SendFeedback);
+        about_cat.addPreference(whatsNew);
         about_cat.addPreference(About);
 
         boolean notifiEnabled = sharedPreferences.getBoolean("notifications", false);

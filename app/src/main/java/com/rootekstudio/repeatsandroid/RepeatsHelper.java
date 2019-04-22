@@ -208,4 +208,30 @@ public class RepeatsHelper
             Boolean dir = file.mkdir();
         }
     }
+
+    static void whatsNew(Context cnt, boolean request)
+    {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
+        final int version = sharedPreferences.getInt("version", 31);
+
+        if(version < BuildConfig.VERSION_CODE || request)
+        {
+            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(cnt);
+            alertBuilder.setTitle(R.string.whatsNew);
+            alertBuilder.setCancelable(false);
+            alertBuilder.setMessage("Repeats "+ BuildConfig.VERSION_NAME + cnt.getString(R.string.updateDescription));
+            alertBuilder.setNeutralButton(R.string.close, new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("version", BuildConfig.VERSION_CODE);
+                    editor.apply();
+                }
+            });
+            AlertDialog dialog = alertBuilder.create();
+            dialog.show();
+        }
+    }
 }

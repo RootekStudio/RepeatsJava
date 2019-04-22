@@ -7,7 +7,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity
 
         getSupportActionBar().setCustomView(R.layout.logo);
 
+        RepeatsHelper.whatsNew(cnt, false);
 
         BottomAppBar bottomAppBar = findViewById(R.id.bar);
         bottomAppBar.inflateMenu(R.menu.bottomappbarmain);
@@ -210,7 +214,7 @@ public class MainActivity extends AppCompatActivity
                         }
                         catch(ActivityNotFoundException e)
                         {
-                            Toast.makeText(cnt, R.string.exploratorNotFound, Toast.LENGTH_LONG).show();
+                            Toast.makeText(cnt, R.string.explorerNotFound, Toast.LENGTH_LONG).show();
                         }
                         alert.dismiss();
                     }

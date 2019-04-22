@@ -37,7 +37,6 @@
         android:tint="#FFFFFF"/>
 
     <RelativeLayout
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -48,17 +47,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="😃"
-            android:layout_centerHorizontal="true"
-            android:textSize="80sp"
-            android:id="@+id/TextEmoji"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/EmptyHere"
-            android:gravity="center"
-            android:layout_below="@id/TextEmoji"/>
+            android:gravity="center" />
 
     </RelativeLayout>
 
