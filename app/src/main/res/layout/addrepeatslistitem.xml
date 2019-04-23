@@ -62,7 +62,9 @@
         android:layout_below="@id/imageView"
         android:layout_margin="5dp"
         android:singleLine="true"
-        android:imeOptions="actionNext"/>
+        android:imeOptions="actionNext"
+        android:inputType="textCapSentences"/>
+
 
     <EditText
         android:id="@+id/answerBox"
@@ -76,5 +78,6 @@
         android:layout_toStartOf="@id/addImage"
         android:layout_margin="5dp"
         android:singleLine="true"
-        android:imeOptions="actionNext"/>
+        android:imeOptions="actionNext"
+        android:inputType="textCapSentences"/>
 </RelativeLayout>

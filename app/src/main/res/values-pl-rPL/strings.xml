@@ -82,4 +82,5 @@
     \n\n*Do ustawień aplikacji dodano hiperłącza "Zobacz kod aplikacji na GitHub", "Oceń aplikację w Google Play" i "Co nowego"
     \n\n*Usunięto kilka błędów (m.in. z zapisywaniem zdjęć do zestawu)
     \n\n*Inne poprawki i ulepszenia</string>
+    <string name="enterNumber">Wprowadź liczbę</string>
 </resources>

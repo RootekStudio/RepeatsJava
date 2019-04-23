@@ -148,7 +148,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     float density = getResources().getDisplayMetrics().density;
                     int marginPX = (int)(5 * density);
 
-                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
                     layoutParams.setMargins(marginPX ,marginPX, marginPX, marginPX);
 
                     for (int i = 0; i < ItemsCount; i++)
@@ -246,7 +246,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     float density = getResources().getDisplayMetrics().density;
                     int marginPX = (int)(5 * density);
 
-                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
                     layoutParams.setMargins(marginPX ,marginPX, marginPX, marginPX);
                     try
                     {

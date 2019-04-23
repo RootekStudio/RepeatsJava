@@ -56,6 +56,8 @@ public class AnswerActivity extends AppCompatActivity
 
         View view = getLayoutInflater().inflate(R.layout.ask, null);
         final EditText userAnswer = view.findViewById(R.id.EditAsk);
+        userAnswer.setHint(R.string.ReplyText);
+        userAnswer.requestFocus();
 
         if(!ImageName.equals(""))
         {

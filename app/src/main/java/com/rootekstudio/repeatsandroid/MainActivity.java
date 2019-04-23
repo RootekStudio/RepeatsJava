@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity
     {
         super.onStart();
 
-        IsDark = RepeatsHelper.DarkTheme(this);
         File file = new File(getFilesDir(), "SetsMigrationCompleted.txt");
         File file2 = new File(getFilesDir(), "ProjectsName.txt");
 
@@ -68,8 +67,6 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
         getSupportActionBar().setCustomView(R.layout.logo);
-
-        RepeatsHelper.whatsNew(cnt, false);
 
         BottomAppBar bottomAppBar = findViewById(R.id.bar);
         bottomAppBar.inflateMenu(R.menu.bottomappbarmain);
@@ -227,6 +224,8 @@ public class MainActivity extends AppCompatActivity
             RelativeLayout r = findViewById(R.id.EmptyHereText);
             r.setVisibility(View.VISIBLE);
         }
+
+        RepeatsHelper.whatsNew(this, false);
     }
 
     @Override

@@ -107,6 +107,8 @@ public class RepeatsHelper
         final View view1 = layoutInflater.inflate(R.layout.ask, null);
         final EditText editText = view1.findViewById(R.id.EditAsk);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.requestFocus();
+        editText.setHint(R.string.enterNumber);
         editText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(4)});
         ALERTbuilder.setView(view1);
         ALERTbuilder.setMessage(R.string.QuestionFreq);

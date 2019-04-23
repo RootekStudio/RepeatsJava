@@ -17,7 +17,8 @@
             android:ems="10"
             android:hint="@string/SetName"
             android:singleLine="true"
-            android:imeOptions="actionNext"/>
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"/>
 
         <ImageView
             android:id="@+id/TESTIMAGE"
