@@ -7,16 +7,18 @@ public class RepeatsListDB
     public String CreateDate;
     public String IsEnabled;
     public String Avatar;
+    public String IgnoreChars;
 
     public RepeatsListDB(){}
 
-    public RepeatsListDB(String Title, String TableName, String CreateDate, String IsEnabled, String Avatar)
+    public RepeatsListDB(String Title, String TableName, String CreateDate, String IsEnabled, String Avatar, String IgnoreChars)
     {
         this.Title = Title;
         this.TableName = TableName;
         this.CreateDate = CreateDate;
         this.IsEnabled = IsEnabled;
         this.Avatar = Avatar;
+        this.IgnoreChars = IgnoreChars;
     }
 
     public String getitle()
@@ -44,6 +46,8 @@ public class RepeatsListDB
         return Avatar;
     }
 
+    public String getIgnoreChars() {return IgnoreChars; }
+
     public void setTitle(String Title)
     {
         this.Title = Title;
@@ -68,4 +72,6 @@ public class RepeatsListDB
     {
         this.Avatar = Avatar;
     }
+
+    public void setIgnoreChars(String IgnoreChars) {this.IgnoreChars = IgnoreChars; }
 }

@@ -24,8 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@android:color/white"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimaryDark"
         app:fabAlignmentMode="center"
         app:hideOnScroll="true" />
 
@@ -34,10 +33,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_white_24dp"
-        app:layout_anchor="@id/bar"/>
+        app:layout_anchor="@id/bar"
+        android:tint="#FFFFFF"/>
 
     <RelativeLayout
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -48,17 +47,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="😃"
-            android:layout_centerHorizontal="true"
-            android:textSize="80sp"
-            android:id="@+id/TextEmoji"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/EmptyHere"
-            android:gravity="center"
-            android:layout_below="@id/TextEmoji"/>
+            android:gravity="center" />
 
     </RelativeLayout>
 

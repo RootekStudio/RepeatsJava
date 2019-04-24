@@ -3,14 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.rootekstudio.repeatsandroid">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/DarkAppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.rootekstudio.repeatsandroid.RepeatsAddEditActivity"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
         <activity android:name=".SplashScreen"
             android:theme="@style/SplashScreenTheme"
             android:noHistory="true">
@@ -20,7 +31,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity">
-
         </activity>
         <activity
             android:name=".RepeatsAddEditActivity"
@@ -43,7 +53,7 @@
             android:name=".SettingsActivity"
             android:label="@string/Settings" />
         <activity android:name=".EnableSetsList"
-            android:label="@string/Settings"/>
+            android:label="@string/notifiFromSets"/>
         <activity android:name=".TestActivity"
             android:screenOrientation="locked"
             android:label="@string/Test"/>

@@ -1,21 +1,39 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/DayColorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/DayColorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/tintDark</item>
+        <item name="android:tint">@color/tintDark</item>
+        <item name="iconTint">@color/tintDark</item>
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
+        <item name="android:windowLightStatusBar" tools:TargerApi="23">true</item>
+    </style>
 
+    <style name="ActionBarStyle" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="titleTextStyle">@style/MyTitleTextStyle</item>
+    </style>
 
+    <style name="MyTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/tintDark</item>
     </style>
 
     <style name="DarkAppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:tint">#FFFFFF</item>
+        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+        <item name="android:windowLightStatusBar" tools:TargerApi="23">false</item>
+    </style>
+
+    <style name="MyActionButtonOverflow" parent="Base.Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">#FFFFFF</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="transculentTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
@@ -31,7 +49,7 @@
     <style name="SplashScreenTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 

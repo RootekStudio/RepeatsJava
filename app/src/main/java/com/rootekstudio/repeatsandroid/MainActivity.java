@@ -1,35 +1,46 @@
 package com.rootekstudio.repeatsandroid;
 
+import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity
 {
     static boolean IsDark;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         IsDark = RepeatsHelper.DarkTheme(this);
+        RepeatsHelper.CheckDir(this);
         createNotificationChannel();
     }
 
@@ -38,7 +49,6 @@ public class MainActivity extends AppCompatActivity
     {
         super.onStart();
 
-        IsDark = RepeatsHelper.DarkTheme(this);
         File file = new File(getFilesDir(), "SetsMigrationCompleted.txt");
         File file2 = new File(getFilesDir(), "ProjectsName.txt");
 
@@ -50,6 +60,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        getSupportActionBar().setCustomView(R.layout.logo);
 
         BottomAppBar bottomAppBar = findViewById(R.id.bar);
         bottomAppBar.inflateMenu(R.menu.bottomappbarmain);
@@ -72,9 +85,10 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
-//        BottomAppBar bottomAppBar = findViewById(R.id.bar);
-//        bottomAppBar.replaceMenu();
+        if(!IsDark)
+        {
+            bottomAppBar.setBackgroundTint(ContextCompat.getColorStateList(this, R.color.DayColorPrimaryDark));
+        }
 
         DatabaseHelper DB = new DatabaseHelper(this);
 
@@ -96,6 +110,7 @@ public class MainActivity extends AppCompatActivity
 
             String tablename = Item.getTableName();
             String title = Item.getitle();
+            String IgnoreChars = Item.getIgnoreChars();
 
             if(IsDark)
             {
@@ -105,9 +120,11 @@ public class MainActivity extends AppCompatActivity
 
             but.setTag(R.string.Tag_id_0, tablename);
             but.setTag(R.string.Tag_id_1, title);
+            but.setTag(R.string.Tag_id_2, IgnoreChars);
 
             TakeTest.setTag(R.string.Tag_id_0, tablename);
             TakeTest.setTag(R.string.Tag_id_1, title);
+            TakeTest.setTag(R.string.Tag_id_2, IgnoreChars);
 
             TakeTest.setOnClickListener(new View.OnClickListener()
             {
@@ -117,12 +134,13 @@ public class MainActivity extends AppCompatActivity
                     RelativeLayout button = (RelativeLayout) v;
                     String s0 = button.getTag(R.string.Tag_id_0).toString();
                     String s1 = button.getTag(R.string.Tag_id_1).toString();
+                    String s2 = button.getTag(R.string.Tag_id_2).toString();
 
                     Intent intent = new Intent(cnt, TestActivity.class);
                     intent.putExtra("TableName", s0);
                     intent.putExtra("title", s1);
+                    intent.putExtra("IgnoreChars", s2);
                     startActivity(intent);
-
                 }
             });
 
@@ -137,11 +155,12 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
-                    RelativeLayout btn = (RelativeLayout) v;
                     String TITLE = v.getTag(R.string.Tag_id_0).toString();
                     String TABLE_NAME = v.getTag(R.string.Tag_id_1).toString();
+                    String IGNORE_CHARS = v.getTag(R.string.Tag_id_2).toString();
                     intent.putExtra("ISEDIT", TITLE);
                     intent.putExtra("NAME", TABLE_NAME);
+                    intent.putExtra("IGNORE_CHARS", IGNORE_CHARS);
                     startActivity(intent);
                 }
             });
@@ -152,8 +171,47 @@ public class MainActivity extends AppCompatActivity
         {
             public void onClick(View view)
             {
-                intent.putExtra("ISEDIT", "FALSE");
-                startActivity(intent);
+                final AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(cnt);
+                LayoutInflater layoutInflater = LayoutInflater.from(cnt);
+                final View view1 = layoutInflater.inflate(R.layout.addnew_item, null);
+                ALERTbuilder.setView(view1);
+
+                ALERTbuilder.setMessage(R.string.AddSet);
+                final AlertDialog alert = ALERTbuilder.show();
+
+                RelativeLayout relA = view1.findViewById(R.id.relAdd);
+                RelativeLayout relR = view1.findViewById(R.id.relRead);
+
+                relA.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        intent.putExtra("ISEDIT", "FALSE");
+                        intent.putExtra("IGNORE_CHARS", "false");
+                        startActivity(intent);
+                        alert.dismiss();
+                    }
+                });
+
+                relR.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent zipPickerIntent  = new Intent(Intent.ACTION_GET_CONTENT);
+                        zipPickerIntent.setType("application/zip");
+                        try
+                        {
+                            startActivityForResult(zipPickerIntent, 1);
+                        }
+                        catch(ActivityNotFoundException e)
+                        {
+                            Toast.makeText(cnt, R.string.explorerNotFound, Toast.LENGTH_LONG).show();
+                        }
+                        alert.dismiss();
+                    }
+                });
             }
         });
 
@@ -161,6 +219,68 @@ public class MainActivity extends AppCompatActivity
         {
             RelativeLayout r = findViewById(R.id.EmptyHereText);
             r.setVisibility(View.VISIBLE);
+        }
+
+        RepeatsHelper.whatsNew(this, false);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data)
+    {
+        if (requestCode == 1)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                final Context context = this;
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                final LayoutInflater layoutInflater = LayoutInflater.from(context);
+                final View view1 = layoutInflater.inflate(R.layout.progress, null);
+
+                builder.setView(view1);
+                builder.setMessage(R.string.loading);
+                builder.setCancelable(false);
+
+                TextView textView = view1.findViewById(R.id.textProgress);
+                textView.setVisibility(View.GONE);
+                ProgressBar progressBar = view1.findViewById(R.id.progressBar);
+                progressBar.setIndeterminate(true);
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
+                Thread thread = new Thread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        Uri selectedZip = data.getData();
+                        try
+                        {
+                            InputStream inputStream = getContentResolver().openInputStream(selectedZip);
+                            ZipSet.UnZip(inputStream, new File(getFilesDir(), "shared"));
+                            Intent intent = new Intent(context, RepeatsAddEditActivity.class);
+                            intent.putExtra("ISEDIT", "FALSE");
+                            intent.putExtra("IGNORE_CHARS", "false");
+                            intent.putExtra("LoadShared", true);
+                            runOnUiThread(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    dialog.dismiss();
+                                }
+                            });
+                            startActivity(intent);
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                thread.start();
+            }
         }
     }
 
@@ -194,7 +314,6 @@ public class MainActivity extends AppCompatActivity
 
             NotificationManager notificationManager3 = getSystemService(NotificationManager.class);
             notificationManager3.createNotificationChannel(channel3);
-
         }
     }
 }

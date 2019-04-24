@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import java.text.Normalizer;
+import java.util.Locale;
+
 import androidx.annotation.RequiresApi;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
@@ -18,6 +21,26 @@ public class UserReply extends BroadcastReceiver
         String UserAnswer = getMessageText(intent).toString();
         String Correct = intent.getStringExtra("Correct");
 
+        String ReallyCorrect = Correct;
+        String IgnoreChars = intent.getStringExtra("IgnoreChars");
+
+        if(IgnoreChars.equals("true"))
+        {
+            UserAnswer = Normalizer.normalize(UserAnswer, Normalizer.Form.NFD)
+                    .replaceAll(" ", "")
+                    .replaceAll("Ł","l")
+                    .replaceAll("ł", "l")
+                    .replaceAll("[^\\p{ASCII}]", "")
+                    .toLowerCase(Locale.getDefault());
+
+            Correct = Normalizer.normalize(Correct, Normalizer.Form.NFD)
+                    .replaceAll(" ", "")
+                    .replaceAll("Ł","l")
+                    .replaceAll("ł", "l")
+                    .replaceAll("[^\\p{ASCII}]", "")
+                    .toLowerCase(Locale.getDefault());
+        }
+
         if(UserAnswer.equals(Correct))
         {
             RepeatsNotificationTemplate.AnswerNotifi(context,
@@ -28,7 +51,7 @@ public class UserReply extends BroadcastReceiver
         {
             RepeatsNotificationTemplate.AnswerNotifi(context,
                     context.getString(R.string.IncorrectAnswer1),
-                    context.getString(R.string.IncorrectAnswer2) + " " + Correct);
+                    context.getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect);
         }
     }
 

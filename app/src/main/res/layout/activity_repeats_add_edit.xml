@@ -15,7 +15,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/SetName" />
+            android:hint="@string/SetName"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"/>
+
+        <ImageView
+            android:id="@+id/TESTIMAGE"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:tint="@android:color/transparent"/>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -29,14 +38,6 @@
                 android:orientation="vertical" />
         </androidx.core.widget.NestedScrollView>
 
-        <ProgressBar
-            android:id="@+id/ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone" />
-
     </RelativeLayout>
 
     <com.google.android.material.bottomappbar.BottomAppBar
@@ -45,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimaryDark"
         app:fabAlignmentMode="end"
         app:hideOnScroll="true" />
 
@@ -54,5 +55,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_white_24dp"
-        app:layout_anchor="@id/AddQuestionBar"/>
+        app:layout_anchor="@id/AddQuestionBar"
+        android:tint="#FFFFFF"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

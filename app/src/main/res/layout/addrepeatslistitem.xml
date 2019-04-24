@@ -14,7 +14,8 @@
         android:layout_alignParentTop="true"
         android:visibility="gone"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:tint="@android:color/transparent"/>
 
     <ImageButton
         android:id="@+id/deleteImage"
@@ -59,7 +60,11 @@
         android:layout_alignParentLeft="true"
         android:layout_toStartOf="@id/addImage"
         android:layout_below="@id/imageView"
-        android:layout_margin="5dp"/>
+        android:layout_margin="5dp"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
+        android:inputType="textCapSentences"/>
+
 
     <EditText
         android:id="@+id/answerBox"
@@ -71,5 +76,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_toStartOf="@id/addImage"
-        android:layout_margin="5dp"/>
+        android:layout_margin="5dp"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
+        android:inputType="textCapSentences"/>
 </RelativeLayout>

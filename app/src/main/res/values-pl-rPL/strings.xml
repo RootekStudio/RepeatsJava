@@ -54,4 +54,34 @@
     <string name="Leave">Wyjdź</string>
     <string name="About">O aplikacji</string>
     <string name="SetName">Nazwa zestawu</string>
+    <string name="IngoreChars">Ignoruj znaki specjalne</string>
+    <string name="CreateNew">Utwórz nowy zestaw</string>
+    <string name="LoadSet">Wczytaj zestaw</string>
+    <string name="AddSet">Dodawanie zestawu</string>
+    <string name="share">Udostępnij</string>
+    <string name="notifiFromSets">Powiadomienia z zestawów</string>
+    <string name="WantLeaveTest">Czy na pewno chcesz wyjść bez sprawdzenia wyników?</string>
+    <string name="saving">Zapisywanie...</string>
+    <string name="loading">Wczytywanie...</string>
+    <string name="github">Zobacz kod aplikacji na GitHub</string>
+    <string name="rate">Oceń aplikację w Google Play</string>
+    <string name="savingToDB">Zapisywanie zestawu</string>
+    <string name="savingInProgress">Trwa zapisywanie zestawu...</string>
+    <string name="saved">Zapisano</string>
+    <string name="explorerNotFound">Explorator plików nie został znaleziony. Nie można wczytać zestawu z pliku.</string>
+    <string name="storeNotFound">Sklep Google Play nie został zainstalowany na urządzeniu</string>
+    <string name="close">Zamknij</string>
+    <string name="whatsNew">Co nowego</string>
+    <string name="updateDescription">\n\n*Dodano możliwość udostępniania zestawów (można ją znaleźć wchodząc do zestawu i klikając na 3 kropki na dolnym pasku)
+        \n\n*Dodano funkcję "Ignoruj znaki specjalne" która powoduje, że przy sprawdzaniu odpowiedzi ignorowane są duże/małe litery, spacje i znaki specjalne (np. ą, ć). Funkcję można znaleźć w edytorze zestawu.
+    \n\n*Przyspieszono wczytywanie zestawów
+    \n\n*Dodano ekrany informujące użytkownika, że trwa zapisywanie zestawu (w poprzedniej wersji aplikacja przy zapisywaniu zawieszała się na kilka sekund)
+    \n\n*Dodano strzałki powrotu do poprzedniej strony na paskach tytułu
+    \n\n*Dopracowano wygląd jasnego i ciemnego motywu
+        \n\n*Usunięto emotikonę pojawiającą się na stronie głównej gdy aplikacja nie zawiera żadnego zestawu
+    \n\n*Do ustawień aplikacji dodano hiperłącza "Zobacz kod aplikacji na GitHub", "Oceń aplikację w Google Play" i "Co nowego"
+    \n\n*Usunięto kilka błędów (m.in. z zapisywaniem zdjęć do zestawu)
+    \n\n*Inne poprawki i ulepszenia</string>
+    <string name="enterNumber">Wprowadź liczbę</string>
+    <string name="imageError">Nie udało się uzyskać dostępu do zdjęcia. Spróbuj jeszcze raz załadować zdjęcie, tym razem aplikacja spróbuje zrobić to inną metodą</string>
 </resources>

@@ -1,10 +1,12 @@
 package com.rootekstudio.repeatsandroid;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -219,13 +221,66 @@ public class Preference_Screen extends PreferenceFragmentCompat
             }
         });
 
+        Preference github = new Preference(context);
+        github.setKey("github");
+        github.setTitle(R.string.github);
+        github.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(Preference preference)
+            {
+                Intent send = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/RootekStudio/RepeatsJava"));
+                startActivity(send);
+
+                return true;
+            }
+        });
+
+        Preference rate = new Preference(context);
+        rate.setKey("rate");
+        rate.setTitle(R.string.rate);
+        rate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(Preference preference)
+            {
+                Intent send = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.rootekstudio.repeatsandroid"));
+                try
+                {
+                    startActivity(send);
+                }
+                catch (ActivityNotFoundException e)
+                {
+                    Toast.makeText(context, R.string.storeNotFound, Toast.LENGTH_LONG).show();
+                }
+
+                return true;
+            }
+        });
+
+        Preference whatsNew = new Preference(context);
+        whatsNew.setKey("whatsnew");
+        whatsNew.setTitle(R.string.whatsNew);
+        whatsNew.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(Preference preference)
+            {
+                RepeatsHelper.whatsNew(context, true);
+                return true;
+            }
+        });
+
 
         PreferenceCategory about_cat = new PreferenceCategory(context);
         about_cat.setKey("about_cat");
         about_cat.setTitle(R.string.About);
         screen.addPreference(about_cat);
-        about_cat.addPreference(About);
+        about_cat.addPreference(github);
+        about_cat.addPreference(rate);
         about_cat.addPreference(SendFeedback);
+        about_cat.addPreference(whatsNew);
+        about_cat.addPreference(About);
 
         boolean notifiEnabled = sharedPreferences.getBoolean("notifications", false);
 

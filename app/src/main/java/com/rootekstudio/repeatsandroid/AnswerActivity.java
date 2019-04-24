@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.text.Normalizer;
+import java.util.Locale;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,11 +33,12 @@ public class AnswerActivity extends AppCompatActivity
         String Question = intent.getStringExtra("Question");
         String Image = intent.getStringExtra("Image");
         correct = intent.getStringExtra("Correct");
+        String IgnoreChars = intent.getStringExtra("IgnoreChars");
 
-        alarmDialog(Title, Question, getString(R.string.Check), true, Image);
+        alarmDialog(Title, Question, getString(R.string.Check), true, Image, IgnoreChars);
     }
 
-    void alarmDialog(String Title, String Message, final String Positive, boolean First, String ImageName)
+    void alarmDialog(String Title, String Message, final String Positive, boolean First, String ImageName, String ignoreChars)
     {
         if(!First && Positive.equals(getString(R.string.Check)))
         {
@@ -44,12 +47,17 @@ public class AnswerActivity extends AppCompatActivity
             Message = RepeatsHelper.Question;
             correct = RepeatsHelper.Answer;
             ImageName = RepeatsHelper.PictureName;
+            ignoreChars = RepeatsHelper.IgnoreChars;
         }
+
+        final String IGNORE = ignoreChars;
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View view = getLayoutInflater().inflate(R.layout.ask, null);
         final EditText userAnswer = view.findViewById(R.id.EditAsk);
+        userAnswer.setHint(R.string.ReplyText);
+        userAnswer.requestFocus();
 
         if(!ImageName.equals(""))
         {
@@ -97,22 +105,40 @@ public class AnswerActivity extends AppCompatActivity
                         if(Positive.equals(getString(R.string.Check)))
                         {
                             String uAnswerString = userAnswer.getText().toString();
+                            String ReallyCorrect = correct;
+
+                            if(IGNORE.equals("true"))
+                            {
+                                uAnswerString = Normalizer.normalize(uAnswerString, Normalizer.Form.NFD)
+                                        .replaceAll(" ", "")
+                                        .replaceAll("Ł","l")
+                                        .replaceAll("ł", "l")
+                                        .replaceAll("[^\\p{ASCII}]", "")
+                                        .toLowerCase(Locale.getDefault());
+
+                                correct = Normalizer.normalize(correct, Normalizer.Form.NFD)
+                                        .replaceAll(" ", "")
+                                        .replaceAll("Ł","l")
+                                        .replaceAll("ł", "l")
+                                        .replaceAll("[^\\p{ASCII}]", "")
+                                        .toLowerCase(Locale.getDefault());
+                            }
 
                             if(correct.equals(uAnswerString))
                             {
                                 dialog.dismiss();
-                                alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Next), false, "");
+                                alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Next), false, "", "");
                             }
                             else
                             {
                                 dialog.dismiss();
-                                alarmDialog(getString(R.string.IncorrectAnswer1), getString(R.string.IncorrectAnswer2) + " " + correct, getString(R.string.Next), false, "");
+                                alarmDialog(getString(R.string.IncorrectAnswer1), getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect, getString(R.string.Next), false, "","");
                             }
                         }
                         else
                         {
                             dialog.dismiss();
-                            alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Check), false, "");
+                            alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Check), false, "", "");
                         }
                     }
                 })

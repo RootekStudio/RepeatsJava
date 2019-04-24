@@ -1,6 +1,7 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ public class EnableSetsList extends AppCompatActivity
         super.onCreate(savedInstanceState);
         RepeatsHelper.DarkTheme(this);
         setContentView(R.layout.activity_enable_sets_list);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final DatabaseHelper DB = new DatabaseHelper(this);
         List<RepeatsListDB> AllSets = DB.AllItemsLIST();
@@ -68,5 +70,15 @@ public class EnableSetsList extends AppCompatActivity
             linear.addView(view1);
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == android.R.id.home)
+        {
+            onBackPressed();
+        }
+        return true;
     }
 }
