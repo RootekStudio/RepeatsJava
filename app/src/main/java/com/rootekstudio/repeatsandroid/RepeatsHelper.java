@@ -16,14 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.PreferenceManager;
+
 import java.io.File;
 import java.util.List;
 import java.util.Random;
-
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.FragmentActivity;
-import androidx.preference.PreferenceManager;
 
 public class RepeatsHelper
 {

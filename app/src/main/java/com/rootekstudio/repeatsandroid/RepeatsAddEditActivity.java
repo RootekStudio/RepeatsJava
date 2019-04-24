@@ -9,9 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Debug;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,8 +18,8 @@ import android.view.ViewParent;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -44,12 +42,12 @@ import java.util.List;
 
 public class RepeatsAddEditActivity extends AppCompatActivity
 {
-    public String IgnoreChars = "false";
+    public String IgnoreChars;
     DatabaseHelper DB;
     ViewGroup parent;
     ViewParent view;
     static Boolean IsDark;
-    static Boolean IsTimeAsk = false;
+    static Boolean IsTimeAsk;
     static String ISEDIT;
     FragmentActivity activity;
     static String NewName;
@@ -63,6 +61,9 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         element = -1;
+        IgnoreChars = "false";
+        IsTimeAsk = false;
+
         super.onCreate(savedInstanceState);
         activity = this;
 
@@ -145,12 +146,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     List<RepeatsSingleSetDB> SET = DB.AllItemsSET(ISEDIT);
                     int ItemsCount = SET.size();
 
-                    float density = getResources().getDisplayMetrics().density;
-                    int marginPX = (int)(5 * density);
-
-                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-                    layoutParams.setMargins(marginPX ,marginPX, marginPX, marginPX);
-
                     for (int i = 0; i < ItemsCount; i++)
                     {
                         RepeatsSingleSetDB Single = SET.get(i);
@@ -158,8 +153,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         String Answer = Single.getAnswer();
                         String Image = Single.getImag();
 
-                        final RelativeLayout child = (RelativeLayout) inflater.inflate(R.layout.addrepeatslistitem, null);
-                        child.setLayoutParams(layoutParams);
+                        final View child = inflater.inflate(R.layout.addrepeatslistitem, parent, false);
 
                         element++;
                         RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
@@ -243,11 +237,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     File answers = new File(dir, "Answers.txt");
                     Boolean a = answers.exists();
 
-                    float density = getResources().getDisplayMetrics().density;
-                    int marginPX = (int)(5 * density);
-
-                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-                    layoutParams.setMargins(marginPX ,marginPX, marginPX, marginPX);
                     try
                     {
                         FileInputStream questionStream = new FileInputStream(questions);
@@ -263,8 +252,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         int int_image = 0;
                         while (lineQ != null)
                         {
-                            final RelativeLayout child = (RelativeLayout) inflater.inflate(R.layout.addrepeatslistitem, null);
-                            child.setLayoutParams(layoutParams);
+                            final RelativeLayout child = (RelativeLayout) inflater.inflate(R.layout.addrepeatslistitem, parent, false);
 
                             element++;
                             RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
@@ -578,6 +566,15 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                 catch (FileNotFoundException e)
                 {
                     e.printStackTrace();
+                }
+                catch (SecurityException e)
+                {
+                    e.printStackTrace();
+
+                    Toast.makeText(this, R.string.imageError, Toast.LENGTH_LONG).show();
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(photoPickerIntent, 1);
                 }
             }
         }

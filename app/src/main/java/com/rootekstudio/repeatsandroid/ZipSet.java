@@ -1,12 +1,5 @@
 package com.rootekstudio.repeatsandroid;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;

@@ -85,4 +85,5 @@
     <string name="close">Close</string>
     <string name="whatsNew">What\'s new?</string>
     <string name="enterNumber">Enter number</string>
+    <string name="imageError">Can not access the image. Try loading the image again, this time app will try to do it with a different way</string>
 </resources>

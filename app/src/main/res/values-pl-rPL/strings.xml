@@ -83,4 +83,5 @@
     \n\n*Usunięto kilka błędów (m.in. z zapisywaniem zdjęć do zestawu)
     \n\n*Inne poprawki i ulepszenia</string>
     <string name="enterNumber">Wprowadź liczbę</string>
+    <string name="imageError">Nie udało się uzyskać dostępu do zdjęcia. Spróbuj jeszcze raz załadować zdjęcie, tym razem aplikacja spróbuje zrobić to inną metodą</string>
 </resources>

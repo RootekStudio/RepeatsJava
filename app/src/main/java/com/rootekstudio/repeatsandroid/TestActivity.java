@@ -60,11 +60,6 @@ public class TestActivity extends AppCompatActivity
             appBar.setBackgroundTint(ContextCompat.getColorStateList(this, R.color.DayColorPrimaryDark));
         }
 
-        float density = getResources().getDisplayMetrics().density;
-        int marginPX = (int)(5 * density);
-
-        final RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        layoutParams.setMargins(marginPX ,marginPX, marginPX, marginPX);
 
         Thread thread = new Thread(new Runnable()
         {
@@ -73,8 +68,7 @@ public class TestActivity extends AppCompatActivity
             {
                 for(int i = 0; i < count; i++)
                 {
-                    final RelativeLayout view = (RelativeLayout) getLayoutInflater().inflate(R.layout.test_item, null);
-                    view.setLayoutParams(layoutParams);
+                    final RelativeLayout view = (RelativeLayout) getLayoutInflater().inflate(R.layout.test_item, linearLayout, false);
 
                     RepeatsSingleSetDB set = Single.get(i);
                     String Question = set.getQuestion();
