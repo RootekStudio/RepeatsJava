@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 
 import java.io.File;
@@ -65,8 +66,6 @@ class EditSetOperations
 
                 final int PROGRESS_MAX = itemscount;
 
-                if(!IsShare)
-                {
                     activity.runOnUiThread(new Runnable()
                     {
                         @Override
@@ -80,7 +79,6 @@ class EditSetOperations
                             dialog.show();
                         }
                     });
-                }
 
                 DB.CreateSet(SetName);
 
@@ -151,20 +149,42 @@ class EditSetOperations
 
                         set = new RepeatsSingleSetDB(question, answer, ImageName);
                         cImages++;
-                    } else {
+                    }
+                    else
+                        {
                         set = new RepeatsSingleSetDB(question, answer, "");
                     }
 
                     DB.AddSet(set, TITLE);
                 }
 
-                if(!IsShare)
+                if (IsShare)
                 {
                     activity.runOnUiThread(new Runnable()
                     {
                         @Override
                         public void run()
                         {
+                            TextView textView = view1.findViewById(R.id.textProgress);
+                            textView.setVisibility(View.GONE);
+                            ProgressBar progressBar = view1.findViewById(R.id.progressBar);
+                            progressBar.setIndeterminate(true);
+                        }
+                    });
+
+                    ShareButton.ShareClick(cnt, name, SetName, activity);
+
+                    activity.runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            dialog.dismiss();
+                        }
+                    });
+                }
+                else
+                {
                             activity.runOnUiThread(new Runnable()
                             {
                                 @Override
@@ -185,27 +205,23 @@ class EditSetOperations
                                     }
                                 }
                             });
-                        }
-                    });
                 }
             }
         });
 
         thread.start();
 
-        if(IsShare)
-        {
-            try
-            {
-                thread.join();
-            }
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-
-            RepeatsAddEditActivity.NewName = SetName;
-        }
+//        if(IsShare)
+//        {
+//            try
+//            {
+//                thread.join();
+//            }
+//            catch (InterruptedException e)
+//            {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     static void DeleteOldSet(String x, Context cnt, List<String> ImgToDelete)

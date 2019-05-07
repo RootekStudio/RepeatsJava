@@ -50,7 +50,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     static Boolean IsTimeAsk;
     static String ISEDIT;
     FragmentActivity activity;
-    static String NewName;
     static int element;
 
     List<Bitmap> bitmaps = new ArrayList<>();
@@ -444,7 +443,6 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     final String TableName = name.getText().toString();
                     EditSetOperations.SaveSetThread(cnt, TableName, repeatsAddEditActivity, bitmaps, ReadImages, IgnoreChars, DB, true);
                     EditSetOperations.DeleteOldSet(ISEDIT, cnt, ImgToDelete);
-                    ShareButton.ShareClick(cnt, TableName, NewName, activity);
                 }
                 //endregion
 

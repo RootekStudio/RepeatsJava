@@ -27,35 +27,6 @@ class ShareButton
 {
     static void ShareClick(final Context context, final String name, final String TITLE, final Activity activity)
     {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        final LayoutInflater layoutInflater = LayoutInflater.from(context);
-        final View view1 = layoutInflater.inflate(R.layout.progress, null);
-
-        builder.setView(view1);
-        builder.setMessage(R.string.loading);
-        builder.setCancelable(false);
-
-        TextView textView = view1.findViewById(R.id.textProgress);
-        textView.setVisibility(View.GONE);
-        ProgressBar progressBar = view1.findViewById(R.id.progressBar);
-        progressBar.setIndeterminate(true);
-
-        final AlertDialog dialog = builder.create();
-        activity.runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                dialog.show();
-            }
-        });
-
-
-        Thread thread = new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
                 File directory = new File(context.getFilesDir(), "shared");
 
                 File questions = new File(directory, "Questions.txt");
@@ -124,23 +95,12 @@ class ShareButton
                     share.putExtra(Intent.EXTRA_STREAM, uri);
                     share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     share.setType("application/zip");
-                    activity.runOnUiThread(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            dialog.dismiss();
-                        }
-                    });
                     activity.startActivityForResult(Intent.createChooser(share, context.getString(R.string.share)), 111);
                 }
                 catch (IOException e)
                 {
                     e.printStackTrace();
                 }
-            }
-        });
-        thread.start();
     }
 
     private static void copyFileUsingStream(File source, File dest)

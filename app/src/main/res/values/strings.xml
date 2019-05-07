@@ -72,16 +72,7 @@
     <string name="saved">Saved</string>
     <string name="explorerNotFound">File explorer was not found. Repeats can\'t read set from file.</string>
     <string name="storeNotFound">Google Play Store was not found</string>
-    <string name="updateDescription">\n\n*Added the ability to share sets (you can find it by entering the set and clicking on the 3 dots on the bottom bar)
-        \n\n*The function "Ignore special characters" has been added which causes that when checking answers, upper / lower case letters, spaces and special characters are ignored (eg ą, ć). The function can be found in the set editor.
-    \n\n*Faster sets loading
-    \n\n*Screens have been added informing the user that the set is being saved (in the previous version the application was hanging for a few seconds when saving)
-    \n\n*Added back buttons on the title bars
-    \n\n*The light and dark theme has been refined
-        \n\n*Removed emoticon appearing on the home page when the app does not contain any set
-    \n\n*Hyperlink "See on GitHub", "Rate app" and "What's new" has been added to application settings
-    \n\n*Several bugs fixed (including saving photos to the set)
-    \n\n*Other fixes and improvements</string>
+    <string name="updateDescription">\n\n*Notifications improvements\n\n*Performance improvements</string>
     <string name="close">Close</string>
     <string name="whatsNew">What\'s new?</string>
     <string name="enterNumber">Enter number</string>
