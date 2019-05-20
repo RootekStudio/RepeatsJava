@@ -15,13 +15,14 @@ public class RepeatsQuestionSend extends BroadcastReceiver
     {
         Boolean isNext = intent.getBooleanExtra("IsNext", false);
         int time = intent.getIntExtra("time", 42);
+
         RepeatsNotificationTemplate.NotifiTemplate(context, isNext);
 
         if(!isNext)
         {
             Intent newIntent = new Intent(context, RepeatsQuestionSend.class);
             newIntent.putExtra("time", time);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 10, newIntent, 0);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 10, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)

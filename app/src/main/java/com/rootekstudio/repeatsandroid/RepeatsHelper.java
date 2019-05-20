@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -86,7 +88,7 @@ public class RepeatsHelper
 
         Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
         intent.putExtra("time", time);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 10, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager)cnt.getSystemService(Context.ALARM_SERVICE);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
