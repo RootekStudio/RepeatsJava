@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -86,41 +84,44 @@ public class RepeatsHelper
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
         int time = sharedPreferences.getInt("frequency", 0);
 
-        Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
-        intent.putExtra("time", time);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager)cnt.getSystemService(Context.ALARM_SERVICE);
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        if(time != 0)
         {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + 1000 * 60 * time,
-                    pendingIntent);
-        }
-        else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        {
-            alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + 1000 * 60 * time,
-                    pendingIntent);
-        }
-        else
-        {
-            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + 1000 * 60 * time,
-                    1000 * 60 * time,
-                    pendingIntent);
-        }
+            Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
+            intent.putExtra("time", time);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager)cnt.getSystemService(Context.ALARM_SERVICE);
 
-        ComponentName receiver = new ComponentName(cnt, OnSystemBoot.class);
-        PackageManager pm = cnt.getPackageManager();
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        SystemClock.elapsedRealtime() + 1000 * 60 * time,
+                        pendingIntent);
+            }
+            else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            {
+                alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        SystemClock.elapsedRealtime() + 1000 * 60 * time,
+                        pendingIntent);
+            }
+            else
+            {
+                alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        SystemClock.elapsedRealtime() + 1000 * 60 * time,
+                        1000 * 60 * time,
+                        pendingIntent);
+            }
 
-        pm.setComponentEnabledSetting(receiver,
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP);
+            ComponentName receiver = new ComponentName(cnt, OnSystemBoot.class);
+            PackageManager pm = cnt.getPackageManager();
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("notifications", true);
-        editor.apply();
+            pm.setComponentEnabledSetting(receiver,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("notifications", true);
+            editor.apply();
+        }
     }
 
     static void SaveFrequency(Context cnt, int frequency)
