@@ -72,9 +72,14 @@
     <string name="saved">Saved</string>
     <string name="explorerNotFound">File explorer was not found. Repeats can\'t read set from file.</string>
     <string name="storeNotFound">Google Play Store was not found</string>
-    <string name="updateDescription">\n\n*Notifications improvements\n\n*Performance improvements</string>
     <string name="close">Close</string>
     <string name="whatsNew">What\'s new?</string>
     <string name="enterNumber">Enter number</string>
     <string name="imageError">Can not access the image. Try loading the image again, this time app will try to do it with a different way</string>
+    <string name="batteryO">Turn off battery optimization</string>
+    <string name="batteryOsummary">Turning off battery optimization for this app can help deliver notifications on time</string>
+    <string name="batteryAskTitle">We need your permission</string>
+    <string name="batteryAskMessage">We need to turn off battery optimization for this app. This will ensure that notifications are delivered on time. In the next window click \"Yes\" or \"Allow\".</string>
+    <string name="CancelOffBattery">You can always disable battery optimization in the Repeats or device settings</string>
+    <string name="Continue">Continue</string>
 </resources>

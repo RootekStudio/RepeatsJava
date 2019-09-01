@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 
 import java.io.File;
@@ -210,18 +209,6 @@ class EditSetOperations
         });
 
         thread.start();
-
-//        if(IsShare)
-//        {
-//            try
-//            {
-//                thread.join();
-//            }
-//            catch (InterruptedException e)
-//            {
-//                e.printStackTrace();
-//            }
-//        }
     }
 
     static void DeleteOldSet(String x, Context cnt, List<String> ImgToDelete)

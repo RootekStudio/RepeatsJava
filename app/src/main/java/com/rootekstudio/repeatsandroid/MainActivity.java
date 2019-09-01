@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,23 +39,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         IsDark = RepeatsHelper.DarkTheme(this);
         RepeatsHelper.CheckDir(this);
         createNotificationChannel();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            String packageName = this.getPackageName();
-            PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-            if (!pm.isIgnoringBatteryOptimizations(packageName))
-            {
-                Intent intent = new Intent();
-                intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setData(Uri.parse("package:" + packageName));
-                this.startActivity(intent);
-            }
-        }
     }
 
     @Override
@@ -76,7 +62,6 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-
         getSupportActionBar().setCustomView(R.layout.logo);
 
         BottomAppBar bottomAppBar = findViewById(R.id.bar);
@@ -235,8 +220,6 @@ public class MainActivity extends AppCompatActivity
             RelativeLayout r = findViewById(R.id.EmptyHereText);
             r.setVisibility(View.VISIBLE);
         }
-
-        RepeatsHelper.whatsNew(this, false);
     }
 
     @Override

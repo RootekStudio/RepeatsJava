@@ -7,11 +7,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import java.util.List;
 
+import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -20,30 +24,43 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreferenceCompat;
 
-public class Preference_Screen extends PreferenceFragmentCompat
-{
+public class Preference_Screen extends PreferenceFragmentCompat {
     private static Boolean ThemeChanged = false;
-
+    Context context;
+    private SharedPreferences sharedPreferences;
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
-    {
-        final Context context = getPreferenceManager().getContext();
-        PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        context = getPreferenceManager().getContext();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            String packageName = context.getPackageName();
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            SharedPreferences.Editor edit = sharedPreferences.edit();
+            if (!pm.isIgnoringBatteryOptimizations(packageName))
+            {
+                edit.putBoolean("batteryOptimization", false);
+                edit.apply();
+            }
+            else
+            {
+                edit.putBoolean("batteryOptimization", true);
+                edit.apply();
+            }
+        }
+
+        PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
         DatabaseHelper DB = new DatabaseHelper(context);
         List<RepeatsListDB> all = DB.AllItemsLIST();
 
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         final int freq = sharedPreferences.getInt("frequency", 0);
 
-        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener()
-        {
+        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-            {
-                if(key.equals("frequency"))
-                {
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (key.equals("frequency")) {
                     int frequency = sharedPreferences.getInt("frequency", 0);
                     findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
                 }
@@ -53,43 +70,43 @@ public class Preference_Screen extends PreferenceFragmentCompat
         final SwitchPreferenceCompat notificationPreference = new SwitchPreferenceCompat(context);
         notificationPreference.setKey("notifications");
         notificationPreference.setTitle(R.string.notifications);
-        if(all.size() == 0)
-        {
+        if (all.size() == 0) {
             notificationPreference.setEnabled(false);
         }
-        notificationPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-        {
+        notificationPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue)
-            {
-                    if((boolean)newValue)
-                    {
-                        int f = sharedPreferences.getInt("frequency", 0);
-                        if(f == 0)
-                        {
-                            RepeatsHelper.AskAboutTime(context, false, SettingsActivity.activity);
-                        }
-                        else
-                        {
-                            RepeatsHelper.RegisterNotifications(context);
-                        }
-
-                        findPreference("timeAsk").setVisible(true);
-                        findPreference("EnableSets").setVisible(true);
-                        findPreference("reset").setVisible(true);
-
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if ((boolean) newValue) {
+                    int f = sharedPreferences.getInt("frequency", 0);
+                    if (f == 0) {
+                        RepeatsHelper.AskAboutTime(context, false, SettingsActivity.activity);
+                    } else {
+                        RepeatsHelper.RegisterNotifications(context);
                     }
-                    else
-                    {
-                        if(freq != 0)
-                        {
-                            RepeatsHelper.CancelNotifications(context);
-                        }
 
-                        findPreference("timeAsk").setVisible(false);
-                        findPreference("EnableSets").setVisible(false);
-                        findPreference("reset").setVisible(false);
+                    findPreference("timeAsk").setVisible(true);
+                    findPreference("EnableSets").setVisible(true);
+                    findPreference("reset").setVisible(true);
+
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    {
+                        findPreference("batteryOptimization").setVisible(true);
                     }
+
+                } else {
+                    if (freq != 0) {
+                        RepeatsHelper.CancelNotifications(context);
+                    }
+
+                    findPreference("timeAsk").setVisible(false);
+                    findPreference("EnableSets").setVisible(false);
+                    findPreference("reset").setVisible(false);
+
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    {
+                        findPreference("batteryOptimization").setVisible(false);
+                    }
+                }
                 return true;
             }
         });
@@ -98,11 +115,9 @@ public class Preference_Screen extends PreferenceFragmentCompat
         timeAsk.setKey("timeAsk");
         timeAsk.setTitle(R.string.FreqAskPref);
         timeAsk.setSummary(getString(R.string.FreqText) + " " + freq + " " + getString(R.string.minutes));
-        timeAsk.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
+        timeAsk.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference)
-            {
+            public boolean onPreferenceClick(Preference preference) {
                 RepeatsHelper.AskAboutTime(context, false, SettingsActivity.activity);
                 return true;
             }
@@ -112,11 +127,9 @@ public class Preference_Screen extends PreferenceFragmentCompat
         enableSets.setKey("EnableSets");
         enableSets.setTitle(R.string.EnableTitle);
         enableSets.setSummary(R.string.EnableSummary);
-        enableSets.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
+        enableSets.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference)
-            {
+            public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent(context, EnableSetsList.class);
                 startActivity(intent);
                 return true;
@@ -127,11 +140,9 @@ public class Preference_Screen extends PreferenceFragmentCompat
         reset.setKey("reset");
         reset.setTitle(R.string.resetTitle);
         reset.setSummary(R.string.resetSummary);
-        reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
+        reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference)
-            {
+            public boolean onPreferenceClick(Preference preference) {
                 DatabaseHelper DB = new DatabaseHelper(context);
                 DB.ResetEnabled();
 
@@ -156,17 +167,59 @@ public class Preference_Screen extends PreferenceFragmentCompat
         notification_category.addPreference(enableSets);
         notification_category.addPreference(reset);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            CheckBoxPreference optimizationPreference = new CheckBoxPreference(context);
+            optimizationPreference.setKey("batteryOptimization");
+            optimizationPreference.setTitle(R.string.batteryO);
+            optimizationPreference.setSummary(R.string.batteryOsummary);
+            optimizationPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if ((Boolean) newValue)
+                    {
+                        String packageName = context.getPackageName();
+                        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+                        if (!pm.isIgnoringBatteryOptimizations(packageName))
+                        {
+                            Intent intent = new Intent();
+                            intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setData(Uri.parse("package:" + packageName));
+
+                            startActivityForResult(intent,124);
+                        }
+                    }
+                    else
+                        {
+                        String packageName = context.getPackageName();
+                        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+                        if (pm.isIgnoringBatteryOptimizations(packageName))
+                        {
+                            Intent intent = new Intent();
+                            intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+
+                            startActivityForResult(intent,123);
+                        }
+                    }
+                    return true;
+                }
+            });
+
+            notification_category.addPreference(optimizationPreference);
+        }
+
+
+
         final ListPreference theme = new ListPreference(context);
         theme.setKey("theme");
         theme.setTitle(R.string.changeTheme);
         theme.setEntries(R.array.themes);
         theme.setEntryValues(R.array.ThemeValues);
         theme.setValue("1");
-        theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-        {
+        theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue)
-            {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
                 ThemeChanged = true;
 
                 getActivity().finish();
@@ -187,11 +240,9 @@ public class Preference_Screen extends PreferenceFragmentCompat
         setPreferenceScreen(screen);
 
         PackageInfo pInfo = null;
-        try
-        {
+        try {
             pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e)
-        {
+        } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -205,15 +256,13 @@ public class Preference_Screen extends PreferenceFragmentCompat
         Preference SendFeedback = new Preference(context);
         SendFeedback.setKey("feedback");
         SendFeedback.setTitle(R.string.SendFeedback);
-        SendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
+        SendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference)
-            {
+            public boolean onPreferenceClick(Preference preference) {
                 Intent send = new Intent(Intent.ACTION_SEND);
                 send.setType("plain/text");
                 send.putExtra(Intent.EXTRA_EMAIL, new String[]{"rootekstudio@outlook.com"});
-                send.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.FeedbackSubject)+ " " + version);
+                send.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.FeedbackSubject) + " " + version);
 
                 startActivity(Intent.createChooser(send, getString(R.string.SendFeedback)));
 
@@ -224,11 +273,9 @@ public class Preference_Screen extends PreferenceFragmentCompat
         Preference github = new Preference(context);
         github.setKey("github");
         github.setTitle(R.string.github);
-        github.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
+        github.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference)
-            {
+            public boolean onPreferenceClick(Preference preference) {
                 Intent send = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/RootekStudio/RepeatsJava"));
                 startActivity(send);
 
@@ -239,38 +286,19 @@ public class Preference_Screen extends PreferenceFragmentCompat
         Preference rate = new Preference(context);
         rate.setKey("rate");
         rate.setTitle(R.string.rate);
-        rate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
+        rate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference)
-            {
+            public boolean onPreferenceClick(Preference preference) {
                 Intent send = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.rootekstudio.repeatsandroid"));
-                try
-                {
+                try {
                     startActivity(send);
-                }
-                catch (ActivityNotFoundException e)
-                {
+                } catch (ActivityNotFoundException e) {
                     Toast.makeText(context, R.string.storeNotFound, Toast.LENGTH_LONG).show();
                 }
 
                 return true;
             }
         });
-
-        Preference whatsNew = new Preference(context);
-        whatsNew.setKey("whatsnew");
-        whatsNew.setTitle(R.string.whatsNew);
-        whatsNew.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
-            @Override
-            public boolean onPreferenceClick(Preference preference)
-            {
-                RepeatsHelper.whatsNew(context, true);
-                return true;
-            }
-        });
-
 
         PreferenceCategory about_cat = new PreferenceCategory(context);
         about_cat.setKey("about_cat");
@@ -279,26 +307,31 @@ public class Preference_Screen extends PreferenceFragmentCompat
         about_cat.addPreference(github);
         about_cat.addPreference(rate);
         about_cat.addPreference(SendFeedback);
-        about_cat.addPreference(whatsNew);
         about_cat.addPreference(About);
 
         boolean notifiEnabled = sharedPreferences.getBoolean("notifications", false);
 
-        if(notifiEnabled)
-        {
+        if (notifiEnabled) {
             findPreference("timeAsk").setVisible(true);
             findPreference("EnableSets").setVisible(true);
             findPreference("reset").setVisible(true);
-        }
-        else
-        {
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            {
+                findPreference("batteryOptimization").setVisible(true);
+            }
+
+        } else {
             findPreference("timeAsk").setVisible(false);
             findPreference("EnableSets").setVisible(false);
             findPreference("reset").setVisible(false);
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            {
+                findPreference("batteryOptimization").setVisible(false);
+            }
         }
     }
-
-
     @Override
     public void onResume()
     {
@@ -306,9 +339,8 @@ public class Preference_Screen extends PreferenceFragmentCompat
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener()
         {
             @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-            {
-                if(key.equals("frequency"))
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (key.equals("frequency"))
                 {
                     int frequency = sharedPreferences.getInt("frequency", 0);
                     findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
@@ -318,25 +350,58 @@ public class Preference_Screen extends PreferenceFragmentCompat
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
-        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener()
-        {
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-            {
-                if(key.equals("frequency"))
-                {
-                    try
-                    {
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (key.equals("frequency")) {
+                    try {
                         int frequency = sharedPreferences.getInt("frequency", 0);
                         findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
+                    } catch (Exception o) {
+                        o.printStackTrace();
                     }
-                    catch (Exception o) {}
                 }
             }
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String packageName = context.getPackageName();
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            SharedPreferences.Editor edit = sharedPreferences.edit();
+            if (requestCode == 123)
+            {
+                if (!pm.isIgnoringBatteryOptimizations(packageName))
+                {
+                    edit.putBoolean("batteryOptimization", false);
+                    edit.apply();
+                } else
+                    {
+                    edit.putBoolean("batteryOptimization", true);
+                    edit.apply();
+                }
+
+                this.getActivity().finish();
+                this.getActivity().overridePendingTransition(0, 0);
+                startActivity(this.getActivity().getIntent());
+                this.getActivity().overridePendingTransition(0, 0);
+            }
+            else if(requestCode == 124)
+            {
+                if (!pm.isIgnoringBatteryOptimizations(packageName))
+                {
+                    edit.putBoolean("batteryOptimization", false);
+                    edit.apply();
+                } else
+                {
+                    edit.putBoolean("batteryOptimization", true);
+                    edit.apply();
+                }
+            }
+        }
+    }
 }

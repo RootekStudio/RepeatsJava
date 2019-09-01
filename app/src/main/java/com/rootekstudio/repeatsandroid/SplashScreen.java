@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 public class SplashScreen extends AppCompatActivity
 {
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -15,5 +14,6 @@ public class SplashScreen extends AppCompatActivity
         RepeatsHelper.DarkTheme(this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }
