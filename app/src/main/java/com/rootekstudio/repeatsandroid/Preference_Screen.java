@@ -57,16 +57,6 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
         final int freq = sharedPreferences.getInt("frequency", 0);
 
-        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (key.equals("frequency")) {
-                    int frequency = sharedPreferences.getInt("frequency", 0);
-                    findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
-                }
-            }
-        });
-
         final SwitchPreferenceCompat notificationPreference = new SwitchPreferenceCompat(context);
         notificationPreference.setKey("notifications");
         notificationPreference.setTitle(R.string.notifications);
@@ -331,40 +321,6 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                 findPreference("batteryOptimization").setVisible(false);
             }
         }
-    }
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener()
-        {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (key.equals("frequency"))
-                {
-                    int frequency = sharedPreferences.getInt("frequency", 0);
-                    findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (key.equals("frequency")) {
-                    try {
-                        int frequency = sharedPreferences.getInt("frequency", 0);
-                        findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
-                    } catch (Exception o) {
-                        o.printStackTrace();
-                    }
-                }
-            }
-        });
     }
 
     @Override

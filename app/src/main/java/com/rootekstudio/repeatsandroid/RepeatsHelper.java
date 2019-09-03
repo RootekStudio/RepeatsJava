@@ -145,6 +145,11 @@ public class RepeatsHelper {
                     activity.onBackPressed();
                 }
 
+                activity.finish();
+                activity.overridePendingTransition(0, 0);
+                context.startActivity(activity.getIntent());
+                activity.overridePendingTransition(0, 0);
+
             }
         });
 
@@ -161,6 +166,13 @@ public class RepeatsHelper {
                     RepeatsHelper.RegisterNotifications(context);
                     RepeatsHelper.askAboutBattery(context, IsSet, activity);
                 }
+                if(!IsSet)
+                {
+                    activity.finish();
+                    activity.overridePendingTransition(0, 0);
+                    context.startActivity(activity.getIntent());
+                    activity.overridePendingTransition(0, 0);
+                }
             }
         });
         ALERTbuilder.show();
@@ -168,7 +180,7 @@ public class RepeatsHelper {
 
     static void askAboutBattery(final Context cnt, final boolean IsSet, final Activity activity)
     {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && IsSet)
         {
             AlertDialog.Builder dialog = new AlertDialog.Builder(cnt);
             dialog.setTitle(R.string.batteryAskTitle);
@@ -180,10 +192,8 @@ public class RepeatsHelper {
                 {
                     Toast.makeText(cnt, R.string.CancelOffBattery, Toast.LENGTH_LONG).show();
 
-                    if (IsSet)
-                    {
-                        activity.onBackPressed();
-                    }
+                    activity.onBackPressed();
+
                 }
             });
 
@@ -196,10 +206,7 @@ public class RepeatsHelper {
                     PowerManager pm = (PowerManager)cnt.getSystemService(Context.POWER_SERVICE);
                     if (!pm.isIgnoringBatteryOptimizations(packageName))
                     {
-                        if (IsSet)
-                        {
-                            activity.onBackPressed();
-                        }
+                        activity.onBackPressed();
 
                         Intent intent = new Intent();
                         intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
@@ -211,6 +218,10 @@ public class RepeatsHelper {
             });
 
             dialog.show();
+        }
+        else
+        {
+            activity.onBackPressed();
         }
     }
 
