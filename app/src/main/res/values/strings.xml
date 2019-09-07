@@ -23,7 +23,7 @@
     <string name="notifications">Notifications</string>
     <string name="EnableTitle">Notifications from specific sets</string>
     <string name="EnableSummary">Select specific set from which will be sending notifications</string>
-    <string name="FreqAskPref">Change frequency of sending notifications</string>
+    <string name="FreqAskPref">Change the frequency of sending notifications</string>
     <string name="FreqText">Notifications are delivered every</string>
     <string name="minutes">minutes</string>
     <string name="resetTitle">Reset notifications</string>

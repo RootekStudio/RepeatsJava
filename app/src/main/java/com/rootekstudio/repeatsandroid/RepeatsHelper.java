@@ -157,8 +157,7 @@ public class RepeatsHelper {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String text = editText.getText().toString();
-                if (!text.equals(""))
-                {
+                if (!text.equals("")) {
                     int frequency = Integer.parseInt(text);
 
                     RepeatsHelper.SaveFrequency(context, frequency);
@@ -166,8 +165,7 @@ public class RepeatsHelper {
                     RepeatsHelper.RegisterNotifications(context);
                     RepeatsHelper.askAboutBattery(context, IsSet, activity);
                 }
-                if(!IsSet)
-                {
+                if (!IsSet) {
                     activity.finish();
                     activity.overridePendingTransition(0, 0);
                     context.startActivity(activity.getIntent());
@@ -178,34 +176,27 @@ public class RepeatsHelper {
         ALERTbuilder.show();
     }
 
-    static void askAboutBattery(final Context cnt, final boolean IsSet, final Activity activity)
-    {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && IsSet)
-        {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(cnt);
-            dialog.setTitle(R.string.batteryAskTitle);
-            dialog.setMessage(R.string.batteryAskMessage);
-            dialog.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    Toast.makeText(cnt, R.string.CancelOffBattery, Toast.LENGTH_LONG).show();
+    static void askAboutBattery(final Context cnt, final boolean IsSet, final Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && IsSet) {
 
-                    activity.onBackPressed();
+            final String packageName = cnt.getPackageName();
+            PowerManager pm = (PowerManager) cnt.getSystemService(Context.POWER_SERVICE);
 
-                }
-            });
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(cnt);
+                dialog.setTitle(R.string.batteryAskTitle);
+                dialog.setMessage(R.string.batteryAskMessage);
+                dialog.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(cnt, R.string.CancelOffBattery, Toast.LENGTH_LONG).show();
+                        activity.onBackPressed();
+                    }
+                });
 
-            dialog.setPositiveButton(R.string.Continue, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    String packageName = cnt.getPackageName();
-                    PowerManager pm = (PowerManager)cnt.getSystemService(Context.POWER_SERVICE);
-                    if (!pm.isIgnoringBatteryOptimizations(packageName))
-                    {
+                dialog.setPositiveButton(R.string.Continue, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         activity.onBackPressed();
 
                         Intent intent = new Intent();
@@ -213,14 +204,19 @@ public class RepeatsHelper {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.setData(Uri.parse("package:" + packageName));
                         cnt.startActivity(intent);
-                    }
-                }
-            });
 
-            dialog.show();
-        }
-        else
-        {
+                    }
+                });
+
+                dialog.show();
+            }
+            else{
+                activity.onBackPressed();
+            }
+
+
+
+        } else {
             activity.onBackPressed();
         }
     }
