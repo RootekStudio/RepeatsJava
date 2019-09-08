@@ -82,4 +82,5 @@
     <string name="batteryAskMessage">We need to turn off battery optimization for this app. This will ensure that notifications are delivered on time. In the next window click \"Yes\" or \"Allow\".</string>
     <string name="CancelOffBattery">You can always disable battery optimization in the Repeats or device settings</string>
     <string name="Continue">Continue</string>
+    <string name="SystemTheme">System default</string>
 </resources>

@@ -204,9 +204,18 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         final ListPreference theme = new ListPreference(context);
         theme.setKey("theme");
         theme.setTitle(R.string.changeTheme);
-        theme.setEntries(R.array.themes);
-        theme.setEntryValues(R.array.ThemeValues);
-        theme.setValue("1");
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+        {
+            theme.setEntries(R.array.themesQ);
+            theme.setEntryValues(R.array.ThemeValuesQ);
+            theme.setValue("2");
+        }
+        else
+        {
+            theme.setEntries(R.array.themes);
+            theme.setEntryValues(R.array.ThemeValues);
+            theme.setValue("1");
+        }
         theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {

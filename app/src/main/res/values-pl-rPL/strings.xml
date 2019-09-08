@@ -80,4 +80,5 @@
     <string name="batteryAskMessage">Aby powiadomienia mogły być dostarczane na czas optymalizacja baterii dla tej aplikacji musi być wyłączona. W następnym oknie kliknij \"Tak\" lub \"Zezwól\".</string>
     <string name="CancelOffBattery">W każdej chwili możesz wyłączyć optymalizację baterii w ustawieniach Repeats lub ustawieniach urządzenia</string>
     <string name="Continue">Kontynuuj</string>
+    <string name="SystemTheme">Zgodny z systemem</string>
 </resources>

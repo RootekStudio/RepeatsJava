@@ -10,7 +10,7 @@
         <item name="android:tint">@color/tintDark</item>
         <item name="iconTint">@color/tintDark</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
-        <item name="android:windowLightStatusBar" tools:TargerApi="23">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
     <style name="ActionBarStyle" parent="@style/Widget.AppCompat.ActionBar.Solid">
@@ -28,7 +28,7 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:tint">#FFFFFF</item>
         <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
-        <item name="android:windowLightStatusBar" tools:TargerApi="23">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 
     <style name="MyActionButtonOverflow" parent="Base.Widget.AppCompat.ActionButton.Overflow">

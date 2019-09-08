@@ -9,7 +9,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -214,8 +217,6 @@ public class RepeatsHelper {
                 activity.onBackPressed();
             }
 
-
-
         } else {
             activity.onBackPressed();
         }
@@ -223,16 +224,40 @@ public class RepeatsHelper {
 
     static Boolean DarkTheme(Context context) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String theme = sharedPreferences.getString("theme", "1");
+        String theme ="";
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+        {
+            theme = sharedPreferences.getString("theme", "2");
+        }
+        else
+        {
+            theme = sharedPreferences.getString("theme", "1");
+        }
 
         if (theme.equals("0")) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             context.setTheme(R.style.AppTheme);
             return false;
-        } else {
+        } else if (theme.equals("1")) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             context.setTheme(R.style.DarkAppTheme);
             return true;
+        }
+        else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+            Configuration config = context.getResources().getConfiguration();
+            int currentNightMode = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            if(currentNightMode == Configuration.UI_MODE_NIGHT_YES)
+            {
+                context.setTheme(R.style.DarkAppTheme);
+                return true;
+            }
+            else
+            {
+                context.setTheme(R.style.AppTheme);
+                return false;
+            }
         }
     }
 

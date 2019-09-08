@@ -8,5 +8,17 @@
         <item>0</item>
         <item>1</item>
     </string-array>
+
+    <string-array name="ThemeValuesQ">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="themesQ">
+        <item>@string/Light</item>
+        <item>@string/Dark</item>
+        <item>@string/SystemTheme</item>
+    </string-array>
 </resources>
 
