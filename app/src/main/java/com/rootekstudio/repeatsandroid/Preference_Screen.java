@@ -199,12 +199,10 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             notification_category.addPreference(optimizationPreference);
         }
 
-
-
         final ListPreference theme = new ListPreference(context);
         theme.setKey("theme");
         theme.setTitle(R.string.changeTheme);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
         {
             theme.setEntries(R.array.themesQ);
             theme.setEntryValues(R.array.ThemeValuesQ);

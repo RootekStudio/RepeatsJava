@@ -225,7 +225,7 @@ public class RepeatsHelper {
     static Boolean DarkTheme(Context context) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String theme ="";
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
         {
             theme = sharedPreferences.getString("theme", "2");
         }
@@ -244,17 +244,17 @@ public class RepeatsHelper {
             return true;
         }
         else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-            Configuration config = context.getResources().getConfiguration();
+            Configuration config = context.getApplicationContext().getResources().getConfiguration();
             int currentNightMode = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
-
             if(currentNightMode == Configuration.UI_MODE_NIGHT_YES)
             {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 context.setTheme(R.style.DarkAppTheme);
                 return true;
             }
             else
             {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 context.setTheme(R.style.AppTheme);
                 return false;
             }

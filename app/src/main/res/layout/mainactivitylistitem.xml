@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/RelativeMAIN"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:clickable="true"
         android:focusable="true"
         android:background="@drawable/layout_mainshape"
-        android:layout_marginBottom="5dp">
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
+        android:elevation="7dp"
+        tools:targetApi="lollipop">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -61,7 +69,9 @@
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
         android:layout_centerVertical="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:elevation="10dp"
+        tools:targetApi="lollipop">
 
         <ImageView
             android:layout_width="40dp"
