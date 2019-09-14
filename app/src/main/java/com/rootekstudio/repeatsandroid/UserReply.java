@@ -7,10 +7,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
+
 import java.text.Normalizer;
 import java.util.Locale;
-
-import androidx.annotation.RequiresApi;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
 public class UserReply extends BroadcastReceiver

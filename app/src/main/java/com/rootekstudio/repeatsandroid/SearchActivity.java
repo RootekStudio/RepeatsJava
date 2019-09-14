@@ -1,12 +1,11 @@
 package com.rootekstudio.repeatsandroid;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;

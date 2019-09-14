@@ -6,7 +6,7 @@
     android:background="@drawable/layout_mainshape"
     android:layout_margin="10dp"
     android:id="@+id/RelativeAddItem"
-    android:elevation="7dp"
+    android:elevation="5dp"
     tools:targetApi="lollipop">
 
     <ImageView
@@ -18,7 +18,7 @@
         android:visibility="gone"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="20dp"
-        android:tint="@android:color/transparent"/>
+        android:tint="@android:color/transparent" />
 
     <ImageButton
         android:id="@+id/deleteImage"

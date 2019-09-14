@@ -13,8 +13,6 @@ import android.os.PowerManager;
 import android.provider.Settings;
 import android.widget.Toast;
 
-import java.util.List;
-
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -23,6 +21,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreferenceCompat;
+
+import java.util.List;
 
 public class Preference_Screen extends PreferenceFragmentCompat {
     private static Boolean ThemeChanged = false;
@@ -202,7 +202,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         final ListPreference theme = new ListPreference(context);
         theme.setKey("theme");
         theme.setTitle(R.string.changeTheme);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
         {
             theme.setEntries(R.array.themesQ);
             theme.setEntryValues(R.array.ThemeValuesQ);

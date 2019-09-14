@@ -9,10 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -127,6 +125,21 @@ public class RepeatsHelper {
         editor.apply();
     }
 
+    private static void IfIsSet(Boolean IsSet, Activity activity, Context cnt)
+    {
+        if (IsSet)
+        {
+            activity.onBackPressed();
+        }
+        else
+        {
+            activity.finish();
+            activity.overridePendingTransition(0, 0);
+            cnt.startActivity(activity.getIntent());
+            activity.overridePendingTransition(0, 0);
+        }
+    }
+
     static void AskAboutTime(final Context context, final boolean IsSet, final Activity activity) {
 
         AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(context);
@@ -144,15 +157,7 @@ public class RepeatsHelper {
         ALERTbuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (IsSet) {
-                    activity.onBackPressed();
-                }
-
-                activity.finish();
-                activity.overridePendingTransition(0, 0);
-                context.startActivity(activity.getIntent());
-                activity.overridePendingTransition(0, 0);
-
+                IfIsSet(IsSet, activity, context);
             }
         });
 
@@ -168,19 +173,19 @@ public class RepeatsHelper {
                     RepeatsHelper.RegisterNotifications(context);
                     RepeatsHelper.askAboutBattery(context, IsSet, activity);
                 }
-                if (!IsSet) {
-                    activity.finish();
-                    activity.overridePendingTransition(0, 0);
-                    context.startActivity(activity.getIntent());
-                    activity.overridePendingTransition(0, 0);
+                else
+                {
+                    IfIsSet(IsSet, activity, context);
                 }
             }
         });
         ALERTbuilder.show();
     }
 
-    static void askAboutBattery(final Context cnt, final boolean IsSet, final Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && IsSet) {
+
+
+    static void askAboutBattery(final Context cnt, final Boolean IsSet, final Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             final String packageName = cnt.getPackageName();
             PowerManager pm = (PowerManager) cnt.getSystemService(Context.POWER_SERVICE);
@@ -193,14 +198,14 @@ public class RepeatsHelper {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(cnt, R.string.CancelOffBattery, Toast.LENGTH_LONG).show();
-                        activity.onBackPressed();
+                        IfIsSet(IsSet, activity, cnt);
                     }
                 });
 
                 dialog.setPositiveButton(R.string.Continue, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        activity.onBackPressed();
+                        IfIsSet(IsSet, activity, cnt);
 
                         Intent intent = new Intent();
                         intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
@@ -214,18 +219,18 @@ public class RepeatsHelper {
                 dialog.show();
             }
             else{
-                activity.onBackPressed();
+                IfIsSet(IsSet, activity, cnt);
             }
 
         } else {
-            activity.onBackPressed();
+            IfIsSet(IsSet, activity, cnt);
         }
     }
 
     static Boolean DarkTheme(Context context) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String theme ="";
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
         {
             theme = sharedPreferences.getString("theme", "2");
         }

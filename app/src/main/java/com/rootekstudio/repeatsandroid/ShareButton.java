@@ -1,14 +1,11 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,8 +17,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.core.content.FileProvider;
 
 class ShareButton
 {

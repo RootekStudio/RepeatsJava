@@ -8,9 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import java.util.List;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.List;
 
 public class EnableSetsList extends AppCompatActivity
 {
