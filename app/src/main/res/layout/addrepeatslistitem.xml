@@ -53,34 +53,48 @@
         android:layout_marginEnd="5dp"
         android:layout_alignParentEnd="true" />
 
-    <EditText
-        android:id="@+id/questionBox"
+    <ImageButton
+        android:id="@+id/addAnswerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/Question"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/addImage"
+        android:src="@drawable/ic_library_add"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_alignParentEnd="true" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/LinearQA"
         android:layout_toLeftOf="@id/addImage"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_toStartOf="@id/addImage"
-        android:layout_below="@id/imageView"
-        android:layout_margin="5dp"
-        android:singleLine="true"
-        android:imeOptions="actionNext"
-        android:inputType="textCapSentences"/>
+        android:layout_below="@id/imageView">
+
+        <EditText
+            android:id="@+id/questionBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/Question"
+            android:layout_margin="5dp"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"/>
+
+        <EditText
+            android:id="@+id/answerBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/Answer"
+            android:layout_margin="5dp"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"/>
+    </LinearLayout>
 
 
-    <EditText
-        android:id="@+id/answerBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/questionBox"
-        android:hint="@string/Answer"
-        android:layout_toLeftOf="@id/addImage"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_toStartOf="@id/addImage"
-        android:layout_margin="5dp"
-        android:singleLine="true"
-        android:imeOptions="actionNext"
-        android:inputType="textCapSentences"/>
 </RelativeLayout>

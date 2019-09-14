@@ -169,6 +169,15 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         final ImageButton I = child.findViewById(R.id.addImage);
                         ImageView img = child.findViewById(R.id.imageView);
                         ImageButton imgbut = child.findViewById(R.id.deleteImage);
+                        ImageButton addAnswer = child.findViewById(R.id.addAnswerButton);
+
+                        addAnswer.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                AddAnswer_Button(view);
+                            }
+                        });
 
                         Delete_Button(B);
                         Image_Button(I);
@@ -451,6 +460,29 @@ public class RepeatsAddEditActivity extends AppCompatActivity
         });
     }
 
+    private void AddAnswer_Button(View v)
+    {
+        View pView = (View)v.getParent();
+        final ViewGroup linearQA = pView.findViewById(R.id.LinearQA);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View answer = inflater.inflate(R.layout.answerbox, linearQA, false);
+        ImageButton delAnswer = answer.findViewById(R.id.delAnswer);
+
+        delAnswer.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                View p = (View)view.getParent();
+
+                ViewGroup linear = (ViewGroup)p.getParent();
+                linear.removeView(p);
+            }
+        });
+
+        linearQA.addView(answer);
+    }
+
     private void DeleteImage_Button(View v, ImageButton I)
     {
         View pView = (View) v.getParent();
@@ -501,16 +533,13 @@ public class RepeatsAddEditActivity extends AppCompatActivity
     //endregion
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (requestCode == 1)
-        {
-            if (resultCode == RESULT_OK)
-            {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
                 Uri selectedImage = data.getData();
                 final InputStream imageStream;
-                try
-                {
+                try {
                     RelativeLayout rel = (RelativeLayout) view;
                     final ImageView imageView = rel.findViewById(R.id.imageView);
 
@@ -539,12 +568,10 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     addimg.setEnabled(false);
 
                     imgbut.setVisibility(View.VISIBLE);
-                    imgbut.setOnClickListener(new View.OnClickListener()
-                    {
+                    imgbut.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v)
-                        {
-                            View pView = (View)v.getParent();
+                        public void onClick(View v) {
+                            View pView = (View) v.getParent();
 
                             int e = Integer.parseInt(pView.getTag().toString());
                             bitmaps.set(e, null);
@@ -560,13 +587,9 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                         }
                     });
 
-                }
-                catch (FileNotFoundException e)
-                {
+                } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                }
-                catch (SecurityException e)
-                {
+                } catch (SecurityException e) {
                     e.printStackTrace();
 
                     Toast.makeText(this, R.string.imageError, Toast.LENGTH_LONG).show();
@@ -575,9 +598,7 @@ public class RepeatsAddEditActivity extends AppCompatActivity
                     startActivityForResult(photoPickerIntent, 1);
                 }
             }
-        }
-        else if(requestCode == 111)
-        {
+        } else if (requestCode == 111) {
             RepeatsAddEditActivity.super.onBackPressed();
         }
     }
