@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -70,11 +71,11 @@ class EditSetOperations
                         @Override
                         public void run()
                         {
-                            TextView textView = view1.findViewById(R.id.textProgress);
+//                            TextView textView = view1.findViewById(R.id.textProgress);
                             ProgressBar progressBar = view1.findViewById(R.id.progressBar);
-                            String progressText = "0%";
-                            textView.setText(progressText);
-                            progressBar.setMax(PROGRESS_MAX);
+//                            String progressText = "0%";
+//                            textView.setText(progressText);
+//                            progressBar.setMax(PROGRESS_MAX);
                             dialog.show();
                         }
                     });
@@ -97,10 +98,10 @@ class EditSetOperations
                         public void run()
                         {
                             ProgressBar bar = view1.findViewById(R.id.progressBar);
-                            TextView textView = view1.findViewById(R.id.textProgress);
-                            bar.setProgress(progress);
-                            String progress = percent + "%";
-                            textView.setText(progress);
+//                            TextView textView = view1.findViewById(R.id.textProgress);
+//                            bar.setProgress(progress);
+//                            String progress = percent + "%";
+//                            textView.setText(progress);
                         }
                     });
 
@@ -146,15 +147,15 @@ class EditSetOperations
                             cRead++;
                         }
 
-                        set = new RepeatsSingleSetDB(question, answer, ImageName);
+//                        set = new RepeatsSingleSetDB(question, answer, ImageName);
                         cImages++;
                     }
                     else
                         {
-                        set = new RepeatsSingleSetDB(question, answer, "");
+//                        set = new RepeatsSingleSetDB(question, answer, "");
                     }
 
-                    DB.AddSet(set, TITLE);
+//                    DB.AddSet(set, TITLE);
                 }
 
                 if (IsShare)
@@ -164,8 +165,8 @@ class EditSetOperations
                         @Override
                         public void run()
                         {
-                            TextView textView = view1.findViewById(R.id.textProgress);
-                            textView.setVisibility(View.GONE);
+//                            TextView textView = view1.findViewById(R.id.textProgress);
+//                            textView.setVisibility(View.GONE);
                             ProgressBar progressBar = view1.findViewById(R.id.progressBar);
                             progressBar.setIndeterminate(true);
                         }
@@ -233,22 +234,24 @@ class EditSetOperations
         }
     }
 
-    static void DeleteSet(String x, Context cnt, List<String> ReadImages)
+    static void DeleteSet(String x, Context cnt)
     {
         DatabaseHelper DB = new DatabaseHelper(cnt);
+        ArrayList<String> allImages = new ArrayList<>();
         if (!x.equals("FALSE"))
         {
+            DB.getAllImages(x);
             DB.deleteOneFromList(x);
             DB.DeleteSet(x);
         }
 
-        int count = ReadImages.size();
+        int count = allImages.size();
 
         if(count != 0)
         {
             for(int j = 0; j < count; j++)
             {
-                String imgName = ReadImages.get(j);
+                String imgName = allImages.get(j);
                 File file = new File(cnt.getFilesDir(), imgName);
                 boolean bool = file.delete();
             }

@@ -9,11 +9,6 @@
             android:title="@string/DeleteSet"
             app:showAsAction="always"/>
         <item
-            android:id="@+id/saveButton"
-            android:icon="@drawable/ic_save_white"
-            android:title="@string/Save"
-            app:showAsAction="always"/>
-        <item
             android:id="@+id/ignoreCharsItem"
             android:icon="@drawable/ic_text_fields"
             android:title="@string/IngoreChars"
@@ -22,9 +17,9 @@
 
         <item
             android:id="@+id/share"
-            android:icon="@drawable/ic_text_fields"
+            android:icon="@drawable/ic_share"
             android:title="@string/share"
-            app:showAsAction="never"
+            app:showAsAction="always"
             android:checkable="false"/>
     </group>
 

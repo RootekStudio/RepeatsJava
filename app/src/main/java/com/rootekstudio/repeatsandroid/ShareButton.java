@@ -1,9 +1,13 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.core.content.FileProvider;
 
@@ -18,10 +22,23 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-class ShareButton
-{
-    static void ShareClick(final Context context, final String name, final String TITLE, final Activity activity)
-    {
+class ShareButton {
+    static void ShareClick(final Context context, final String name, final String TITLE, final Activity activity) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View view1 = layoutInflater.inflate(R.layout.progress, null);
+        ProgressBar progressBar = view1.findViewById(R.id.progressBar);
+        progressBar.setIndeterminate(true);
+        builder.setView(view1);
+        builder.setMessage(R.string.savingInProgress);
+        builder.setCancelable(false);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
                 File directory = new File(context.getFilesDir(), "shared");
 
                 File questions = new File(directory, "Questions.txt");
@@ -30,8 +47,7 @@ class ShareButton
                 filesToShare.add(questions.getPath());
                 filesToShare.add(answers.getPath());
 
-                try
-                {
+                try {
                     questions.createNewFile();
                     answers.createNewFile();
 
@@ -50,8 +66,7 @@ class ShareButton
                     Qwriter.flush();
                     Awriter.flush();
 
-                    for(int i = 0; i < count; i++)
-                    {
+                    for (int i = 0; i < count; i++) {
                         RepeatsSingleSetDB single = list.get(i);
                         Qwriter.append(single.getQuestion());
                         Qwriter.append(System.getProperty("line.separator"));
@@ -60,8 +75,7 @@ class ShareButton
 
                         String image = single.getImag();
 
-                        if(!image.equals(""))
-                        {
+                        if (!image.equals("")) {
                             File file = new File(context.getFilesDir(), image);
                             File copyImage = new File(directory, "S" + i + ".png");
                             copyFileUsingStream(file, copyImage);
@@ -83,7 +97,7 @@ class ShareButton
 
                     Boolean check = zipFile.exists();
 
-                    Uri uri = FileProvider.getUriForFile(context, "com.rootekstudio.repeatsandroid.RepeatsAddEditActivity", zipFile);
+                    Uri uri = FileProvider.getUriForFile(context, "com.rootekstudio.repeatsandroid.AddEditSetActivity", zipFile);
 
                     Intent share = new Intent();
                     share.setAction(Intent.ACTION_SEND);
@@ -91,37 +105,41 @@ class ShareButton
                     share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     share.setType("application/zip");
                     activity.startActivityForResult(Intent.createChooser(share, context.getString(R.string.share)), 111);
-                }
-                catch (IOException e)
-                {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.dismiss();
+                    }
+                });
+
+            }
+        });
+
+        thread.start();
+
     }
 
-    private static void copyFileUsingStream(File source, File dest)
-    {
+    private static void copyFileUsingStream(File source, File dest) {
         InputStream is;
         OutputStream os;
-        try
-        {
+        try {
             is = new FileInputStream(source);
             os = new FileOutputStream(dest);
             byte[] buffer = new byte[1024];
             int length;
-            while ((length = is.read(buffer)) > 0)
-            {
+            while ((length = is.read(buffer)) > 0) {
                 os.write(buffer, 0, length);
             }
 
             is.close();
             os.close();
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

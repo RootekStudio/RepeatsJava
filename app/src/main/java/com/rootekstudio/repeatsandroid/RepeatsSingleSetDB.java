@@ -2,18 +2,22 @@ package com.rootekstudio.repeatsandroid;
 
 public class RepeatsSingleSetDB
 {
+    public int ID;
     public String Question;
     public String Answer;
     public String Imag;
 
     public RepeatsSingleSetDB(){}
 
-    public RepeatsSingleSetDB(String Question, String Answer, String Imag)
+    public RepeatsSingleSetDB(int ID, String Question, String Answer, String Imag)
     {
+        this.ID = ID;
         this.Question = Question;
         this.Answer = Answer;
         this.Imag = Imag;
     }
+
+    public int getID() {return ID; }
 
     public String getQuestion()
     {
@@ -29,6 +33,8 @@ public class RepeatsSingleSetDB
     {
         return Imag;
     }
+
+    public void setID(int ID) { this.ID = ID; }
 
     public void setQuestion(String Question)
     {

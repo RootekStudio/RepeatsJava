@@ -62,7 +62,8 @@
         android:src="@drawable/ic_library_add"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -83,7 +84,7 @@
             android:layout_margin="5dp"
             android:singleLine="true"
             android:imeOptions="actionNext"
-            android:inputType="textCapSentences"/>
+            android:inputType="textCapSentences" />
 
         <EditText
             android:id="@+id/answerBox"
@@ -93,7 +94,7 @@
             android:layout_margin="5dp"
             android:singleLine="true"
             android:imeOptions="actionNext"
-            android:inputType="textCapSentences"/>
+            android:inputType="textCapSentences" />
     </LinearLayout>
 
 

@@ -47,8 +47,8 @@ class SetsMigrationTool
                     readQ = readQ.replace("r" + i +"Q: ", "");
                     readA = readA.replace("r" + i +"A: ", "");
 
-                    RepeatsSingleSetDB Single = new RepeatsSingleSetDB(readQ, readA, "");
-                    DB.AddSet(Single, SetName);
+//                    RepeatsSingleSetDB Single = new RepeatsSingleSetDB(readQ, readA, "");
+//                    DB.AddSet(Single, SetName);
                 }
 
                 SimpleDateFormat s1 = new SimpleDateFormat("dd.MM.yyyy");

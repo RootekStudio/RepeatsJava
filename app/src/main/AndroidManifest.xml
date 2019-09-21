@@ -25,7 +25,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.rootekstudio.repeatsandroid.RepeatsAddEditActivity"
+            android:authorities="com.rootekstudio.repeatsandroid.AddEditSetActivity"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -72,6 +72,9 @@
         <activity android:name=".SearchActivity"
             android:label="@string/Search">
         </activity>
+        <activity android:name=".AddEditSetActivity"
+            android:label="@string/title_activity_repeats_add_edit"
+            android:screenOrientation="locked"/>
     </application>
 
 </manifest>

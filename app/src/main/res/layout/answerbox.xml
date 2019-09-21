@@ -5,7 +5,7 @@
     android:layout_margin="5dp"
     android:layout_alignParentBottom="true">
     <EditText
-        android:id="@+id/answerBox"
+        android:id="@+id/answerBoxPlus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/Answer"

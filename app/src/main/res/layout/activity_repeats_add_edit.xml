@@ -20,12 +20,6 @@
             android:imeOptions="actionNext"
             android:inputType="textCapSentences"/>
 
-        <ImageView
-            android:id="@+id/TESTIMAGE"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:tint="@android:color/transparent"/>
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

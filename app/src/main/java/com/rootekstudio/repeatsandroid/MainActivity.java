@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
 
         DatabaseHelper DB = new DatabaseHelper(this);
 
-        final Intent intent = new Intent(this, RepeatsAddEditActivity.class);
+        final Intent intent = new Intent(this, AddEditSetActivity.class);
         final LinearLayout listLayout = findViewById(R.id.mainList);
         final LayoutInflater inflater = LayoutInflater.from(this);
         final List<RepeatsListDB> ALL  = DB.AllItemsLIST();
@@ -223,12 +223,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, final Intent data)
-    {
-        if (requestCode == 1)
-        {
-            if (resultCode == RESULT_OK)
-            {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
                 final Context context = this;
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -239,40 +237,33 @@ public class MainActivity extends AppCompatActivity
                 builder.setMessage(R.string.loading);
                 builder.setCancelable(false);
 
-                TextView textView = view1.findViewById(R.id.textProgress);
-                textView.setVisibility(View.GONE);
                 ProgressBar progressBar = view1.findViewById(R.id.progressBar);
                 progressBar.setIndeterminate(true);
 
                 final AlertDialog dialog = builder.create();
                 dialog.show();
 
-                Thread thread = new Thread(new Runnable()
-                {
+                Thread thread = new Thread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         Uri selectedZip = data.getData();
-                        try
-                        {
+                        try {
                             InputStream inputStream = getContentResolver().openInputStream(selectedZip);
                             ZipSet.UnZip(inputStream, new File(getFilesDir(), "shared"));
-                            Intent intent = new Intent(context, RepeatsAddEditActivity.class);
-                            intent.putExtra("ISEDIT", "FALSE");
+                            SaveShared.SaveSharedToDB(context, new DatabaseHelper(context));
+
+                            Intent intent = new Intent(context, AddEditSetActivity.class);
+                            intent.putExtra("ISEDIT", SaveShared.ID);
+                            intent.putExtra("NAME", SaveShared.name);
                             intent.putExtra("IGNORE_CHARS", "false");
-                            intent.putExtra("LoadShared", true);
-                            runOnUiThread(new Runnable()
-                            {
+                            runOnUiThread(new Runnable() {
                                 @Override
-                                public void run()
-                                {
+                                public void run() {
                                     dialog.dismiss();
                                 }
                             });
                             startActivity(intent);
-                        }
-                        catch (FileNotFoundException e)
-                        {
+                        } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
                     }

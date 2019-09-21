@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,7 +25,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
     private static final String KEY_Q = "question";
     private static final String KEY_A = "answer";
     private static final String KEY_I = "image";
-    private static final String[] COLUMNS2 = { KEY_Q, KEY_A, KEY_I};
 
 
     DatabaseHelper(Context context)
@@ -126,6 +127,82 @@ public class DatabaseHelper extends SQLiteOpenHelper
         return ALL;
     }
 
+    void AddItem(String SetID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("question", "");
+        values.put("answer", "");
+        values.put("image", "");
+
+        db.insert(SetID, null, values);
+        db.close();
+    }
+
+    void AddItemWithValues (String SetID, String question, String answer, String image) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("question", question);
+        values.put("answer", answer);
+        values.put("image", image);
+
+        db.insert(SetID, null, values);
+        db.close();
+    }
+
+    void InsertValue(String SetID, int ID, String column, String what) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + SetID + " SET " + column + "='" + what +"' " + "WHERE id='" + ID + "'";
+        db.execSQL(query);
+        db.close();
+    }
+
+    void setTableName (String name, String SetID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE TitleTable SET title='" + name +"' WHERE TableName='" + SetID + "'";
+        db.execSQL(query);
+        db.close();
+    }
+
+    void deleteImage (String SetID, String imageName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + SetID + " SET image='' WHERE image='" + imageName + "'";
+        db.execSQL(query);
+        db.close();
+    }
+
+    void deleteItem(String SetID, int index) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + SetID + " WHERE id='" + index +"'";
+        db.execSQL(query);
+        db.close();
+    }
+
+    ArrayList<String> getAllImages(String SetID) {
+        ArrayList<String> allImages = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT image FROM " + SetID;
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst())
+        {
+            do {
+                String image = cursor.getString(0);
+            }
+            while(cursor.moveToNext());
+        }
+        db.close();
+        cursor.close();
+
+        return allImages;
+    }
+
+    void ignoreChars(String SetID, String isIgnoring) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE TitleTable SET IgnoreChars='" + isIgnoring +"' WHERE TableName='" + SetID + "'";
+        db.execSQL(query);
+        db.close();
+    }
+
     void AddName(RepeatsListDB List)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -191,6 +268,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
             do
                 {
                 list = new RepeatsSingleSetDB();
+                list.setID(cursor.getInt(0));
                 list.setQuestion(cursor.getString(1));
                 list.setAnswer(cursor.getString(2));
                 list.setImag(cursor.getString(3));
