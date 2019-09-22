@@ -11,8 +11,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DatabaseHelper extends SQLiteOpenHelper
-{
+import static java.sql.Types.CHAR;
+
+public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String NAME = "TitleTable";
     private static final String KEY_TITLE = "title";
     private static final String KEY_TNAME = "TableName";
@@ -20,30 +21,21 @@ public class DatabaseHelper extends SQLiteOpenHelper
     private static final String KEY_ENABLED = "IsEnabled";
     private static final String KEY_AVATAR = "Avatar";
     private static final String KEY_IGNORE_CHARS = "IgnoreChars";
-    private static final String[] COLUMNS = { KEY_TITLE, KEY_TNAME, KEY_DATE, KEY_ENABLED, KEY_AVATAR };
+    private static final String[] COLUMNS = {KEY_TITLE, KEY_TNAME, KEY_DATE, KEY_ENABLED, KEY_AVATAR};
 
-    private static final String KEY_Q = "question";
-    private static final String KEY_A = "answer";
-    private static final String KEY_I = "image";
-
-
-    DatabaseHelper(Context context)
-    {
-        super (context, "repeats", null, 2);
+    DatabaseHelper(Context context) {
+        super(context, "repeats", null, 2);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db)
-    {
+    public void onCreate(SQLiteDatabase db) {
         String CREATE_TITLETABLE = "CREATE TABLE IF NOT EXISTS TitleTable (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, TableName TEXT, CreateDate TEXT, IsEnabled TEXT, Avatar TEXT, IgnoreChars TEXT)";
         db.execSQL(CREATE_TITLETABLE);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-    {
-        if(oldVersion == 1)
-        {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion == 1) {
             String command = "ALTER TABLE TitleTable ADD COLUMN IgnoreChars TEXT";
             String command2 = "UPDATE TitleTable SET IgnoreChars='false'";
             db.execSQL(command);
@@ -51,13 +43,11 @@ public class DatabaseHelper extends SQLiteOpenHelper
         }
     }
 
-    public RepeatsListDB getSingleItemLIST (RepeatsListDB List)
-    {
+    public RepeatsListDB getSingleItemLIST(RepeatsListDB List) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(NAME, COLUMNS, "id = ?", new String[]{String.valueOf(List.getitle())}, null, null, null, null);
 
-        if(cursor != null)
-        {
+        if (cursor != null) {
             cursor.moveToFirst();
         }
 
@@ -73,16 +63,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
         return list;
     }
 
-    List<RepeatsListDB> AllItemsLIST()
-    {
+    List<RepeatsListDB> AllItemsLIST() {
         List<RepeatsListDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM " + NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         RepeatsListDB list;
 
-        if(cursor.moveToFirst())
-        {
+        if (cursor.moveToFirst()) {
             do {
                 list = new RepeatsListDB();
                 list.setTitle(cursor.getString(1));
@@ -100,16 +88,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
         return ALL;
     }
 
-    List<RepeatsListDB> ALLEnabledSets()
-    {
+    List<RepeatsListDB> ALLEnabledSets() {
         List<RepeatsListDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM TitleTable WHERE IsEnabled='true'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         RepeatsListDB list;
 
-        if(cursor.moveToFirst())
-        {
+        if (cursor.moveToFirst()) {
             do {
                 list = new RepeatsListDB();
                 list.setTitle(cursor.getString(1));
@@ -138,7 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         db.close();
     }
 
-    void AddItemWithValues (String SetID, String question, String answer, String image) {
+    void AddItemWithValues(String SetID, String question, String answer, String image) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("question", question);
@@ -151,19 +137,19 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
     void InsertValue(String SetID, int ID, String column, String what) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE " + SetID + " SET " + column + "='" + what +"' " + "WHERE id='" + ID + "'";
+        String query = "UPDATE " + SetID + " SET " + column + "='" + what + "' " + "WHERE id='" + ID + "'";
         db.execSQL(query);
         db.close();
     }
 
-    void setTableName (String name, String SetID) {
+    void setTableName(String name, String SetID) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE TitleTable SET title='" + name +"' WHERE TableName='" + SetID + "'";
+        String query = "UPDATE TitleTable SET title='" + name + "' WHERE TableName='" + SetID + "'";
         db.execSQL(query);
         db.close();
     }
 
-    void deleteImage (String SetID, String imageName) {
+    void deleteImage(String SetID, String imageName) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + SetID + " SET image='' WHERE image='" + imageName + "'";
         db.execSQL(query);
@@ -172,7 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
     void deleteItem(String SetID, int index) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM " + SetID + " WHERE id='" + index +"'";
+        String query = "DELETE FROM " + SetID + " WHERE id='" + index + "'";
         db.execSQL(query);
         db.close();
     }
@@ -183,12 +169,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
         String query = "SELECT image FROM " + SetID;
         Cursor cursor = db.rawQuery(query, null);
 
-        if(cursor.moveToFirst())
-        {
+        if (cursor.moveToFirst()) {
             do {
                 String image = cursor.getString(0);
+                allImages.add(image);
             }
-            while(cursor.moveToNext());
+            while (cursor.moveToNext());
         }
         db.close();
         cursor.close();
@@ -196,15 +182,35 @@ public class DatabaseHelper extends SQLiteOpenHelper
         return allImages;
     }
 
-    void ignoreChars(String SetID, String isIgnoring) {
+    String getAnswers(String SetID, int index) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE TitleTable SET IgnoreChars='" + isIgnoring +"' WHERE TableName='" + SetID + "'";
+        String query = "SELECT answer FROM " + SetID + " WHERE id='" + index + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        String answers = "";
+
+        if (cursor.moveToFirst()) {
+            answers = cursor.getString(0);
+        }
+        db.close();
+        cursor.close();
+        return answers;
+    }
+
+    void addAnswer(String SetID, String answer, int index) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + SetID + " SET answer = (answer ||  CHAR(13) || CHAR(10) || '" + answer + "') WHERE id='" + index + "'";
         db.execSQL(query);
         db.close();
     }
 
-    void AddName(RepeatsListDB List)
-    {
+    void ignoreChars(String SetID, String isIgnoring) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE TitleTable SET IgnoreChars='" + isIgnoring + "' WHERE TableName='" + SetID + "'";
+        db.execSQL(query);
+        db.close();
+    }
+
+    void AddName(RepeatsListDB List) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, List.getitle());
@@ -218,8 +224,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         db.close();
     }
 
-    void deleteOneFromList(String Title)
-    {
+    void deleteOneFromList(String Title) {
         SQLiteDatabase db = this.getWritableDatabase();
         String DELETE_NAME = "DELETE FROM TitleTable WHERE TableName =" + "\"" + Title + "\"";
         db.execSQL(DELETE_NAME);
@@ -227,46 +232,29 @@ public class DatabaseHelper extends SQLiteOpenHelper
     }
 
 
-    void CreateSet(String name)
-    {
+    void CreateSet(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         String CREATE_SET = "CREATE TABLE IF NOT EXISTS " + name + " (id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, answer TEXT, image TEXT)";
         db.execSQL(CREATE_SET);
         db.close();
     }
 
-    void DeleteSet(String SETNAME)
-    {
+    void DeleteSet(String SETNAME) {
         SQLiteDatabase db = this.getWritableDatabase();
         String DELETE_SET = "DROP TABLE " + SETNAME;
         db.execSQL(DELETE_SET);
         db.close();
     }
 
-    void AddSet(RepeatsSingleSetDB Set, String Title)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(KEY_Q, Set.getQuestion());
-        values.put(KEY_A, Set.getAnswer());
-        values.put(KEY_I, Set.getImag());
-
-        db.insert(Title, null, values);
-        db.close();
-    }
-
-    List<RepeatsSingleSetDB> AllItemsSET(String SETNAME)
-    {
+    List<RepeatsSingleSetDB> AllItemsSET(String SETNAME) {
         List<RepeatsSingleSetDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM " + SETNAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         RepeatsSingleSetDB list;
 
-        if(cursor.moveToFirst())
-        {
-            do
-                {
+        if (cursor.moveToFirst()) {
+            do {
                 list = new RepeatsSingleSetDB();
                 list.setID(cursor.getInt(0));
                 list.setQuestion(cursor.getString(1));
@@ -280,18 +268,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
         return ALL;
     }
 
-    void UpdateTable(String TABLE, String WHAT, String WHERE)
-    {
+    void UpdateTable(String TABLE, String WHAT, String WHERE) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String Command;
 
-        if(!WHERE.equals(""))
-        {
+        if (!WHERE.equals("")) {
             Command = "UPDATE " + TABLE + " SET " + WHAT + " WHERE " + WHERE;
-        }
-        else
-        {
+        } else {
             Command = "UPDATE " + TABLE + " SET " + WHAT;
         }
 
@@ -299,8 +283,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
         db.close();
     }
 
-    void ResetEnabled()
-    {
+    void ResetEnabled() {
         SQLiteDatabase db = this.getWritableDatabase();
         String Command;
 

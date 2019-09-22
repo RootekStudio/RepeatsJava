@@ -10,6 +10,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,18 +38,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 public class AddEditSetActivity extends AppCompatActivity {
 
+    //View that contains ImageView
     ViewParent imagePreview;
     Context context = null;
     DatabaseHelper DB;
     ViewGroup parent = null;
+
+    //Last index from database
     int lastIndex = 0;
     static boolean IsDark;
 
+    //id of the table
     static String id;
 
     @Override
@@ -61,24 +69,28 @@ public class AddEditSetActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         context = this;
+
+        //Getting basic information about set (if new or  already existing, id, and ignore chars option)
         Intent intent = getIntent();
         final String editing = intent.getStringExtra("ISEDIT");
         String SetName = intent.getStringExtra("NAME");
         String ignore = intent.getStringExtra("IGNORE_CHARS");
 
+        //Project name edit text
         final EditText editName = findViewById(R.id.projectname);
         editName.setOnFocusChangeListener(newName);
 
         final Activity activity = this;
 
+        //Replacing default menu of the bottom app bar
         BottomAppBar bottomAppBar = findViewById(R.id.AddQuestionBar);
         bottomAppBar.replaceMenu(R.menu.bottomappbar_addset);
 
-        if(!IsDark)
-        {
+        if (!IsDark) {
             bottomAppBar.setBackgroundTint(ContextCompat.getColorStateList(this, R.color.DayColorPrimaryDark));
         }
 
+        //Configuring bottom app bar menu click listener
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -92,11 +104,13 @@ public class AddEditSetActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (!editing.equals("FALSE")) {
-                                EditSetOperations.DeleteSet(editing, context);
+                                DeleteSet(editing);
+
 
                                 List<RepeatsListDB> a = DB.AllItemsLIST();
                                 int size = a.size();
 
+                                //if there is no set left in database, turn off notifications
                                 if (size == 0) {
                                     RepeatsHelper.CancelNotifications(context);
                                 }
@@ -116,10 +130,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                     }
                 } else if (item.getItemId() == R.id.share) {
 
-                    View current = getCurrentFocus();
-                    if(current != null) {
-                        current.clearFocus();
-                    }
+                    resetFocus();
                     ShareButton.ShareClick(context, editName.getText().toString(), id, activity);
                 }
                 return false;
@@ -136,6 +147,7 @@ public class AddEditSetActivity extends AppCompatActivity {
 
         parent = findViewById(R.id.AddRepeatsLinear);
 
+        //if this is a new set
         if (editing.equals("FALSE")) {
             String date = s.format(new Date());
             id = "R" + date;
@@ -144,10 +156,14 @@ public class AddEditSetActivity extends AppCompatActivity {
             String createDate = createD.format(new Date());
 
             RepeatsListDB list = new RepeatsListDB("", id, createDate, "true", "", "false");
+
+            //Registering set in database
             DB.CreateSet(id);
             DB.AddName(list);
 
             addView(parent, context);
+
+            //Adding single item (with question and answer) to database
             DB.AddItem(id);
         } else {
             id = editing;
@@ -187,8 +203,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                     RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
                     RL.setTag(ID);
 
-                    if(IsDark)
-                    {
+                    if (IsDark) {
                         RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
                     }
 
@@ -202,11 +217,34 @@ public class AddEditSetActivity extends AppCompatActivity {
 
 
                     Q.setOnFocusChangeListener(newText);
-                    A.setOnFocusChangeListener(newText);
+                    A.setOnFocusChangeListener(newAnswer);
                     B.setOnClickListener(deleteClick);
                     I.setOnClickListener(addImageClick);
                     imgbut.setOnClickListener(deleteImageClick);
                     addAnswer.setOnClickListener(addAnswerClick);
+
+                    A.setFilters(new InputFilter[]{inputFilter});
+
+                    Q.setText(Question);
+
+                    Scanner scanner = new Scanner(Answer);
+                    int an = 0;
+
+                    if (scanner.hasNextLine()) {
+                        while (scanner.hasNextLine()) {
+                            String nextLine = scanner.nextLine();
+                            if (an != 0) {
+                                addAnswer(RL.findViewById(R.id.LinearQA), nextLine);
+                            } else {
+                                A.setText(nextLine);
+                                an++;
+                            }
+                        }
+                    } else {
+                        A.setText(Answer);
+                    }
+
+                    scanner.close();
 
                     if (!Image.equals("")) {
                         I.setEnabled(false);
@@ -226,8 +264,7 @@ public class AddEditSetActivity extends AppCompatActivity {
 
                         imgbut.setOnClickListener(deleteImageClick);
                     }
-                    Q.setText(Question);
-                    A.setText(Answer);
+
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -268,10 +305,11 @@ public class AddEditSetActivity extends AppCompatActivity {
         deleteImage.setOnClickListener(deleteImageClick);
         addAnswer.setOnClickListener(addAnswerClick);
         question.setOnFocusChangeListener(newText);
-        answer.setOnFocusChangeListener(newText);
+        answer.setOnFocusChangeListener(newAnswer);
 
-        if(IsDark)
-        {
+        answer.setFilters(new InputFilter[]{inputFilter});
+
+        if (IsDark) {
             rel.setBackgroundResource(R.drawable.layout_mainshape_dark);
         }
 
@@ -289,6 +327,48 @@ public class AddEditSetActivity extends AppCompatActivity {
         }
     };
 
+    View.OnFocusChangeListener newAnswer = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View view, boolean hasFocus) {
+            EditText editText = (EditText) view;
+            String answer = editText.getText().toString();
+
+            if(hasFocus){
+                editText.setTag(answer);
+            }
+            else {
+
+                ViewGroup RelativeAddItem = (ViewGroup) view.getParent().getParent().getParent();
+
+                if(RelativeAddItem.getTag() == null) {
+                    RelativeAddItem  = (ViewGroup) view.getParent().getParent();
+                }
+
+                int index = Integer.parseInt(RelativeAddItem.getTag().toString());
+
+                String allAnswers = DB.getAnswers(id, index);
+
+                String newAnswer = "";
+
+                String oldAnswer = editText.getTag().toString();
+
+                if(allAnswers.contains(oldAnswer) && !oldAnswer.equals("")) {
+                    newAnswer = allAnswers.replace(oldAnswer, answer);
+                }
+                else if(!allAnswers.equals("")) {
+                    newAnswer = allAnswers + "\r\n" +  answer;
+                }
+                else {
+                    newAnswer = answer;
+                }
+
+                DB.InsertValue(id, index, "answer", newAnswer);
+            }
+
+
+        }
+    };
+
     View.OnFocusChangeListener newText = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean hasFocus) {
@@ -301,18 +381,21 @@ public class AddEditSetActivity extends AppCompatActivity {
 
                 String column = "";
 
+                //Getting index of item in root view
+                int index = Integer.parseInt(RelativeAddItem.getTag().toString());
+                ;
+
                 //Checking if user has entered the question or the answer
                 if (RelativeAddItem.findViewById(R.id.questionBox) == view) {
                     column = "question";
                 } else if (RelativeAddItem.findViewById(R.id.answerBox) == view) {
                     column = "answer";
+                } else if (RelativeAddItem.findViewById(R.id.answerBoxPlus) == view) {
+                    column = "answer";
+                    DB.addAnswer(id, editText.getText().toString(), index);
+                    RelativeAddItem = (ViewGroup) RelativeAddItem.getParent();
+                    index = Integer.parseInt(RelativeAddItem.getTag().toString());
                 }
-
-                //Getting index of item in root view
-                ViewGroup item = (ViewGroup) RelativeAddItem.getParent();
-                int index = item.indexOfChild(RelativeAddItem);
-                index++;
-
 
                 DB.InsertValue(id, index, column, editText.getText().toString());
             }
@@ -385,25 +468,46 @@ public class AddEditSetActivity extends AppCompatActivity {
     private View.OnClickListener addAnswerClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            View pView = (View) view.getParent();
-            final ViewGroup linearQA = pView.findViewById(R.id.LinearQA);
-            LayoutInflater inflater = LayoutInflater.from(context);
-            View answer = inflater.inflate(R.layout.answerbox, linearQA, false);
-            ImageButton delAnswer = answer.findViewById(R.id.delAnswer);
-
-            delAnswer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    View p = (View) view.getParent();
-
-                    ViewGroup linear = (ViewGroup) p.getParent();
-                    linear.removeView(p);
-                }
-            });
-
-            linearQA.addView(answer);
+            addAnswer(view, "");
         }
     };
+
+    void addAnswer(View view, String text) {
+        View pView = (View) view.getParent();
+        final ViewGroup linearQA = pView.findViewById(R.id.LinearQA);
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        View answer = inflater.inflate(R.layout.answerbox, linearQA, false);
+        EditText answerBoxPlus = answer.findViewById(R.id.answerBoxPlus);
+        ImageButton delAnswer = answer.findViewById(R.id.delAnswer);
+
+        answerBoxPlus.setFilters(new InputFilter[]{inputFilter});
+        answerBoxPlus.setText(text);
+        answerBoxPlus.setOnFocusChangeListener(newAnswer);
+
+        delAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resetFocus();
+                View p = (View) view.getParent();
+                EditText answerBoxPlus = p.findViewById(R.id.answerBoxPlus);
+                String answer = answerBoxPlus.getText().toString();
+
+                ViewGroup linear = (ViewGroup) p.getParent();
+
+                ViewGroup RelativeAddItem = (ViewGroup) linear.getParent();
+                int index = Integer.parseInt(RelativeAddItem.getTag().toString());
+
+                String allAnswers = DB.getAnswers(id, index);
+                String delAnswer = allAnswers.replace("\r\n" + answer, "");
+                DB.InsertValue(id, index, "answer", delAnswer);
+
+                linear.removeView(p);
+            }
+        });
+
+        linearQA.addView(answer);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -430,16 +534,19 @@ public class AddEditSetActivity extends AppCompatActivity {
 
                     imageView.setImageBitmap(selected);
 
+                    //Unlocking delete image button and locking add image button
                     final ImageButton imgbut = rel.findViewById(R.id.deleteImage);
                     final ImageButton addimg = rel.findViewById(R.id.addImage);
                     addimg.setEnabled(false);
                     imgbut.setVisibility(View.VISIBLE);
 
+                    //Id of the image
                     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
                     String imageDate = simpleDate.format(new Date());
                     String ImageName = "I" + imageDate + ".png";
                     imageView.setTag(ImageName);
 
+                    //Saving image
                     try {
                         File control = new File(context.getFilesDir(), ImageName);
                         boolean bool = control.createNewFile();
@@ -470,24 +577,60 @@ public class AddEditSetActivity extends AppCompatActivity {
         }
     }
 
+    void DeleteSet(String x) {
+        DatabaseHelper DB = new DatabaseHelper(this);
+        ArrayList<String> allImages = new ArrayList<>();
+        if (!x.equals("FALSE")) {
+            allImages = DB.getAllImages(x);
+            DB.deleteOneFromList(x);
+            DB.DeleteSet(x);
+        }
+
+        int count = allImages.size();
+
+        if (count != 0) {
+            for (int j = 0; j < count; j++) {
+                String imgName = allImages.get(j);
+                File file = new File(getFilesDir(), imgName);
+                boolean bool = file.delete();
+            }
+        }
+    }
+
+    private InputFilter inputFilter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+            if (charSequence != null && "\\".contains(("" + charSequence))) {
+                return "";
+            }
+            return null;
+        }
+    };
+
+    void resetFocus() {
+        View current = getCurrentFocus();
+        if (current != null) {
+            current.clearFocus();
+        }
+    }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        if(item.getItemId() == android.R.id.home)
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return true;
     }
 
     @Override
-    public void onBackPressed()
-    {
-        View current = getCurrentFocus();
-        if(current != null) {
-            current.clearFocus();
-        }
-
+    public void onBackPressed() {
+        resetFocus();
         AddEditSetActivity.super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        resetFocus();
     }
 }

@@ -59,11 +59,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/addImage"
-        android:src="@drawable/ic_library_add"
+        android:src="@drawable/ic_playlist_add"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_alignParentEnd="true"
-        android:visibility="gone"/>
+        android:layout_alignParentEnd="true"/>
 
     <LinearLayout
         android:orientation="vertical"

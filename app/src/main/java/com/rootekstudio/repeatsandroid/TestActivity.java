@@ -23,13 +23,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class TestActivity extends AppCompatActivity
-{
+public class TestActivity extends AppCompatActivity {
     LinearLayout linearLayout;
     Boolean IsDark;
     String ignore = "false";
@@ -39,8 +36,7 @@ public class TestActivity extends AppCompatActivity
     static List<Boolean> IsCorrect;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         IsDark = RepeatsHelper.DarkTheme(this);
         setContentView(R.layout.activity_test);
@@ -54,20 +50,16 @@ public class TestActivity extends AppCompatActivity
         final List<RepeatsSingleSetDB> Single = DB.AllItemsSET(TableName);
         final int count = Single.size();
 
-        if(!IsDark)
-        {
+        if (!IsDark) {
             BottomAppBar appBar = findViewById(R.id.barTest);
             appBar.setBackgroundTint(ContextCompat.getColorStateList(this, R.color.DayColorPrimaryDark));
         }
 
 
-        Thread thread = new Thread(new Runnable()
-        {
+        Thread thread = new Thread(new Runnable() {
             @Override
-            public void run()
-            {
-                for(int i = 0; i < count; i++)
-                {
+            public void run() {
+                for (int i = 0; i < count; i++) {
                     final RelativeLayout view = (RelativeLayout) getLayoutInflater().inflate(R.layout.test_item, linearLayout, false);
 
                     RepeatsSingleSetDB set = Single.get(i);
@@ -75,25 +67,18 @@ public class TestActivity extends AppCompatActivity
                     String Answer = set.getAnswer();
                     String Image = set.getImag();
 
-                    if(IsDark)
-                    {
+                    if (IsDark) {
                         view.setBackgroundResource(R.drawable.layout_mainshape_dark);
-                    }
-                    else
-                    {
+                    } else {
                         view.setBackgroundResource(R.drawable.layout_mainshape);
                     }
 
-                    if(!Image.equals(""))
-                    {
+                    if (!Image.equals("")) {
                         File file = new File(getFilesDir(), Image);
                         FileInputStream inputStream = null;
-                        try
-                        {
+                        try {
                             inputStream = new FileInputStream(file);
-                        }
-                        catch (FileNotFoundException e)
-                        {
+                        } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
 
@@ -109,11 +94,9 @@ public class TestActivity extends AppCompatActivity
                     TextQuestion.setText(Question);
                     EditAnswer.setTag(Answer);
 
-                    runOnUiThread(new Runnable()
-                    {
+                    runOnUiThread(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             linearLayout.addView(view);
                         }
                     });
@@ -123,19 +106,16 @@ public class TestActivity extends AppCompatActivity
         thread.start();
 
         FloatingActionButton fab = findViewById(R.id.fabTest);
-        fab.setOnClickListener(new View.OnClickListener()
-        {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 CheckTest();
             }
         });
 
     }
 
-    void CheckTest()
-    {
+    void CheckTest() {
         AllQuestions = new ArrayList<>();
         UserAnswers = new ArrayList<>();
         CorrectAnswers = new ArrayList<>();
@@ -146,50 +126,29 @@ public class TestActivity extends AppCompatActivity
 
         int count = linearLayout.getChildCount();
 
-        for(int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             View child = linearLayout.getChildAt(i);
             TextView q = child.findViewById(R.id.TestQuestion);
             EditText e = child.findViewById(R.id.TestAnswer);
 
-
             String question = q.getText().toString();
             String user = e.getText().toString();
             String correct = e.getTag().toString();
-            String reallyCorrect = correct;
-            String reallyUser = user;
 
-            if(ignore.equals("true"))
-            {
-                user = Normalizer.normalize(user, Normalizer.Form.NFD)
-                        .replaceAll(" ", "")
-                        .replaceAll("Ł","l")
-                        .replaceAll("ł", "l")
-                        .replaceAll("[^\\p{ASCII}]", "")
-                        .toLowerCase(Locale.getDefault());
+            boolean check = CheckAnswer.isAnswerCorrect(user, correct, ignore);
 
-                correct = Normalizer.normalize(correct, Normalizer.Form.NFD)
-                        .replaceAll(" ", "")
-                        .replaceAll("Ł","l")
-                        .replaceAll("ł", "l")
-                        .replaceAll("[^\\p{ASCII}]", "")
-                        .toLowerCase(Locale.getDefault());
-            }
-
-            if(user.equals(correct))
-            {
+            if(check) {
                 CountCorrect++;
                 IsCorrect.add(true);
             }
-            else
-            {
+            else {
                 CountIncorrect++;
                 IsCorrect.add(false);
             }
 
             AllQuestions.add(question);
-            UserAnswers.add(reallyUser);
-            CorrectAnswers.add(reallyCorrect);
+            UserAnswers.add(user);
+            CorrectAnswers.add(correct);
         }
 
         Intent intent = new Intent(this, TestResults.class);
@@ -202,28 +161,24 @@ public class TestActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        if(item.getItemId() == android.R.id.home)
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return true;
     }
 
     @Override
-    public void onBackPressed()
-    {
-            new AlertDialog.Builder(this)
-                    .setMessage(R.string.WantLeaveTest)
-                    .setNegativeButton(R.string.Cancel, null)
-                    .setPositiveButton(R.string.Leave, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            TestActivity.super.onBackPressed();
-                        }
-                    }).create().show();
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.WantLeaveTest)
+                .setNegativeButton(R.string.Cancel, null)
+                .setPositiveButton(R.string.Leave, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        TestActivity.super.onBackPressed();
+                    }
+                }).create().show();
 
     }
 }

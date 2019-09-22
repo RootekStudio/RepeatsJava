@@ -19,13 +19,12 @@ import java.io.FileNotFoundException;
 import java.text.Normalizer;
 import java.util.Locale;
 
-public class AnswerActivity extends AppCompatActivity
-{
+public class AnswerActivity extends AppCompatActivity {
     static String correct;
     Context context;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
         Intent intent = getIntent();
@@ -38,10 +37,8 @@ public class AnswerActivity extends AppCompatActivity
         alarmDialog(Title, Question, getString(R.string.Check), true, Image, IgnoreChars);
     }
 
-    void alarmDialog(String Title, String Message, final String Positive, boolean First, String ImageName, String ignoreChars)
-    {
-        if(!First && Positive.equals(getString(R.string.Check)))
-        {
+    void alarmDialog(String Title, String Message, final String Positive, boolean First, String ImageName, String ignoreChars) {
+        if (!First && Positive.equals(getString(R.string.Check))) {
             RepeatsHelper.GetQuestionFromDatabase(context);
             Title = RepeatsHelper.tablename;
             Message = RepeatsHelper.Question;
@@ -59,19 +56,15 @@ public class AnswerActivity extends AppCompatActivity
         userAnswer.setHint(R.string.ReplyText);
         userAnswer.requestFocus();
 
-        if(!ImageName.equals(""))
-        {
+        if (!ImageName.equals("")) {
             final ImageView imgView = view.findViewById(R.id.imageViewQuestion);
             imgView.setVisibility(View.VISIBLE);
 
             File file = new File(getFilesDir(), ImageName);
             FileInputStream inputStream = null;
-            try
-            {
+            try {
                 inputStream = new FileInputStream(file);
-            }
-            catch (FileNotFoundException e)
-            {
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
 
@@ -80,63 +73,39 @@ public class AnswerActivity extends AppCompatActivity
             imgView.setImageBitmap(bitmap);
         }
 
-        if(Positive.equals(getString(R.string.Check)))
-        {
+        if (Positive.equals(getString(R.string.Check))) {
             alertDialog.setView(view);
         }
 
         alertDialog.setTitle(Title)
                 .setMessage(Message)
                 .setCancelable(false)
-                .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener()
-                {
+                .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
                 })
 
-                .setPositiveButton(Positive, new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton(Positive, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        if(Positive.equals(getString(R.string.Check)))
-                        {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (Positive.equals(getString(R.string.Check))) {
                             String uAnswerString = userAnswer.getText().toString();
                             String ReallyCorrect = correct;
 
-                            if(IGNORE.equals("true"))
-                            {
-                                uAnswerString = Normalizer.normalize(uAnswerString, Normalizer.Form.NFD)
-                                        .replaceAll(" ", "")
-                                        .replaceAll("Ł","l")
-                                        .replaceAll("ł", "l")
-                                        .replaceAll("[^\\p{ASCII}]", "")
-                                        .toLowerCase(Locale.getDefault());
+                            boolean check = CheckAnswer.isAnswerCorrect(uAnswerString, ReallyCorrect, IGNORE);
 
-                                correct = Normalizer.normalize(correct, Normalizer.Form.NFD)
-                                        .replaceAll(" ", "")
-                                        .replaceAll("Ł","l")
-                                        .replaceAll("ł", "l")
-                                        .replaceAll("[^\\p{ASCII}]", "")
-                                        .toLowerCase(Locale.getDefault());
-                            }
-
-                            if(correct.equals(uAnswerString))
-                            {
+                            if(check) {
                                 dialog.dismiss();
                                 alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Next), false, "", "");
                             }
-                            else
-                            {
+                            else {
                                 dialog.dismiss();
-                                alarmDialog(getString(R.string.IncorrectAnswer1), getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect, getString(R.string.Next), false, "","");
+                                alarmDialog(getString(R.string.IncorrectAnswer1), getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect, getString(R.string.Next), false, "", "");
                             }
-                        }
-                        else
-                        {
+
+                        } else {
                             dialog.dismiss();
                             alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Check), false, "", "");
                         }

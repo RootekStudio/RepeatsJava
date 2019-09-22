@@ -125,14 +125,10 @@ public class RepeatsHelper {
         editor.apply();
     }
 
-    private static void IfIsSet(Boolean IsSet, Activity activity, Context cnt)
-    {
-        if (IsSet)
-        {
+    private static void IfIsSet(Boolean IsSet, Activity activity, Context cnt) {
+        if (IsSet) {
             activity.onBackPressed();
-        }
-        else
-        {
+        } else {
             activity.finish();
             activity.overridePendingTransition(0, 0);
             cnt.startActivity(activity.getIntent());
@@ -172,17 +168,13 @@ public class RepeatsHelper {
                     RepeatsHelper.CancelNotifications(context);
                     RepeatsHelper.RegisterNotifications(context);
                     RepeatsHelper.askAboutBattery(context, IsSet, activity);
-                }
-                else
-                {
+                } else {
                     IfIsSet(IsSet, activity, context);
                 }
             }
         });
         ALERTbuilder.show();
     }
-
-
 
     static void askAboutBattery(final Context cnt, final Boolean IsSet, final Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -217,8 +209,7 @@ public class RepeatsHelper {
                 });
 
                 dialog.show();
-            }
-            else{
+            } else {
                 IfIsSet(IsSet, activity, cnt);
             }
 
@@ -229,13 +220,10 @@ public class RepeatsHelper {
 
     static Boolean DarkTheme(Context context) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String theme ="";
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-        {
+        String theme = "";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             theme = sharedPreferences.getString("theme", "2");
-        }
-        else
-        {
+        } else {
             theme = sharedPreferences.getString("theme", "1");
         }
 
@@ -247,18 +235,14 @@ public class RepeatsHelper {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             context.setTheme(R.style.DarkAppTheme);
             return true;
-        }
-        else{
+        } else {
             Configuration config = context.getApplicationContext().getResources().getConfiguration();
             int currentNightMode = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            if(currentNightMode == Configuration.UI_MODE_NIGHT_YES)
-            {
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 context.setTheme(R.style.DarkAppTheme);
                 return true;
-            }
-            else
-            {
+            } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 context.setTheme(R.style.AppTheme);
                 return false;

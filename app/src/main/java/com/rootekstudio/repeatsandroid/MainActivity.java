@@ -50,15 +50,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onStart();
 
-        File file = new File(getFilesDir(), "SetsMigrationCompleted.txt");
-        File file2 = new File(getFilesDir(), "ProjectsName.txt");
-
         final Context cnt = this;
-
-        if(!file.exists() && file2.exists())
-        {
-            SetsMigrationTool.MigrateFromOldVersion(this);
-        }
 
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
