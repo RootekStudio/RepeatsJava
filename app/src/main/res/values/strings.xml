@@ -83,4 +83,13 @@
     <string name="CancelOffBattery">You can always disable battery optimization in the Repeats or device settings</string>
     <string name="Continue">Continue</string>
     <string name="SystemTheme">System default</string>
+    <string name="backup">Backup</string>
+    <string name="createBackup">Create backup</string>
+    <string name="restoreBackup">Restore backup</string>
+    <string name="localBackup">On your device</string>
+    <string name="cloudBackup">In the cloud or other apps</string>
+    <string name="where_Backup">Where do you want to save the backup?</string>
+    <string name="send">Send</string>
+    <string name="backup_restored">Backup restored</string>
+    <string name="backup_created">Backup created</string>
 </resources>

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
-        android:id="@+id/relAdd"
+        android:id="@+id/relCloud"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="?android:attr/selectableItemBackground"
@@ -11,50 +11,52 @@
         android:focusable="true">
 
         <ImageView
-            android:id="@+id/addImg"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/cloudImg"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_add_white_24dp"
+            android:src="@drawable/ic_cloud"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/CreateNew"
-            android:layout_toRightOf="@id/addImg"
-            android:layout_toEndOf="@id/addImg"
+            android:text="@string/cloudBackup"
+            android:layout_toRightOf="@id/cloudImg"
+            android:layout_toEndOf="@id/cloudImg"
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
             android:layout_marginStart="30dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
             android:textSize="14sp"/>
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/relRead"
+        android:id="@+id/relLocal"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@id/relAdd"
+        android:layout_below="@id/relCloud"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true">
 
         <ImageView
-            android:id="@+id/loadImg"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/localImg"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/ic_arrow_download" />
+            android:src="@drawable/ic_smartphone" />
 
         <TextView
-            android:layout_toRightOf="@id/loadImg"
-            android:layout_toEndOf="@id/loadImg"
+            android:layout_toRightOf="@id/localImg"
+            android:layout_toEndOf="@id/localImg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/LoadSet"
+            android:text="@string/localBackup"
             android:layout_marginLeft="30dp"
             android:layout_marginStart="30dp"
             android:textSize="14sp"/>

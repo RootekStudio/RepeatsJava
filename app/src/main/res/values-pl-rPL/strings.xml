@@ -81,4 +81,13 @@
     <string name="CancelOffBattery">W każdej chwili możesz wyłączyć optymalizację baterii w ustawieniach Repeats lub ustawieniach urządzenia</string>
     <string name="Continue">Kontynuuj</string>
     <string name="SystemTheme">Zgodny z systemem</string>
+    <string name="backup">Kopia zapasowa</string>
+    <string name="createBackup">Utwórz kopię zapasową</string>
+    <string name="restoreBackup">Przywróć kopię zapasową</string>
+    <string name="localBackup">Na urządzeniu</string>
+    <string name="cloudBackup">W chmurze lub innych aplikacjach</string>
+    <string name="where_Backup">Gdzie zapisać kopię zapasową?</string>
+    <string name="send">Prześlij</string>
+    <string name="backup_restored">Przywrócono kopię zapasową</string>
+    <string name="backup_created">Utworzono kopię zapasową</string>
 </resources>

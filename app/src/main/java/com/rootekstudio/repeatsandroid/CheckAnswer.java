@@ -24,7 +24,7 @@ class CheckAnswer {
 
         }
 
-        if(!correct.contains("\r\n")) {
+        if(!correct.contains(RepeatsHelper.breakLine)) {
             if (user.equals(correct)) {
                 return true;
             } else {

@@ -1,5 +1,6 @@
 package com.rootekstudio.repeatsandroid;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +11,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.preference.CheckBoxPreference;
@@ -22,6 +27,7 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreferenceCompat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Preference_Screen extends PreferenceFragmentCompat {
@@ -234,7 +240,106 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         screen.addPreference(theme_cat);
         theme_cat.addPreference(theme);
 
-        setPreferenceScreen(screen);
+        Preference createBackup = new Preference(context);
+        createBackup.setKey("create_backup");
+        createBackup.setTitle(R.string.createBackup);
+        createBackup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                final AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(context);
+                LayoutInflater layoutInflater = LayoutInflater.from(context);
+                final View view1 = layoutInflater.inflate(R.layout.where_backup, null);
+                ALERTbuilder.setView(view1);
+                ALERTbuilder.setMessage(R.string.where_Backup);
+                final AlertDialog alert = ALERTbuilder.show();
+
+                RelativeLayout relCloud = view1.findViewById(R.id.relCloud);
+                RelativeLayout relLocal = view1.findViewById(R.id.relLocal);
+
+                final DatabaseHelper DB = new DatabaseHelper(context);
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    relLocal.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            List<RepeatsListDB> list = DB.AllItemsLIST();
+                            ArrayList<String> names = new ArrayList<>();
+                            ArrayList<String> setsID = new ArrayList<>();
+
+                            for(int i = 0; i < list.size(); i++) {
+                                RepeatsListDB item = list.get(i);
+                                names.add(item.getitle());
+                                setsID.add(item.getTableName());
+                            }
+
+                            SetToFile.saveSetsToFile(context, setsID, names);
+
+                            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                            getActivity().startActivityForResult(intent, 3);
+                            alert.dismiss();
+                        }
+                    });
+                }
+                else {
+                    relLocal.setVisibility(View.INVISIBLE);
+                }
+
+                relCloud.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alert.dismiss();
+                        List<RepeatsListDB> list = DB.AllItemsLIST();
+                        ArrayList<String> names = new ArrayList<>();
+                        ArrayList<String> setsID = new ArrayList<>();
+
+                        for(int i = 0; i < list.size(); i++) {
+                            RepeatsListDB item = list.get(i);
+                            names.add(item.getitle());
+                            setsID.add(item.getTableName());
+                        }
+
+                        SetToFile.saveSetsToFile(context, setsID, names);
+                        RepeatsHelper.shareSets(context, getActivity());
+                    }
+                });
+
+
+
+                return true;
+            }
+        });
+
+        Preference restoreBackup = new Preference(context);
+        restoreBackup.setKey("restore_backup");
+        restoreBackup.setTitle(R.string.restoreBackup);
+        restoreBackup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent zipPickerIntent  = new Intent(Intent.ACTION_GET_CONTENT);
+                zipPickerIntent.setType("application/zip");
+                try
+                {
+                    getActivity().startActivityForResult(zipPickerIntent, 2);
+                }
+                catch(ActivityNotFoundException e)
+                {
+                    Toast.makeText(context, R.string.explorerNotFound, Toast.LENGTH_LONG).show();
+                }
+                return true;
+            }
+        });
+
+        PreferenceCategory backup = new PreferenceCategory(context);
+        backup.setKey("backup");
+        backup.setTitle(R.string.backup);
+        screen.addPreference(backup);
+        backup.addPreference(createBackup);
+        backup.addPreference(restoreBackup);
+
+        if(all.size() == 0) {
+            createBackup.setVisible(false);
+        }
 
         PackageInfo pInfo = null;
         try {
@@ -267,19 +372,6 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        Preference github = new Preference(context);
-        github.setKey("github");
-        github.setTitle(R.string.github);
-        github.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent send = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/RootekStudio/RepeatsJava"));
-                startActivity(send);
-
-                return true;
-            }
-        });
-
         Preference rate = new Preference(context);
         rate.setKey("rate");
         rate.setTitle(R.string.rate);
@@ -301,10 +393,11 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         about_cat.setKey("about_cat");
         about_cat.setTitle(R.string.About);
         screen.addPreference(about_cat);
-        about_cat.addPreference(github);
         about_cat.addPreference(rate);
         about_cat.addPreference(SendFeedback);
         about_cat.addPreference(About);
+
+        setPreferenceScreen(screen);
 
         boolean notifiEnabled = sharedPreferences.getBoolean("notifications", false);
 

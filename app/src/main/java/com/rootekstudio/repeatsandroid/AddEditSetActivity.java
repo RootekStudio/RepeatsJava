@@ -356,7 +356,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                     newAnswer = allAnswers.replace(oldAnswer, answer);
                 }
                 else if(!allAnswers.equals("")) {
-                    newAnswer = allAnswers + "\r\n" +  answer;
+                    newAnswer = allAnswers + RepeatsHelper.breakLine +  answer;
                 }
                 else {
                     newAnswer = answer;
@@ -499,7 +499,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                 int index = Integer.parseInt(RelativeAddItem.getTag().toString());
 
                 String allAnswers = DB.getAnswers(id, index);
-                String delAnswer = allAnswers.replace("\r\n" + answer, "");
+                String delAnswer = allAnswers.replace(RepeatsHelper.breakLine + answer, "");
                 DB.InsertValue(id, index, "answer", delAnswer);
 
                 linear.removeView(p);

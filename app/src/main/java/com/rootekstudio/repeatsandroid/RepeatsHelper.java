@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
 import java.io.File;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Random;
 
 public class RepeatsHelper {
+    static final String breakLine = "\r\n";
     static String Question;
     static String Answer;
     static String tablename;
@@ -283,5 +285,16 @@ public class RepeatsHelper {
         } else {
             Boolean dir = file.mkdir();
         }
+    }
+
+    static void shareSets(Context context, Activity activity) {
+        Uri uri = FileProvider.getUriForFile(context, "com.rootekstudio.repeatsandroid.AddEditSetActivity", SetToFile.zipFile);
+        Intent share = new Intent();
+
+        share.setAction(Intent.ACTION_SEND);
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        share.setType("application/zip");
+        activity.startActivityForResult(Intent.createChooser(share, context.getString(R.string.send)), 111);
     }
 }

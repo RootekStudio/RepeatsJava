@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity
                         try {
                             InputStream inputStream = getContentResolver().openInputStream(selectedZip);
                             ZipSet.UnZip(inputStream, new File(getFilesDir(), "shared"));
-                            SaveShared.SaveSharedToDB(context, new DatabaseHelper(context));
+                            SaveShared.SaveSetsToDB(context, new DatabaseHelper(context));
 
                             Intent intent = new Intent(context, AddEditSetActivity.class);
                             intent.putExtra("ISEDIT", SaveShared.ID);

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ShareButton {
-    static void ShareClick(final Context context, final String name, final String TITLE, final Activity activity) {
+    static void ShareClick(final Context context, final String name, final String setID, final Activity activity) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -39,75 +39,16 @@ class ShareButton {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                File directory = new File(context.getFilesDir(), "shared");
 
-                File questions = new File(directory, "Questions.txt");
-                File answers = new File(directory, "Answers.txt");
-                List<String> filesToShare = new ArrayList<>();
-                filesToShare.add(questions.getPath());
-                filesToShare.add(answers.getPath());
+                ArrayList<String> arrayName = new ArrayList<>();
+                arrayName.add(name);
 
-                try {
-                    questions.createNewFile();
-                    answers.createNewFile();
+                ArrayList<String> arraySetsID = new ArrayList<>();
+                arraySetsID.add(setID);
 
-                    FileWriter Qwriter = new FileWriter(questions);
-                    FileWriter Awriter = new FileWriter(answers);
+                SetToFile.saveSetsToFile(context, arraySetsID, arrayName);
 
-                    DatabaseHelper DB = new DatabaseHelper(context);
-                    List<RepeatsSingleSetDB> list = DB.AllItemsSET(TITLE);
-                    int count = list.size();
-
-                    Qwriter.append(name);
-                    Qwriter.append(System.getProperty("line.separator"));
-                    Awriter.append(name);
-                    Awriter.append(System.getProperty("line.separator"));
-
-                    Qwriter.flush();
-                    Awriter.flush();
-
-                    for (int i = 0; i < count; i++) {
-                        RepeatsSingleSetDB single = list.get(i);
-                        Qwriter.append(single.getQuestion());
-                        Qwriter.append(System.getProperty("line.separator"));
-                        Awriter.append(single.getAnswer());
-                        Awriter.append(System.getProperty("line.separator"));
-
-                        String image = single.getImag();
-
-                        if (!image.equals("")) {
-                            File file = new File(context.getFilesDir(), image);
-                            File copyImage = new File(directory, "S" + i + ".png");
-                            copyFileUsingStream(file, copyImage);
-                            filesToShare.add(copyImage.getPath());
-                        }
-
-                        Qwriter.flush();
-                        Awriter.flush();
-                    }
-
-                    Qwriter.close();
-                    Awriter.close();
-
-                    File zipFile = new File(directory, name + ".zip");
-                    Boolean created = zipFile.createNewFile();
-                    Boolean set = zipFile.setWritable(true);
-
-                    ZipSet.zip(filesToShare, zipFile);
-
-                    Boolean check = zipFile.exists();
-
-                    Uri uri = FileProvider.getUriForFile(context, "com.rootekstudio.repeatsandroid.AddEditSetActivity", zipFile);
-
-                    Intent share = new Intent();
-                    share.setAction(Intent.ACTION_SEND);
-                    share.putExtra(Intent.EXTRA_STREAM, uri);
-                    share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    share.setType("application/zip");
-                    activity.startActivityForResult(Intent.createChooser(share, context.getString(R.string.share)), 111);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                RepeatsHelper.shareSets(context, activity);
 
                 activity.runOnUiThread(new Runnable() {
                     @Override
@@ -115,32 +56,10 @@ class ShareButton {
                         dialog.dismiss();
                     }
                 });
-
             }
         });
 
         thread.start();
 
-    }
-
-    private static void copyFileUsingStream(File source, File dest) {
-        InputStream is;
-        OutputStream os;
-        try {
-            is = new FileInputStream(source);
-            os = new FileOutputStream(dest);
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = is.read(buffer)) > 0) {
-                os.write(buffer, 0, length);
-            }
-
-            is.close();
-            os.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -57,7 +57,13 @@
             android:theme="@style/transculentTheme" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/Settings" />
+            android:label="@string/Settings"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </activity>
         <activity android:name=".EnableSetsList"
             android:label="@string/notifiFromSets"/>
         <activity android:name=".TestActivity"
