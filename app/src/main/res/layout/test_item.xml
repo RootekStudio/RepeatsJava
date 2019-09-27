@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/layout_mainshape"
     android:layout_margin="5dp"
-    android:id="@+id/RelativeTitem"
     android:elevation="5dp"
     tools:targetApi="lollipop">
 

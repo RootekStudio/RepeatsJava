@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.activities;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,11 +13,13 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.rootekstudio.repeatsandroid.CheckAnswer;
+import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.text.Normalizer;
-import java.util.Locale;
 
 public class AnswerActivity extends AppCompatActivity {
     static String correct;

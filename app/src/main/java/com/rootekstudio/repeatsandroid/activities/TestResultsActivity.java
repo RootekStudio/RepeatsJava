@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +8,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.rootekstudio.repeatsandroid.ExpandableListAdapter;
+import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TestResults extends AppCompatActivity
+public class TestResultsActivity extends AppCompatActivity
 {
     List<String> Headers;
     ExpandableListView expandableListView;

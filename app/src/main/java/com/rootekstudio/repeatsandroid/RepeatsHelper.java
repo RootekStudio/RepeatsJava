@@ -1,21 +1,16 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
-import android.os.SystemClock;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -27,19 +22,22 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
+
 import java.io.File;
 import java.util.List;
 import java.util.Random;
 
 public class RepeatsHelper {
-    static final String breakLine = "\r\n";
-    static String Question;
-    static String Answer;
-    static String tablename;
-    static String PictureName = "";
-    static String IgnoreChars;
+    public static final String breakLine = "\r\n";
+    public static String Question;
+    public static String Answer;
+    public static String tablename;
+    public static String PictureName = "";
+    public static String IgnoreChars;
 
-    static void GetQuestionFromDatabase(Context context) {
+    public static void GetQuestionFromDatabase(Context context) {
         DatabaseHelper DB = new DatabaseHelper(context);
         List<RepeatsListDB> all = DB.ALLEnabledSets();
         int count = all.size();
@@ -63,71 +61,14 @@ public class RepeatsHelper {
         PictureName = singleSetDB.getImag();
     }
 
-    static void CancelNotifications(Context cnt) {
-        Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 10, intent, 0);
-        AlarmManager alarmManager = (AlarmManager) cnt.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
-
-        ComponentName receiver = new ComponentName(cnt, OnSystemBoot.class);
-        PackageManager pm = cnt.getPackageManager();
-
-        pm.setComponentEnabledSetting(receiver,
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("notifications", false);
-        editor.apply();
-    }
-
-    static void RegisterNotifications(Context cnt) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
-        int time = sharedPreferences.getInt("frequency", 0);
-
-        if (time != 0) {
-            Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
-            intent.putExtra("time", time);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager alarmManager = (AlarmManager) cnt.getSystemService(Context.ALARM_SERVICE);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        SystemClock.elapsedRealtime() + 1000 * 60 * time,
-                        pendingIntent);
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        SystemClock.elapsedRealtime() + 1000 * 60 * time,
-                        pendingIntent);
-            } else {
-                alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        SystemClock.elapsedRealtime() + 1000 * 60 * time,
-                        1000 * 60 * time,
-                        pendingIntent);
-            }
-
-            ComponentName receiver = new ComponentName(cnt, OnSystemBoot.class);
-            PackageManager pm = cnt.getPackageManager();
-
-            pm.setComponentEnabledSetting(receiver,
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP);
-
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("notifications", true);
-            editor.apply();
-        }
-    }
-
-    static void SaveFrequency(Context cnt, int frequency) {
+    public static void SaveFrequency(Context cnt, int frequency) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("frequency", frequency);
         editor.apply();
     }
 
-    private static void IfIsSet(Boolean IsSet, Activity activity, Context cnt) {
+    public static void IfIsSet(Boolean IsSet, Activity activity, Context cnt) {
         if (IsSet) {
             activity.onBackPressed();
         } else {
@@ -138,7 +79,7 @@ public class RepeatsHelper {
         }
     }
 
-    static void AskAboutTime(final Context context, final boolean IsSet, final Activity activity) {
+    public static void AskAboutTime(final Context context, final boolean IsSet, final Activity activity) {
 
         AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(context);
 
@@ -167,8 +108,8 @@ public class RepeatsHelper {
                     int frequency = Integer.parseInt(text);
 
                     RepeatsHelper.SaveFrequency(context, frequency);
-                    RepeatsHelper.CancelNotifications(context);
-                    RepeatsHelper.RegisterNotifications(context);
+                    NotifiSetup.CancelNotifications(context);
+                    NotifiSetup.RegisterNotifications(context);
                     RepeatsHelper.askAboutBattery(context, IsSet, activity);
                 } else {
                     IfIsSet(IsSet, activity, context);
@@ -178,7 +119,7 @@ public class RepeatsHelper {
         ALERTbuilder.show();
     }
 
-    static void askAboutBattery(final Context cnt, final Boolean IsSet, final Activity activity) {
+    public static void askAboutBattery(final Context cnt, final Boolean IsSet, final Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             final String packageName = cnt.getPackageName();
@@ -220,7 +161,7 @@ public class RepeatsHelper {
         }
     }
 
-    static Boolean DarkTheme(Context context) {
+    public static Boolean DarkTheme(Context context) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String theme = "";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -252,7 +193,7 @@ public class RepeatsHelper {
         }
     }
 
-    static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
@@ -271,7 +212,7 @@ public class RepeatsHelper {
         return inSampleSize;
     }
 
-    static void CheckDir(Context cnt) {
+    public static void CheckDir(Context cnt) {
         File file = new File(cnt.getFilesDir(), "shared");
         if (file.exists()) {
             String[] files = file.list();
@@ -287,14 +228,14 @@ public class RepeatsHelper {
         }
     }
 
-    static void shareSets(Context context, Activity activity) {
-        Uri uri = FileProvider.getUriForFile(context, "com.rootekstudio.repeatsandroid.AddEditSetActivity", SetToFile.zipFile);
+    public static void shareSets(Context context, Activity activity) {
+        Uri uri = FileProvider.getUriForFile(context, "com.rootekstudio.repeatsandroid.activities.AddEditSetActivity", SetToFile.zipFile);
         Intent share = new Intent();
 
         share.setAction(Intent.ACTION_SEND);
         share.putExtra(Intent.EXTRA_STREAM, uri);
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         share.setType("application/zip");
-        activity.startActivityForResult(Intent.createChooser(share, context.getString(R.string.send)), 111);
+        activity.startActivityForResult(Intent.createChooser(share, context.getString(R.string.send)), RequestCodes.SHARE_SET);
     }
 }

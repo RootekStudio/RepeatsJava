@@ -4,9 +4,9 @@ import java.text.Normalizer;
 import java.util.Locale;
 import java.util.Scanner;
 
-class CheckAnswer {
+public class CheckAnswer {
 
-    static boolean isAnswerCorrect(String user, String correct, String ignore) {
+    public static boolean isAnswerCorrect(String user, String correct, String ignore) {
         if (ignore.equals("true")) {
             user = Normalizer.normalize(user, Normalizer.Form.NFD)
                     .replaceAll(" ", "")

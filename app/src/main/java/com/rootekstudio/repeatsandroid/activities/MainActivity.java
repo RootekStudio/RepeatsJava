@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.activities;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -25,6 +25,13 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.RepeatsListDB;
+import com.rootekstudio.repeatsandroid.RequestCodes;
+import com.rootekstudio.repeatsandroid.database.SaveShared;
+import com.rootekstudio.repeatsandroid.ZipSet;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,7 +48,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         IsDark = RepeatsHelper.DarkTheme(this);
-        RepeatsHelper.CheckDir(this);
         createNotificationChannel();
     }
 
@@ -52,6 +58,7 @@ public class MainActivity extends AppCompatActivity
 
         final Context cnt = this;
 
+        RepeatsHelper.CheckDir(this);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.logo);
@@ -195,7 +202,7 @@ public class MainActivity extends AppCompatActivity
                         zipPickerIntent.setType("application/zip");
                         try
                         {
-                            startActivityForResult(zipPickerIntent, 1);
+                            startActivityForResult(zipPickerIntent, RequestCodes.READ_SHARED);
                         }
                         catch(ActivityNotFoundException e)
                         {
@@ -217,7 +224,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+        if (requestCode == RequestCodes.READ_SHARED) {
             if (resultCode == RESULT_OK) {
                 final Context context = this;
 

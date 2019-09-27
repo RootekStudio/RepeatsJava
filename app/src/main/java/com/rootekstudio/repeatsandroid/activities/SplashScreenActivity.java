@@ -1,11 +1,13 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SplashScreen extends AppCompatActivity
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
+
+public class SplashScreenActivity extends AppCompatActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)

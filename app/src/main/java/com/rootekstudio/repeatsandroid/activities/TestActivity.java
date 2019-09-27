@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,6 +19,11 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.rootekstudio.repeatsandroid.CheckAnswer;
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -151,7 +156,7 @@ public class TestActivity extends AppCompatActivity {
             CorrectAnswers.add(correct);
         }
 
-        Intent intent = new Intent(this, TestResults.class);
+        Intent intent = new Intent(this, TestResultsActivity.class);
         intent.putExtra("Correct", CountCorrect);
         intent.putExtra("Incorrect", CountIncorrect);
         intent.putExtra("All", count);

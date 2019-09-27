@@ -4,12 +4,8 @@
     <color name="DayColorPrimaryDark">#FFFFFF</color>
     <color name="colorPrimaryDark">#252525</color>
     <color name="colorAccent">#247ee6</color>
-    <color name="darkMainItem">#383838</color>
-    <color name="lightMainItem">#F5F5F5</color>
     <color name="buttonLight">#ECECEC</color>
     <color name="buttonDark">#292929</color>
     <color name="tintDark">#3A3A3A</color>
-    <color name="navBarLight">#F8F8F8</color>
-    <color name="navBarDark">#121212</color>
 
 </resources>

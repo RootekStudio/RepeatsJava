@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
 
+import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
+
 public class OnSystemBoot extends BroadcastReceiver
 {
     @Override
@@ -17,7 +19,7 @@ public class OnSystemBoot extends BroadcastReceiver
 
         if (notifi && intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
         {
-            RepeatsHelper.RegisterNotifications(context);
+            NotifiSetup.RegisterNotifications(context);
         }
     }
 }

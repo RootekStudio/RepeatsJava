@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.notifications;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -12,17 +12,20 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.RemoteInput;
 
+import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.UserReply;
+import com.rootekstudio.repeatsandroid.activities.AnswerActivity;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Random;
 
-class RepeatsNotificationTemplate
-{
+public class RepeatsNotificationTemplate {
     private static final String KEY_TEXT_REPLY = "UsersAnswer";
 
-    static void NotifiTemplate(Context context, Boolean IsNext)
-    {
+    public static void NotifiTemplate(Context context, Boolean IsNext) {
         NotificationCompat.Builder mBuilder;
 
         RepeatsHelper.GetQuestionFromDatabase(context);
@@ -43,15 +46,12 @@ class RepeatsNotificationTemplate
         answerActivity.putExtra("Image", picturename);
         answerActivity.putExtra("IgnoreChars", ignorechars);
         answerActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,rnd, answerActivity,0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, rnd, answerActivity, 0);
 
-        if(IsNext)
-        {
+        if (IsNext) {
             mBuilder = new NotificationCompat.Builder(context, "RepeatsNextChannel");
             mBuilder.setDefaults(Notification.DEFAULT_LIGHTS);
-        }
-        else
-        {
+        } else {
             mBuilder = new NotificationCompat.Builder(context, "RepeatsQuestionChannel");
             mBuilder.setDefaults(Notification.DEFAULT_ALL);
         }
@@ -68,16 +68,12 @@ class RepeatsNotificationTemplate
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
-        if(!picturename.equals(""))
-        {
+        if (!picturename.equals("")) {
             File file = new File(context.getFilesDir(), picturename);
             FileInputStream inputStream = null;
-            try
-            {
+            try {
                 inputStream = new FileInputStream(file);
-            }
-            catch (FileNotFoundException e)
-            {
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
 
@@ -87,8 +83,7 @@ class RepeatsNotificationTemplate
                     .bigPicture(bitmap));
         }
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             String replyLabel = context.getString(R.string.ReplyText);
             RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
                     .setLabel(replyLabel)
@@ -113,8 +108,7 @@ class RepeatsNotificationTemplate
         notificationManager.notify(11, mBuilder.build());
     }
 
-    static void AnswerNotifi(Context context, String Title, String Text)
-    {
+    public static void AnswerNotifi(Context context, String Title, String Text) {
         Intent intent1 = new Intent(context, RepeatsQuestionSend.class);
         intent1.putExtra("IsNext", true);
         PendingIntent replyPendingIntent = PendingIntent.getBroadcast(context,

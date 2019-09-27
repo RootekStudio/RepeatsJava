@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.search;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,7 @@ public class SearchAdapter extends BaseAdapter
     private ArrayList<SearchItem> arrayItems;
     private Boolean IsDark;
 
-    SearchAdapter(Context context, List<SearchItem> items)
+    public SearchAdapter(Context context, List<SearchItem> items)
     {
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -63,7 +66,7 @@ public class SearchAdapter extends BaseAdapter
         return convertView;
     }
 
-    void search(String text)
+    public void search(String text)
     {
         text = text.toLowerCase(Locale.getDefault()).replaceAll(" ", "");
         items.clear();

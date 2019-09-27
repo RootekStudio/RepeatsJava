@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.activities;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -7,37 +7,16 @@ import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.RepeatsListDB;
+import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
+import com.rootekstudio.repeatsandroid.search.SearchAdapter;
+import com.rootekstudio.repeatsandroid.search.SearchItem;
+
 import java.util.ArrayList;
 import java.util.List;
-
-class SearchItem
-{
-    private String Question;
-    private String Answer;
-    private String Title;
-    private String TableName;
-    private String AllItem;
-
-    SearchItem(String Question, String Answer, String Title, String TableName)
-    {
-        this.Question = Question;
-        this.Answer = Answer;
-        this.Title = Title;
-        this.TableName = TableName;
-        this.AllItem = Question + System.getProperty("line.separator") + Answer + System.getProperty("line.separator") + Title;
-    }
-
-    String gQuestion() { return Question; }
-    String gAnswer() { return Answer; }
-    String gTitle() { return Title; }
-    String gTableName() {return TableName; }
-    String gItem() {return AllItem; }
-
-    public void sQuestion(String Question) { this.Question = Question; }
-    public void sAnswer(String Answer) {this.Answer = Answer; }
-    public void sTitle(String Title) {this.Title = Title; }
-    public void sTableName(String TableName) {this.TableName = TableName;}
-}
 
 public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener
 {

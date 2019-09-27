@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,6 +30,14 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.RepeatsListDB;
+import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
+import com.rootekstudio.repeatsandroid.RequestCodes;
+import com.rootekstudio.repeatsandroid.ShareButton;
+import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,6 +58,7 @@ public class AddEditSetActivity extends AppCompatActivity {
     Context context = null;
     DatabaseHelper DB;
     ViewGroup parent = null;
+    boolean deleted = false;
 
     //Last index from database
     int lastIndex = 0;
@@ -58,6 +67,7 @@ public class AddEditSetActivity extends AppCompatActivity {
     //id of the table
     static String id;
 
+    //region onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,19 +113,19 @@ public class AddEditSetActivity extends AppCompatActivity {
                     ALERTbuilder.setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (!editing.equals("FALSE")) {
-                                DeleteSet(editing);
 
+                            DeleteSet(id);
 
-                                List<RepeatsListDB> a = DB.AllItemsLIST();
-                                int size = a.size();
+                            List<RepeatsListDB> a = DB.AllItemsLIST();
+                            int size = a.size();
 
-                                //if there is no set left in database, turn off notifications
-                                if (size == 0) {
-                                    RepeatsHelper.CancelNotifications(context);
-                                }
+                            //if there is no set left in database, turn off notifications
+                            if (size == 0) {
+                                NotifiSetup.CancelNotifications(context);
                             }
 
+
+                            deleted = true;
                             AddEditSetActivity.super.onBackPressed();
                         }
                     });
@@ -179,7 +189,9 @@ public class AddEditSetActivity extends AppCompatActivity {
             }
         });
     }
+    //endregion
 
+    //region readSetFromDatabase
     void readSetFromDatabase(final String SetID, String NAME) {
         final LayoutInflater inflater = LayoutInflater.from(this);
         EditText editName = findViewById(R.id.projectname);
@@ -282,6 +294,8 @@ public class AddEditSetActivity extends AppCompatActivity {
         readFromDatabase.start();
     }
 
+    //endregion
+    //region addView
     void addView(ViewGroup viewGroup, Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View item = inflater.inflate(R.layout.addrepeatslistitem, viewGroup, false);
@@ -316,92 +330,9 @@ public class AddEditSetActivity extends AppCompatActivity {
         //Adding item to root view
         viewGroup.addView(item);
     }
+    //endregion
 
-    View.OnFocusChangeListener newName = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View view, boolean hasFocus) {
-            if (!hasFocus) {
-                EditText projectname = (EditText) view;
-                DB.setTableName(projectname.getText().toString(), id);
-            }
-        }
-    };
-
-    View.OnFocusChangeListener newAnswer = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View view, boolean hasFocus) {
-            EditText editText = (EditText) view;
-            String answer = editText.getText().toString();
-
-            if(hasFocus){
-                editText.setTag(answer);
-            }
-            else {
-
-                ViewGroup RelativeAddItem = (ViewGroup) view.getParent().getParent().getParent();
-
-                if(RelativeAddItem.getTag() == null) {
-                    RelativeAddItem  = (ViewGroup) view.getParent().getParent();
-                }
-
-                int index = Integer.parseInt(RelativeAddItem.getTag().toString());
-
-                String allAnswers = DB.getAnswers(id, index);
-
-                String newAnswer = "";
-
-                String oldAnswer = editText.getTag().toString();
-
-                if(allAnswers.contains(oldAnswer) && !oldAnswer.equals("")) {
-                    newAnswer = allAnswers.replace(oldAnswer, answer);
-                }
-                else if(!allAnswers.equals("")) {
-                    newAnswer = allAnswers + RepeatsHelper.breakLine +  answer;
-                }
-                else {
-                    newAnswer = answer;
-                }
-
-                DB.InsertValue(id, index, "answer", newAnswer);
-            }
-
-
-        }
-    };
-
-    View.OnFocusChangeListener newText = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View view, boolean hasFocus) {
-
-            if (!hasFocus) {
-                EditText editText = (EditText) view;
-
-                //Getting parent of EditText
-                ViewGroup RelativeAddItem = (ViewGroup) view.getParent().getParent();
-
-                String column = "";
-
-                //Getting index of item in root view
-                int index = Integer.parseInt(RelativeAddItem.getTag().toString());
-                ;
-
-                //Checking if user has entered the question or the answer
-                if (RelativeAddItem.findViewById(R.id.questionBox) == view) {
-                    column = "question";
-                } else if (RelativeAddItem.findViewById(R.id.answerBox) == view) {
-                    column = "answer";
-                } else if (RelativeAddItem.findViewById(R.id.answerBoxPlus) == view) {
-                    column = "answer";
-                    DB.addAnswer(id, editText.getText().toString(), index);
-                    RelativeAddItem = (ViewGroup) RelativeAddItem.getParent();
-                    index = Integer.parseInt(RelativeAddItem.getTag().toString());
-                }
-
-                DB.InsertValue(id, index, column, editText.getText().toString());
-            }
-        }
-    };
-
+    //region clicks
     private View.OnClickListener deleteClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -432,7 +363,7 @@ public class AddEditSetActivity extends AppCompatActivity {
 
             imagePreview = view.getParent();
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(photoPickerIntent, 1);
+            startActivityForResult(photoPickerIntent, RequestCodes.PICK_IMAGE);
         }
     };
 
@@ -471,7 +402,91 @@ public class AddEditSetActivity extends AppCompatActivity {
             addAnswer(view, "");
         }
     };
+    //endregion
 
+    //region focus
+    View.OnFocusChangeListener newName = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View view, boolean hasFocus) {
+            if (!hasFocus) {
+                EditText projectname = (EditText) view;
+                DB.setTableName(projectname.getText().toString(), id);
+            }
+        }
+    };
+
+    View.OnFocusChangeListener newText = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View view, boolean hasFocus) {
+
+            if (!hasFocus) {
+                EditText editText = (EditText) view;
+
+                //Getting parent of EditText
+                ViewGroup RelativeAddItem = (ViewGroup) view.getParent().getParent();
+
+                String column = "";
+
+                //Getting index of item in root view
+                int index = Integer.parseInt(RelativeAddItem.getTag().toString());
+                ;
+
+                //Checking if user has entered the question or the answer
+                if (RelativeAddItem.findViewById(R.id.questionBox) == view) {
+                    column = "question";
+                } else if (RelativeAddItem.findViewById(R.id.answerBox) == view) {
+                    column = "answer";
+                } else if (RelativeAddItem.findViewById(R.id.answerBoxPlus) == view) {
+                    column = "answer";
+                    DB.addAnswer(id, editText.getText().toString(), index);
+                    RelativeAddItem = (ViewGroup) RelativeAddItem.getParent();
+                    index = Integer.parseInt(RelativeAddItem.getTag().toString());
+                }
+
+                DB.InsertValue(id, index, column, editText.getText().toString());
+            }
+        }
+    };
+
+    View.OnFocusChangeListener newAnswer = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View view, boolean hasFocus) {
+            EditText editText = (EditText) view;
+            String answer = editText.getText().toString();
+
+            if (hasFocus) {
+                editText.setTag(answer);
+            } else {
+
+                ViewGroup RelativeAddItem = (ViewGroup) view.getParent().getParent().getParent();
+
+                if (RelativeAddItem.getTag() == null) {
+                    RelativeAddItem = (ViewGroup) view.getParent().getParent();
+                }
+
+                int index = Integer.parseInt(RelativeAddItem.getTag().toString());
+
+                String allAnswers = DB.getAnswers(id, index);
+
+                String newAnswer = "";
+
+                String oldAnswer = editText.getTag().toString();
+
+                if (allAnswers.contains(oldAnswer) && !oldAnswer.equals("")) {
+                    newAnswer = allAnswers.replace(oldAnswer, answer);
+                } else if (!allAnswers.equals("")) {
+                    newAnswer = allAnswers + RepeatsHelper.breakLine + answer;
+                } else {
+                    newAnswer = answer;
+                }
+
+                DB.InsertValue(id, index, "answer", newAnswer);
+            }
+        }
+    };
+
+    //endregion
+    //region addAnswer
     void addAnswer(View view, String text) {
         View pView = (View) view.getParent();
         final ViewGroup linearQA = pView.findViewById(R.id.LinearQA);
@@ -499,9 +514,16 @@ public class AddEditSetActivity extends AppCompatActivity {
                 int index = Integer.parseInt(RelativeAddItem.getTag().toString());
 
                 String allAnswers = DB.getAnswers(id, index);
-                String delAnswer = allAnswers.replace(RepeatsHelper.breakLine + answer, "");
-                DB.InsertValue(id, index, "answer", delAnswer);
 
+                if (!answer.isEmpty()) {
+                    String delAnswer = allAnswers.replace(RepeatsHelper.breakLine + answer, "");
+                    DB.InsertValue(id, index, "answer", delAnswer);
+                }
+
+                if (allAnswers.contains(RepeatsHelper.breakLine + RepeatsHelper.breakLine)) {
+                    String delAnswer = allAnswers.replace(RepeatsHelper.breakLine + RepeatsHelper.breakLine, RepeatsHelper.breakLine);
+                    DB.InsertValue(id, index, "answer", delAnswer);
+                }
                 linear.removeView(p);
             }
         });
@@ -509,10 +531,32 @@ public class AddEditSetActivity extends AppCompatActivity {
         linearQA.addView(answer);
     }
 
+    //endregion
+
+    void DeleteSet(String x) {
+        DatabaseHelper DB = new DatabaseHelper(this);
+        ArrayList<String> allImages = new ArrayList<>();
+        if (!x.equals("FALSE")) {
+            allImages = DB.getAllImages(x);
+            DB.deleteOneFromList(x);
+            DB.DeleteSet(x);
+        }
+
+        int count = allImages.size();
+
+        if (count != 0) {
+            for (int j = 0; j < count; j++) {
+                String imgName = allImages.get(j);
+                File file = new File(getFilesDir(), imgName);
+                boolean bool = file.delete();
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+        if (requestCode == RequestCodes.PICK_IMAGE) {
             if (resultCode == RESULT_OK) {
                 Uri selectedImage = data.getData();
                 final InputStream imageStream;
@@ -571,28 +615,8 @@ public class AddEditSetActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.imageError, Toast.LENGTH_LONG).show();
                     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(photoPickerIntent, 1);
+                    startActivityForResult(photoPickerIntent, RequestCodes.PICK_IMAGE);
                 }
-            }
-        }
-    }
-
-    void DeleteSet(String x) {
-        DatabaseHelper DB = new DatabaseHelper(this);
-        ArrayList<String> allImages = new ArrayList<>();
-        if (!x.equals("FALSE")) {
-            allImages = DB.getAllImages(x);
-            DB.deleteOneFromList(x);
-            DB.DeleteSet(x);
-        }
-
-        int count = allImages.size();
-
-        if (count != 0) {
-            for (int j = 0; j < count; j++) {
-                String imgName = allImages.get(j);
-                File file = new File(getFilesDir(), imgName);
-                boolean bool = file.delete();
             }
         }
     }
@@ -631,6 +655,9 @@ public class AddEditSetActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        resetFocus();
+        if (!deleted) {
+            resetFocus();
+        }
+
     }
 }

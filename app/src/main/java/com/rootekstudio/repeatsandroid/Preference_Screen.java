@@ -1,21 +1,17 @@
 package com.rootekstudio.repeatsandroid;
 
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.media.audiofx.NoiseSuppressor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.provider.ContactsContract;
 import android.provider.Settings;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.preference.CheckBoxPreference;
@@ -27,7 +23,12 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreferenceCompat;
 
-import java.util.ArrayList;
+import com.rootekstudio.repeatsandroid.activities.EnableSetsListActivity;
+import com.rootekstudio.repeatsandroid.activities.MainActivity;
+import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
+
 import java.util.List;
 
 public class Preference_Screen extends PreferenceFragmentCompat {
@@ -77,7 +78,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     if (f == 0) {
                         RepeatsHelper.AskAboutTime(context, false, SettingsActivity.activity);
                     } else {
-                        RepeatsHelper.RegisterNotifications(context);
+                        NotifiSetup.RegisterNotifications(context);
                     }
 
                     findPreference("timeAsk").setVisible(true);
@@ -91,7 +92,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
                 } else {
                     if (freq != 0) {
-                        RepeatsHelper.CancelNotifications(context);
+                        NotifiSetup.CancelNotifications(context);
                     }
 
                     findPreference("timeAsk").setVisible(false);
@@ -126,7 +127,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         enableSets.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent(context, EnableSetsList.class);
+                Intent intent = new Intent(context, EnableSetsListActivity.class);
                 startActivity(intent);
                 return true;
             }
@@ -143,8 +144,8 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                 DB.ResetEnabled();
 
                 RepeatsHelper.SaveFrequency(context, 5);
-                RepeatsHelper.CancelNotifications(context);
-                RepeatsHelper.RegisterNotifications(context);
+                NotifiSetup.CancelNotifications(context);
+                NotifiSetup.RegisterNotifications(context);
 
                 int frequency = sharedPreferences.getInt("frequency", 0);
                 findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
@@ -183,7 +184,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.setData(Uri.parse("package:" + packageName));
 
-                            startActivityForResult(intent,124);
+                            startActivityForResult(intent, RequestCodes.REQUEST_IGNORE_BATTERY);
                         }
                     }
                     else
@@ -195,7 +196,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                             Intent intent = new Intent();
                             intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
 
-                            startActivityForResult(intent,123);
+                            startActivityForResult(intent, RequestCodes.OPEN_BATTERY_SETTINGS);
                         }
                     }
                     return true;
@@ -246,66 +247,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         createBackup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                final AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(context);
-                LayoutInflater layoutInflater = LayoutInflater.from(context);
-                final View view1 = layoutInflater.inflate(R.layout.where_backup, null);
-                ALERTbuilder.setView(view1);
-                ALERTbuilder.setMessage(R.string.where_Backup);
-                final AlertDialog alert = ALERTbuilder.show();
-
-                RelativeLayout relCloud = view1.findViewById(R.id.relCloud);
-                RelativeLayout relLocal = view1.findViewById(R.id.relLocal);
-
-                final DatabaseHelper DB = new DatabaseHelper(context);
-
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    relLocal.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            List<RepeatsListDB> list = DB.AllItemsLIST();
-                            ArrayList<String> names = new ArrayList<>();
-                            ArrayList<String> setsID = new ArrayList<>();
-
-                            for(int i = 0; i < list.size(); i++) {
-                                RepeatsListDB item = list.get(i);
-                                names.add(item.getitle());
-                                setsID.add(item.getTableName());
-                            }
-
-                            SetToFile.saveSetsToFile(context, setsID, names);
-
-                            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                            getActivity().startActivityForResult(intent, 3);
-                            alert.dismiss();
-                        }
-                    });
-                }
-                else {
-                    relLocal.setVisibility(View.INVISIBLE);
-                }
-
-                relCloud.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        alert.dismiss();
-                        List<RepeatsListDB> list = DB.AllItemsLIST();
-                        ArrayList<String> names = new ArrayList<>();
-                        ArrayList<String> setsID = new ArrayList<>();
-
-                        for(int i = 0; i < list.size(); i++) {
-                            RepeatsListDB item = list.get(i);
-                            names.add(item.getitle());
-                            setsID.add(item.getTableName());
-                        }
-
-                        SetToFile.saveSetsToFile(context, setsID, names);
-                        RepeatsHelper.shareSets(context, getActivity());
-                    }
-                });
-
-
-
+                Backup.createBackup(context, getActivity());
                 return true;
             }
         });
@@ -316,16 +258,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         restoreBackup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Intent zipPickerIntent  = new Intent(Intent.ACTION_GET_CONTENT);
-                zipPickerIntent.setType("application/zip");
-                try
-                {
-                    getActivity().startActivityForResult(zipPickerIntent, 2);
-                }
-                catch(ActivityNotFoundException e)
-                {
-                    Toast.makeText(context, R.string.explorerNotFound, Toast.LENGTH_LONG).show();
-                }
+                Backup.selectFileToRestore(context, getActivity());
                 return true;
             }
         });

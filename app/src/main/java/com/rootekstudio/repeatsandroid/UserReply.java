@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 
+import com.rootekstudio.repeatsandroid.notifications.RepeatsNotificationTemplate;
+
 @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
 public class UserReply extends BroadcastReceiver {
     @Override

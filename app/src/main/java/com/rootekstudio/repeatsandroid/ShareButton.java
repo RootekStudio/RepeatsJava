@@ -3,27 +3,17 @@ package com.rootekstudio.repeatsandroid;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import androidx.core.content.FileProvider;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
-class ShareButton {
-    static void ShareClick(final Context context, final String name, final String setID, final Activity activity) {
+public class ShareButton {
+    public static void ShareClick(final Context context, final String name, final String setID, final Activity activity) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -47,6 +37,17 @@ class ShareButton {
                 arraySetsID.add(setID);
 
                 SetToFile.saveSetsToFile(context, arraySetsID, arrayName);
+
+                Uri zipUri = Uri.fromFile(SetToFile.zipFile);
+
+                OutputStream outputStream = null;
+                try {
+                    outputStream = context.getContentResolver().openOutputStream(zipUri);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                ZipSet.zip(SetToFile.filesToShare, outputStream);
 
                 RepeatsHelper.shareSets(context, activity);
 

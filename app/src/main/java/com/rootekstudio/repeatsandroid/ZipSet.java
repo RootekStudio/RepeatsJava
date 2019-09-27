@@ -8,19 +8,20 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-class ZipSet
+public class ZipSet
 {
-    static void zip(List<String> files, File zipFile)
+    public static void zip(List<String> files, OutputStream outputStream)
     {
         BufferedInputStream origin = null;
         try
         {
-            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
+            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(outputStream));
             byte data[] = new byte[1024];
 
             for (int i = 0; i < files.size(); i++)
@@ -49,7 +50,7 @@ class ZipSet
         }
     }
 
-    static void UnZip(InputStream Zip, File directory)
+    public static void UnZip(InputStream Zip, File directory)
     {
         try
         {

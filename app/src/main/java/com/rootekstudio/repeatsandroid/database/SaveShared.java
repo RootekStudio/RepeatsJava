@@ -1,9 +1,11 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.database;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.icu.text.Edits;
+
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.RepeatsListDB;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,7 +16,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
@@ -22,11 +23,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
-class SaveShared {
-    static String ID;
-    static String name;
+public class SaveShared {
+    public static String ID;
+    public static String name;
 
-    static void SaveSetsToDB(Context context, DatabaseHelper DB) {
+    public static void SaveSetsToDB(Context context, DatabaseHelper DB) {
 
         File dir = new File(context.getFilesDir(), "shared");
         File jsonFile = new File(dir, "sets.json");

@@ -25,25 +25,18 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.rootekstudio.repeatsandroid.AddEditSetActivity"
+            android:authorities="com.rootekstudio.repeatsandroid.activities.AddEditSetActivity"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
-        <activity android:name=".SplashScreen"
-            android:theme="@style/SplashScreenTheme"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".activities.MainActivity">
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
+
         <receiver
-            android:name=".RepeatsQuestionSend"
+            android:name=".notifications.RepeatsQuestionSend"
             android:enabled="true"
             android:exported="true" />
         <receiver
@@ -52,11 +45,11 @@
             android:exported="true" />
 
         <activity
-            android:name=".AnswerActivity"
+            android:name=".activities.AnswerActivity"
             android:label=""
             android:theme="@style/transculentTheme" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/Settings"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -64,18 +57,26 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </activity>
-        <activity android:name=".EnableSetsList"
-            android:label="@string/notifiFromSets"/>
-        <activity android:name=".TestActivity"
+        <activity android:name=".activities.TestActivity"
             android:screenOrientation="locked"
             android:label="@string/Test"/>
-        <activity android:name=".TestResults"
-            android:label="@string/Test"/>
-        <activity android:name=".SearchActivity"
+        <activity android:name=".activities.SearchActivity"
             android:label="@string/Search">
         </activity>
-        <activity android:name=".AddEditSetActivity"
+        <activity android:name=".activities.AddEditSetActivity"
             android:label="@string/title_activity_repeats_add_edit" />
+        <activity android:name=".activities.TestResultsActivity"
+            android:label="@string/Test"/>
+        <activity android:name=".activities.SplashScreenActivity"
+            android:theme="@style/SplashScreenTheme"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.EnableSetsListActivity"
+            android:label="@string/notifiFromSets"/>
     </application>
 
 </manifest>

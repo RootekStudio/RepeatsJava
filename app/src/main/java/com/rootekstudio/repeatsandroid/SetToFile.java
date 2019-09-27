@@ -1,11 +1,9 @@
 package com.rootekstudio.repeatsandroid;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 
-import androidx.core.content.FileProvider;
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,13 +25,14 @@ import java.util.Scanner;
 
 class SetToFile {
     static File zipFile;
+    static List<String> filesToShare;
     static String fileName;
 
     static void saveSetsToFile(Context context, ArrayList<String> setsID, ArrayList<String> name) {
+        RepeatsHelper.CheckDir(context);
         File directory = new File(context.getFilesDir(), "shared");
-
         File jsonFile = new File(directory, "sets.json");
-        List<String> filesToShare = new ArrayList<>();
+        filesToShare = new ArrayList<>();
         filesToShare.add(jsonFile.getPath());
 
         JSONObject json = new JSONObject();
@@ -100,7 +99,6 @@ class SetToFile {
             fileWriter.flush();
             fileWriter.close();
 
-            ZipSet.zip(filesToShare, zipFile);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {

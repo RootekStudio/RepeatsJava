@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,12 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.lang.reflect.Array;
+import com.rootekstudio.repeatsandroid.RepeatsListDB;
+import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import static java.sql.Types.CHAR;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String NAME = "TitleTable";
@@ -23,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_IGNORE_CHARS = "IgnoreChars";
     private static final String[] COLUMNS = {KEY_TITLE, KEY_TNAME, KEY_DATE, KEY_ENABLED, KEY_AVATAR};
 
-    DatabaseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, "repeats", null, 2);
     }
 
@@ -63,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    List<RepeatsListDB> AllItemsLIST() {
+    public List<RepeatsListDB> AllItemsLIST() {
         List<RepeatsListDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM " + NAME;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -88,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return ALL;
     }
 
-    List<RepeatsListDB> ALLEnabledSets() {
+    public List<RepeatsListDB> ALLEnabledSets() {
         List<RepeatsListDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM TitleTable WHERE IsEnabled='true'";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -113,7 +113,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return ALL;
     }
 
-    void AddItem(String SetID) {
+    public void AddItem(String SetID) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("question", "");
@@ -135,35 +135,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    void InsertValue(String SetID, int ID, String column, String what) {
+    public void InsertValue(String SetID, int ID, String column, String what) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + SetID + " SET " + column + "='" + what + "' " + "WHERE id='" + ID + "'";
         db.execSQL(query);
         db.close();
     }
 
-    void setTableName(String name, String SetID) {
+    public void setTableName(String name, String SetID) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE TitleTable SET title='" + name + "' WHERE TableName='" + SetID + "'";
         db.execSQL(query);
         db.close();
     }
 
-    void deleteImage(String SetID, String imageName) {
+    public void deleteImage(String SetID, String imageName) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + SetID + " SET image='' WHERE image='" + imageName + "'";
         db.execSQL(query);
         db.close();
     }
 
-    void deleteItem(String SetID, int index) {
+    public void deleteItem(String SetID, int index) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + SetID + " WHERE id='" + index + "'";
         db.execSQL(query);
         db.close();
     }
 
-    ArrayList<String> getAllImages(String SetID) {
+   public ArrayList<String> getAllImages(String SetID) {
         ArrayList<String> allImages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT image FROM " + SetID;
@@ -182,7 +182,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return allImages;
     }
 
-    String getAnswers(String SetID, int index) {
+    public String getAnswers(String SetID, int index) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT answer FROM " + SetID + " WHERE id='" + index + "'";
         Cursor cursor = db.rawQuery(query, null);
@@ -196,21 +196,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return answers;
     }
 
-    void addAnswer(String SetID, String answer, int index) {
+    public void addAnswer(String SetID, String answer, int index) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + SetID + " SET answer = (answer ||  CHAR(13) || CHAR(10) || '" + answer + "') WHERE id='" + index + "'";
         db.execSQL(query);
         db.close();
     }
 
-    void ignoreChars(String SetID, String isIgnoring) {
+    public void ignoreChars(String SetID, String isIgnoring) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE TitleTable SET IgnoreChars='" + isIgnoring + "' WHERE TableName='" + SetID + "'";
         db.execSQL(query);
         db.close();
     }
 
-    void AddName(RepeatsListDB List) {
+    public void AddName(RepeatsListDB List) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, List.getitle());
@@ -224,7 +224,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    void deleteOneFromList(String Title) {
+    public void deleteOneFromList(String Title) {
         SQLiteDatabase db = this.getWritableDatabase();
         String DELETE_NAME = "DELETE FROM TitleTable WHERE TableName =" + "\"" + Title + "\"";
         db.execSQL(DELETE_NAME);
@@ -232,21 +232,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    void CreateSet(String name) {
+    public void CreateSet(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         String CREATE_SET = "CREATE TABLE IF NOT EXISTS " + name + " (id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, answer TEXT, image TEXT)";
         db.execSQL(CREATE_SET);
         db.close();
     }
 
-    void DeleteSet(String SETNAME) {
+    public void DeleteSet(String SETNAME) {
         SQLiteDatabase db = this.getWritableDatabase();
         String DELETE_SET = "DROP TABLE " + SETNAME;
         db.execSQL(DELETE_SET);
         db.close();
     }
 
-    List<RepeatsSingleSetDB> AllItemsSET(String SETNAME) {
+    public List<RepeatsSingleSetDB> AllItemsSET(String SETNAME) {
         List<RepeatsSingleSetDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM " + SETNAME;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -268,7 +268,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return ALL;
     }
 
-    void UpdateTable(String TABLE, String WHAT, String WHERE) {
+    public void UpdateTable(String TABLE, String WHAT, String WHERE) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String Command;
@@ -283,7 +283,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    void ResetEnabled() {
+    public void ResetEnabled() {
         SQLiteDatabase db = this.getWritableDatabase();
         String Command;
 
