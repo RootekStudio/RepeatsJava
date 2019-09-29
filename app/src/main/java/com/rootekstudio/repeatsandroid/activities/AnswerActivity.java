@@ -56,6 +56,9 @@ public class AnswerActivity extends AppCompatActivity {
         View view = getLayoutInflater().inflate(R.layout.ask, null);
         final EditText userAnswer = view.findViewById(R.id.EditAsk);
         userAnswer.setHint(R.string.ReplyText);
+        if(!RepeatsHelper.DarkTheme(context, true)) {
+            userAnswer.setBackgroundResource(R.drawable.edittext_shape);
+        }
         userAnswer.requestFocus();
 
         if (!ImageName.equals("")) {

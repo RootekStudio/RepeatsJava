@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/layout_mainshape"
+    android:background="@drawable/layout_mainshape_dark"
     android:layout_margin="10dp"
     android:id="@+id/RelativeAddItem"
     android:elevation="5dp"
@@ -62,7 +62,8 @@
         android:src="@drawable/ic_playlist_add"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="10dp"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -73,7 +74,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_toStartOf="@id/addImage"
-        android:layout_below="@id/imageView">
+        android:layout_below="@id/imageView"
+        android:layout_centerInParent="true">
 
         <EditText
             android:id="@+id/questionBox"
@@ -83,7 +85,9 @@
             android:layout_margin="5dp"
             android:singleLine="true"
             android:imeOptions="actionNext"
-            android:inputType="textCapSentences" />
+            android:inputType="textCapSentences"
+            android:padding="10dp"
+            android:background="@drawable/edittext_shape_dark" />
 
         <EditText
             android:id="@+id/answerBox"
@@ -93,8 +97,8 @@
             android:layout_margin="5dp"
             android:singleLine="true"
             android:imeOptions="actionNext"
-            android:inputType="textCapSentences" />
+            android:inputType="textCapSentences"
+            android:padding="10dp"
+            android:background="@drawable/edittext_shape_dark"/>
     </LinearLayout>
-
-
 </RelativeLayout>

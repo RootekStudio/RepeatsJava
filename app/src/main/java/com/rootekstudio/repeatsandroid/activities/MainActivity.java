@@ -1,12 +1,14 @@
 package com.rootekstudio.repeatsandroid.activities;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,16 +23,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RequestCodes;
-import com.rootekstudio.repeatsandroid.database.SaveShared;
 import com.rootekstudio.repeatsandroid.ZipSet;
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.SaveShared;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,13 +43,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
 {
     static boolean IsDark;
+    Activity activity = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        IsDark = RepeatsHelper.DarkTheme(this);
+        IsDark = RepeatsHelper.DarkTheme(this, false);
         createNotificationChannel();
     }
 
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
 
         final Context cnt = this;
+
+        activity = this;
 
         RepeatsHelper.CheckDir(this);
         setContentView(R.layout.activity_main);
@@ -188,8 +193,17 @@ public class MainActivity extends AppCompatActivity
                     {
                         intent.putExtra("ISEDIT", "FALSE");
                         intent.putExtra("IGNORE_CHARS", "false");
-                        startActivity(intent);
                         alert.dismiss();
+
+                        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
+                        int frequency = sharedPreferences.getInt("frequency", 0);
+
+                        if(frequency == 0) {
+                            RepeatsHelper.AskAboutTime(cnt, true, activity, intent);
+                        }
+                        else {
+                            startActivity(intent);
+                        }
                     }
                 });
 
@@ -228,19 +242,7 @@ public class MainActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 final Context context = this;
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                final LayoutInflater layoutInflater = LayoutInflater.from(context);
-                final View view1 = layoutInflater.inflate(R.layout.progress, null);
-
-                builder.setView(view1);
-                builder.setMessage(R.string.loading);
-                builder.setCancelable(false);
-
-                ProgressBar progressBar = view1.findViewById(R.id.progressBar);
-                progressBar.setIndeterminate(true);
-
-                final AlertDialog dialog = builder.create();
-                dialog.show();
+                final AlertDialog dialog = RepeatsHelper.showLoadingDialog(context);
 
                 Thread thread = new Thread(new Runnable() {
                     @Override
@@ -261,7 +263,16 @@ public class MainActivity extends AppCompatActivity
                                     dialog.dismiss();
                                 }
                             });
-                            startActivity(intent);
+
+                            final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                            int frequency = sharedPreferences.getInt("frequency", 0);
+
+                            if(frequency == 0) {
+                                RepeatsHelper.AskAboutTime(context, true, activity, intent);
+                            }
+                            else {
+                                startActivity(intent);
+                            }
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }

@@ -13,7 +13,7 @@ public class SplashScreenActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        RepeatsHelper.DarkTheme(this);
+        RepeatsHelper.DarkTheme(this, false);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

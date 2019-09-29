@@ -16,8 +16,6 @@ import androidx.documentfile.provider.DocumentFile;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -44,18 +42,6 @@ public class Backup {
                 @Override
                 public void onClick(View view) {
 
-                    List<RepeatsListDB> list = DB.AllItemsLIST();
-                    ArrayList<String> names = new ArrayList<>();
-                    ArrayList<String> setsID = new ArrayList<>();
-
-                    for (int i = 0; i < list.size(); i++) {
-                        RepeatsListDB item = list.get(i);
-                        names.add(item.getitle());
-                        setsID.add(item.getTableName());
-                    }
-
-                    SetToFile.saveSetsToFile(context, setsID, names);
-
                     Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                     activity.startActivityForResult(intent, RequestCodes.PICK_CATALOG);
                     alert.dismiss();
@@ -70,6 +56,62 @@ public class Backup {
             public void onClick(View view) {
                 alert.dismiss();
                 List<RepeatsListDB> list = DB.AllItemsLIST();
+                final ArrayList<String> names = new ArrayList<>();
+                final ArrayList<String> setsID = new ArrayList<>();
+
+                for (int i = 0; i < list.size(); i++) {
+                    RepeatsListDB item = list.get(i);
+                    names.add(item.getitle());
+                    setsID.add(item.getTableName());
+                }
+
+                final AlertDialog dialog = RepeatsHelper.showLoadingDialog(context);
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SetToFile.saveSetsToFile(context, setsID, names);
+                        RepeatsHelper.shareSets(context, activity);
+
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                });
+
+                thread.start();
+
+            }
+        });
+    }
+
+    static void selectFileToRestore(Context context, Activity activity) {
+        Intent zipPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        zipPickerIntent.setType("application/zip");
+        try {
+            activity.startActivityForResult(zipPickerIntent, RequestCodes.SELECT_FILE_TO_RESTORE);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, R.string.explorerNotFound, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public static void saveBackupLocally(final Context context, Intent data, final Activity activity) {
+        Uri selectedUri = data.getData();
+        final DocumentFile pickedDir = DocumentFile.fromTreeUri(context, selectedUri);
+        String fileName = SetToFile.fileName;
+
+        final DatabaseHelper DB = new DatabaseHelper(context);
+
+        final AlertDialog dialog = RepeatsHelper.showLoadingDialog(context);
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                List<RepeatsListDB> list = DB.AllItemsLIST();
                 ArrayList<String> names = new ArrayList<>();
                 ArrayList<String> setsID = new ArrayList<>();
 
@@ -80,52 +122,63 @@ public class Backup {
                 }
 
                 SetToFile.saveSetsToFile(context, setsID, names);
-                RepeatsHelper.shareSets(context, activity);
+
+                DocumentFile docFile = null;
+                if (pickedDir != null) {
+                    docFile = pickedDir.createFile("application/zip", SetToFile.fileName);
+                }
+                OutputStream outputStream = null;
+                try {
+                    outputStream = context.getContentResolver().openOutputStream(docFile.getUri());
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                ZipSet.zip(SetToFile.filesToShare, outputStream);
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.dismiss();
+                        Toast.makeText(context, R.string.backup_created, Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
+
+        thread.start();
+
     }
 
-    public static void selectFileToRestore(Context context, Activity activity) {
-        Intent zipPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        zipPickerIntent.setType("application/zip");
-        try {
-            activity.startActivityForResult(zipPickerIntent, RequestCodes.SELECT_FILE_TO_RESTORE);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(context, R.string.explorerNotFound, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public static void saveBackupLocally(Context context, Intent data) {
-        Uri selectedUri = data.getData();
-        DocumentFile pickedDir = DocumentFile.fromTreeUri(context, selectedUri);
-        DocumentFile docFile = pickedDir.createFile("application/zip", SetToFile.fileName);
-
-        File file = new File(context.getFilesDir() + "/shared", SetToFile.fileName);
+    public static void restoreBackup(final Context context, Intent data, final Activity activity) {
+        Uri selectedZip = data.getData();
+        final AlertDialog dialog = RepeatsHelper.showLoadingDialog(context);
 
         try {
-            OutputStream outputStream = context.getContentResolver().openOutputStream(docFile.getUri());
+            final InputStream inputStream = context.getContentResolver().openInputStream(selectedZip);
 
-            ZipSet.zip(SetToFile.filesToShare, outputStream);
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ZipSet.UnZip(inputStream, new File(context.getFilesDir(), "shared"));
+                    SaveShared.SaveSetsToDB(context, new DatabaseHelper(context));
 
-            Toast.makeText(context, R.string.backup_created, Toast.LENGTH_LONG).show();
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.dismiss();
+                            Toast.makeText(context, R.string.backup_restored, Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
+                }
+            });
+
+            thread.start();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
-
-        public static void restoreBackup (Context context, Intent data){
-            Uri selectedZip = data.getData();
-            try {
-                InputStream inputStream = context.getContentResolver().openInputStream(selectedZip);
-                ZipSet.UnZip(inputStream, new File(context.getFilesDir(), "shared"));
-                SaveShared.SaveSetsToDB(context, new DatabaseHelper(context));
-
-                Toast.makeText(context, R.string.backup_restored, Toast.LENGTH_LONG).show();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-    }
+}

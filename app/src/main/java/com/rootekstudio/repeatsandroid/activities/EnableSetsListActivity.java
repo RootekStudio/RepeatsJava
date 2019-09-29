@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class EnableSetsListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        RepeatsHelper.DarkTheme(this);
+        RepeatsHelper.DarkTheme(this, false);
         setContentView(R.layout.activity_enable_sets_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

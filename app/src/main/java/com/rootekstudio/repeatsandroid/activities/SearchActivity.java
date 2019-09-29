@@ -7,11 +7,11 @@ import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.search.SearchAdapter;
 import com.rootekstudio.repeatsandroid.search.SearchItem;
 
@@ -27,7 +27,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     {
         super.onCreate(savedInstanceState);
 
-        RepeatsHelper.DarkTheme(this);
+        RepeatsHelper.DarkTheme(this, false);
 
         setContentView(R.layout.activity_search);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

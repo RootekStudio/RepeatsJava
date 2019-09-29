@@ -27,7 +27,7 @@ public class TestResultsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        RepeatsHelper.DarkTheme(this);
+        RepeatsHelper.DarkTheme(this, false);
         setContentView(R.layout.activity_test_results);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

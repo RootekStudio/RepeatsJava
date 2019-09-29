@@ -37,6 +37,8 @@
         android:layout_below="@id/imageViewTest"
         android:singleLine="true"
         android:imeOptions="actionNext"
-        android:inputType="textCapSentences"/>
+        android:inputType="textCapSentences"
+        android:background="@drawable/edittext_shape_dark"
+        android:padding="10dp"/>
 
 </RelativeLayout>

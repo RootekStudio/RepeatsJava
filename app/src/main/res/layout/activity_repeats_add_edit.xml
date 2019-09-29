@@ -18,7 +18,9 @@
             android:hint="@string/SetName"
             android:singleLine="true"
             android:imeOptions="actionNext"
-            android:inputType="textCapSentences"/>
+            android:inputType="textCapSentences"
+            android:background="@drawable/ask_edittext_dark"
+            android:padding="10dp" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

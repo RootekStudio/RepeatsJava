@@ -13,9 +13,12 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -36,6 +39,8 @@ public class RepeatsHelper {
     public static String tablename;
     public static String PictureName = "";
     public static String IgnoreChars;
+
+    static AlertDialog dialog = null;
 
     public static void GetQuestionFromDatabase(Context context) {
         DatabaseHelper DB = new DatabaseHelper(context);
@@ -68,18 +73,14 @@ public class RepeatsHelper {
         editor.apply();
     }
 
-    public static void IfIsSet(Boolean IsSet, Activity activity, Context cnt) {
-        if (IsSet) {
-            activity.onBackPressed();
-        } else {
-            activity.finish();
-            activity.overridePendingTransition(0, 0);
-            cnt.startActivity(activity.getIntent());
-            activity.overridePendingTransition(0, 0);
-        }
+    static void resetActivity(Context cnt, Activity activity) {
+        activity.finish();
+        activity.overridePendingTransition(0, 0);
+        cnt.startActivity(activity.getIntent());
+        activity.overridePendingTransition(0, 0);
     }
 
-    public static void AskAboutTime(final Context context, final boolean IsSet, final Activity activity) {
+    public static void AskAboutTime(final Context context, final boolean IsSet, final Activity activity, final Intent intent) {
 
         AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(context);
 
@@ -87,16 +88,40 @@ public class RepeatsHelper {
 
         final View view1 = layoutInflater.inflate(R.layout.ask, null);
         final EditText editText = view1.findViewById(R.id.EditAsk);
+        if(!DarkTheme(context, true)) {
+            editText.setBackgroundResource(R.drawable.edittext_shape);
+        }
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.requestFocus();
         editText.setHint(R.string.enterNumber);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
+
+        editText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+
+                if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER ) {
+                    EditText time = (EditText)view;
+                    String timeText = time.getText().toString();
+                    if(!timeText.equals("")){
+                        saveTime(context, timeText, IsSet, activity, intent);
+                    }
+                }
+                return false;
+            }
+        });
+
         ALERTbuilder.setView(view1);
         ALERTbuilder.setMessage(R.string.QuestionFreq);
         ALERTbuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                IfIsSet(IsSet, activity, context);
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(IsSet) {
+                    activity.startActivity(intent);
+                }
+                else {
+                    resetActivity(context, activity);
+                }
             }
         });
 
@@ -105,21 +130,27 @@ public class RepeatsHelper {
             public void onClick(DialogInterface dialog, int which) {
                 String text = editText.getText().toString();
                 if (!text.equals("")) {
-                    int frequency = Integer.parseInt(text);
-
-                    RepeatsHelper.SaveFrequency(context, frequency);
-                    NotifiSetup.CancelNotifications(context);
-                    NotifiSetup.RegisterNotifications(context);
-                    RepeatsHelper.askAboutBattery(context, IsSet, activity);
-                } else {
-                    IfIsSet(IsSet, activity, context);
+                    saveTime(context, text, IsSet, activity, intent);
                 }
             }
         });
-        ALERTbuilder.show();
+
+        dialog = ALERTbuilder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
     }
 
-    public static void askAboutBattery(final Context cnt, final Boolean IsSet, final Activity activity) {
+    static void saveTime(Context context, String text, Boolean IsSet, Activity activity, Intent intent) {
+        int frequency = Integer.parseInt(text);
+
+        RepeatsHelper.SaveFrequency(context, frequency);
+        NotifiSetup.CancelNotifications(context);
+        NotifiSetup.RegisterNotifications(context);
+        dialog.dismiss();
+        RepeatsHelper.askAboutBattery(context, IsSet, activity, intent);
+    }
+
+    public static void askAboutBattery(final Context cnt, final Boolean IsSet, final Activity activity, final Intent intent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             final String packageName = cnt.getPackageName();
@@ -133,14 +164,24 @@ public class RepeatsHelper {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(cnt, R.string.CancelOffBattery, Toast.LENGTH_LONG).show();
-                        IfIsSet(IsSet, activity, cnt);
+                        if(IsSet) {
+                            activity.startActivity(intent);
+                        }
+                        else{
+                            resetActivity(cnt, activity);
+                        }
                     }
                 });
 
                 dialog.setPositiveButton(R.string.Continue, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        IfIsSet(IsSet, activity, cnt);
+                        if(IsSet) {
+                            activity.startActivity(intent);
+                        }
+                        else{
+                            resetActivity(cnt, activity);
+                        }
 
                         Intent intent = new Intent();
                         intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
@@ -152,16 +193,28 @@ public class RepeatsHelper {
                 });
 
                 dialog.show();
-            } else {
-                IfIsSet(IsSet, activity, cnt);
+            }
+            else {
+                if(IsSet) {
+                    activity.startActivity(intent);
+                }
+                else{
+                    resetActivity(cnt, activity);
+                }
             }
 
-        } else {
-            IfIsSet(IsSet, activity, cnt);
+        }
+        else {
+            if(IsSet) {
+                activity.startActivity(intent);
+            }
+            else{
+                resetActivity(cnt, activity);
+            }
         }
     }
 
-    public static Boolean DarkTheme(Context context) {
+    public static Boolean DarkTheme(Context context, Boolean onlyCheck) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String theme = "";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -171,26 +224,52 @@ public class RepeatsHelper {
         }
 
         if (theme.equals("0")) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            context.setTheme(R.style.AppTheme);
+            if(!onlyCheck) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                context.setTheme(R.style.AppTheme);
+            }
             return false;
         } else if (theme.equals("1")) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            context.setTheme(R.style.DarkAppTheme);
+            if(!onlyCheck) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                context.setTheme(R.style.DarkAppTheme);
+            }
             return true;
         } else {
             Configuration config = context.getApplicationContext().getResources().getConfiguration();
             int currentNightMode = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
             if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                context.setTheme(R.style.DarkAppTheme);
+                if(!onlyCheck) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    context.setTheme(R.style.DarkAppTheme);
+                }
                 return true;
             } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                context.setTheme(R.style.AppTheme);
+                if(!onlyCheck) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    context.setTheme(R.style.AppTheme);
+                }
                 return false;
             }
         }
+    }
+
+    public static AlertDialog showLoadingDialog(Context context) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final LayoutInflater layoutInflater = LayoutInflater.from(context);
+        final View view1 = layoutInflater.inflate(R.layout.progress, null);
+
+        builder.setView(view1);
+        builder.setMessage(R.string.loading);
+        builder.setCancelable(false);
+
+        ProgressBar progressBar = view1.findViewById(R.id.progressBar);
+        progressBar.setIndeterminate(true);
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        return dialog;
     }
 
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {

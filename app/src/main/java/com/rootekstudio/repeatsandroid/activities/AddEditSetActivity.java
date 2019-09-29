@@ -30,13 +30,13 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.ShareButton;
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
 
 import java.io.File;
@@ -72,7 +72,7 @@ public class AddEditSetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IsDark = RepeatsHelper.DarkTheme(this);
+        IsDark = RepeatsHelper.DarkTheme(this, false);
 
         setContentView(R.layout.activity_repeats_add_edit);
 
@@ -97,6 +97,7 @@ public class AddEditSetActivity extends AppCompatActivity {
         bottomAppBar.replaceMenu(R.menu.bottomappbar_addset);
 
         if (!IsDark) {
+            editName.setBackgroundResource(R.drawable.editname_light);
             bottomAppBar.setBackgroundTint(ContextCompat.getColorStateList(this, R.color.DayColorPrimaryDark));
         }
 
@@ -215,10 +216,6 @@ public class AddEditSetActivity extends AppCompatActivity {
                     RelativeLayout RL = child.findViewById(R.id.RelativeAddItem);
                     RL.setTag(ID);
 
-                    if (IsDark) {
-                        RL.setBackgroundResource(R.drawable.layout_mainshape_dark);
-                    }
-
                     EditText Q = child.findViewById(R.id.questionBox);
                     EditText A = child.findViewById(R.id.answerBox);
                     ImageButton B = child.findViewById(R.id.deleteItem);
@@ -234,6 +231,12 @@ public class AddEditSetActivity extends AppCompatActivity {
                     I.setOnClickListener(addImageClick);
                     imgbut.setOnClickListener(deleteImageClick);
                     addAnswer.setOnClickListener(addAnswerClick);
+
+                    if (!IsDark) {
+                        RL.setBackgroundResource(R.drawable.layout_mainshape);
+                        Q.setBackgroundResource(R.drawable.edittext_shape);
+                        A.setBackgroundResource(R.drawable.edittext_shape);
+                    }
 
                     A.setFilters(new InputFilter[]{inputFilter});
 
@@ -323,8 +326,10 @@ public class AddEditSetActivity extends AppCompatActivity {
 
         answer.setFilters(new InputFilter[]{inputFilter});
 
-        if (IsDark) {
-            rel.setBackgroundResource(R.drawable.layout_mainshape_dark);
+        if (!IsDark) {
+            rel.setBackgroundResource(R.drawable.layout_mainshape);
+            question.setBackgroundResource(R.drawable.edittext_shape);
+            answer.setBackgroundResource(R.drawable.edittext_shape);
         }
 
         //Adding item to root view

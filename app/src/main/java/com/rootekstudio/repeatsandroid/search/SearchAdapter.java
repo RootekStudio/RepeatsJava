@@ -20,7 +20,6 @@ public class SearchAdapter extends BaseAdapter
     private LayoutInflater inflater;
     private List<SearchItem> items;
     private ArrayList<SearchItem> arrayItems;
-    private Boolean IsDark;
 
     public SearchAdapter(Context context, List<SearchItem> items)
     {
@@ -29,7 +28,7 @@ public class SearchAdapter extends BaseAdapter
         this.items = items;
         this.arrayItems = new ArrayList<>();
         this.arrayItems.addAll(items);
-        IsDark = RepeatsHelper.DarkTheme(context);
+        RepeatsHelper.DarkTheme(context, false);
     }
 
     @Override

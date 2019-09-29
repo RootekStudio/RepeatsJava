@@ -53,7 +53,7 @@
     <string name="Leave">Leave</string>
     <string name="CorrectAnswer1">Congrats!</string>
     <string name="About">About</string>
-    <string name="SetName">The name of set</string>
+    <string name="SetName">Name of the set</string>
     <string name="IngoreChars">Ignore special characters</string>
     <string name="Tag_id_2" translatable="false">2</string>
     <string name="CreateNew">Create new set</string>

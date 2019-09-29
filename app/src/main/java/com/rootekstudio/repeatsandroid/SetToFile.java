@@ -1,7 +1,6 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.content.Context;
-import android.net.Uri;
 
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 

@@ -25,7 +25,7 @@ public class SettingsActivity extends AppCompatActivity
 
         context = this;
 
-        RepeatsHelper.DarkTheme(this);
+        RepeatsHelper.DarkTheme(this, false);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -51,12 +51,12 @@ public class SettingsActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RequestCodes.SELECT_FILE_TO_RESTORE) {
             if(resultCode == RESULT_OK) {
-                Backup.restoreBackup(context, data);
+                Backup.restoreBackup(context, data, this);
             }
         }
         if(requestCode == RequestCodes.PICK_CATALOG) {
             if(resultCode == RESULT_OK) {
-                Backup.saveBackupLocally(context, data);
+                Backup.saveBackupLocally(context, data, this);
             }
         }
     }

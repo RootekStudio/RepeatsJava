@@ -20,10 +20,10 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.CheckAnswer;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,7 +43,7 @@ public class TestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        IsDark = RepeatsHelper.DarkTheme(this);
+        IsDark = RepeatsHelper.DarkTheme(this, false);
         setContentView(R.layout.activity_test);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -72,12 +72,6 @@ public class TestActivity extends AppCompatActivity {
                     String Answer = set.getAnswer();
                     String Image = set.getImag();
 
-                    if (IsDark) {
-                        view.setBackgroundResource(R.drawable.layout_mainshape_dark);
-                    } else {
-                        view.setBackgroundResource(R.drawable.layout_mainshape);
-                    }
-
                     if (!Image.equals("")) {
                         File file = new File(getFilesDir(), Image);
                         FileInputStream inputStream = null;
@@ -98,6 +92,13 @@ public class TestActivity extends AppCompatActivity {
                     EditText EditAnswer = view.findViewById(R.id.TestAnswer);
                     TextQuestion.setText(Question);
                     EditAnswer.setTag(Answer);
+
+                    if (IsDark) {
+                        view.setBackgroundResource(R.drawable.layout_mainshape_dark);
+                    } else {
+                        EditAnswer.setBackgroundResource(R.drawable.edittext_shape);
+                        view.setBackgroundResource(R.drawable.layout_mainshape);
+                    }
 
                     runOnUiThread(new Runnable() {
                         @Override
