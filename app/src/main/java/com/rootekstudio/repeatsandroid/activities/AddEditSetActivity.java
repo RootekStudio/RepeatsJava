@@ -505,6 +505,10 @@ public class AddEditSetActivity extends AppCompatActivity {
         answerBoxPlus.setText(text);
         answerBoxPlus.setOnFocusChangeListener(newAnswer);
 
+        if(!IsDark) {
+            answerBoxPlus.setBackgroundResource(R.drawable.edittext_shape);
+        }
+
         delAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
