@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(View v)
                     {
                         Intent zipPickerIntent  = new Intent(Intent.ACTION_GET_CONTENT);
-                        zipPickerIntent.setType("application/zip");
+                        zipPickerIntent.setType("application/*");
                         try
                         {
                             startActivityForResult(zipPickerIntent, RequestCodes.READ_SHARED);
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity
                             ZipSet.UnZip(inputStream, new File(getFilesDir(), "shared"));
                             SaveShared.SaveSetsToDB(context, new DatabaseHelper(context));
 
-                            Intent intent = new Intent(context, AddEditSetActivity.class);
+                            final Intent intent = new Intent(context, AddEditSetActivity.class);
                             intent.putExtra("ISEDIT", SaveShared.ID);
                             intent.putExtra("NAME", SaveShared.name);
                             intent.putExtra("IGNORE_CHARS", "false");
@@ -268,7 +268,13 @@ public class MainActivity extends AppCompatActivity
                             int frequency = sharedPreferences.getInt("frequency", 0);
 
                             if(frequency == 0) {
-                                RepeatsHelper.AskAboutTime(context, true, activity, intent);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        RepeatsHelper.AskAboutTime(context, true, activity, intent);
+                                    }
+                                });
+
                             }
                             else {
                                 startActivity(intent);
