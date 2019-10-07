@@ -57,16 +57,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </activity>
-        <activity android:name=".activities.TestActivity"
-            android:screenOrientation="locked"
-            android:label="@string/Test"/>
         <activity android:name=".activities.SearchActivity"
             android:label="@string/Search">
         </activity>
         <activity android:name=".activities.AddEditSetActivity"
             android:label="@string/title_activity_repeats_add_edit" />
-        <activity android:name=".activities.TestResultsActivity"
-            android:label="@string/Test"/>
         <activity android:name=".activities.SplashScreenActivity"
             android:theme="@style/SplashScreenTheme"
             android:noHistory="true">
@@ -77,6 +72,7 @@
         </activity>
         <activity android:name=".activities.EnableSetsListActivity"
             android:label="@string/notifiFromSets"/>
+        <activity android:name=".activities.FastLearningActivity" />
     </application>
 
 </manifest>

@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity
                     String s1 = button.getTag(R.string.Tag_id_1).toString();
                     String s2 = button.getTag(R.string.Tag_id_2).toString();
 
-                    Intent intent = new Intent(cnt, TestActivity.class);
+                    Intent intent = new Intent(cnt, FastLearningActivity.class);
                     intent.putExtra("TableName", s0);
                     intent.putExtra("title", s1);
                     intent.putExtra("IgnoreChars", s2);
