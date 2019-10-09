@@ -147,7 +147,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("title", name);
-        String query = "UPDATE TitleTable SET title='" + name + "' WHERE TableName='" + SetID + "'";
         db.update("TitleTable", values, "TableName=?",new String[]{SetID});
         db.close();
     }
