@@ -137,15 +137,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void InsertValue(String SetID, int ID, String column, String what) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE " + SetID + " SET " + column + "='" + what + "' " + "WHERE id='" + ID + "'";
-        db.execSQL(query);
+        ContentValues values = new ContentValues();
+        values.put(column, what);
+        db.update(SetID, values, "id=?", new String[]{String.valueOf(ID)});
         db.close();
     }
 
     public void setTableName(String name, String SetID) {
         SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("title", name);
         String query = "UPDATE TitleTable SET title='" + name + "' WHERE TableName='" + SetID + "'";
-        db.execSQL(query);
+        db.update("TitleTable", values, "TableName=?",new String[]{SetID});
         db.close();
     }
 
@@ -194,13 +197,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         cursor.close();
         return answers;
-    }
-
-    public void addAnswer(String SetID, String answer, int index) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE " + SetID + " SET answer = (answer ||  CHAR(13) || CHAR(10) || '" + answer + "') WHERE id='" + index + "'";
-        db.execSQL(query);
-        db.close();
     }
 
     public void ignoreChars(String SetID, String isIgnoring) {

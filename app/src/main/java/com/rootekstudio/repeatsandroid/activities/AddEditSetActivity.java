@@ -434,18 +434,9 @@ public class AddEditSetActivity extends AppCompatActivity {
 
                 //Getting index of item in root view
                 int index = Integer.parseInt(RelativeAddItem.getTag().toString());
-                ;
 
-                //Checking if user has entered the question or the answer
                 if (RelativeAddItem.findViewById(R.id.questionBox) == view) {
                     column = "question";
-                } else if (RelativeAddItem.findViewById(R.id.answerBox) == view) {
-                    column = "answer";
-                } else if (RelativeAddItem.findViewById(R.id.answerBoxPlus) == view) {
-                    column = "answer";
-                    DB.addAnswer(id, editText.getText().toString(), index);
-                    RelativeAddItem = (ViewGroup) RelativeAddItem.getParent();
-                    index = Integer.parseInt(RelativeAddItem.getTag().toString());
                 }
 
                 DB.InsertValue(id, index, column, editText.getText().toString());

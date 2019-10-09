@@ -30,6 +30,13 @@ public class SaveShared {
     public static void SaveSetsToDB(Context context, DatabaseHelper DB) {
 
         File dir = new File(context.getFilesDir(), "shared");
+
+        File legacyFile = new File(dir, "Answers.txt");
+        if(legacyFile.exists()) {
+            SaveSharedLegacy.saveSharedLegacy(context, DB);
+            return;
+        }
+
         File jsonFile = new File(dir, "sets.json");
 
         SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
