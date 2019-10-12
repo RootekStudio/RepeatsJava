@@ -85,4 +85,7 @@
     <string name="send">Send</string>
     <string name="backup_restored">Backup restored</string>
     <string name="backup_created">Backup created</string>
+    <string name="FLendText">Fast Learning has ended</string>
+    <string name="OnceAgain">Once again</string>
+    <string name="FastLearning">Fast Learning</string>
 </resources>

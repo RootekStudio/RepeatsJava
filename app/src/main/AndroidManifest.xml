@@ -72,7 +72,8 @@
         </activity>
         <activity android:name=".activities.EnableSetsListActivity"
             android:label="@string/notifiFromSets"/>
-        <activity android:name=".activities.FastLearningActivity" />
+        <activity android:name=".activities.FastLearningActivity"
+            android:label="@string/FastLearning"/>
     </application>
 
 </manifest>

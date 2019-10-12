@@ -1,26 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:id="@+id/textViewFL"/>
+    <RelativeLayout
+        android:id="@+id/FLcontainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/layout_mainshape_dark"
+            android:elevation="5dp"
+            android:id="@+id/linearQuestionBox"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:id="@+id/editTextFL"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Question"
+                android:id="@+id/questionFL"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"/>
 
-    <Button
-        android:id="@+id/buttonFL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" />
-</LinearLayout>
+            <ImageView
+                android:id="@+id/imageViewFL"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone"
+                android:tint="@android:color/transparent"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/Answer"
+                android:inputType="textCapSentences"
+                android:layout_gravity="center"
+                android:id="@+id/editTextFL"
+                android:padding="10dp"
+                android:background="@drawable/edittext_shape_dark"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/linearQuestionBox"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:id="@+id/badgeFL"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="25dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/correctAnswerFL"
+                android:textAlignment="center"
+                android:layout_gravity="center" />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.Icon"
+                app:icon="@drawable/ic_check_box"
+                android:id="@+id/buttonFL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Check"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

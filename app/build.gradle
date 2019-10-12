@@ -4,10 +4,10 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.rootekstudio.repeatsandroid"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 29
-        versionCode 2020006
-        versionName "2.2.0"
+        versionCode 2030000
+        versionName "2.3-prerelease1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

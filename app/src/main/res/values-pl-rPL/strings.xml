@@ -83,4 +83,7 @@
     <string name="send">Prześlij</string>
     <string name="backup_restored">Przywrócono kopię zapasową</string>
     <string name="backup_created">Utworzono kopię zapasową</string>
+    <string name="FLendText">Zakończono Szybką Naukę</string>
+    <string name="OnceAgain">Jeszcze raz</string>
+    <string name="FastLearning">Szybka Nauka</string>
 </resources>
