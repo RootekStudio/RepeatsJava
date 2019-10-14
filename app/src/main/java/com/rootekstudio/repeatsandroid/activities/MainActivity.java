@@ -35,8 +35,13 @@ import com.rootekstudio.repeatsandroid.ZipSet;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -52,6 +57,34 @@ public class MainActivity extends AppCompatActivity
 
         IsDark = RepeatsHelper.DarkTheme(this, false);
         createNotificationChannel();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if(!sharedPreferences.contains("silenceHoursSwitch")) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("silenceHoursSwitch", true);
+            editor.apply();
+        }
+
+        File jsonFile = new File(getFilesDir(), "silenceHours.json");
+        if(!jsonFile.exists()) {
+            try {
+                JSONObject values = new JSONObject();
+                values.put("from","22:00");
+                values.put("to", "06:00");
+
+                JSONObject json = new JSONObject();
+                json.put("0", values);
+
+                FileWriter fileWriter = new FileWriter(jsonFile);
+                String jsonSTRING = json.toString();
+                fileWriter.append(jsonSTRING);
+                fileWriter.flush();
+                fileWriter.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

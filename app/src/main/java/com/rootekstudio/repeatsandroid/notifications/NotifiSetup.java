@@ -13,29 +13,41 @@ import android.os.SystemClock;
 import androidx.preference.PreferenceManager;
 
 import com.rootekstudio.repeatsandroid.OnSystemBoot;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
+
+import java.util.Calendar;
 
 public class NotifiSetup {
-    public static void RegisterNotifications(Context cnt) {
+    public static void RegisterNotifications(Context cnt, Calendar calendar) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
         int time = sharedPreferences.getInt("frequency", 0);
 
         if (time != 0) {
+            long triggerAtMillis;
+
+            if(calendar == null) {
+                triggerAtMillis = SystemClock.elapsedRealtime() + 1000 * 60 * time;
+            }
+            else {
+                triggerAtMillis = calendar.getTimeInMillis();
+            }
+
             Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
             intent.putExtra("time", time);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, RepeatsHelper.staticFrequencyCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) cnt.getSystemService(Context.ALARM_SERVICE);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        SystemClock.elapsedRealtime() + 1000 * 60 * time,
+                        triggerAtMillis,
                         pendingIntent);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        SystemClock.elapsedRealtime() + 1000 * 60 * time,
+                        triggerAtMillis,
                         pendingIntent);
             } else {
                 alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        SystemClock.elapsedRealtime() + 1000 * 60 * time,
+                        triggerAtMillis,
                         1000 * 60 * time,
                         pendingIntent);
             }
@@ -55,7 +67,7 @@ public class NotifiSetup {
 
     public static void CancelNotifications(Context cnt) {
         Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, 10, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, RepeatsHelper.staticFrequencyCode, intent, 0);
         AlarmManager alarmManager = (AlarmManager) cnt.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
 

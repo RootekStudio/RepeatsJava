@@ -52,11 +52,22 @@ public class FLCore {
             return true;
 
         } else {
-            int selectedLastIndex = selectedItems.size()-1;
-            Random random = new Random();
-            int index = random.nextInt(selectedLastIndex - (answered+1)) + (answered+1);
-            selectedItems.add(selectedItems.get(index));
-            selectedItems.set(index, selectedItems.get(answered));
+
+            if(selectedItems.size() == 1 ) {
+                done = true;
+            }
+            else if(selectedItems.size() == 2) {
+                selectedItems.add(selectedItems.get(1));
+                selectedItems.set(1, selectedItems.get(answered));
+            }
+            else {
+                int selectedLastIndex = selectedItems.size();
+                Random random = new Random();
+                int index = random.nextInt(selectedLastIndex - (answered+1)) + (answered+1);
+                selectedItems.add(selectedItems.get(index));
+                selectedItems.set(index, selectedItems.get(answered));
+            }
+
 
             answered++;
             return false;

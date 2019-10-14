@@ -86,4 +86,25 @@
     <string name="FLendText">Zakończono Szybką Naukę</string>
     <string name="OnceAgain">Jeszcze raz</string>
     <string name="FastLearning">Szybka Nauka</string>
+    <string name="hours">Godziny:</string>
+    <string name="friday">Piątek</string>
+    <string name="monday">Poniedziałek</string>
+    <string name="saturday">Sobota</string>
+    <string name="sunday">Niedziela</string>
+    <string name="thursday">Czwartek</string>
+    <string name="title_activity_add_advanced_time_delivery">AddAdvancedTimeDelivery</string>
+    <string name="tuesday">Wtorek</string>
+    <string name="wednesday">Środa</string>
+    <string name="addHours">Dodaj godziny</string>
+    <string name="editFrequency">Zmień częstostliwość</string>
+    <string name="to">do:</string>
+    <string name="from">Od:</string>
+    <string name="turned_off">Wyłączone</string>
+    <string name="const_freq">Stała częstotliwość</string>
+    <string name="advanced_notifi">Zaawansowane ustawienia dostarczania</string>
+    <string name="notifi_mode">Tryb powiadomień</string>
+    <string name="silenceHours">Godziny ciszy</string>
+    <string name="silenceHoursSummary">Godziny ciszy pozwalają na ustawienie godzin w których powiadomienia nie będą przychodzić</string>
+    <string name="changeSilenceHours">Zmień godziny ciszy</string>
+    <string name="batteryOptimization">Optymalizacja baterii</string>
 </resources>

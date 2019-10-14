@@ -76,7 +76,7 @@ public class FastLearningActivity extends AppCompatActivity {
         image = findViewById(R.id.imageViewFL);
         linearQbox = findViewById(R.id.linearQuestionBox);
 
-        if(!isDark) {
+        if (!isDark) {
             linearQbox.setBackgroundResource(R.drawable.layout_mainshape);
             editText.setBackgroundResource(R.drawable.edittext_shape);
         }
@@ -85,7 +85,7 @@ public class FastLearningActivity extends AppCompatActivity {
     }
 
     void loadQuestion() {
-        if(!FL.done) {
+        if (!FL.done) {
             //reset
             editText.setText("");
             correctA.setText("");
@@ -99,7 +99,7 @@ public class FastLearningActivity extends AppCompatActivity {
             question.setText(qanda[0]);
 
             String img = qanda[2];
-            if(!img.equals("")) {
+            if (!img.equals("")) {
                 image.setVisibility(View.VISIBLE);
 
                 File file = new File(getFilesDir(), img);
@@ -137,7 +137,7 @@ public class FastLearningActivity extends AppCompatActivity {
                     badge.setVisibility(View.VISIBLE);
                     correctA.setVisibility(View.VISIBLE);
                     if (!FL.checkAnswered(answer)) {
-                        String notCorrect = getString(R.string.IncorrectAnswer1) + ". " + getString(R.string.IncorrectAnswer2) + ": " + qanda[1];
+                        String notCorrect = getString(R.string.IncorrectAnswer2) + ": " + qanda[1];
                         badge.setImageResource(R.drawable.ic_clear);
                         badge.setColorFilter(ContextCompat.getColor(context, android.R.color.holo_red_dark));
                         correctA.setText(notCorrect);
@@ -148,11 +148,11 @@ public class FastLearningActivity extends AppCompatActivity {
                     }
                 }
             });
-        }
-        else {
+        } else {
             end();
         }
     }
+
     void end() {
         linearQbox.setVisibility(View.INVISIBLE);
         correctA.setText(R.string.FLendText);
@@ -172,10 +172,8 @@ public class FastLearningActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        if(item.getItemId() == android.R.id.home)
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return true;

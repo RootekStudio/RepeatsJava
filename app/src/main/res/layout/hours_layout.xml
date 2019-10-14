@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:text="@string/from"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_alignParentStart="true"
+        android:id="@+id/fromText"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"/>
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        app:icon="@drawable/ic_edit"
+        android:id="@+id/editFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:layout_toRightOf="@id/fromText"
+        android:layout_toLeftOf="@id/textTo"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:text="@string/to"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:id="@+id/textTo"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/editTo"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        app:icon="@drawable/ic_edit"
+        android:layout_toRightOf="@id/textTo"
+        android:layout_toLeftOf="@id/deleteHour"
+        android:layout_centerInParent="true"/>
+
+    <ImageButton
+        android:id="@+id/deleteHour"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_clear"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.preference.CheckBoxPreference;
@@ -24,9 +25,16 @@ import androidx.preference.SwitchPreferenceCompat;
 
 import com.rootekstudio.repeatsandroid.activities.EnableSetsListActivity;
 import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
+import com.rootekstudio.repeatsandroid.activities.SilenceHoursActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 public class Preference_Screen extends PreferenceFragmentCompat {
@@ -35,22 +43,18 @@ public class Preference_Screen extends PreferenceFragmentCompat {
     private SharedPreferences sharedPreferences;
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+    public void onCreatePreferences(final Bundle savedInstanceState, String rootKey) {
         context = getPreferenceManager().getContext();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String packageName = context.getPackageName();
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
             SharedPreferences.Editor edit = sharedPreferences.edit();
-            if (!pm.isIgnoringBatteryOptimizations(packageName))
-            {
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
                 edit.putBoolean("batteryOptimization", false);
                 edit.apply();
-            }
-            else
-            {
+            } else {
                 edit.putBoolean("batteryOptimization", true);
                 edit.apply();
             }
@@ -62,47 +66,61 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
         final int freq = sharedPreferences.getInt("frequency", 0);
 
-        final SwitchPreferenceCompat notificationPreference = new SwitchPreferenceCompat(context);
-        notificationPreference.setIconSpaceReserved(false);
-        notificationPreference.setKey("notifications");
-        notificationPreference.setTitle(R.string.notifications);
-        if (all.size() == 0) {
-            notificationPreference.setEnabled(false);
-        }
-        notificationPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        final ListPreference notifiListPreference = new ListPreference(context);
+        notifiListPreference.setIconSpaceReserved(false);
+        notifiListPreference.setKey("ListNotifi");
+        notifiListPreference.setTitle(R.string.notifi_mode);
+        notifiListPreference.setEntries(R.array.notifications);
+        notifiListPreference.setEntryValues(R.array.notificationsValue);
+        notifiListPreference.setValue("1");
+
+        notifiListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if ((boolean) newValue) {
+
+                int value = Integer.parseInt((String)newValue);
+
+                if (value == 0) {
+                    NotifiSetup.CancelNotifications(context);
+
+                    findPreference("timeAsk").setVisible(false);
+                    findPreference("EnableSets").setVisible(false);
+                    findPreference("silenceHoursSwitch").setVisible(false);
+                    findPreference("silenceHoursSettings").setVisible(false);
+
+                    notifiListPreference.setSummary(R.string.turned_off);
+
+                } else if (value == 1) {
                     int f = sharedPreferences.getInt("frequency", 0);
                     if (f == 0) {
                         RepeatsHelper.AskAboutTime(context, false, SettingsActivity.activity, null);
                     } else {
-                        NotifiSetup.RegisterNotifications(context);
+                        NotifiSetup.RegisterNotifications(context,null);
                     }
 
                     findPreference("timeAsk").setVisible(true);
                     findPreference("EnableSets").setVisible(true);
-                    findPreference("reset").setVisible(true);
+                    findPreference("silenceHoursSwitch").setVisible(true);
 
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    {
-                        findPreference("batteryOptimization").setVisible(true);
+                    boolean silenceSwitch = sharedPreferences.getBoolean("silenceHoursSwitch", true);
+                    if(silenceSwitch) {
+                        findPreference("silenceHoursSettings").setVisible(true);
+                    }
+                    else {
+                        findPreference("silenceHoursSettings").setVisible(false);
                     }
 
-                } else {
-                    if (freq != 0) {
-                        NotifiSetup.CancelNotifications(context);
-                    }
-
+                    notifiListPreference.setSummary(R.string.const_freq);
+                }
+                else if(value == 2) {
                     findPreference("timeAsk").setVisible(false);
                     findPreference("EnableSets").setVisible(false);
-                    findPreference("reset").setVisible(false);
+                    findPreference("silenceHoursSwitch").setVisible(false);
+                    findPreference("silenceHoursSettings").setVisible(false);
 
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    {
-                        findPreference("batteryOptimization").setVisible(false);
-                    }
+                    notifiListPreference.setSummary(R.string.advanced_notifi);
                 }
+
                 return true;
             }
         });
@@ -147,7 +165,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
                 RepeatsHelper.SaveFrequency(context, 5);
                 NotifiSetup.CancelNotifications(context);
-                NotifiSetup.RegisterNotifications(context);
+                NotifiSetup.RegisterNotifications(context, null);
 
                 int frequency = sharedPreferences.getInt("frequency", 0);
                 findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
@@ -157,71 +175,67 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
+
+
+        SwitchPreferenceCompat silenceHours = new SwitchPreferenceCompat(context);
+        silenceHours.setIconSpaceReserved(false);
+        silenceHours.setKey("silenceHoursSwitch");
+        silenceHours.setTitle(R.string.silenceHours);
+        silenceHours.setSummary(R.string.silenceHoursSummary);
+        silenceHours.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                if((boolean)(newValue)){
+                    findPreference("silenceHoursSettings").setVisible(true);
+                }
+                else {
+                    findPreference("silenceHoursSettings").setVisible(false);
+                }
+
+                NotifiSetup.CancelNotifications(context);
+                NotifiSetup.RegisterNotifications(context, null);
+
+                return true;
+            }
+        });
+
+        Preference silenceHoursSettings = new Preference(context);
+        silenceHoursSettings.setIconSpaceReserved(false);
+        silenceHoursSettings.setKey("silenceHoursSettings");
+        silenceHoursSettings.setTitle(R.string.changeSilenceHours);
+        silenceHoursSettings.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                Intent intent = new Intent(context, SilenceHoursActivity.class);
+                getActivity().startActivity(intent);
+
+                return true;
+            }
+        });
+
         PreferenceCategory notification_category = new PreferenceCategory(context);
         notification_category.setIconSpaceReserved(false);
         notification_category.setKey("NotifiCat");
         notification_category.setTitle(R.string.notifications);
         screen.addPreference(notification_category);
-        notification_category.addPreference(notificationPreference);
+        notification_category.addPreference(notifiListPreference);
         notification_category.addPreference(timeAsk);
         notification_category.addPreference(enableSets);
-        notification_category.addPreference(reset);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            CheckBoxPreference optimizationPreference = new CheckBoxPreference(context);
-            optimizationPreference.setIconSpaceReserved(false);
-            optimizationPreference.setKey("batteryOptimization");
-            optimizationPreference.setTitle(R.string.batteryO);
-            optimizationPreference.setSummary(R.string.batteryOsummary);
-            optimizationPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if ((Boolean) newValue)
-                    {
-                        String packageName = context.getPackageName();
-                        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-                        if (!pm.isIgnoringBatteryOptimizations(packageName))
-                        {
-                            Intent intent = new Intent();
-                            intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.setData(Uri.parse("package:" + packageName));
-
-                            startActivityForResult(intent, RequestCodes.REQUEST_IGNORE_BATTERY);
-                        }
-                    }
-                    else
-                        {
-                        String packageName = context.getPackageName();
-                        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-                        if (pm.isIgnoringBatteryOptimizations(packageName))
-                        {
-                            Intent intent = new Intent();
-                            intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-
-                            startActivityForResult(intent, RequestCodes.OPEN_BATTERY_SETTINGS);
-                        }
-                    }
-                    return true;
-                }
-            });
-
-            notification_category.addPreference(optimizationPreference);
-        }
+        notification_category.addPreference(silenceHours);
+        notification_category.addPreference(silenceHoursSettings);
 
         final ListPreference theme = new ListPreference(context);
         theme.setIconSpaceReserved(false);
         theme.setKey("theme");
         theme.setTitle(R.string.changeTheme);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             theme.setEntries(R.array.themesQ);
             theme.setEntryValues(R.array.ThemeValuesQ);
             theme.setValue("2");
-        }
-        else
-        {
+        } else {
             theme.setEntries(R.array.themes);
             theme.setEntryValues(R.array.ThemeValues);
             theme.setValue("1");
@@ -276,7 +290,51 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         backup.addPreference(createBackup);
         backup.addPreference(restoreBackup);
 
-        if(all.size() == 0) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            CheckBoxPreference optimizationPreference = new CheckBoxPreference(context);
+            optimizationPreference.setIconSpaceReserved(false);
+            optimizationPreference.setKey("batteryOptimization");
+            optimizationPreference.setTitle(R.string.batteryO);
+            optimizationPreference.setSummary(R.string.batteryOsummary);
+            optimizationPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if ((Boolean) newValue) {
+                        String packageName = context.getPackageName();
+                        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+                        if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                            Intent intent = new Intent();
+                            intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setData(Uri.parse("package:" + packageName));
+
+                            startActivityForResult(intent, RequestCodes.REQUEST_IGNORE_BATTERY);
+                        }
+                    } else {
+                        String packageName = context.getPackageName();
+                        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+                        if (pm.isIgnoringBatteryOptimizations(packageName)) {
+                            Intent intent = new Intent();
+                            intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+
+                            startActivityForResult(intent, RequestCodes.OPEN_BATTERY_SETTINGS);
+                        }
+                    }
+                    return true;
+                }
+            });
+
+            PreferenceCategory batteryOptimizationCat = new PreferenceCategory(context);
+            batteryOptimizationCat.setIconSpaceReserved(false);
+            batteryOptimizationCat.setKey("batteryCat");
+            batteryOptimizationCat.setTitle(R.string.batteryOptimization);
+            screen.addPreference(batteryOptimizationCat);
+            batteryOptimizationCat.addPreference(optimizationPreference);
+
+
+        }
+
+        if (all.size() == 0) {
             createBackup.setVisible(false);
         }
 
@@ -343,27 +401,45 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         screen.setIconSpaceReserved(false);
         setPreferenceScreen(screen);
 
-        boolean notifiEnabled = sharedPreferences.getBoolean("notifications", false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            findPreference("batteryOptimization").setVisible(true);
+        }
+        else {
+            findPreference("batteryOptimization").setVisible(false);
+        }
 
-        if (notifiEnabled) {
-            findPreference("timeAsk").setVisible(true);
-            findPreference("EnableSets").setVisible(true);
-            findPreference("reset").setVisible(true);
+        int getNotifiMode = Integer.parseInt(sharedPreferences.getString("ListNotifi", "0"));
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            {
-                findPreference("batteryOptimization").setVisible(true);
-            }
-
-        } else {
+        if (getNotifiMode == 0) {
             findPreference("timeAsk").setVisible(false);
             findPreference("EnableSets").setVisible(false);
-            findPreference("reset").setVisible(false);
+            findPreference("silenceHoursSwitch").setVisible(false);
+            findPreference("silenceHoursSettings").setVisible(false);
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            {
-                findPreference("batteryOptimization").setVisible(false);
+            notifiListPreference.setSummary(R.string.turned_off);
+
+        } else if(getNotifiMode == 1) {
+            findPreference("timeAsk").setVisible(true);
+            findPreference("EnableSets").setVisible(true);
+            findPreference("silenceHoursSwitch").setVisible(true);
+            boolean switchSilence = sharedPreferences.getBoolean("silenceHoursSwitch", true);
+            if(switchSilence) {
+                findPreference("silenceHoursSettings").setVisible(true);
             }
+            else {
+                findPreference("silenceHoursSettings").setVisible(false);
+            }
+
+            notifiListPreference.setSummary(R.string.const_freq);
+        }
+
+        else if(getNotifiMode == 2) {
+            findPreference("timeAsk").setVisible(false);
+            findPreference("EnableSets").setVisible(false);
+            findPreference("silenceHoursSwitch").setVisible(false);
+            findPreference("silenceHoursSettings").setVisible(false);
+
+            notifiListPreference.setSummary(R.string.advanced_notifi);
         }
     }
 
@@ -373,14 +449,11 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             String packageName = context.getPackageName();
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
             SharedPreferences.Editor edit = sharedPreferences.edit();
-            if (requestCode == 123)
-            {
-                if (!pm.isIgnoringBatteryOptimizations(packageName))
-                {
+            if (requestCode == 123) {
+                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
                     edit.putBoolean("batteryOptimization", false);
                     edit.apply();
-                } else
-                    {
+                } else {
                     edit.putBoolean("batteryOptimization", true);
                     edit.apply();
                 }
@@ -389,15 +462,11 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                 this.getActivity().overridePendingTransition(0, 0);
                 startActivity(this.getActivity().getIntent());
                 this.getActivity().overridePendingTransition(0, 0);
-            }
-            else if(requestCode == 124)
-            {
-                if (!pm.isIgnoringBatteryOptimizations(packageName))
-                {
+            } else if (requestCode == 124) {
+                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
                     edit.putBoolean("batteryOptimization", false);
                     edit.apply();
-                } else
-                {
+                } else {
                     edit.putBoolean("batteryOptimization", true);
                     edit.apply();
                 }

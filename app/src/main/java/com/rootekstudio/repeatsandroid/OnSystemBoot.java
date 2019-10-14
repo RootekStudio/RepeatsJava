@@ -19,7 +19,7 @@ public class OnSystemBoot extends BroadcastReceiver
 
         if (notifi && intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
         {
-            NotifiSetup.RegisterNotifications(context);
+            NotifiSetup.RegisterNotifications(context,null);
         }
     }
 }
