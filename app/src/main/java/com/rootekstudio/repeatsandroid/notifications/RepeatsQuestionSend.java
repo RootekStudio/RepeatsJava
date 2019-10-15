@@ -91,6 +91,10 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
                                     continue;
                                 }
                             }
+                            else {
+                                canSend = false;
+                                break;
+                            }
                         }
                     } else if (fromHour < toHour) {
                         //hour in range - stop notifications
@@ -116,6 +120,10 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
                                     //I can send a notification
                                     continue;
                                 }
+                            }
+                            else {
+                                canSend = false;
+                                break;
                             }
                         }
                         //hour out of range - continue sending notifications

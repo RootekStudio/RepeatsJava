@@ -127,6 +127,8 @@ public class SilenceHoursActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            NotifiSetup.CancelNotifications(context);
+            NotifiSetup.RegisterNotifications(context, null);
 
             addButtons(hoursLayout, String.valueOf(lastIndex), "22:00", "06:00");
             rootLayout.addView(hoursLayout);
@@ -223,6 +225,9 @@ public class SilenceHoursActivity extends AppCompatActivity {
                     fileWriter.write(jsonSTRING);
                     fileWriter.flush();
                     fileWriter.close();
+
+                    NotifiSetup.CancelNotifications(context);
+                    NotifiSetup.RegisterNotifications(context, null);
 
                 } catch (Exception e) {
                     e.printStackTrace();

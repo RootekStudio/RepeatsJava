@@ -72,7 +72,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         notifiListPreference.setTitle(R.string.notifi_mode);
         notifiListPreference.setEntries(R.array.notifications);
         notifiListPreference.setEntryValues(R.array.notificationsValue);
-        notifiListPreference.setValue("1");
+        notifiListPreference.setValue("0");
 
         notifiListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
