@@ -184,18 +184,22 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
     }
 
     void stopAndRegisterInFuture(int toHour, int toMinute, Context context) {
-        Date date = new Date();
+        Calendar calendarCheck = Calendar.getInstance();
+        Calendar calendarNow = Calendar.getInstance();
+        calendarCheck.setTimeInMillis(System.currentTimeMillis());
+        calendarNow.setTimeInMillis(System.currentTimeMillis());
 
-        Calendar calendarAlarm = GregorianCalendar.getInstance();
-        Calendar calendarNow = GregorianCalendar.getInstance();
-        calendarAlarm.setTime(date);
-        calendarNow.setTime(date);
+        calendarCheck.set(Calendar.HOUR_OF_DAY, toHour);
+        calendarCheck.set(Calendar.MINUTE, toMinute);
+        calendarCheck.set(Calendar.SECOND, 0);
 
+        Calendar calendarAlarm = Calendar.getInstance();
+        calendarAlarm.clear();
         calendarAlarm.set(Calendar.HOUR_OF_DAY, toHour);
         calendarAlarm.set(Calendar.MINUTE, toMinute);
         calendarAlarm.set(Calendar.SECOND, 0);
 
-        if(calendarAlarm.before(calendarNow) || calendarAlarm.equals(calendarNow)) {
+        if(calendarCheck.before(calendarNow) || calendarCheck.equals(calendarNow)) {
             calendarAlarm.add(Calendar.DATE, 1);
         }
 

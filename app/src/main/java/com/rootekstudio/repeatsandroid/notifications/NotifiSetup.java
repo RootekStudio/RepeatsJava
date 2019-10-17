@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.SystemClock;
 
 import androidx.preference.PreferenceManager;
 
@@ -22,27 +21,30 @@ public class NotifiSetup {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
         int time = sharedPreferences.getInt("frequency", 0);
 
+        int code;
         if (time != 0) {
             long triggerAtMillis;
 
             if(calendar == null) {
-                triggerAtMillis = SystemClock.elapsedRealtime() + 1000 * 60 * time;
+                triggerAtMillis = System.currentTimeMillis() + 1000 * 60 * time;
+                code = RepeatsHelper.staticFrequencyCode;
             }
             else {
                 triggerAtMillis = calendar.getTimeInMillis();
+                code = 12345;
             }
 
             Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
             intent.putExtra("time", time);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, RepeatsHelper.staticFrequencyCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, code, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) cnt.getSystemService(Context.ALARM_SERVICE);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
                         triggerAtMillis,
                         pendingIntent);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP,
                         triggerAtMillis,
                         pendingIntent);
             } else {
