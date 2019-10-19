@@ -115,4 +115,15 @@
     <!-- Sync Preferences -->
     <string name="changeSilenceHours">Change silence hours</string>
     <string name="batteryOptimization">Battery optimization</string>
+    <string name="changeDelivery">Change notification delivery settings</string>
+    <string name="frequency">Frequency:</string>
+    <string name="days">Days:</string>
+    <string name="sets">Sets:</string>
+    <string name="sun">Sun</string>
+    <string name="mon">Mon</string>
+    <string name="tue">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
 </resources>

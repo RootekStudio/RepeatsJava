@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
@@ -82,7 +81,7 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
                             }
                             //Check again if I'm near the set hour
                             else if (hour == toHour) {
-                                if (minute <= toMinute) {
+                                if (minute < toMinute) {
                                     //stop notifications and register new
                                     canSend = false;
                                     break;

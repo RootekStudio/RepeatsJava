@@ -143,12 +143,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public String getValue(String column, String table, String where) {
+        String value = "";
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + column + " FROM " + table + " WHERE " + where;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            value = cursor.getString(0);
+        }
+        db.close();
+        cursor.close();
+
+        return value;
+    }
+
     public void setTableName(String name, String SetID) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("title", name);
         String query = "UPDATE TitleTable SET title='" + name + "' WHERE TableName='" + SetID + "'";
-        db.update("TitleTable", values, "TableName=?",new String[]{SetID});
+        db.update("TitleTable", values, "TableName=?", new String[]{SetID});
         db.close();
     }
 
@@ -166,7 +182,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-   public ArrayList<String> getAllImages(String SetID) {
+    public ArrayList<String> getAllImages(String SetID) {
         ArrayList<String> allImages = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT image FROM " + SetID;
@@ -262,6 +278,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         cursor.close();
         return ALL;
+    }
+
+    public ArrayList<String> getSingleColumn(String column) {
+        ArrayList<String> list = new ArrayList<>();
+        String query = "SELECT " + column + " FROM TitleTable";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+        return list;
     }
 
     public void UpdateTable(String TABLE, String WHAT, String WHERE) {

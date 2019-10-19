@@ -96,7 +96,7 @@
     <string name="tuesday">Wtorek</string>
     <string name="wednesday">Środa</string>
     <string name="addHours">Dodaj godziny</string>
-    <string name="editFrequency">Zmień częstostliwość</string>
+    <string name="editFrequency">Zmień częstotliwość</string>
     <string name="to">do:</string>
     <string name="from">Od:</string>
     <string name="turned_off">Wyłączone</string>
@@ -107,4 +107,15 @@
     <string name="silenceHoursSummary">Godziny ciszy pozwalają na ustawienie godzin w których powiadomienia nie będą przychodzić</string>
     <string name="changeSilenceHours">Zmień godziny ciszy</string>
     <string name="batteryOptimization">Optymalizacja baterii</string>
+    <string name="changeDelivery">Zmień ustawienia dostarczania powiadomień</string>
+    <string name="frequency">Częstotliwość:</string>
+    <string name="days">Dni:</string>
+    <string name="sets">Zestawy:</string>
+    <string name="fri">pt.</string>
+    <string name="mon">pon.</string>
+    <string name="sat">sob.</string>
+    <string name="sun">niedz.</string>
+    <string name="thu">czw.</string>
+    <string name="tue">wt.</string>
+    <string name="wed">śr.</string>
 </resources>

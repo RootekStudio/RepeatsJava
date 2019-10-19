@@ -23,6 +23,7 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreferenceCompat;
 
+import com.rootekstudio.repeatsandroid.activities.ChangeDeliveryListActivity;
 import com.rootekstudio.repeatsandroid.activities.EnableSetsListActivity;
 import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
 import com.rootekstudio.repeatsandroid.activities.SilenceHoursActivity;
@@ -87,6 +88,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     findPreference("EnableSets").setVisible(false);
                     findPreference("silenceHoursSwitch").setVisible(false);
                     findPreference("silenceHoursSettings").setVisible(false);
+                    findPreference("advancedDelivery").setVisible(false);
 
                     notifiListPreference.setSummary(R.string.turned_off);
 
@@ -101,6 +103,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     findPreference("timeAsk").setVisible(true);
                     findPreference("EnableSets").setVisible(true);
                     findPreference("silenceHoursSwitch").setVisible(true);
+                    findPreference("advancedDelivery").setVisible(false);
 
                     boolean silenceSwitch = sharedPreferences.getBoolean("silenceHoursSwitch", true);
                     if(silenceSwitch) {
@@ -117,6 +120,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     findPreference("EnableSets").setVisible(false);
                     findPreference("silenceHoursSwitch").setVisible(false);
                     findPreference("silenceHoursSettings").setVisible(false);
+                    findPreference("advancedDelivery").setVisible(true);
 
                     notifiListPreference.setSummary(R.string.advanced_notifi);
                 }
@@ -216,6 +220,19 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
+        Preference advancedDelivery = new Preference(context);
+        advancedDelivery.setIconSpaceReserved(false);
+        advancedDelivery.setKey("advancedDelivery");
+        advancedDelivery.setTitle(R.string.changeDelivery);
+        advancedDelivery.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(context, ChangeDeliveryListActivity.class);
+                getActivity().startActivity(intent);
+                return true;
+            }
+        });
+
         PreferenceCategory notification_category = new PreferenceCategory(context);
         notification_category.setIconSpaceReserved(false);
         notification_category.setKey("NotifiCat");
@@ -226,6 +243,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         notification_category.addPreference(enableSets);
         notification_category.addPreference(silenceHours);
         notification_category.addPreference(silenceHoursSettings);
+        notification_category.addPreference(advancedDelivery);
 
         final ListPreference theme = new ListPreference(context);
         theme.setIconSpaceReserved(false);
@@ -415,6 +433,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             findPreference("EnableSets").setVisible(false);
             findPreference("silenceHoursSwitch").setVisible(false);
             findPreference("silenceHoursSettings").setVisible(false);
+            findPreference("advancedDelivery").setVisible(false);
 
             notifiListPreference.setSummary(R.string.turned_off);
 
@@ -422,6 +441,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             findPreference("timeAsk").setVisible(true);
             findPreference("EnableSets").setVisible(true);
             findPreference("silenceHoursSwitch").setVisible(true);
+            findPreference("advancedDelivery").setVisible(false);
             boolean switchSilence = sharedPreferences.getBoolean("silenceHoursSwitch", true);
             if(switchSilence) {
                 findPreference("silenceHoursSettings").setVisible(true);
@@ -438,6 +458,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             findPreference("EnableSets").setVisible(false);
             findPreference("silenceHoursSwitch").setVisible(false);
             findPreference("silenceHoursSettings").setVisible(false);
+            findPreference("advancedDelivery").setVisible(true);
 
             notifiListPreference.setSummary(R.string.advanced_notifi);
         }

@@ -1,82 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.AddAdvancedTime"
+    tools:context=".activities.AddAdvancedTimeActivity"
     android:orientation="vertical">
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <CheckBox
-            android:id="@+id/checkMonday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/monday" />
-        <CheckBox
-            android:id="@+id/checkTuesday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tuesday" />
 
-        <CheckBox
-            android:id="@+id/checkWednesday"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/wednesday" />
+            android:orientation="vertical"
+            android:id="@+id/daysAdvancedLinear">
+            <CheckBox
+                android:id="@+id/checkMonday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/monday"
+                android:tag="@string/mon"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/checkTuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tuesday"
+                android:tag="@string/tue"
+                android:checked="true"/>
 
-        <CheckBox
-            android:id="@+id/checkThursday"
+            <CheckBox
+                android:id="@+id/checkWednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wednesday"
+                android:tag="@string/wed"
+                android:checked="true"/>
+
+            <CheckBox
+                android:id="@+id/checkThursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/thursday"
+                android:tag="@string/thu"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/checkFriday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/friday"
+                android:tag="@string/fri"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/checkSaturday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saturday"
+                android:tag="@string/sat"
+                android:checked="true"/>
+            <CheckBox
+                android:id="@+id/checkSunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sunday"
+                android:tag="@string/sun"
+                android:checked="true"/>
+        </LinearLayout>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/thursday" />
-        <CheckBox
-            android:id="@+id/checkFriday"
+            android:text="@string/hours"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/friday" />
-        <CheckBox
-            android:id="@+id/checkSaturday"
+            android:id="@+id/hoursLinear"
+            android:orientation="vertical">
+            <include layout="@layout/hours_layout"/>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            app:icon="@drawable/ic_add_white_24dp"
+            android:id="@+id/addHoursButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/saturday" />
-        <CheckBox
-            android:id="@+id/checkSunday"
+            android:text="@string/addHours"
+            android:layout_marginTop="25dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sunday" />
+            android:text="@string/FreqText"/>
+
+        <EditText
+            android:id="@+id/editFreqAdvanced"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sets"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/setsAdvancedLinear">
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            app:icon="@drawable/ic_save"
+            android:id="@+id/saveDeliveryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Save"
+            android:layout_marginTop="25dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"/>
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hours"/>
-
-    <include layout="@layout/hours_layout"/>
-    <com.google.android.material.button.MaterialButton
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        app:icon="@drawable/ic_add_white_24dp"
-        android:id="@+id/addHoursButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/addHours"
-        android:layout_marginTop="25dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"/>
-
-    <com.google.android.material.button.MaterialButton
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        app:icon="@drawable/ic_refresh"
-        android:id="@+id/addFreqButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/editFrequency"
-        android:layout_marginTop="25dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/FreqText"/>
-</LinearLayout>
+</ScrollView>

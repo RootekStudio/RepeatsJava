@@ -15,8 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/DarkAppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".activities.AddAdvancedTime" />
+        <activity android:name=".activities.ChangeDeliveryListActivity"></activity>
+        <activity android:name=".activities.AddAdvancedTimeActivity" />
 
         <receiver
             android:name=".OnSystemBoot"
@@ -72,6 +72,7 @@
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -81,8 +82,9 @@
         <activity
             android:name=".activities.FastLearningActivity"
             android:label="@string/FastLearning" />
-        <activity android:name=".activities.SilenceHoursActivity"
-            android:label="@string/silenceHours"/>
+        <activity
+            android:name=".activities.SilenceHoursActivity"
+            android:label="@string/silenceHours" />
     </application>
 
 </manifest>
