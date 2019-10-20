@@ -4,50 +4,63 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TimePicker;
 
+import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
-import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 public class AddAdvancedTimeActivity extends AppCompatActivity {
 
     LinearLayout daysLinear;
     LinearLayout hoursLinear;
     LinearLayout setsLinear;
+    EditText editFreq;
+
+    int daysChecked;
+    int setsChecked;
+    String isEdit;
 
     Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_advanced_time);
 
+        daysChecked = 0;
+        setsChecked = 0;
+
         daysLinear = findViewById(R.id.daysAdvancedLinear);
         hoursLinear = findViewById(R.id.hoursLinear);
         setsLinear = findViewById(R.id.setsAdvancedLinear);
+        editFreq = findViewById(R.id.editFreqAdvanced);
+
+        editFreq.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editFreq.setHint(R.string.enterNumber);
+        editFreq.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
 
         context = this;
 
@@ -62,73 +75,189 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
             }
         });
 
-        loadDefaults();
-    }
+        Intent thisIntent = getIntent();
+        isEdit = thisIntent.getStringExtra("edit");
 
-    void loadDefaults() {
-        RelativeLayout RL = hoursLinear.findViewById(R.id.relativeHours);
-        Button from = RL.findViewById(R.id.editFrom);
-        Button to = RL.findViewById(R.id.editTo);
-        from.setText("08:00");
-        to.setText("22:00");
-
-        from.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                timePicker((Button)view);
-            }
-        });
-
-        to.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                timePicker((Button)view);
-            }
-        });
-
-        EditText editFreq = findViewById(R.id.editFreqAdvanced);
-        editFreq.setText("30");
-
-        LinearLayout setLinear = findViewById(R.id.setsAdvancedLinear);
-
-        DatabaseHelper DB = new DatabaseHelper(this);
-        ArrayList<String> titles = DB.getSingleColumn("title");
-        ArrayList<String> TableNames = DB.getSingleColumn("TableName");
-
-        for(int i = 0; i < TableNames.size(); i++) {
-            CheckBox checkBox = new CheckBox(this);
-            checkBox.setText(titles.get(i));
-            checkBox.setTag(TableNames.get(i));
-            checkBox.setChecked(true);
-
-            setLinear.addView(checkBox);
+        if (isEdit.equals("")) {
+            loadDefaults();
+        } else {
+            loadSaved(isEdit);
         }
     }
 
+    void loadSaved(String index) {
+        try {
+            JSONObject rootObject = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
+            JSONObject JSONitem = rootObject.getJSONObject(index);
+
+            //load days
+            JSONArray days = JSONitem.getJSONArray("days");
+            int daysCount = days.length();
+
+            for (int i = 0; i < daysCount; i++) {
+                String day = days.getString(i);
+                for (int j = i; j < daysLinear.getChildCount(); j++) {
+                    CheckBox checkBox = (CheckBox) daysLinear.getChildAt(j);
+                    if (checkBox.getTag().toString().equals(day)) {
+                        checkBox.setChecked(true);
+                        checkBox.setOnCheckedChangeListener(daysCheckedChangeListener);
+                        daysChecked++;
+                        break;
+                    }
+                    else{
+                        checkBox.setOnCheckedChangeListener(daysCheckedChangeListener);
+                    }
+                }
+            }
+
+            //load hours
+            JSONObject hours = JSONitem.getJSONObject("hours");
+            int hoursCount = hours.length();
+
+            for (int i = 0; i < hoursCount; i++) {
+                JSONObject singleHour = hours.getJSONObject(String.valueOf(i));
+
+                String from = singleHour.getString("from");
+                String to = singleHour.getString("to");
+
+                addHoursButtons(String.valueOf(i), from, to);
+            }
+
+            String frequency = JSONitem.getString("frequency");
+            editFreq.setText(frequency);
+
+            JSONArray sets = JSONitem.getJSONArray("sets");
+
+            loadSetsList(false);
+
+            for (int i = 0; i < sets.length(); i++) {
+                String setID = sets.getString(i);
+
+                for (int j = 0; j < setsLinear.getChildCount(); j++) {
+                    CheckBox checkBox = (CheckBox) setsLinear.getChildAt(j);
+                    if (checkBox.getTag().toString().equals(setID)) {
+                        checkBox.setOnCheckedChangeListener(null);
+                        checkBox.setChecked(true);
+                        checkBox.setOnCheckedChangeListener(setsCheckedChangeListener);
+                        setsChecked++;
+                        break;
+                    }
+                    else {
+                        checkBox.setOnCheckedChangeListener(setsCheckedChangeListener);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    void loadDefaults() {
+        for (int i = 0; i < daysLinear.getChildCount(); i++) {
+            CheckBox checkBox = (CheckBox) daysLinear.getChildAt(i);
+            checkBox.setChecked(true);
+            checkBox.setOnCheckedChangeListener(daysCheckedChangeListener);
+            daysChecked++;
+        }
+        addHoursButtons("0", "08:00", "22:00");
+
+        editFreq.setText("30");
+
+        loadSetsList(true);
+    }
+
+    void loadSetsList(boolean defaultCheck) {
+        DatabaseHelper DB = new DatabaseHelper(this);
+        ArrayList<String> titles = DB.getSingleColumn("title");
+        ArrayList<String> TableNames = DB.getSingleColumn("TableName");
+        for (int i = 0; i < TableNames.size(); i++) {
+            CheckBox checkBox = new CheckBox(this);
+
+            checkBox.setText(titles.get(i));
+            checkBox.setTag(TableNames.get(i));
+            if(defaultCheck){
+                checkBox.setChecked(true);
+                checkBox.setOnCheckedChangeListener(setsCheckedChangeListener);
+                setsChecked++;
+            }
+            else {
+                checkBox.setOnCheckedChangeListener(setsCheckedChangeListener);
+            }
+
+            setsLinear.addView(checkBox);
+        }
+    }
+    CompoundButton.OnCheckedChangeListener daysCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+            if(b) {
+                daysChecked++;
+            }
+            else {
+                if(daysChecked == 1) {
+                    compoundButton.setChecked(true);
+                    return;
+                }
+                daysChecked--;
+            }
+        }
+    };
+
+    CompoundButton.OnCheckedChangeListener setsCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            if(b){
+                setsChecked++;
+            }
+            else {
+                if(setsChecked == 1) {
+                    compoundButton.setChecked(true);
+                    return;
+                }
+                setsChecked--;
+
+            }
+
+
+        }
+    };
+
+
     void addHoursButtons(String tag, String fromTime, String toTime) {
-        View hoursLayout = LayoutInflater.from(context).inflate(R.layout.hours_layout, hoursLinear, false);
-        Button from = hoursLayout.findViewById(R.id.editFrom);
-        Button to = hoursLayout.findViewById(R.id.editTo);
+        final View singleHourView = LayoutInflater.from(context).inflate(R.layout.hours_layout, hoursLinear, false);
+        Button from = singleHourView.findViewById(R.id.editFrom);
+        Button to = singleHourView.findViewById(R.id.editTo);
+        ImageButton deleteHour = singleHourView.findViewById(R.id.deleteHour);
 
         from.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                timePicker((Button)view);
+                timePicker((Button) view);
             }
         });
 
         to.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                timePicker((Button)view);
+                timePicker((Button) view);
+            }
+        });
+
+        deleteHour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(hoursLinear.getChildCount() != 1) {
+                    hoursLinear.removeView((View)view.getParent());
+                }
             }
         });
 
         from.setText(fromTime);
         to.setText(toTime);
 
-        hoursLinear.addView(hoursLayout);
-
+        hoursLinear.addView(singleHourView);
     }
 
     void timePicker(final Button button) {
@@ -167,23 +296,23 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
     View.OnClickListener saveTime = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            View parentView = (View)view.getParent();
+            View parentView = (View) view.getParent();
 
             int hoursSize = hoursLinear.getChildCount();
             int setsSize = setsLinear.getChildCount();
 
             List<String> days = new ArrayList<>();
 
-            for(int i  = 0; i < 7; i++) {
-                CheckBox dayCheck = (CheckBox)daysLinear.getChildAt(i);
-                if(dayCheck.isChecked()) {
+            for (int i = 0; i < 7; i++) {
+                CheckBox dayCheck = (CheckBox) daysLinear.getChildAt(i);
+                if (dayCheck.isChecked()) {
                     days.add(dayCheck.getTag().toString());
                 }
             }
 
             HashMap<String, String[]> hoursHash = new HashMap<>();
 
-            for(int i = 0; i < hoursSize; i++) {
+            for (int i = 0; i < hoursSize; i++) {
                 RelativeLayout RL = hoursLinear.getChildAt(i).findViewById(R.id.relativeHours);
                 Button fromButton = RL.findViewById(R.id.editFrom);
                 Button toButton = RL.findViewById(R.id.editTo);
@@ -197,94 +326,77 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
 
             List<String> setNames = new ArrayList<>();
 
-            for(int i = 0; i < setsSize; i++) {
-                CheckBox setCheck = (CheckBox)setsLinear.getChildAt(i);
-                if(setCheck.isChecked()) {
+            for (int i = 0; i < setsSize; i++) {
+                CheckBox setCheck = (CheckBox) setsLinear.getChildAt(i);
+                if (setCheck.isChecked()) {
                     setNames.add(setCheck.getTag().toString());
                 }
             }
 
             File jsonAdvanced = new File(getFilesDir(), "advancedDelivery.json");
-                try {
-                    JSONObject rootObject = getJSON();
-                    Iterator<String> keys = rootObject.keys();
+            try {
+                JsonFile.readJson(context, "advancedDelivery.json");
+                JSONObject rootObject = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
+                Iterator<String> keys = rootObject.keys();
 
-                    int lastKey = 0;
-                    while(keys.hasNext()) {
-                        lastKey = Integer.parseInt(keys.next());
-                    }
-                    lastKey++;
+                int lastKey = 0;
+                while (keys.hasNext()) {
+                    lastKey = Integer.parseInt(keys.next());
+                }
+                lastKey++;
 
-                    JSONObject values = new JSONObject();
+                JSONObject values = new JSONObject();
 
-                    //days
-                    JSONArray daysArray = new JSONArray();
-                        for(int i = 0; i < days.size(); i++) {
-                            daysArray.put(days.get(i));
-                        }
-                    values.put("days", daysArray);
+                //days
+                JSONArray daysArray = new JSONArray();
+                for (int i = 0; i < days.size(); i++) {
+                    daysArray.put(days.get(i));
+                }
+                values.put("days", daysArray);
 
-                    //hours
-                    JSONObject hours = new JSONObject();
+                //hours
+                JSONObject hours = new JSONObject();
+
+                for (int i = 0; i < hoursHash.size(); i++) {
+                    String[] fromTO = hoursHash.get(String.valueOf(i));
+
                     JSONObject singleHour = new JSONObject();
 
-                    for(int i = 0; i < hoursHash.size(); i++) {
-                        String[] fromTO = hoursHash.get(String.valueOf(i));
+                    singleHour.put("from", fromTO[0]);
+                    singleHour.put("to", fromTO[1]);
 
-                        singleHour.put("from", fromTO[0]);
-                        singleHour.put("to", fromTO[1]);
-
-                        hours.put(String.valueOf(i), singleHour);
-                    }
-
-                    values.put("hours", hours);
-
-                    //frequency
-                    values.put("frequency", freq);
-
-                    //sets
-                    JSONArray sets = new JSONArray();
-
-                    for(int i = 0; i < setNames.size(); i++) {
-                        sets.put(setNames.get(i));
-                    }
-                    values.put("sets", sets);
-
-                    //put everything to one json
-                    rootObject.put(String.valueOf(lastKey), values);
-
-                    FileWriter fileWriter = new FileWriter(jsonAdvanced);
-                    String jsonSTRING = rootObject.toString();
-                    fileWriter.write(jsonSTRING);
-                    fileWriter.flush();
-                    fileWriter.close();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    hours.put(String.valueOf(i), singleHour);
                 }
+
+                values.put("hours", hours);
+
+                //frequency
+                values.put("frequency", freq);
+
+                //sets
+                JSONArray sets = new JSONArray();
+
+                for (int i = 0; i < setNames.size(); i++) {
+                    sets.put(setNames.get(i));
+                }
+                values.put("sets", sets);
+
+                //put everything to one json
+                rootObject.put(String.valueOf(lastKey), values);
+
+                if(isEdit.equals("")){
+                    JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
+                }
+                else {
+                    rootObject.remove(isEdit);
+                    JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
+                }
+
+                onBackPressed();
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-    };
-
-    JSONObject getJSON() {
-        JSONObject rootObject = null;
-        try {
-            File jsonAdvanced = new File(getFilesDir(), "advancedDelivery.json");
-
-            FileInputStream jsonStream = new FileInputStream(jsonAdvanced);
-            BufferedReader jReader = new BufferedReader(new InputStreamReader(jsonStream));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = jReader.readLine()) != null) {
-                sb.append(line);
-            }
-
-            String fullJSON = sb.toString();
-
-            rootObject = new JSONObject(fullJSON);
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return rootObject;
-    }
+    };
 }

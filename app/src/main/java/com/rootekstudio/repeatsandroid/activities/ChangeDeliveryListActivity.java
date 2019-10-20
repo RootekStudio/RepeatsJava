@@ -1,17 +1,27 @@
 package com.rootekstudio.repeatsandroid.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
 import com.rootekstudio.repeatsandroid.AdvancedTimeItem;
+import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.TimeAdapter;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
@@ -22,6 +32,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,6 +40,10 @@ import java.util.List;
 
 public class ChangeDeliveryListActivity extends AppCompatActivity {
     List<AdvancedTimeItem> timeItems = new ArrayList<>();
+    Paint p = new Paint();
+    RecyclerView.Adapter adapter = null;
+    RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,39 +51,108 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        RecyclerView recyclerView = findViewById(R.id.time_recycler_view);
+        recyclerView = findViewById(R.id.time_recycler_view);
+
         Button button = findViewById(R.id.addAdvancedDeliveryButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, AddAdvancedTimeActivity.class);
+                intent.putExtra("edit", "");
                 startActivity(intent);
             }
         });
-
-        loadFromJSON();
 
         recyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        RecyclerView.Adapter adapter = new TimeAdapter(timeItems);
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+
+                String index = viewHolder.itemView.findViewById(R.id.cardViewAdvanced).getTag().toString();
+
+                if(direction == ItemTouchHelper.LEFT) {
+                    try {
+                        JSONObject rootObject = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
+                        rootObject.remove(index);
+                        JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
+                    }catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    adapter.notifyItemRemoved(position);
+                    timeItems.remove(position);
+                }
+                else {
+                    Intent intent = new Intent(context, AddAdvancedTimeActivity.class);
+
+
+                    intent.putExtra("edit", index);
+                    startActivity(intent);
+
+                    adapter.notifyItemChanged(position);
+                }
+
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+                View itemView = viewHolder.itemView;
+
+                if (dX > 0) {
+                    p.setColor(Color.parseColor("#247EE6"));
+                    c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom(), p);
+                } else {
+                    p.setColor(Color.RED);
+                    c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(), itemView.getRight(), (float) itemView.getBottom(), p);
+                }
+            }
+
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        timeItems = new ArrayList<>();
+
+        loadFromJSON();
+
+        adapter = new TimeAdapter(timeItems);
+        adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
     }
 
     void loadFromJSON() {
         try {
-            JSONObject rootObject = getJSON();
+            JSONObject rootObject = new JSONObject(JsonFile.readJson(this, "advancedDelivery.json"));
             Iterator<String> iterator = rootObject.keys();
 
             DatabaseHelper DB = new DatabaseHelper(this);
 
-            while (iterator.hasNext()) {
-                AdvancedTimeItem timeItem = new AdvancedTimeItem();
-                timeItem.setName("testName");
+            int allItemsCount = 1;
 
+            while (iterator.hasNext()) {
                 String index = iterator.next();
+
+                AdvancedTimeItem timeItem = new AdvancedTimeItem();
+                timeItem.setName(String.valueOf(allItemsCount));
+                timeItem.setId(index);
 
                 JSONObject object = rootObject.getJSONObject(index);
 
@@ -79,10 +163,10 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
                 daysBuilder.append(" ");
 
                 int daysCount = days.length();
-                for(int i = 0; i < daysCount; i++) {
+                for (int i = 0; i < daysCount; i++) {
                     daysBuilder.append(days.getString(i));
 
-                    if(i != daysCount-1){
+                    if (i != daysCount - 1) {
                         daysBuilder.append(", ");
                     }
                 }
@@ -96,7 +180,10 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
                 hoursBuilder.append(getString(R.string.hours));
                 hoursBuilder.append(" ");
 
-                while(hoursKeys.hasNext()) {
+                int hoursLength = hoursObject.length();
+                int count = 0;
+
+                while (hoursKeys.hasNext()) {
                     String hourID = hoursKeys.next();
                     JSONObject single = hoursObject.getJSONObject(hourID);
                     String from = single.getString("from");
@@ -105,6 +192,12 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
                     hoursBuilder.append(from);
                     hoursBuilder.append(" - ");
                     hoursBuilder.append(to);
+
+                    if(count != hoursLength-1) {
+                        hoursBuilder.append(", ");
+                    }
+
+                    count++;
                 }
 
                 timeItem.setHours(hoursBuilder.toString());
@@ -120,43 +213,23 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
 
                 int setsArrayLength = setsArray.length();
 
-                for(int i = 0; i < setsArrayLength; i++) {
-                    setsNames.append(DB.getValue("title","TitleTable", "TableName='" + setsArray.getString(i) + "'"));
+                for (int i = 0; i < setsArrayLength; i++) {
+                    setsNames.append(DB.getValue("title", "TitleTable", "TableName='" + setsArray.getString(i) + "'"));
 
-                    if(i != setsArrayLength-1) {
+                    if (i != setsArrayLength - 1) {
                         setsNames.append(", ");
                     }
                 }
 
                 timeItem.setSets(setsNames.toString());
                 timeItems.add(timeItem);
+
+                allItemsCount++;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    JSONObject getJSON() {
-        File jsonAdvanced = new File(getFilesDir(), "advancedDelivery.json");
-        JSONObject rootObject = null;
-        try {
-            FileInputStream jsonStream = new FileInputStream(jsonAdvanced);
-            BufferedReader jReader = new BufferedReader(new InputStreamReader(jsonStream));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = jReader.readLine()) != null) {
-                sb.append(line);
-            }
-
-            String fullJSON = sb.toString();
-
-            rootObject = new JSONObject(fullJSON);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return rootObject;
     }
 
 }

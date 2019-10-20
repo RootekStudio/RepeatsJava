@@ -21,52 +21,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/monday"
-                android:tag="@string/mon"
-                android:checked="true"/>
+                android:tag="@string/mon" />
             <CheckBox
                 android:id="@+id/checkTuesday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tuesday"
-                android:tag="@string/tue"
-                android:checked="true"/>
+                android:tag="@string/tue" />
 
             <CheckBox
                 android:id="@+id/checkWednesday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/wednesday"
-                android:tag="@string/wed"
-                android:checked="true"/>
+                android:tag="@string/wed" />
 
             <CheckBox
                 android:id="@+id/checkThursday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/thursday"
-                android:tag="@string/thu"
-                android:checked="true"/>
+                android:tag="@string/thu" />
             <CheckBox
                 android:id="@+id/checkFriday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/friday"
-                android:tag="@string/fri"
-                android:checked="true"/>
+                android:tag="@string/fri" />
             <CheckBox
                 android:id="@+id/checkSaturday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/saturday"
-                android:tag="@string/sat"
-                android:checked="true"/>
+                android:tag="@string/sat" />
             <CheckBox
                 android:id="@+id/checkSunday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sunday"
-                android:tag="@string/sun"
-                android:checked="true"/>
+                android:tag="@string/sun" />
         </LinearLayout>
 
         <TextView
@@ -79,7 +72,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/hoursLinear"
             android:orientation="vertical">
-            <include layout="@layout/hours_layout"/>
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
