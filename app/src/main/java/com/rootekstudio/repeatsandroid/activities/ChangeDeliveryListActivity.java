@@ -17,14 +17,17 @@ import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import com.rootekstudio.repeatsandroid.AdvancedTimeItem;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.TimeAdapter;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,7 +50,9 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RepeatsHelper.DarkTheme(this, false);
         setContentView(R.layout.activity_change_delivery_list);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Context context = this;
 
@@ -83,14 +88,20 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
                 if(direction == ItemTouchHelper.LEFT) {
                     try {
                         JSONObject rootObject = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
-                        rootObject.remove(index);
-                        JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
+                        if(rootObject.length() != 1) {
+                            rootObject.remove(index);
+                            JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
+                            NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(index));
+
+                            adapter.notifyItemRemoved(position);
+                            timeItems.remove(position);
+                        }
+                        else {
+                            adapter.notifyItemChanged(position);
+                        }
                     }catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    adapter.notifyItemRemoved(position);
-                    timeItems.remove(position);
                 }
                 else {
                     Intent intent = new Intent(context, AddAdvancedTimeActivity.class);
@@ -255,4 +266,13 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == android.R.id.home)
+        {
+            onBackPressed();
+        }
+        return true;
+    }
 }

@@ -1,6 +1,13 @@
 package com.rootekstudio.repeatsandroid.notifications;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+
+import com.rootekstudio.repeatsandroid.AdvancedTimeItem;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,7 +54,7 @@ public class NotificationHelper {
         }
     }
 
-    static boolean checkHours(int fromHour, int toHour, int fromMinute, int toMinute ) {
+    static boolean checkHours(int fromHour, int toHour, int fromMinute, int toMinute) {
 
         Calendar calendar = GregorianCalendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -55,7 +62,7 @@ public class NotificationHelper {
 
         if (fromHour > toHour) {
             //hour in range - let's check minutes
-            if(!(hour < fromHour && hour > toHour)) {
+            if (!(hour < fromHour && hour > toHour)) {
                 //Check if I'm near the set hour
                 if (hour == fromHour) {
                     if (minute >= fromMinute) {
@@ -69,8 +76,7 @@ public class NotificationHelper {
                         //stop notifications and register new
                         return false;
                     }
-                }
-                else {
+                } else {
                     return false;
                 }
             }
@@ -90,18 +96,15 @@ public class NotificationHelper {
                         //stop notifications and register new
                         return false;
                     }
-                }
-                else {
+                } else {
                     return false;
                 }
             }
-        }
-        else if(fromMinute != toMinute){
+        } else if (fromMinute != toMinute) {
             //minute in range
-            if(minute >= fromMinute && minute < toMinute){
+            if (minute >= fromMinute && minute < toMinute) {
                 return false;
-            }
-            else if(minute >= fromMinute && fromMinute > toMinute) {
+            } else if (minute >= fromMinute && fromMinute > toMinute) {
                 return false;
             }
         }
@@ -112,7 +115,7 @@ public class NotificationHelper {
     static void stopAndRegisterInFuture(String day, int hour, int minute, Context context, int id) {
         Calendar calendarAlarm = Calendar.getInstance();
 
-        if(day.equals("today")) {
+        if (day.equals("today")) {
             Calendar calendarCheck = Calendar.getInstance();
             Calendar calendarNow = Calendar.getInstance();
             calendarCheck.setTimeInMillis(System.currentTimeMillis());
@@ -127,17 +130,65 @@ public class NotificationHelper {
             calendarAlarm.set(Calendar.MINUTE, minute);
             calendarAlarm.set(Calendar.SECOND, 0);
 
-            if(calendarCheck.before(calendarNow) || calendarCheck.equals(calendarNow)) {
+            if (calendarCheck.before(calendarNow) || calendarCheck.equals(calendarNow)) {
                 calendarAlarm.add(Calendar.DATE, 1);
             }
-        }
-        else {
+
+            NotifiSetup.CancelNotifications(context);
+            NotifiSetup.RegisterNotifications(context, calendarAlarm, id);
+        } else {
             calendarAlarm.setTimeInMillis(System.currentTimeMillis());
-            calendarAlarm.add(Calendar.DAY_OF_MONTH, )
+            int setsDayOfWeek = Integer.valueOf(day);
+            int realDayOfWeek = calendarAlarm.get(Calendar.DAY_OF_WEEK);
+
+            if (setsDayOfWeek < realDayOfWeek) {
+                int math = realDayOfWeek - setsDayOfWeek;
+                int toAdd = 7 - math;
+                calendarAlarm.add(Calendar.DAY_OF_MONTH, toAdd);
+            } else if(setsDayOfWeek == realDayOfWeek) {
+                calendarAlarm.add(Calendar.DAY_OF_MONTH, 7);
+            }
+            else{
+                int toAdd = setsDayOfWeek - realDayOfWeek;
+                calendarAlarm.add(Calendar.DAY_OF_MONTH, toAdd);
+            }
+
+            calendarAlarm.set(Calendar.HOUR_OF_DAY, hour);
+            calendarAlarm.set(Calendar.MINUTE, minute);
+            calendarAlarm.set(Calendar.SECOND, 0);
+
+            Intent newIntent = new Intent(context, AdvancedTimeNotification.class);
+            newIntent.putExtra("jsonIndex", String.valueOf(id));
+            NotificationHelper.registerAdvancedAlarm(context, 0, newIntent, calendarAlarm, String.valueOf(id));
+        }
+    }
+
+    public static void registerAdvancedAlarm(Context context, int time, Intent intent, Calendar calendar, String index) {
+        long triggerAtMillis;
+
+        if (calendar == null) {
+            triggerAtMillis = System.currentTimeMillis() + 1000 * 60 * time;
+        } else {
+            triggerAtMillis = calendar.getTimeInMillis();
         }
 
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(index), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        NotifiSetup.CancelNotifications(context);
-        NotifiSetup.RegisterNotifications(context, calendarAlarm, id);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                    triggerAtMillis,
+                    pendingIntent);
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP,
+                    triggerAtMillis,
+                    pendingIntent);
+        }
+    }
+    public static void cancelAdvancedAlarm(Context cnt, int code) {
+        Intent intent = new Intent(cnt, AdvancedTimeNotification.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, code, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) cnt.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 }

@@ -22,7 +22,7 @@ import java.util.Iterator;
 public class RepeatsQuestionSend extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Boolean isNext = intent.getBooleanExtra("IsNext", false);
+        boolean isNext = intent.getBooleanExtra("IsNext", false);
         int time = intent.getIntExtra("time", 42);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -30,7 +30,7 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
         boolean silenceHours = sharedPreferences.getBoolean("silenceHoursSwitch", true);
 
         if(isNext) {
-            RepeatsNotificationTemplate.NotifiTemplate(context, true);
+            RepeatsNotificationTemplate.NotifiTemplate(context, true, null);
         }
         else if(notifiMode.equals("1")) {
             if (silenceHours) {
@@ -71,17 +71,19 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
                 }
 
                 if(canSend) {
-                    RepeatsNotificationTemplate.NotifiTemplate(context, false);
+                    RepeatsNotificationTemplate.NotifiTemplate(context, false, null);
                 }
                 else {
                     NotificationHelper.stopAndRegisterInFuture("today", toHour, toMinute, context, 12345);
                 }
             }
+            else {
+                RepeatsNotificationTemplate.NotifiTemplate(context, false, null);
+            }
         }
         else {
-            RepeatsNotificationTemplate.NotifiTemplate(context, false);
+            RepeatsNotificationTemplate.NotifiTemplate(context, false, null);
         }
-
 
         //Schedule next notification
         if (!isNext) {

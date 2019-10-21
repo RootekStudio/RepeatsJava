@@ -126,4 +126,7 @@
     <string name="thu">Thu</string>
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
+    <string name="deliverySettings">Delivery settings</string>
+    <string name="editRule">Edit rule</string>
+    <string name="addRule">Add rule</string>
 </resources>

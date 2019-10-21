@@ -12,7 +12,7 @@
         android:id="@+id/addAdvancedDeliveryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/addHours"
+        android:text="@string/addRule"
         android:layout_marginTop="5dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
         android:layout_gravity="center"/>

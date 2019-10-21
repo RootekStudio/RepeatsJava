@@ -43,9 +43,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public RepeatsListDB getSingleItemLIST(RepeatsListDB List) {
+    public RepeatsListDB getSingleItemLIST(String setID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(NAME, COLUMNS, "id = ?", new String[]{String.valueOf(List.getitle())}, null, null, null, null);
+        String query = "SELECT * FROM TitleTable WHERE TableName='" + setID + "'";
+        Cursor cursor = db.rawQuery(query, null);
 
         if (cursor != null) {
             cursor.moveToFirst();
@@ -261,7 +262,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<RepeatsSingleSetDB> AllItemsSET(String SETNAME) {
         List<RepeatsSingleSetDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM " + SETNAME;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         RepeatsSingleSetDB list;
 

@@ -29,6 +29,7 @@ import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -42,6 +43,41 @@ public class RepeatsHelper {
     public static String IgnoreChars;
 
     static AlertDialog dialog = null;
+
+    public static void getAdvancedQuestionFromDatabase(Context context, ArrayList<String> setsID) {
+        String choosenSetID;
+        int count = setsID.size();
+        if(count == 1) {
+            choosenSetID = setsID.get(0);
+        }
+        else {
+            Random random = new Random();
+            int randomint = random.nextInt(count);
+            choosenSetID = setsID.get(randomint);
+        }
+
+        DatabaseHelper DB = new DatabaseHelper(context);
+        RepeatsListDB singleTitle = DB.getSingleItemLIST(choosenSetID);
+        tablename = singleTitle.getitle();
+        IgnoreChars = singleTitle.getIgnoreChars();
+
+        List<RepeatsSingleSetDB> allQuestions = DB.AllItemsSET(choosenSetID);
+        int allQcount = allQuestions.size();
+        RepeatsSingleSetDB single;
+
+        if(allQcount == 1) {
+            single = allQuestions.get(0);
+        }
+        else {
+            Random randomset = new Random();
+            int randomsetint = randomset.nextInt(allQcount);
+            single = allQuestions.get(randomsetint);
+        }
+
+        Question = single.getQuestion();
+        Answer = single.getAnswer();
+        PictureName = single.getImag();
+    }
 
     public static void GetQuestionFromDatabase(Context context) {
         DatabaseHelper DB = new DatabaseHelper(context);

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,12 +22,14 @@ import android.widget.TimePicker;
 
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
+import com.rootekstudio.repeatsandroid.notifications.AdvancedTimeNotification;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,7 +51,9 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RepeatsHelper.DarkTheme(this, false);
         setContentView(R.layout.activity_add_advanced_time);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         daysChecked = 0;
         setsChecked = 0;
@@ -100,14 +105,15 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
                     CheckBox checkBox = (CheckBox) daysLinear.getChildAt(j);
                     if (checkBox.getTag().toString().equals(day)) {
                         checkBox.setChecked(true);
-                        checkBox.setOnCheckedChangeListener(daysCheckedChangeListener);
                         daysChecked++;
                         break;
                     }
-                    else{
-                        checkBox.setOnCheckedChangeListener(daysCheckedChangeListener);
-                    }
                 }
+            }
+
+            for(int i = 0; i < 7; i++) {
+                CheckBox checkBox = (CheckBox) daysLinear.getChildAt(i);
+                checkBox.setOnCheckedChangeListener(daysCheckedChangeListener);
             }
 
             //load hours
@@ -333,7 +339,6 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
                 }
             }
 
-            File jsonAdvanced = new File(getFilesDir(), "advancedDelivery.json");
             try {
                 JsonFile.readJson(context, "advancedDelivery.json");
                 JSONObject rootObject = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
@@ -388,9 +393,15 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
                     JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
                 }
                 else {
+                    NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(isEdit));
                     rootObject.remove(isEdit);
                     JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
                 }
+
+                Intent newIntent = new Intent(context, AdvancedTimeNotification.class);
+                newIntent.putExtra("jsonIndex", String.valueOf(lastKey));
+
+                NotificationHelper.registerAdvancedAlarm(context, Integer.parseInt(freq), newIntent, null, String.valueOf(lastKey));
 
                 onBackPressed();
 
@@ -399,4 +410,14 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == android.R.id.home)
+        {
+            onBackPressed();
+        }
+        return true;
+    }
 }

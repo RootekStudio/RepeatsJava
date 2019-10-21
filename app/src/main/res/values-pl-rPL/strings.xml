@@ -118,4 +118,7 @@
     <string name="thu">czw.</string>
     <string name="tue">wt.</string>
     <string name="wed">śr.</string>
+    <string name="deliverySettings">Ustawienia dostarczania</string>
+    <string name="editRule">Edytuj regułę</string>
+    <string name="addRule">Dodaj regułę</string>
 </resources>

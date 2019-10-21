@@ -28,7 +28,9 @@ import com.rootekstudio.repeatsandroid.activities.EnableSetsListActivity;
 import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
 import com.rootekstudio.repeatsandroid.activities.SilenceHoursActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.notifications.AdvancedTimeNotification;
 import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
+import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +38,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 public class Preference_Screen extends PreferenceFragmentCompat {
@@ -92,6 +95,19 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
                     notifiListPreference.setSummary(R.string.turned_off);
 
+                    try {
+                        JSONObject advancedFile = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
+
+                        Iterator<String> iterator = advancedFile.keys();
+
+                        while(iterator.hasNext()) {
+                            String key = iterator.next();
+                            NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(key));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 } else if (value == 1) {
                     int f = sharedPreferences.getInt("frequency", 0);
                     if (f == 0) {
@@ -116,11 +132,34 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     notifiListPreference.setSummary(R.string.const_freq);
                 }
                 else if(value == 2) {
+                    NotifiSetup.CancelNotifications(context);
+
                     findPreference("timeAsk").setVisible(false);
                     findPreference("EnableSets").setVisible(false);
                     findPreference("silenceHoursSwitch").setVisible(false);
                     findPreference("silenceHoursSettings").setVisible(false);
                     findPreference("advancedDelivery").setVisible(true);
+
+                    try {
+                        JSONObject advancedFile = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
+
+                        Iterator<String> iterator = advancedFile.keys();
+
+                        while(iterator.hasNext()) {
+                            String key = iterator.next();
+
+                            JSONObject singleItem = advancedFile.getJSONObject(key);
+
+                            String freq = singleItem.getString("frequency");
+
+                            Intent newIntent = new Intent(context, AdvancedTimeNotification.class);
+                            newIntent.putExtra("jsonIndex", key);
+
+                            NotificationHelper.registerAdvancedAlarm(context, Integer.parseInt(freq), newIntent, null, key);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                     notifiListPreference.setSummary(R.string.advanced_notifi);
                 }

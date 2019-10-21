@@ -20,15 +20,21 @@ import com.rootekstudio.repeatsandroid.activities.AnswerActivity;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class RepeatsNotificationTemplate {
     private static final String KEY_TEXT_REPLY = "UsersAnswer";
 
-    public static void NotifiTemplate(Context context, Boolean IsNext) {
+    public static void NotifiTemplate(Context context, Boolean IsNext, ArrayList<String> setsID) {
         NotificationCompat.Builder mBuilder;
 
-        RepeatsHelper.GetQuestionFromDatabase(context);
+        if(setsID != null){
+            RepeatsHelper.getAdvancedQuestionFromDatabase(context, setsID);
+        }
+        else{
+            RepeatsHelper.GetQuestionFromDatabase(context);
+        }
 
         String Question = RepeatsHelper.Question;
         String Answer = RepeatsHelper.Answer;
