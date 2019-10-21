@@ -164,8 +164,31 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
 
                 int daysCount = days.length();
                 for (int i = 0; i < daysCount; i++) {
-                    daysBuilder.append(days.getString(i));
+                    String day = days.getString(i);
 
+                    switch(day){
+                        case "1":
+                            daysBuilder.append(getString(R.string.sun));
+                            break;
+                        case "2":
+                            daysBuilder.append(getString(R.string.mon));
+                            break;
+                        case "3":
+                            daysBuilder.append(getString(R.string.tue));
+                            break;
+                        case "4":
+                            daysBuilder.append(getString(R.string.wed));
+                            break;
+                        case "5":
+                            daysBuilder.append(getString(R.string.thu));
+                            break;
+                        case "6":
+                            daysBuilder.append(getString(R.string.fri));
+                            break;
+                        case "7":
+                            daysBuilder.append(getString(R.string.sat));
+                            break;
+                    }
                     if (i != daysCount - 1) {
                         daysBuilder.append(", ");
                     }

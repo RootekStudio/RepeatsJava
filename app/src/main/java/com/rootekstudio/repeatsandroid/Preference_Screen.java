@@ -97,7 +97,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     if (f == 0) {
                         RepeatsHelper.AskAboutTime(context, false, SettingsActivity.activity, null);
                     } else {
-                        NotifiSetup.RegisterNotifications(context,null);
+                        NotifiSetup.RegisterNotifications(context,null, RepeatsHelper.staticFrequencyCode);
                     }
 
                     findPreference("timeAsk").setVisible(true);
@@ -169,7 +169,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
                 RepeatsHelper.SaveFrequency(context, 5);
                 NotifiSetup.CancelNotifications(context);
-                NotifiSetup.RegisterNotifications(context, null);
+                NotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
 
                 int frequency = sharedPreferences.getInt("frequency", 0);
                 findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
@@ -198,7 +198,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                 }
 
                 NotifiSetup.CancelNotifications(context);
-                NotifiSetup.RegisterNotifications(context, null);
+                NotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
 
                 return true;
             }

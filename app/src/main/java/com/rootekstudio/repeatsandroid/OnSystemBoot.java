@@ -15,11 +15,14 @@ public class OnSystemBoot extends BroadcastReceiver
     public void onReceive(Context context, Intent intent)
     {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean notifi = sharedPreferences.getBoolean("notifications", false);
+        String notifi = sharedPreferences.getString("listNotifi", "1");
 
-        if (notifi && intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
+        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
         {
-            NotifiSetup.RegisterNotifications(context,null);
+//            if(notifi.equals("1")) {
+//
+//            }
+//            NotifiSetup.RegisterNotifications(context,null);
         }
     }
 }

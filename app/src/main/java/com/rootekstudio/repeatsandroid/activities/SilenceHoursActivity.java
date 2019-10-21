@@ -128,7 +128,7 @@ public class SilenceHoursActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             NotifiSetup.CancelNotifications(context);
-            NotifiSetup.RegisterNotifications(context, null);
+            NotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
 
             addButtons(hoursLayout, String.valueOf(lastIndex), "22:00", "06:00");
             rootLayout.addView(hoursLayout);
@@ -179,7 +179,7 @@ public class SilenceHoursActivity extends AppCompatActivity {
                     }
 
                     NotifiSetup.CancelNotifications(context);
-                    NotifiSetup.RegisterNotifications(context, null);
+                    NotifiSetup.RegisterNotifications(context, null,RepeatsHelper.staticFrequencyCode);
 
                     rootLayout.removeView((View) view.getParent());
                 }
@@ -227,7 +227,7 @@ public class SilenceHoursActivity extends AppCompatActivity {
                     fileWriter.close();
 
                     NotifiSetup.CancelNotifications(context);
-                    NotifiSetup.RegisterNotifications(context, null);
+                    NotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
 
                 } catch (Exception e) {
                     e.printStackTrace();

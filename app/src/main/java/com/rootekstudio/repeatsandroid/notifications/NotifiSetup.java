@@ -17,21 +17,18 @@ import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import java.util.Calendar;
 
 public class NotifiSetup {
-    public static void RegisterNotifications(Context cnt, Calendar calendar) {
+    public static void RegisterNotifications(Context cnt, Calendar calendar, int code) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
         int time = sharedPreferences.getInt("frequency", 0);
 
-        int code;
         if (time != 0) {
             long triggerAtMillis;
 
             if(calendar == null) {
                 triggerAtMillis = System.currentTimeMillis() + 1000 * 60 * time;
-                code = RepeatsHelper.staticFrequencyCode;
             }
             else {
                 triggerAtMillis = calendar.getTimeInMillis();
-                code = 12345;
             }
 
             Intent intent = new Intent(cnt, RepeatsQuestionSend.class);
@@ -43,14 +40,9 @@ public class NotifiSetup {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
                         triggerAtMillis,
                         pendingIntent);
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            } else {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP,
                         triggerAtMillis,
-                        pendingIntent);
-            } else {
-                alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        triggerAtMillis,
-                        1000 * 60 * time,
                         pendingIntent);
             }
 

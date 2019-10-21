@@ -34,7 +34,7 @@ import java.util.Random;
 
 public class RepeatsHelper {
     public static final String breakLine = "\r\n";
-    public static final int staticFrequencyCode = 10;
+    public static final int staticFrequencyCode = 10000;
     public static String Question;
     public static String Answer;
     public static String tablename;
@@ -146,7 +146,7 @@ public class RepeatsHelper {
 
         RepeatsHelper.SaveFrequency(context, frequency);
         NotifiSetup.CancelNotifications(context);
-        NotifiSetup.RegisterNotifications(context, null);
+        NotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
         dialog.dismiss();
         RepeatsHelper.askAboutBattery(context, IsSet, activity, intent);
     }

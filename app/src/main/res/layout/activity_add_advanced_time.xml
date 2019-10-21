@@ -21,45 +21,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/monday"
-                android:tag="@string/mon" />
+                android:tag="2" />
             <CheckBox
                 android:id="@+id/checkTuesday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tuesday"
-                android:tag="@string/tue" />
+                android:tag="3" />
 
             <CheckBox
                 android:id="@+id/checkWednesday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/wednesday"
-                android:tag="@string/wed" />
+                android:tag="4" />
 
             <CheckBox
                 android:id="@+id/checkThursday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/thursday"
-                android:tag="@string/thu" />
+                android:tag="5" />
             <CheckBox
                 android:id="@+id/checkFriday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/friday"
-                android:tag="@string/fri" />
+                android:tag="6" />
             <CheckBox
                 android:id="@+id/checkSaturday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/saturday"
-                android:tag="@string/sat" />
+                android:tag="7" />
             <CheckBox
                 android:id="@+id/checkSunday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sunday"
-                android:tag="@string/sun" />
+                android:tag="1" />
         </LinearLayout>
 
         <TextView
