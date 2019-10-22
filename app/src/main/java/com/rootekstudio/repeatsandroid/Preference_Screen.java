@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.preference.CheckBoxPreference;
@@ -35,9 +34,6 @@ import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -127,6 +123,19 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     }
                     else {
                         findPreference("silenceHoursSettings").setVisible(false);
+                    }
+
+                    try {
+                        JSONObject advancedFile = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
+
+                        Iterator<String> iterator = advancedFile.keys();
+
+                        while(iterator.hasNext()) {
+                            String key = iterator.next();
+                            NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(key));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
 
                     notifiListPreference.setSummary(R.string.const_freq);

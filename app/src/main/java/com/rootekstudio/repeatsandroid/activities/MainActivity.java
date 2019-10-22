@@ -36,17 +36,13 @@ import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -100,18 +96,16 @@ public class MainActivity extends AppCompatActivity
 
                 //days
                 JSONArray daysArray = new JSONArray();
-                DateFormatSymbols symbols = new DateFormatSymbols(Locale.getDefault());
-                String[] shortDays = symbols.getShortWeekdays();
 
                 if(Locale.getDefault().getCountry().equals("PL")){
                     for(int i = 2; i <= 7; i++) {
-                        daysArray.put(shortDays[i]);
+                        daysArray.put(String.valueOf(i));
                     }
-                    daysArray.put(shortDays[1]);
+                    daysArray.put(String.valueOf(1));
                 }
                 else {
                     for(int i = 1; i <= 7; i++) {
-                        daysArray.put(shortDays[i]);
+                        daysArray.put(String.valueOf(i));
                     }
                 }
                 values.put("days", daysArray);

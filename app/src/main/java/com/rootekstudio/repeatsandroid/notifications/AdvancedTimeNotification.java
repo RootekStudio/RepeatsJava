@@ -21,6 +21,7 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
         Boolean isNext = intent.getBooleanExtra("IsNext", false);
         int frequency = 0;
         ArrayList<String> sets = new ArrayList<>();
+        boolean cannotSend = false;
 
         if (!isNext) {
             try {
@@ -43,7 +44,7 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
 
                 //Nearest day to send notification
                 String dayToNotifi = NotificationHelper.checkDays(arrayDays);
-                boolean cannotSend = false;
+
 
                 JSONObject hoursObject = singleCondition.getJSONObject("hours");
                 Iterator<String> iterator = hoursObject.keys();
@@ -136,7 +137,7 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
             RepeatsNotificationTemplate.NotifiTemplate(context, true, sets);
         }
 
-        if(!isNext) {
+        if(!isNext && !cannotSend) {
             Intent newIntent = new Intent(context, AdvancedTimeNotification.class);
             newIntent.putExtra("jsonIndex", jsonIndex);
 

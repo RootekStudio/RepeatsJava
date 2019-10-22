@@ -1,7 +1,5 @@
 package com.rootekstudio.repeatsandroid.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,21 +11,19 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 public class SilenceHoursActivity extends AppCompatActivity {

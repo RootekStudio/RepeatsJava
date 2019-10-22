@@ -28,6 +28,7 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String notifiMode = sharedPreferences.getString("ListNotifi", "1");
         boolean silenceHours = sharedPreferences.getBoolean("silenceHoursSwitch", true);
+        boolean canSend = true;
 
         if(isNext) {
             RepeatsNotificationTemplate.NotifiTemplate(context, true, null);
@@ -44,8 +45,6 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
 
                 int toHour = 0;
                 int toMinute = 0;
-
-                boolean canSend = true;
 
                 while (iterator.hasNext()) {
                     String index = iterator.next();
@@ -74,7 +73,7 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
                     RepeatsNotificationTemplate.NotifiTemplate(context, false, null);
                 }
                 else {
-                    NotificationHelper.stopAndRegisterInFuture("today", toHour, toMinute, context, 12345);
+                    NotifiSetup.silentRegisterInFuture(toHour, toMinute, context, 12345);
                 }
             }
             else {
@@ -86,7 +85,7 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
         }
 
         //Schedule next notification
-        if (!isNext) {
+        if (!isNext && canSend) {
             Intent newIntent = new Intent(context, RepeatsQuestionSend.class);
             newIntent.putExtra("time", time);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RepeatsHelper.staticFrequencyCode, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);

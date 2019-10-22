@@ -77,4 +77,29 @@ public class NotifiSetup {
         editor.putBoolean("notifications", false);
         editor.apply();
     }
+
+    public static void silentRegisterInFuture(int hour, int minute, Context context, int id){
+        Calendar calendarAlarm = Calendar.getInstance();
+
+        Calendar calendarCheck = Calendar.getInstance();
+        Calendar calendarNow = Calendar.getInstance();
+        calendarCheck.setTimeInMillis(System.currentTimeMillis());
+        calendarNow.setTimeInMillis(System.currentTimeMillis());
+
+        calendarCheck.set(Calendar.HOUR_OF_DAY, hour);
+        calendarCheck.set(Calendar.MINUTE, minute);
+        calendarCheck.set(Calendar.SECOND, 0);
+
+        calendarAlarm.clear();
+        calendarAlarm.set(Calendar.HOUR_OF_DAY, hour);
+        calendarAlarm.set(Calendar.MINUTE, minute);
+        calendarAlarm.set(Calendar.SECOND, 0);
+
+        if (calendarCheck.before(calendarNow) || calendarCheck.equals(calendarNow)) {
+            calendarAlarm.add(Calendar.DATE, 1);
+        }
+
+        NotifiSetup.CancelNotifications(context);
+        NotifiSetup.RegisterNotifications(context, calendarAlarm, id);
+    }
 }

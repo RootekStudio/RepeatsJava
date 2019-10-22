@@ -6,9 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import com.rootekstudio.repeatsandroid.AdvancedTimeItem;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -133,9 +130,6 @@ public class NotificationHelper {
             if (calendarCheck.before(calendarNow) || calendarCheck.equals(calendarNow)) {
                 calendarAlarm.add(Calendar.DATE, 1);
             }
-
-            NotifiSetup.CancelNotifications(context);
-            NotifiSetup.RegisterNotifications(context, calendarAlarm, id);
         } else {
             calendarAlarm.setTimeInMillis(System.currentTimeMillis());
             int setsDayOfWeek = Integer.valueOf(day);
@@ -156,11 +150,11 @@ public class NotificationHelper {
             calendarAlarm.set(Calendar.HOUR_OF_DAY, hour);
             calendarAlarm.set(Calendar.MINUTE, minute);
             calendarAlarm.set(Calendar.SECOND, 0);
-
-            Intent newIntent = new Intent(context, AdvancedTimeNotification.class);
-            newIntent.putExtra("jsonIndex", String.valueOf(id));
-            NotificationHelper.registerAdvancedAlarm(context, 0, newIntent, calendarAlarm, String.valueOf(id));
         }
+
+        Intent newIntent = new Intent(context, AdvancedTimeNotification.class);
+        newIntent.putExtra("jsonIndex", String.valueOf(id));
+        NotificationHelper.registerAdvancedAlarm(context, 0, newIntent, calendarAlarm, String.valueOf(id));
     }
 
     public static void registerAdvancedAlarm(Context context, int time, Intent intent, Calendar calendar, String index) {
