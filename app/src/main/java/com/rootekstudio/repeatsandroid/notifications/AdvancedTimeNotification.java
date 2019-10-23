@@ -110,7 +110,7 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
                                     break;
                                 }
                             }
-                            else {
+                            else if(!fromIterator.hasNext()) {
                                 dayToNotifi = String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
                             }
                         }

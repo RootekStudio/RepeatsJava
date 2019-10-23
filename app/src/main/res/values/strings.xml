@@ -129,4 +129,5 @@
     <string name="deliverySettings">Delivery settings</string>
     <string name="editRule">Edit rule</string>
     <string name="addRule">Add rule</string>
+    <string name="noSetsInfoSettings">Add at least one set to enable notifications</string>
 </resources>

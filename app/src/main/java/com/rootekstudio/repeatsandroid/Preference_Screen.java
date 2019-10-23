@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,7 +42,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Preference_Screen extends PreferenceFragmentCompat {
-    private static Boolean ThemeChanged = false;
     Context context;
     private SharedPreferences sharedPreferences;
 
@@ -281,6 +284,19 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
+        Preference noSetsInDatabaseInfo = new Preference(context);
+        Drawable drawable = context.getDrawable(R.drawable.ic_info_outline);
+        if(RepeatsHelper.DarkTheme(context, true)){
+            drawable.setColorFilter(Color.parseColor("#6d6d6d"), PorterDuff.Mode.SRC_IN);
+        }
+        else {
+            drawable.setColorFilter(Color.parseColor("#bfbfbf"), PorterDuff.Mode.SRC_IN);
+        }
+
+        noSetsInDatabaseInfo.setIcon(drawable);
+        noSetsInDatabaseInfo.setSummary(R.string.noSetsInfoSettings);
+        noSetsInDatabaseInfo.setVisible(false);
+
         PreferenceCategory notification_category = new PreferenceCategory(context);
         notification_category.setIconSpaceReserved(false);
         notification_category.setKey("NotifiCat");
@@ -292,6 +308,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         notification_category.addPreference(silenceHours);
         notification_category.addPreference(silenceHoursSettings);
         notification_category.addPreference(advancedDelivery);
+        notification_category.addPreference(noSetsInDatabaseInfo);
 
         final ListPreference theme = new ListPreference(context);
         theme.setIconSpaceReserved(false);
@@ -309,8 +326,6 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                ThemeChanged = true;
-
                 RepeatsHelper.resetActivity(context, getActivity());
 
                 return true;
@@ -400,10 +415,6 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
         }
 
-        if (all.size() == 0) {
-            createBackup.setVisible(false);
-        }
-
         PackageInfo pInfo = null;
         try {
             pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -466,6 +477,14 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
         screen.setIconSpaceReserved(false);
         setPreferenceScreen(screen);
+
+        //Load settings
+
+        if (all.size() == 0) {
+            createBackup.setVisible(false);
+            noSetsInDatabaseInfo.setVisible(true);
+            notification_category.setEnabled(false);
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             findPreference("batteryOptimization").setVisible(true);

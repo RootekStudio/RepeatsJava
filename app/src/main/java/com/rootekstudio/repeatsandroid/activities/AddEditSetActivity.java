@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -27,9 +28,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
@@ -38,6 +41,10 @@ import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.ShareButton;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
+import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,6 +55,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -79,6 +87,8 @@ public class AddEditSetActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         context = this;
+
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         //Getting basic information about set (if new or  already existing, id, and ignore chars option)
         Intent intent = getIntent();
@@ -116,6 +126,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
 
                             DeleteSet(id);
+                            JsonFile.removeSetFromJSON(context, id);
 
                             List<RepeatsListDB> a = DB.AllItemsLIST();
                             int size = a.size();
@@ -123,7 +134,25 @@ public class AddEditSetActivity extends AppCompatActivity {
                             //if there is no set left in database, turn off notifications
                             if (size == 0) {
                                 NotifiSetup.CancelNotifications(context);
+
+                                try {
+                                    JSONObject advancedFile = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
+
+                                    Iterator<String> iterator = advancedFile.keys();
+
+                                    while(iterator.hasNext()) {
+                                        String key = iterator.next();
+                                        NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(key));
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("ListNotifi", "0");
+                                editor.apply();
                             }
+
 
 
                             deleted = true;
@@ -176,6 +205,8 @@ public class AddEditSetActivity extends AppCompatActivity {
 
             //Adding single item (with question and answer) to database
             DB.AddItem(id);
+
+            JsonFile.putSetToJSON(context, id);
         } else {
             id = editing;
             readSetFromDatabase(editing, SetName);

@@ -54,7 +54,7 @@ public class NotifiSetup {
                     PackageManager.DONT_KILL_APP);
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("notifications", true);
+            editor.putString("ListNotifi", "1");
             editor.apply();
         }
     }
@@ -71,11 +71,6 @@ public class NotifiSetup {
         pm.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                 PackageManager.DONT_KILL_APP);
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("notifications", false);
-        editor.apply();
     }
 
     public static void silentRegisterInFuture(int hour, int minute, Context context, int id){

@@ -2,11 +2,19 @@ package com.rootekstudio.repeatsandroid;
 
 import android.content.Context;
 
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class JsonFile {
     public static void createNewJson(Context context, String json, String fileName) {
@@ -41,5 +49,58 @@ public class JsonFile {
         }
 
         return json;
+    }
+
+    public static void removeSetFromJSON(Context context, String setIDToRemove){
+        try {
+            JSONObject advancedFile = new JSONObject(readJson(context, "advancedDelivery.json"));
+            Iterator<String> keys = advancedFile.keys();
+
+            while(keys.hasNext()){
+                String index = keys.next();
+                JSONObject single = advancedFile.getJSONObject(index);
+                JSONArray sets = single.getJSONArray("sets");
+                int itemCount = sets.length();
+
+                for(int i = 0; i < itemCount; i++) {
+                    String singleSet = sets.getString(i);
+                    if(singleSet.equals(setIDToRemove)) {
+                        sets.remove(i);
+                        if(sets.length() == 0) {
+                            DatabaseHelper DB = new DatabaseHelper(context);
+                            ArrayList<String> setsID = DB.getSingleColumn("TableName");
+                            if(sets.length() > 0){
+                                sets.put(setsID.get(0));
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            createNewJson(context, advancedFile.toString(),"advancedDelivery.json");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void putSetToJSON(Context context, String setIDToPut) {
+        try {
+            JSONObject advancedFile = new JSONObject(readJson(context, "advancedDelivery.json"));
+            Iterator<String> keys = advancedFile.keys();
+
+            while(keys.hasNext()){
+                String index = keys.next();
+                JSONObject single = advancedFile.getJSONObject(index);
+                JSONArray sets = single.getJSONArray("sets");
+                sets.put(setIDToPut);
+            }
+
+            createNewJson(context, advancedFile.toString(),"advancedDelivery.json");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

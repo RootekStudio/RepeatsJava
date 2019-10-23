@@ -2,10 +2,12 @@ package com.rootekstudio.repeatsandroid;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -168,6 +170,12 @@ public class RepeatsHelper {
                 String text = editText.getText().toString();
                 if (!text.equals("")) {
                     saveTime(context, text, IsSet, activity, intent);
+                    ComponentName receiver = new ComponentName(context, OnSystemBoot.class);
+                    PackageManager pm = context.getPackageManager();
+
+                    pm.setComponentEnabledSetting(receiver,
+                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                            PackageManager.DONT_KILL_APP);
                 }
             }
         });
