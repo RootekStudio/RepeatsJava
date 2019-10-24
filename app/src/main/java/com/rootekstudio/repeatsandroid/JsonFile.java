@@ -69,7 +69,7 @@ public class JsonFile {
                         if(sets.length() == 0) {
                             DatabaseHelper DB = new DatabaseHelper(context);
                             ArrayList<String> setsID = DB.getSingleColumn("TableName");
-                            if(sets.length() > 0){
+                            if(setsID.size() > 0){
                                 sets.put(setsID.get(0));
                             }
                         }
