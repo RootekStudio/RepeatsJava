@@ -73,7 +73,7 @@ public class NotifiSetup {
                 PackageManager.DONT_KILL_APP);
     }
 
-    public static void silentRegisterInFuture(int hour, int minute, Context context, int id){
+    static void silentRegisterInFuture(int hour, int minute, Context context, int id){
         Calendar calendarAlarm = Calendar.getInstance();
 
         Calendar calendarCheck = Calendar.getInstance();

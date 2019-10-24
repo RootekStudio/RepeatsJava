@@ -122,4 +122,5 @@
     <string name="editRule">Edytuj regułę</string>
     <string name="addRule">Dodaj regułę</string>
     <string name="noSetsInfoSettings">Dodaj co najmniej jeden zestaw aby włączyć powiadomienia</string>
+    <string name="selectDays">Wybierz dni:</string>
 </resources>

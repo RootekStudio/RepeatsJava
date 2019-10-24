@@ -3,6 +3,7 @@ package com.rootekstudio.repeatsandroid.activities;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -37,7 +39,7 @@ import java.util.List;
 
 public class AddAdvancedTimeActivity extends AppCompatActivity {
 
-    LinearLayout daysLinear;
+    GridLayout daysGrid;
     LinearLayout hoursLinear;
     LinearLayout setsLinear;
     EditText editFreq;
@@ -51,26 +53,33 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RepeatsHelper.DarkTheme(this, false);
+        boolean isDark = RepeatsHelper.DarkTheme(this, false);
         setContentView(R.layout.activity_add_advanced_time);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         daysChecked = 0;
         setsChecked = 0;
 
-        daysLinear = findViewById(R.id.daysAdvancedLinear);
+        daysGrid = findViewById(R.id.daysAdvancedGrid);
         hoursLinear = findViewById(R.id.hoursLinear);
         setsLinear = findViewById(R.id.setsAdvancedLinear);
         editFreq = findViewById(R.id.editFreqAdvanced);
 
         editFreq.setInputType(InputType.TYPE_CLASS_NUMBER);
-        editFreq.setHint(R.string.enterNumber);
         editFreq.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
 
         context = this;
 
         Button saveButton = findViewById(R.id.saveDeliveryButton);
         saveButton.setOnClickListener(saveTime);
+
+        Button cancelButton = findViewById(R.id.cancelDeliveryButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         Button addHours = findViewById(R.id.addHoursButton);
         addHours.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +97,21 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
         } else {
             loadSaved(isEdit);
         }
+
+        if(!isDark){
+            LinearLayout daysBox = findViewById(R.id.daysBox);
+            LinearLayout hoursBox = findViewById(R.id.hoursBox);
+            LinearLayout freqBox = findViewById(R.id.frequencyBox);
+            LinearLayout setsBox = findViewById(R.id.setsBox);
+            View lineA = findViewById(R.id.lineA);
+
+            lineA.setBackgroundColor(Color.parseColor("#bfbfbf"));
+            editFreq.setBackgroundResource(R.drawable.edittext_shape);
+            daysBox.setBackgroundResource(R.drawable.layout_mainshape);
+            hoursBox.setBackgroundResource(R.drawable.layout_mainshape);
+            freqBox.setBackgroundResource(R.drawable.layout_mainshape);
+            setsBox.setBackgroundResource(R.drawable.layout_mainshape);
+        }
     }
 
     void loadSaved(String index) {
@@ -101,8 +125,8 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
 
             for (int i = 0; i < daysCount; i++) {
                 String day = days.getString(i);
-                for (int j = i; j < daysLinear.getChildCount(); j++) {
-                    CheckBox checkBox = (CheckBox) daysLinear.getChildAt(j);
+                for (int j = i; j < daysGrid.getChildCount(); j++) {
+                    CheckBox checkBox = (CheckBox) daysGrid.getChildAt(j);
                     if (checkBox.getTag().toString().equals(day)) {
                         checkBox.setChecked(true);
                         daysChecked++;
@@ -112,7 +136,7 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
             }
 
             for(int i = 0; i < 7; i++) {
-                CheckBox checkBox = (CheckBox) daysLinear.getChildAt(i);
+                CheckBox checkBox = (CheckBox) daysGrid.getChildAt(i);
                 checkBox.setOnCheckedChangeListener(daysCheckedChangeListener);
             }
 
@@ -140,7 +164,7 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
                 String setID = sets.getString(i);
 
                 for (int j = 0; j < setsLinear.getChildCount(); j++) {
-                    CheckBox checkBox = (CheckBox) setsLinear.getChildAt(j);
+                    CheckBox checkBox = setsLinear.getChildAt(j).findViewById(R.id.checkBoxAdvanced);
                     if (checkBox.getTag().toString().equals(setID)) {
                         checkBox.setOnCheckedChangeListener(null);
                         checkBox.setChecked(true);
@@ -160,8 +184,8 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
     }
 
     void loadDefaults() {
-        for (int i = 0; i < daysLinear.getChildCount(); i++) {
-            CheckBox checkBox = (CheckBox) daysLinear.getChildAt(i);
+        for (int i = 0; i < daysGrid.getChildCount(); i++) {
+            CheckBox checkBox = (CheckBox) daysGrid.getChildAt(i);
             checkBox.setChecked(true);
             checkBox.setOnCheckedChangeListener(daysCheckedChangeListener);
             daysChecked++;
@@ -178,7 +202,9 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
         ArrayList<String> titles = DB.getSingleColumn("title");
         ArrayList<String> TableNames = DB.getSingleColumn("TableName");
         for (int i = 0; i < TableNames.size(); i++) {
-            CheckBox checkBox = new CheckBox(this);
+
+            final View singleCheckSet = LayoutInflater.from(context).inflate(R.layout.checkbox_layout, setsLinear, false);
+            CheckBox checkBox = singleCheckSet.findViewById(R.id.checkBoxAdvanced);
 
             checkBox.setText(titles.get(i));
             checkBox.setTag(TableNames.get(i));
@@ -191,7 +217,7 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
                 checkBox.setOnCheckedChangeListener(setsCheckedChangeListener);
             }
 
-            setsLinear.addView(checkBox);
+            setsLinear.addView(singleCheckSet);
         }
     }
     CompoundButton.OnCheckedChangeListener daysCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
@@ -302,7 +328,7 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
     View.OnClickListener saveTime = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            View parentView = (View) view.getParent();
+            View parentView = findViewById(R.id.mainSettingsLayoutAdvanced);
 
             int hoursSize = hoursLinear.getChildCount();
             int setsSize = setsLinear.getChildCount();
@@ -310,7 +336,7 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
             List<String> days = new ArrayList<>();
 
             for (int i = 0; i < 7; i++) {
-                CheckBox dayCheck = (CheckBox) daysLinear.getChildAt(i);
+                CheckBox dayCheck = (CheckBox) daysGrid.getChildAt(i);
                 if (dayCheck.isChecked()) {
                     days.add(dayCheck.getTag().toString());
                 }
@@ -328,12 +354,18 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
             }
 
             EditText editFreq = parentView.findViewById(R.id.editFreqAdvanced);
-            String freq = editFreq.getText().toString();
+            String freq;
+            if(editFreq.getText().length() == 0){
+                freq = "30";
+            }
+            else {
+                freq = editFreq.getText().toString();
+            }
 
             List<String> setNames = new ArrayList<>();
 
             for (int i = 0; i < setsSize; i++) {
-                CheckBox setCheck = (CheckBox) setsLinear.getChildAt(i);
+                CheckBox setCheck = setsLinear.getChildAt(i).findViewById(R.id.checkBoxAdvanced);
                 if (setCheck.isChecked()) {
                     setNames.add(setCheck.getTag().toString());
                 }

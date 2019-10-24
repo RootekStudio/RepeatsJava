@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="50dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relativeHours">
 
@@ -9,7 +9,6 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:text="@string/from"
-        android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:layout_alignParentStart="true"
         android:id="@+id/fromText"
@@ -24,9 +23,10 @@
         android:layout_height="wrap_content"
         android:text="00:00"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-        android:layout_toRightOf="@id/fromText"
-        android:layout_toLeftOf="@id/textTo"
-        android:layout_centerInParent="true"/>
+        android:layout_toEndOf="@id/fromText"
+        android:layout_toStartOf="@id/textTo"
+        android:layout_centerInParent="true"
+        android:textColor="?android:attr/textColor"/>
 
     <TextView
         android:layout_width="40dp"
@@ -46,9 +46,10 @@
         android:text="00:00"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
         app:icon="@drawable/ic_edit"
-        android:layout_toRightOf="@id/textTo"
-        android:layout_toLeftOf="@id/deleteHour"
-        android:layout_centerInParent="true"/>
+        android:layout_toEndOf="@id/textTo"
+        android:layout_toStartOf="@id/deleteHour"
+        android:layout_centerInParent="true"
+        android:textColor="?android:attr/textColor"/>
 
     <ImageButton
         android:id="@+id/deleteHour"

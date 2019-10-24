@@ -126,10 +126,6 @@ public class NotificationHelper {
             calendarAlarm.set(Calendar.HOUR_OF_DAY, hour);
             calendarAlarm.set(Calendar.MINUTE, minute);
             calendarAlarm.set(Calendar.SECOND, 0);
-
-            if (calendarCheck.before(calendarNow) || calendarCheck.equals(calendarNow)) {
-                calendarAlarm.add(Calendar.DATE, 1);
-            }
         } else {
             calendarAlarm.setTimeInMillis(System.currentTimeMillis());
             int setsDayOfWeek = Integer.valueOf(day);
