@@ -18,10 +18,11 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String jsonIndex = intent.getStringExtra("jsonIndex");
-        Boolean isNext = intent.getBooleanExtra("IsNext", false);
+        boolean isNext = intent.getBooleanExtra("IsNext", false);
         int frequency = 0;
         ArrayList<String> sets = new ArrayList<>();
         boolean cannotSend = false;
+        Calendar calendar = Calendar.getInstance();
 
         if (!isNext) {
             try {
@@ -31,14 +32,14 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
 
                 JSONArray setsArray = singleCondition.getJSONArray("sets");
 
-                for(int i = 0; i < setsArray.length(); i++) {
+                for (int i = 0; i < setsArray.length(); i++) {
                     sets.add(setsArray.getString(i));
                 }
 
                 JSONArray days = singleCondition.getJSONArray("days");
                 ArrayList<String> arrayDays = new ArrayList<>();
 
-                for(int i = 0; i < days.length(); i++) {
+                for (int i = 0; i < days.length(); i++) {
                     arrayDays.add(days.getString(i));
                 }
 
@@ -49,7 +50,7 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
                 JSONObject hoursObject = singleCondition.getJSONObject("hours");
                 Iterator<String> iterator = hoursObject.keys();
 
-                if(dayToNotifi.equals("today")) {
+                if (dayToNotifi.equals("today")) {
                     while (iterator.hasNext()) {
                         String index = iterator.next();
                         try {
@@ -64,28 +65,33 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
                             int toMinute = Integer.parseInt(to.substring(3, 5));
 
                             cannotSend = NotificationHelper.checkHours(fromHour, toHour, fromMinute, toMinute);
-                            if(!cannotSend) {
+                            if (!cannotSend) {
                                 break;
+                            }
+
+                            if (!iterator.hasNext()) {
+                                if(arrayDays.size() > 1){
+                                    arrayDays.remove(String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)));
+                                    dayToNotifi = NotificationHelper.checkDays(arrayDays);
+                                }
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                }
-                else {
+                } else {
                     cannotSend = true;
                 }
 
-                if(cannotSend) {
+                if (cannotSend) {
 
-                    Calendar calendar = Calendar.getInstance();
                     Iterator<String> fromIterator = hoursObject.keys();
 
                     int lowestHour = 24;
                     int lowestMinute = 60;
 
-                    while (fromIterator.hasNext()){
+                    while (fromIterator.hasNext()) {
                         String index = fromIterator.next();
 
                         JSONObject object = hoursObject.getJSONObject(index);
@@ -94,50 +100,45 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
                         int fromHour = Integer.parseInt(from.substring(0, 2));
                         int fromMinute = Integer.parseInt(from.substring(3, 5));
 
-                        if(dayToNotifi.equals("today")){
+                        if (dayToNotifi.equals("today")) {
                             int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
                             int minuteOfDay = calendar.get(Calendar.MINUTE);
 
-                            if(hourOfDay < fromHour){
+                            if (hourOfDay < fromHour) {
                                 lowestHour = fromHour;
                                 lowestMinute = fromMinute;
                                 break;
-                            }
-                            else if(hourOfDay == fromHour) {
-                                if(minuteOfDay < fromMinute){
+                            } else if (hourOfDay == fromHour) {
+                                if (minuteOfDay < fromMinute) {
                                     lowestHour = fromHour;
                                     lowestMinute = fromMinute;
                                     break;
                                 }
-                            }
-                            else if(!fromIterator.hasNext()) {
+                            } else if (!fromIterator.hasNext()) {
                                 dayToNotifi = String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
                             }
                         }
 
-                        if(fromHour < lowestHour) {
+                        if (fromHour < lowestHour) {
                             lowestHour = fromHour;
                             lowestMinute = fromMinute;
-                        }
-                        else if(fromHour == lowestHour && fromMinute < lowestMinute) {
+                        } else if (fromHour == lowestHour && fromMinute < lowestMinute) {
                             lowestHour = fromMinute;
                         }
                     }
                     NotificationHelper.stopAndRegisterInFuture(dayToNotifi, lowestHour, lowestMinute, context, Integer.parseInt(jsonIndex));
-                }
-                else {
+                } else {
                     RepeatsNotificationTemplate.NotifiTemplate(context, false, sets);
                 }
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             RepeatsNotificationTemplate.NotifiTemplate(context, true, sets);
         }
 
-        if(!isNext && !cannotSend) {
+        if (!isNext && !cannotSend) {
             Intent newIntent = new Intent(context, AdvancedTimeNotification.class);
             newIntent.putExtra("jsonIndex", jsonIndex);
 

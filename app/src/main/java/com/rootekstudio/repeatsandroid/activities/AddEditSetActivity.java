@@ -470,7 +470,11 @@ public class AddEditSetActivity extends AppCompatActivity {
                     column = "question";
                 }
 
-                DB.InsertValue(id, index, column, editText.getText().toString());
+                String question = RepeatsHelper.removeSpaces(editText.getText().toString());
+
+                DB.InsertValue(id, index, column, question);
+
+                editText.setText(question);
             }
         }
     };
@@ -485,6 +489,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                 editText.setTag(answer);
             } else {
 
+                answer = RepeatsHelper.removeSpaces(editText.getText().toString());
                 ViewGroup RelativeAddItem = (ViewGroup) view.getParent().getParent().getParent();
 
                 if (RelativeAddItem.getTag() == null) {
@@ -508,6 +513,8 @@ public class AddEditSetActivity extends AppCompatActivity {
                 }
 
                 DB.InsertValue(id, index, "answer", newAnswer);
+
+                editText.setText(answer);
             }
         }
     };

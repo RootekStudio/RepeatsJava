@@ -16,8 +16,7 @@
         android:textAlignment="center"/>
 
     <com.google.android.material.button.MaterialButton
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        app:icon="@drawable/ic_edit"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:id="@+id/editFrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,12 +39,11 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/editTo"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="00:00"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-        app:icon="@drawable/ic_edit"
         android:layout_toEndOf="@id/textTo"
         android:layout_toStartOf="@id/deleteHour"
         android:layout_centerInParent="true"

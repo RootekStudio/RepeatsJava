@@ -14,11 +14,11 @@ import java.util.List;
 public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.TimeViewHolder> {
     private List<AdvancedTimeItem> advancedTimeItems;
 
-    public static class TimeViewHolder extends RecyclerView.ViewHolder {
+    static class TimeViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         TextView name, days, hours, frequency, sets;
 
-        public TimeViewHolder(View view) {
+        TimeViewHolder(View view) {
             super(view);
             cardView = view.findViewById(R.id.cardViewAdvanced);
             name = view.findViewById(R.id.advancedList_name);
@@ -37,8 +37,7 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.TimeViewHolder
     @Override
     public TimeAdapter.TimeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.time_row, parent, false);
-        TimeViewHolder tvh = new TimeViewHolder(v);
-        return tvh;
+        return new TimeViewHolder(v);
     }
 
     @Override

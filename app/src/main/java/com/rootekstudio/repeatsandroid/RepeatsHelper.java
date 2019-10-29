@@ -336,6 +336,24 @@ public class RepeatsHelper {
         return inSampleSize;
     }
 
+    public static String removeSpaces(String string){
+        if (string.contains(" ")) {
+            String testSpace = string.replaceAll(" ", "");
+            if (testSpace.length() != 0) {
+                while (string.startsWith(" ")) {
+                    string = string.substring(1);
+                }
+                while (string.lastIndexOf(" ") == string.length() - 1) {
+                    string = string.substring(0, string.length() - 1);
+                }
+            }
+            else {
+                return testSpace;
+            }
+        }
+        return string;
+    }
+
     public static void CheckDir(Context cnt) {
         File file = new File(cnt.getFilesDir(), "shared");
         if (file.exists()) {
