@@ -6,8 +6,8 @@ android {
         applicationId "com.rootekstudio.repeatsandroid"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 2030012
-        versionName "2.3-prerelease13"
+        versionCode 2030013
+        versionName "2.3-prerelease14"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

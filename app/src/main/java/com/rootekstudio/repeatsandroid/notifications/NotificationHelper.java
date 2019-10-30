@@ -6,6 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import com.rootekstudio.repeatsandroid.JsonFile;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.lang.reflect.GenericArrayType;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -180,5 +186,24 @@ public class NotificationHelper {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, code, intent, 0);
         AlarmManager alarmManager = (AlarmManager) cnt.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
+    }
+
+    public static ArrayList<String> getSelectedSetsIdFromJSON(Context context, String jsonIndex) {
+        ArrayList<String> sets = new ArrayList<>();
+        try {
+            JSONObject rootObject = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
+            JSONObject singleCondition = rootObject.getJSONObject(jsonIndex);
+
+            JSONArray setsArray = singleCondition.getJSONArray("sets");
+
+            for (int i = 0; i < setsArray.length(); i++) {
+                sets.add(setsArray.getString(i));
+            }
+
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return sets;
     }
 }

@@ -20,21 +20,15 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
         String jsonIndex = intent.getStringExtra("jsonIndex");
         boolean isNext = intent.getBooleanExtra("IsNext", false);
         int frequency = 0;
-        ArrayList<String> sets = new ArrayList<>();
         boolean cannotSend = false;
         Calendar calendar = Calendar.getInstance();
 
-        if (!isNext) {
-            try {
+        try {
+            if (!isNext) {
                 JSONObject rootObject = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
                 JSONObject singleCondition = rootObject.getJSONObject(jsonIndex);
+
                 frequency = Integer.parseInt(singleCondition.getString("frequency"));
-
-                JSONArray setsArray = singleCondition.getJSONArray("sets");
-
-                for (int i = 0; i < setsArray.length(); i++) {
-                    sets.add(setsArray.getString(i));
-                }
 
                 JSONArray days = singleCondition.getJSONArray("days");
                 ArrayList<String> arrayDays = new ArrayList<>();
@@ -128,15 +122,16 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
                     }
                     NotificationHelper.stopAndRegisterInFuture(dayToNotifi, lowestHour, lowestMinute, context, Integer.parseInt(jsonIndex));
                 } else {
-                    RepeatsNotificationTemplate.NotifiTemplate(context, false, sets);
+                    RepeatsNotificationTemplate.NotifiTemplate(context, false, jsonIndex);
                 }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } else {
+                RepeatsNotificationTemplate.NotifiTemplate(context, true, jsonIndex);
             }
-        } else {
-            RepeatsNotificationTemplate.NotifiTemplate(context, true, sets);
         }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         if (!isNext && !cannotSend) {
             Intent newIntent = new Intent(context, AdvancedTimeNotification.class);

@@ -60,6 +60,9 @@ public class FLCore {
                 selectedItems.add(selectedItems.get(1));
                 selectedItems.set(1, selectedItems.get(answered));
             }
+            else if(selectedItems.size()-1 == answered){
+                selectedItems.add(selectedItems.get(answered));
+            }
             else {
                 int selectedLastIndex = selectedItems.size();
                 Random random = new Random();
@@ -67,7 +70,6 @@ public class FLCore {
                 selectedItems.add(selectedItems.get(index));
                 selectedItems.set(index, selectedItems.get(answered));
             }
-
 
             answered++;
             return false;

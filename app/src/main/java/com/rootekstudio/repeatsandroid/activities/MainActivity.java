@@ -114,8 +114,8 @@ public class MainActivity extends AppCompatActivity
                 JSONObject hours = new JSONObject();
                 JSONObject singleHour = new JSONObject();
 
-                singleHour.put("from", "22:00");
-                singleHour.put("to", "06:00");
+                singleHour.put("from", "08:00");
+                singleHour.put("to", "22:00");
 
                 hours.put("0", singleHour);
 

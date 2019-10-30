@@ -27,85 +27,17 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class RepeatsHelper {
     public static final String breakLine = "\r\n";
     public static final int staticFrequencyCode = 10000;
-    public static String Question;
-    public static String Answer;
-    public static String tablename;
-    public static String PictureName = "";
-    public static String IgnoreChars;
 
-    static AlertDialog dialog = null;
+    private static AlertDialog dialog = null;
 
-    public static void getAdvancedQuestionFromDatabase(Context context, ArrayList<String> setsID) {
-        String choosenSetID;
-        int count = setsID.size();
-        if(count == 1) {
-            choosenSetID = setsID.get(0);
-        }
-        else {
-            Random random = new Random();
-            int randomint = random.nextInt(count);
-            choosenSetID = setsID.get(randomint);
-        }
-
-        DatabaseHelper DB = new DatabaseHelper(context);
-        RepeatsListDB singleTitle = DB.getSingleItemLIST(choosenSetID);
-        tablename = singleTitle.getitle();
-        IgnoreChars = singleTitle.getIgnoreChars();
-
-        List<RepeatsSingleSetDB> allQuestions = DB.AllItemsSET(choosenSetID);
-        int allQcount = allQuestions.size();
-        RepeatsSingleSetDB single;
-
-        if(allQcount == 1) {
-            single = allQuestions.get(0);
-        }
-        else {
-            Random randomset = new Random();
-            int randomsetint = randomset.nextInt(allQcount);
-            single = allQuestions.get(randomsetint);
-        }
-
-        Question = single.getQuestion();
-        Answer = single.getAnswer();
-        PictureName = single.getImag();
-    }
-
-    public static void GetQuestionFromDatabase(Context context) {
-        DatabaseHelper DB = new DatabaseHelper(context);
-        List<RepeatsListDB> all = DB.ALLEnabledSets();
-        int count = all.size();
-
-        Random random = new Random();
-        int randomint = random.nextInt(count);
-        RepeatsListDB single = all.get(randomint);
-
-        tablename = single.getitle();
-        String Title = single.getTableName();
-        IgnoreChars = single.getIgnoreChars();
-
-        List<RepeatsSingleSetDB> set = DB.AllItemsSET(Title);
-        int setcount = set.size();
-        Random randomset = new Random();
-        int randomsetint = randomset.nextInt(setcount);
-
-        RepeatsSingleSetDB singleSetDB = set.get(randomsetint);
-        Question = singleSetDB.getQuestion();
-        Answer = singleSetDB.getAnswer();
-        PictureName = singleSetDB.getImag();
-    }
-
-    public static void SaveFrequency(Context cnt, int frequency) {
+    static void SaveFrequency(Context cnt, int frequency) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("frequency", frequency);
@@ -370,7 +302,7 @@ public class RepeatsHelper {
         }
     }
 
-    public static void shareSets(Context context, Activity activity) {
+    static void shareSets(Context context, Activity activity) {
         Uri uri = FileProvider.getUriForFile(context, "com.rootekstudio.repeatsandroid.activities.AddEditSetActivity", SetToFile.zipFile);
         Intent share = new Intent();
 

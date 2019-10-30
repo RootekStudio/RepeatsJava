@@ -131,4 +131,6 @@
     <string name="addRule">Add rule</string>
     <string name="noSetsInfoSettings">Add at least one set to enable notifications</string>
     <string name="selectDays">Select days:</string>
+    <string name="cantLoadSet">Can\'t load any set</string>
+    <string name="checkSetSettings">Check your settings</string>
 </resources>

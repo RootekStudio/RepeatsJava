@@ -123,4 +123,6 @@
     <string name="addRule">Dodaj regułę</string>
     <string name="noSetsInfoSettings">Dodaj co najmniej jeden zestaw aby włączyć powiadomienia</string>
     <string name="selectDays">Wybierz dni:</string>
+    <string name="checkSetSettings">Sprawdź swoje ustawienia</string>
+    <string name="cantLoadSet">Nie można załadować żadnego zestawu</string>
 </resources>
