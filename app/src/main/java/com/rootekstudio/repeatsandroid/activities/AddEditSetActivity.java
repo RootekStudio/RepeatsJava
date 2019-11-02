@@ -34,6 +34,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RegisterNotifications;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
@@ -207,9 +208,27 @@ public class AddEditSetActivity extends AppCompatActivity {
             DB.AddItem(id);
 
             JsonFile.putSetToJSON(context, id);
+
         } else {
             id = editing;
             readSetFromDatabase(editing, SetName);
+        }
+
+        int firstRun = sharedPreferences.getInt("firstRun", 3);
+        if(firstRun != 3) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("ListNotifi", String.valueOf(firstRun));
+            editor.apply();
+
+            if(firstRun == 1) {
+                RegisterNotifications.registerConstFrequency(context);
+            }
+            else if(firstRun == 2) {
+                RegisterNotifications.registerAdvanedDelivery(context);
+            }
+
+            editor.putInt("firstRun", firstRun);
+            editor.apply();
         }
 
         FloatingActionButton fab = findViewById(R.id.AddQuestionFAB);

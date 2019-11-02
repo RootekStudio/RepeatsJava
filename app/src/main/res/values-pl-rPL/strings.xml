@@ -83,9 +83,9 @@
     <string name="send">Prześlij</string>
     <string name="backup_restored">Przywrócono kopię zapasową</string>
     <string name="backup_created">Utworzono kopię zapasową</string>
-    <string name="FLendText">Zakończono Szybką Naukę</string>
+    <string name="FLendText">Zakończono Szybką naukę</string>
     <string name="OnceAgain">Jeszcze raz</string>
-    <string name="FastLearning">Szybka Nauka</string>
+    <string name="FastLearning">Szybka nauka</string>
     <string name="hours">Godziny:</string>
     <string name="friday">Piątek</string>
     <string name="monday">Poniedziałek</string>
@@ -125,4 +125,15 @@
     <string name="selectDays">Wybierz dni:</string>
     <string name="checkSetSettings">Sprawdź swoje ustawienia</string>
     <string name="cantLoadSet">Nie można załadować żadnego zestawu</string>
+    <string name="specialThanksDawid">Specjalne podziękowania dla Dawida Poradzińskiego za gruntowne testowanie aplikacji</string>
+    <string name="welcome">Witaj w</string>
+    <string name="constFreqInfo">Powiadomienia będą wysyłane cały czas, z wyjątkiem godzin ustawionych jako godziny ciszy</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="advancedInfo">Powiadomienia będą przychodzić w dniu i godzinie określonej przez użytkownika</string>
+    <string name="freqDefault">Domyślnie: Powiadomienia przychodzą co 30 minut ze wszystkich zestawów, godziny ciszy od 22:00 do 06:00</string>
+    <string name="advancedDefault">Domyślnie: Powiadomienia przychodzą codziennie co 30 minut, ze wszystkich zestawów, w godzinach od 08:00 do 22:00</string>
+    <string name="change">Zmień</string>
+    <string name="accept">Gotowe</string>
+    <string name="firstRunInfo">Główną funkcją aplikacji Repeats jest wysyłanie powiadomień z pytaniami na Twoje urządzenie.\n\nWybierz tryb dostarczania powiadomień:</string>
+    <string name="canChangeDefault">Możesz zmienić ustawienia domyślne po dodaniu pierwszego zestawu.</string>
 </resources>

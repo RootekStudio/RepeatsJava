@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/DarkAppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <activity android:name=".activities.FirstRunActivity"></activity>
 
         <receiver
             android:name=".OnSystemBoot"
@@ -88,10 +88,12 @@
         <activity
             android:name=".activities.SilenceHoursActivity"
             android:label="@string/silenceHours" />
-        <activity android:name=".activities.ChangeDeliveryListActivity"
-            android:label="@string/deliverySettings"/>
-        <activity android:name=".activities.AddAdvancedTimeActivity"
-            android:label="@string/editRule"/>
+        <activity
+            android:name=".activities.ChangeDeliveryListActivity"
+            android:label="@string/deliverySettings" />
+        <activity
+            android:name=".activities.AddAdvancedTimeActivity"
+            android:label="@string/editRule" />
     </application>
 
 </manifest>

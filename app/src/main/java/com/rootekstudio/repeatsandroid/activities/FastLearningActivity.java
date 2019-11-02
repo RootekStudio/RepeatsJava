@@ -61,8 +61,9 @@ public class FastLearningActivity extends AppCompatActivity {
 
         DatabaseHelper DB = new DatabaseHelper(this);
         List<RepeatsSingleSetDB> itemsSetList = DB.AllItemsSET(setID);
+        String isIgnoring = DB.getValue("IgnoreChars", "TitleTable", "TableName='" + setID + "'");
 
-        FL.start(itemsSetList);
+        FL.start(itemsSetList, isIgnoring);
 
         question = findViewById(R.id.questionFL);
         correctA = findViewById(R.id.correctAnswerFL);

@@ -5,15 +5,17 @@ import java.util.List;
 import java.util.Random;
 
 public class FLCore {
-    static int answered;
-    int correctAnswers;
+    private static int answered;
+    private int correctAnswers;
 
-    static List<RepeatsSingleSetDB> selectedItems;
+    private static List<RepeatsSingleSetDB> selectedItems;
+    private static String ignore;
 
     public Boolean done = false;
-    int allSetItemsSize;
+    private int allSetItemsSize;
 
-    public void start(List<RepeatsSingleSetDB> allSetItems) {
+    public void start(List<RepeatsSingleSetDB> allSetItems, String ignoreChars) {
+        ignore = ignoreChars;
         selectedItems = new ArrayList<>();
         allSetItemsSize = allSetItems.size();
         answered = 0;
@@ -34,7 +36,7 @@ public class FLCore {
     }
 
     public boolean checkAnswered(String answer) {
-        if (CheckAnswer.isAnswerCorrect(answer, selectedItems.get(answered).getAnswer(), "false")) {
+        if (CheckAnswer.isAnswerCorrect(answer, selectedItems.get(answered).getAnswer(), ignore)) {
             correctAnswers++;
 
             if(allSetItemsSize < 10) {
@@ -79,7 +81,6 @@ public class FLCore {
     public static String[] gQuestionAndAnswer()
     {
         RepeatsSingleSetDB single = selectedItems.get(answered);
-        String[] qanda = {single.getQuestion(), single.getAnswer(), single.getImag()};
-        return qanda;
+        return new String[]{single.getQuestion(), single.getAnswer(), single.getImag()};
     }
 }

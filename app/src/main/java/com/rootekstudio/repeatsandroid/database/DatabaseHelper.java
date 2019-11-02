@@ -43,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public RepeatsListDB getSingleItemLIST(String setID) {
+    RepeatsListDB getSingleItemLIST(String setID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM TitleTable WHERE TableName='" + setID + "'";
         Cursor cursor = db.rawQuery(query, null);
@@ -89,7 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return ALL;
     }
 
-    public List<RepeatsListDB> ALLEnabledSets() {
+    List<RepeatsListDB> ALLEnabledSets() {
         List<RepeatsListDB> ALL = new LinkedList<>();
         String query = "SELECT * FROM TitleTable WHERE IsEnabled='true'";
         SQLiteDatabase db = this.getWritableDatabase();

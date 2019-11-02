@@ -28,6 +28,7 @@ import androidx.preference.SwitchPreferenceCompat;
 
 import com.rootekstudio.repeatsandroid.activities.ChangeDeliveryListActivity;
 import com.rootekstudio.repeatsandroid.activities.EnableSetsListActivity;
+import com.rootekstudio.repeatsandroid.activities.FirstRunActivity;
 import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
 import com.rootekstudio.repeatsandroid.activities.SilenceHoursActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
@@ -43,6 +44,7 @@ import java.util.List;
 
 public class Preference_Screen extends PreferenceFragmentCompat {
     Context context;
+    int cliked = 0;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -108,12 +110,8 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     }
 
                 } else if (value == 1) {
-                    int f = sharedPreferences.getInt("frequency", 0);
-                    if (f == 0) {
-                        RepeatsHelper.AskAboutTime(context, false, SettingsActivity.activity, null);
-                    } else {
-                        NotifiSetup.RegisterNotifications(context,null, RepeatsHelper.staticFrequencyCode);
-                    }
+
+                    RegisterNotifications.registerConstFrequency(context);
 
                     findPreference("timeAsk").setVisible(true);
                     findPreference("EnableSets").setVisible(true);
@@ -152,26 +150,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     findPreference("silenceHoursSettings").setVisible(false);
                     findPreference("advancedDelivery").setVisible(true);
 
-                    try {
-                        JSONObject advancedFile = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
-
-                        Iterator<String> iterator = advancedFile.keys();
-
-                        while(iterator.hasNext()) {
-                            String key = iterator.next();
-
-                            JSONObject singleItem = advancedFile.getJSONObject(key);
-
-                            String freq = singleItem.getString("frequency");
-
-                            Intent newIntent = new Intent(context, AdvancedTimeNotification.class);
-                            newIntent.putExtra("jsonIndex", key);
-
-                            NotificationHelper.registerAdvancedAlarm(context, Integer.parseInt(freq), newIntent, null, key);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    RegisterNotifications.registerAdvanedDelivery(context);
 
                     notifiListPreference.setSummary(R.string.advanced_notifi);
                 }
@@ -411,8 +390,6 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             batteryOptimizationCat.setTitle(R.string.batteryOptimization);
             screen.addPreference(batteryOptimizationCat);
             batteryOptimizationCat.addPreference(optimizationPreference);
-
-
         }
 
         PackageInfo pInfo = null;
@@ -424,11 +401,23 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
         final String version = pInfo.versionName;
 
+
         Preference About = new Preference(context);
         About.setIconSpaceReserved(false);
         About.setKey("about");
         About.setTitle(null);
-        About.setSummary("Repeats " + version + "\n" + "Developer: Jakub Sieradzki");
+        About.setSummary("Repeats " + version + "\n" + "Developer: Jakub Sieradzki" + "\n\n" + getString(R.string.specialThanksDawid));
+        About.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                cliked++;
+                if(cliked == 5) {
+                    Intent intent = new Intent(context, FirstRunActivity.class);
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
 
         Preference SendFeedback = new Preference(context);
         SendFeedback.setIconSpaceReserved(false);
