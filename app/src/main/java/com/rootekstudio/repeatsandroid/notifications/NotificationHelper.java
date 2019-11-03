@@ -2,16 +2,18 @@ package com.rootekstudio.repeatsandroid.notifications;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 
 import com.rootekstudio.repeatsandroid.JsonFile;
+import com.rootekstudio.repeatsandroid.OnSystemBoot;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.GenericArrayType;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -180,6 +182,13 @@ public class NotificationHelper {
                     triggerAtMillis,
                     pendingIntent);
         }
+
+        ComponentName receiver = new ComponentName(context, OnSystemBoot.class);
+        PackageManager pm = context.getPackageManager();
+
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
     }
     public static void cancelAdvancedAlarm(Context cnt, int code) {
         Intent intent = new Intent(cnt, AdvancedTimeNotification.class);

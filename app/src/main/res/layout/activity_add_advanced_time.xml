@@ -18,9 +18,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:text="@string/Cancel"
+            android:text="@string/Delete"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            app:icon="@drawable/ic_clear" />
+            app:icon="@drawable/ic_delete" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/saveDeliveryButton"

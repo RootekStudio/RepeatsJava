@@ -16,7 +16,7 @@ import com.rootekstudio.repeatsandroid.RepeatsHelper;
 
 import java.util.Calendar;
 
-public class NotifiSetup {
+public class ConstNotifiSetup {
     public static void RegisterNotifications(Context cnt, Calendar calendar, int code) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
         int time = sharedPreferences.getInt("frequency", 0);
@@ -64,13 +64,6 @@ public class NotifiSetup {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, RepeatsHelper.staticFrequencyCode, intent, 0);
         AlarmManager alarmManager = (AlarmManager) cnt.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
-
-        ComponentName receiver = new ComponentName(cnt, OnSystemBoot.class);
-        PackageManager pm = cnt.getPackageManager();
-
-        pm.setComponentEnabledSetting(receiver,
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
     }
 
     static void silentRegisterInFuture(int hour, int minute, Context context, int id){
@@ -94,7 +87,7 @@ public class NotifiSetup {
             calendarAlarm.add(Calendar.DATE, 1);
         }
 
-        NotifiSetup.CancelNotifications(context);
-        NotifiSetup.RegisterNotifications(context, calendarAlarm, id);
+        ConstNotifiSetup.CancelNotifications(context);
+        ConstNotifiSetup.RegisterNotifications(context, calendarAlarm, id);
     }
 }

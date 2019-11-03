@@ -73,7 +73,7 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
                     RepeatsNotificationTemplate.NotifiTemplate(context, false, null);
                 }
                 else {
-                    NotifiSetup.silentRegisterInFuture(toHour, toMinute, context, 12345);
+                    ConstNotifiSetup.silentRegisterInFuture(toHour, toMinute, context, 12345);
                 }
             }
             else {

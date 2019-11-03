@@ -30,6 +30,7 @@ import com.rootekstudio.repeatsandroid.notifications.AdvancedTimeNotification;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -70,6 +71,9 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
 
         context = this;
 
+        Intent thisIntent = getIntent();
+        isEdit = thisIntent.getStringExtra("edit");
+
         Button saveButton = findViewById(R.id.saveDeliveryButton);
         saveButton.setOnClickListener(saveTime);
 
@@ -77,6 +81,19 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!isEdit.equals("")){
+                    JSONObject rootObject = null;
+                    try {
+                        rootObject = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if(rootObject.length() != 1) {
+                        rootObject.remove(isEdit);
+                        JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
+                        NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(isEdit));
+                    }
+                }
                 onBackPressed();
             }
         });
@@ -89,8 +106,6 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
             }
         });
 
-        Intent thisIntent = getIntent();
-        isEdit = thisIntent.getStringExtra("edit");
 
         if (isEdit.equals("")) {
             loadDefaults();

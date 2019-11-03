@@ -27,7 +27,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
-import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
+import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 
 import java.io.File;
 
@@ -121,72 +121,55 @@ public class RepeatsHelper {
         int frequency = Integer.parseInt(text);
 
         RepeatsHelper.SaveFrequency(context, frequency);
-        NotifiSetup.CancelNotifications(context);
-        NotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
+        ConstNotifiSetup.CancelNotifications(context);
+        ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
         dialog.dismiss();
-        RepeatsHelper.askAboutBattery(context, IsSet, activity, intent);
+
+        resetActivity(context, activity);
     }
 
-    public static void askAboutBattery(final Context cnt, final Boolean IsSet, final Activity activity, final Intent intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+    public static void askAboutBattery(final Context cnt) {
 
-            final String packageName = cnt.getPackageName();
-            PowerManager pm = (PowerManager) cnt.getSystemService(Context.POWER_SERVICE);
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
+        if(!sharedPreferences.contains("batteryOptimization")) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                final String packageName = cnt.getPackageName();
+                PowerManager pm = (PowerManager) cnt.getSystemService(Context.POWER_SERVICE);
 
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(cnt);
-                dialog.setTitle(R.string.batteryAskTitle);
-                dialog.setMessage(R.string.batteryAskMessage);
-                dialog.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(cnt, R.string.CancelOffBattery, Toast.LENGTH_LONG).show();
-                        if(IsSet) {
-                            activity.startActivity(intent);
+                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(cnt);
+                    dialog.setTitle(R.string.batteryAskTitle);
+                    dialog.setMessage(R.string.batteryAskMessage);
+                    dialog.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(cnt, R.string.CancelOffBattery, Toast.LENGTH_LONG).show();
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("batteryOptimization", false);
+                            editor.apply();
+
                         }
-                        else{
-                            resetActivity(cnt, activity);
+                    });
+
+                    dialog.setPositiveButton(R.string.Continue, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            Intent intent = new Intent();
+                            intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setData(Uri.parse("package:" + packageName));
+                            cnt.startActivity(intent);
+
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("batteryOptimization", true);
+                            editor.apply();
+
                         }
-                    }
-                });
+                    });
 
-                dialog.setPositiveButton(R.string.Continue, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(IsSet) {
-                            activity.startActivity(intent);
-                        }
-                        else{
-                            resetActivity(cnt, activity);
-                        }
-
-                        Intent intent = new Intent();
-                        intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setData(Uri.parse("package:" + packageName));
-                        cnt.startActivity(intent);
-
-                    }
-                });
-
-                dialog.show();
-            }
-            else {
-                if(IsSet) {
-                    activity.startActivity(intent);
+                    dialog.show();
                 }
-                else{
-                    resetActivity(cnt, activity);
-                }
-            }
-
-        }
-        else {
-            if(IsSet) {
-                activity.startActivity(intent);
-            }
-            else{
-                resetActivity(cnt, activity);
             }
         }
     }

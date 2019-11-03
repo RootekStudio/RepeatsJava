@@ -1,8 +1,5 @@
 package com.rootekstudio.repeatsandroid.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.rootekstudio.repeatsandroid.OnSystemBoot;
 import com.rootekstudio.repeatsandroid.R;
@@ -30,6 +30,7 @@ import java.util.Locale;
 public class FirstRunActivity extends AppCompatActivity {
 
     int selected = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +47,7 @@ public class FirstRunActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                if(!sharedPreferences.contains("firstRun")) {
+                if (!sharedPreferences.contains("firstRun")) {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putInt("firstRun", selected);
                     editor.apply();
@@ -60,17 +61,16 @@ public class FirstRunActivity extends AppCompatActivity {
     }
 
     public void radioButtonClicked(View view) {
-        boolean checked =  ((RadioButton)view).isChecked();
+        boolean checked = ((RadioButton) view).isChecked();
         TextView txtView = findViewById(R.id.defaultInfo);
 
-        if(view.getId() == R.id.constFreqButton) {
-            if(checked) {
+        if (view.getId() == R.id.constFreqButton) {
+            if (checked) {
                 txtView.setText(R.string.freqDefault);
                 selected = 1;
             }
-        }
-        else {
-            if(checked) {
+        } else {
+            if (checked) {
                 txtView.setText(R.string.advancedDefault);
                 selected = 2;
             }
@@ -85,7 +85,7 @@ public class FirstRunActivity extends AppCompatActivity {
             editor.apply();
         }
 
-        if(!sharedPreferences.contains("frequency")) {
+        if (!sharedPreferences.contains("frequency")) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("frequency", 30);
             editor.apply();
@@ -121,17 +121,11 @@ public class FirstRunActivity extends AppCompatActivity {
 
                 //days
                 JSONArray daysArray = new JSONArray();
-
-                if (Locale.getDefault().getCountry().equals("PL")) {
-                    for (int i = 2; i <= 7; i++) {
-                        daysArray.put(String.valueOf(i));
-                    }
-                    daysArray.put(String.valueOf(1));
-                } else {
-                    for (int i = 1; i <= 7; i++) {
-                        daysArray.put(String.valueOf(i));
-                    }
+                for (int i = 2; i <= 7; i++) {
+                    daysArray.put(String.valueOf(i));
                 }
+                daysArray.put(String.valueOf(1));
+
                 values.put("days", daysArray);
 
                 //hours
@@ -172,12 +166,5 @@ public class FirstRunActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
-        ComponentName receiver = new ComponentName(this, OnSystemBoot.class);
-        PackageManager pm = this.getPackageManager();
-
-        pm.setComponentEnabledSetting(receiver,
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
     }
 }

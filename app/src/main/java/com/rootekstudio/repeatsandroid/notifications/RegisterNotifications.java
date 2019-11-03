@@ -1,15 +1,9 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.notifications;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
-import androidx.preference.PreferenceManager;
-
-import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
-import com.rootekstudio.repeatsandroid.notifications.AdvancedTimeNotification;
-import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
-import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
+import com.rootekstudio.repeatsandroid.JsonFile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,12 +11,7 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 public class RegisterNotifications {
-    public static void registerConstFrequency(Context context) {
-
-        NotifiSetup.RegisterNotifications(context,null, RepeatsHelper.staticFrequencyCode);
-    }
-
-    public static void registerAdvanedDelivery(Context context) {
+    public static void registerAdvancedDelivery(Context context) {
         try {
             JSONObject advancedFile = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
 

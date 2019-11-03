@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -32,9 +31,9 @@ import com.rootekstudio.repeatsandroid.activities.FirstRunActivity;
 import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
 import com.rootekstudio.repeatsandroid.activities.SilenceHoursActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
-import com.rootekstudio.repeatsandroid.notifications.AdvancedTimeNotification;
-import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
+import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
+import com.rootekstudio.repeatsandroid.notifications.RegisterNotifications;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,7 +85,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                 int value = Integer.parseInt((String)newValue);
 
                 if (value == 0) {
-                    NotifiSetup.CancelNotifications(context);
+                    ConstNotifiSetup.CancelNotifications(context);
 
                     findPreference("timeAsk").setVisible(false);
                     findPreference("EnableSets").setVisible(false);
@@ -111,7 +110,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
                 } else if (value == 1) {
 
-                    RegisterNotifications.registerConstFrequency(context);
+                    ConstNotifiSetup.RegisterNotifications(context,null, RepeatsHelper.staticFrequencyCode);
 
                     findPreference("timeAsk").setVisible(true);
                     findPreference("EnableSets").setVisible(true);
@@ -142,7 +141,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     notifiListPreference.setSummary(R.string.const_freq);
                 }
                 else if(value == 2) {
-                    NotifiSetup.CancelNotifications(context);
+                    ConstNotifiSetup.CancelNotifications(context);
 
                     findPreference("timeAsk").setVisible(false);
                     findPreference("EnableSets").setVisible(false);
@@ -150,7 +149,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     findPreference("silenceHoursSettings").setVisible(false);
                     findPreference("advancedDelivery").setVisible(true);
 
-                    RegisterNotifications.registerAdvanedDelivery(context);
+                    RegisterNotifications.registerAdvancedDelivery(context);
 
                     notifiListPreference.setSummary(R.string.advanced_notifi);
                 }
@@ -198,8 +197,8 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                 DB.ResetEnabled();
 
                 RepeatsHelper.SaveFrequency(context, 5);
-                NotifiSetup.CancelNotifications(context);
-                NotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
+                ConstNotifiSetup.CancelNotifications(context);
+                ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
 
                 int frequency = sharedPreferences.getInt("frequency", 0);
                 findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
@@ -227,8 +226,8 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     findPreference("silenceHoursSettings").setVisible(false);
                 }
 
-                NotifiSetup.CancelNotifications(context);
-                NotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
+                ConstNotifiSetup.CancelNotifications(context);
+                ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
 
                 return true;
             }

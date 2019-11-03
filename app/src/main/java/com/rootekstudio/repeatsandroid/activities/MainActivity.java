@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         IsDark = RepeatsHelper.DarkTheme(this, false);
         createNotificationChannel();
+
+        RepeatsHelper.askAboutBattery(this);
     }
 
     @Override

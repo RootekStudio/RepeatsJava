@@ -34,15 +34,15 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RegisterNotifications;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.ShareButton;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
-import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
+import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
+import com.rootekstudio.repeatsandroid.notifications.RegisterNotifications;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -134,7 +134,7 @@ public class AddEditSetActivity extends AppCompatActivity {
 
                             //if there is no set left in database, turn off notifications
                             if (size == 0) {
-                                NotifiSetup.CancelNotifications(context);
+                                ConstNotifiSetup.CancelNotifications(context);
 
                                 try {
                                     JSONObject advancedFile = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
@@ -221,13 +221,13 @@ public class AddEditSetActivity extends AppCompatActivity {
             editor.apply();
 
             if(firstRun == 1) {
-                RegisterNotifications.registerConstFrequency(context);
+                ConstNotifiSetup.RegisterNotifications(context,null, RepeatsHelper.staticFrequencyCode);
             }
             else if(firstRun == 2) {
-                RegisterNotifications.registerAdvanedDelivery(context);
+                RegisterNotifications.registerAdvancedDelivery(context);
             }
 
-            editor.putInt("firstRun", firstRun);
+            editor.putInt("firstRun", 3);
             editor.apply();
         }
 
