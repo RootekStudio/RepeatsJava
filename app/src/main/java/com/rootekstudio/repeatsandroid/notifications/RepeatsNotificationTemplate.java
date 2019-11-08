@@ -13,28 +13,53 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.RemoteInput;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.UserReply;
 import com.rootekstudio.repeatsandroid.activities.AnswerActivity;
+import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
+import com.rootekstudio.repeatsandroid.database.SingleItemInfo;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class RepeatsNotificationTemplate {
     private static final String KEY_TEXT_REPLY = "UsersAnswer";
+    private static String jsonIndex;
 
-    public static void NotifiTemplate(Context context, Boolean IsNext) {
+    static void NotifiTemplate(Context context, Boolean IsNext, String json) {
         NotificationCompat.Builder mBuilder;
+        SingleItemInfo item;
+        jsonIndex = json;
+        boolean error = false;
 
-        RepeatsHelper.GetQuestionFromDatabase(context);
+        if(json != null) {
+            ArrayList<String> setsID = NotificationHelper.getSelectedSetsIdFromJSON(context, jsonIndex);
+            item = new SingleItemInfo(context, setsID);
+        }
+        else {
+            item = new SingleItemInfo(context);
+        }
 
-        String Question = RepeatsHelper.Question;
-        String Answer = RepeatsHelper.Answer;
-        String tablename = RepeatsHelper.tablename;
-        String picturename = RepeatsHelper.PictureName;
-        String ignorechars = RepeatsHelper.IgnoreChars;
+        String Question;
+        String Answer = "";
+        String tablename;
+        String picturename = "";
+        String ignorechars = "";
+
+        if(item.getQuestion() != null) {
+            Question = item.getQuestion();
+            Answer = item.getAnswer();
+            tablename = item.getTitle();
+            picturename = item.getPictureName();
+            ignorechars = item.getIgnoreChars();
+        }
+        else {
+            error = true;
+            tablename = context.getString(R.string.cantLoadSet);
+            Question = context.getString(R.string.checkSetSettings);
+        }
 
         Random random = new Random();
         int rnd = random.nextInt();
@@ -45,6 +70,7 @@ public class RepeatsNotificationTemplate {
         answerActivity.putExtra("Correct", Answer);
         answerActivity.putExtra("Image", picturename);
         answerActivity.putExtra("IgnoreChars", ignorechars);
+        answerActivity.putExtra("jsonIndex", jsonIndex);
         answerActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, rnd, answerActivity, 0);
 
@@ -65,8 +91,16 @@ public class RepeatsNotificationTemplate {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setColor(context.getResources().getColor(R.color.colorAccent))
                 .setColorized(true)
-                .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
+
+        if(!error){
+            mBuilder.setContentIntent(pendingIntent);
+        }
+        else {
+            Intent enableSets = new Intent(context, SettingsActivity.class);
+            PendingIntent settings = PendingIntent.getActivity(context, rnd, enableSets, 0);
+            mBuilder.setContentIntent(settings);
+        }
 
         if (!picturename.equals("")) {
             File file = new File(context.getFilesDir(), picturename);
@@ -101,7 +135,9 @@ public class RepeatsNotificationTemplate {
                     .addRemoteInput(remoteInput)
                     .build();
 
-            mBuilder.addAction(action);
+            if(!error){
+                mBuilder.addAction(action);
+            }
         }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
@@ -109,7 +145,15 @@ public class RepeatsNotificationTemplate {
     }
 
     public static void AnswerNotifi(Context context, String Title, String Text) {
-        Intent intent1 = new Intent(context, RepeatsQuestionSend.class);
+        Intent intent1;
+        if(jsonIndex != null) {
+            intent1 = new Intent(context, AdvancedTimeNotification.class);
+            intent1.putExtra("jsonIndex", jsonIndex);
+        }
+        else {
+            intent1 = new Intent(context, RepeatsQuestionSend.class);
+        }
+
         intent1.putExtra("IsNext", true);
         PendingIntent replyPendingIntent = PendingIntent.getBroadcast(context,
                 11, intent1, PendingIntent.FLAG_UPDATE_CURRENT);

@@ -2,10 +2,12 @@ package com.rootekstudio.repeatsandroid;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -25,48 +27,17 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
-import com.rootekstudio.repeatsandroid.notifications.NotifiSetup;
+import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 
 import java.io.File;
-import java.util.List;
-import java.util.Random;
 
 public class RepeatsHelper {
     public static final String breakLine = "\r\n";
-    public static String Question;
-    public static String Answer;
-    public static String tablename;
-    public static String PictureName = "";
-    public static String IgnoreChars;
+    public static final int staticFrequencyCode = 10000;
 
-    static AlertDialog dialog = null;
+    private static AlertDialog dialog = null;
 
-    public static void GetQuestionFromDatabase(Context context) {
-        DatabaseHelper DB = new DatabaseHelper(context);
-        List<RepeatsListDB> all = DB.ALLEnabledSets();
-        int count = all.size();
-
-        Random random = new Random();
-        int randomint = random.nextInt(count);
-        RepeatsListDB single = all.get(randomint);
-
-        tablename = single.getitle();
-        String Title = single.getTableName();
-        IgnoreChars = single.getIgnoreChars();
-
-        List<RepeatsSingleSetDB> set = DB.AllItemsSET(Title);
-        int setcount = set.size();
-        Random randomset = new Random();
-        int randomsetint = randomset.nextInt(setcount);
-
-        RepeatsSingleSetDB singleSetDB = set.get(randomsetint);
-        Question = singleSetDB.getQuestion();
-        Answer = singleSetDB.getAnswer();
-        PictureName = singleSetDB.getImag();
-    }
-
-    public static void SaveFrequency(Context cnt, int frequency) {
+    static void SaveFrequency(Context cnt, int frequency) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("frequency", frequency);
@@ -131,6 +102,12 @@ public class RepeatsHelper {
                 String text = editText.getText().toString();
                 if (!text.equals("")) {
                     saveTime(context, text, IsSet, activity, intent);
+                    ComponentName receiver = new ComponentName(context, OnSystemBoot.class);
+                    PackageManager pm = context.getPackageManager();
+
+                    pm.setComponentEnabledSetting(receiver,
+                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                            PackageManager.DONT_KILL_APP);
                 }
             }
         });
@@ -144,72 +121,55 @@ public class RepeatsHelper {
         int frequency = Integer.parseInt(text);
 
         RepeatsHelper.SaveFrequency(context, frequency);
-        NotifiSetup.CancelNotifications(context);
-        NotifiSetup.RegisterNotifications(context);
+        ConstNotifiSetup.CancelNotifications(context);
+        ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
         dialog.dismiss();
-        RepeatsHelper.askAboutBattery(context, IsSet, activity, intent);
+
+        resetActivity(context, activity);
     }
 
-    public static void askAboutBattery(final Context cnt, final Boolean IsSet, final Activity activity, final Intent intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+    public static void askAboutBattery(final Context cnt) {
 
-            final String packageName = cnt.getPackageName();
-            PowerManager pm = (PowerManager) cnt.getSystemService(Context.POWER_SERVICE);
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
+        if(!sharedPreferences.contains("batteryOptimization")) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                final String packageName = cnt.getPackageName();
+                PowerManager pm = (PowerManager) cnt.getSystemService(Context.POWER_SERVICE);
 
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(cnt);
-                dialog.setTitle(R.string.batteryAskTitle);
-                dialog.setMessage(R.string.batteryAskMessage);
-                dialog.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(cnt, R.string.CancelOffBattery, Toast.LENGTH_LONG).show();
-                        if(IsSet) {
-                            activity.startActivity(intent);
+                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(cnt);
+                    dialog.setTitle(R.string.batteryAskTitle);
+                    dialog.setMessage(R.string.batteryAskMessage);
+                    dialog.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(cnt, R.string.CancelOffBattery, Toast.LENGTH_LONG).show();
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("batteryOptimization", false);
+                            editor.apply();
+
                         }
-                        else{
-                            resetActivity(cnt, activity);
+                    });
+
+                    dialog.setPositiveButton(R.string.Continue, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            Intent intent = new Intent();
+                            intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setData(Uri.parse("package:" + packageName));
+                            cnt.startActivity(intent);
+
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("batteryOptimization", true);
+                            editor.apply();
+
                         }
-                    }
-                });
+                    });
 
-                dialog.setPositiveButton(R.string.Continue, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(IsSet) {
-                            activity.startActivity(intent);
-                        }
-                        else{
-                            resetActivity(cnt, activity);
-                        }
-
-                        Intent intent = new Intent();
-                        intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setData(Uri.parse("package:" + packageName));
-                        cnt.startActivity(intent);
-
-                    }
-                });
-
-                dialog.show();
-            }
-            else {
-                if(IsSet) {
-                    activity.startActivity(intent);
+                    dialog.show();
                 }
-                else{
-                    resetActivity(cnt, activity);
-                }
-            }
-
-        }
-        else {
-            if(IsSet) {
-                activity.startActivity(intent);
-            }
-            else{
-                resetActivity(cnt, activity);
             }
         }
     }
@@ -291,6 +251,24 @@ public class RepeatsHelper {
         return inSampleSize;
     }
 
+    public static String removeSpaces(String string){
+        if (string.contains(" ")) {
+            String testSpace = string.replaceAll(" ", "");
+            if (testSpace.length() != 0) {
+                while (string.startsWith(" ")) {
+                    string = string.substring(1);
+                }
+                while (string.lastIndexOf(" ") == string.length() - 1) {
+                    string = string.substring(0, string.length() - 1);
+                }
+            }
+            else {
+                return testSpace;
+            }
+        }
+        return string;
+    }
+
     public static void CheckDir(Context cnt) {
         File file = new File(cnt.getFilesDir(), "shared");
         if (file.exists()) {
@@ -307,7 +285,7 @@ public class RepeatsHelper {
         }
     }
 
-    public static void shareSets(Context context, Activity activity) {
+    static void shareSets(Context context, Activity activity) {
         Uri uri = FileProvider.getUriForFile(context, "com.rootekstudio.repeatsandroid.activities.AddEditSetActivity", SetToFile.zipFile);
         Intent share = new Intent();
 

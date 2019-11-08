@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 
@@ -79,6 +80,8 @@ public class SaveShared {
                 RepeatsListDB list = new RepeatsListDB(name, id, createDate, "true", "", "false");
                 DB.CreateSet(id);
                 DB.AddName(list);
+
+                JsonFile.putSetToJSON(context, id);
 
                 do {
                     JSONObject singleItem = singleSet.getJSONObject(String.valueOf(itemIndex));

@@ -16,10 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.rootekstudio.repeatsandroid.CheckAnswer;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.database.SingleItemInfo;
+import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class AnswerActivity extends AppCompatActivity {
     static String correct;
@@ -35,19 +38,42 @@ public class AnswerActivity extends AppCompatActivity {
         String Image = intent.getStringExtra("Image");
         correct = intent.getStringExtra("Correct");
         String IgnoreChars = intent.getStringExtra("IgnoreChars");
+        String jsonIndex = intent.getStringExtra("jsonIndex");
 
-        alarmDialog(Title, Question, getString(R.string.Check), true, Image, IgnoreChars);
+        alarmDialog(Title, Question, getString(R.string.Check), true, Image, IgnoreChars, jsonIndex);
     }
 
-    void alarmDialog(String Title, String Message, final String Positive, boolean First, String ImageName, String ignoreChars) {
+    void alarmDialog(String Title, String Message, String Positive, boolean First, String ImageName, String ignoreChars, final String jsonIndex) {
+        String buttonP = Positive;
         if (!First && Positive.equals(getString(R.string.Check))) {
-            RepeatsHelper.GetQuestionFromDatabase(context);
-            Title = RepeatsHelper.tablename;
-            Message = RepeatsHelper.Question;
-            correct = RepeatsHelper.Answer;
-            ImageName = RepeatsHelper.PictureName;
-            ignoreChars = RepeatsHelper.IgnoreChars;
+            SingleItemInfo singleItemInfo;
+            if(jsonIndex != null) {
+                ArrayList<String> setsID = NotificationHelper.getSelectedSetsIdFromJSON(context, jsonIndex);
+                singleItemInfo = new SingleItemInfo(context, setsID);
+            }
+            else {
+                singleItemInfo = new SingleItemInfo(context);
+            }
+
+            if(singleItemInfo.getTitle() != null) {
+                Title = singleItemInfo.getTitle();
+                Message = singleItemInfo.getQuestion();
+                correct = singleItemInfo.getAnswer();
+                ImageName = singleItemInfo.getPictureName();
+                ignoreChars = singleItemInfo.getIgnoreChars();
+            }
+            else {
+                Title = context.getString(R.string.cantLoadSet);
+                Message = context.getString(R.string.checkSetSettings);
+                Positive = context.getString(R.string.Settings);
+                correct = "";
+                ImageName = "";
+                ignoreChars = "";
+                buttonP = "error";
+            }
         }
+
+        final String positiveButton = buttonP;
 
         final String IGNORE = ignoreChars;
 
@@ -95,7 +121,7 @@ public class AnswerActivity extends AppCompatActivity {
                 .setPositiveButton(Positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (Positive.equals(getString(R.string.Check))) {
+                        if (positiveButton.equals(getString(R.string.Check))) {
                             String uAnswerString = userAnswer.getText().toString();
                             String ReallyCorrect = correct;
 
@@ -103,16 +129,20 @@ public class AnswerActivity extends AppCompatActivity {
 
                             if(check) {
                                 dialog.dismiss();
-                                alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Next), false, "", "");
+                                alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Next), false, "", "", jsonIndex);
                             }
                             else {
                                 dialog.dismiss();
-                                alarmDialog(getString(R.string.IncorrectAnswer1), getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect, getString(R.string.Next), false, "", "");
+                                alarmDialog(getString(R.string.IncorrectAnswer1), getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect, getString(R.string.Next), false, "", "", jsonIndex);
                             }
 
-                        } else {
+                        } else if(positiveButton.equals("error")){
+                            Intent intent = new Intent(context, SettingsActivity.class);
+                            context.startActivity(intent);
+                        }
+                        else {
                             dialog.dismiss();
-                            alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Check), false, "", "");
+                            alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Check), false, "", "", jsonIndex);
                         }
                     }
                 })

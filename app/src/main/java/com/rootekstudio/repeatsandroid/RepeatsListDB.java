@@ -1,7 +1,6 @@
 package com.rootekstudio.repeatsandroid;
 
-public class RepeatsListDB
-{
+public class RepeatsListDB {
     public String Title;
     public String TableName;
     public String CreateDate;
@@ -9,10 +8,10 @@ public class RepeatsListDB
     public String Avatar;
     public String IgnoreChars;
 
-    public RepeatsListDB(){}
+    public RepeatsListDB() {
+    }
 
-    public RepeatsListDB(String Title, String TableName, String CreateDate, String IsEnabled, String Avatar, String IgnoreChars)
-    {
+    public RepeatsListDB(String Title, String TableName, String CreateDate, String IsEnabled, String Avatar, String IgnoreChars) {
         this.Title = Title;
         this.TableName = TableName;
         this.CreateDate = CreateDate;
@@ -21,57 +20,51 @@ public class RepeatsListDB
         this.IgnoreChars = IgnoreChars;
     }
 
-    public String getitle()
-    {
+    public String getitle() {
         return Title;
     }
 
-    public String getTableName()
-    {
+    public String getTableName() {
         return TableName;
     }
 
-    public String getCreateDate()
-    {
+    public String getCreateDate() {
         return CreateDate;
     }
 
-    public String getIsEnabled()
-    {
+    public String getIsEnabled() {
         return IsEnabled;
     }
 
-    public String getAvatar()
-    {
+    public String getAvatar() {
         return Avatar;
     }
 
-    public String getIgnoreChars() {return IgnoreChars; }
+    public String getIgnoreChars() {
+        return IgnoreChars;
+    }
 
-    public void setTitle(String Title)
-    {
+    public void setTitle(String Title) {
         this.Title = Title;
     }
 
-    public void setTableName(String TableName)
-    {
+    public void setTableName(String TableName) {
         this.TableName = TableName;
     }
 
-    public void setCreateDate(String CreateDate)
-    {
+    public void setCreateDate(String CreateDate) {
         this.CreateDate = CreateDate;
     }
 
-    public void setIsEnabled(String IsEnabled)
-    {
+    public void setIsEnabled(String IsEnabled) {
         this.IsEnabled = IsEnabled;
     }
 
-    public void setAvatar(String Avatar)
-    {
+    public void setAvatar(String Avatar) {
         this.Avatar = Avatar;
     }
 
-    public void setIgnoreChars(String IgnoreChars) {this.IgnoreChars = IgnoreChars; }
+    public void setIgnoreChars(String IgnoreChars) {
+        this.IgnoreChars = IgnoreChars;
+    }
 }

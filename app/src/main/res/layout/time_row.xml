@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:clickable="true"
+    card_view:contentPadding="10dp"
+    card_view:cardUseCompatPadding="true"
+    android:id="@+id/cardViewAdvanced"
+    android:onClick="onRecyclerItemClick">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/advancedList_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Warunek 1" />
+
+        <TextView
+            android:id="@+id/advancedList_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Warunek 1" />
+        <TextView
+            android:id="@+id/advancedList_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Warunek 1" />
+        <TextView
+            android:id="@+id/advancedList_freq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Warunek 1" />
+        <TextView
+            android:id="@+id/advancedList_sets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Warunek 1" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

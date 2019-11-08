@@ -4,7 +4,7 @@
     package="com.rootekstudio.repeatsandroid">
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
@@ -15,8 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/DarkAppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activities.FirstRunActivity"></activity>
 
-        <receiver android:name=".OnSystemBoot"
+        <receiver
+            android:name=".OnSystemBoot"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -32,11 +34,15 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
-        <activity android:name=".activities.MainActivity">
-        </activity>
+
+        <activity android:name=".activities.MainActivity" />
 
         <receiver
             android:name=".notifications.RepeatsQuestionSend"
+            android:enabled="true"
+            android:exported="true" />
+        <receiver
+            android:name=".notifications.AdvancedTimeNotification"
             android:enabled="true"
             android:exported="true" />
         <receiver
@@ -50,33 +56,44 @@
             android:theme="@style/transculentTheme" />
         <activity
             android:name=".activities.SettingsActivity"
-            android:label="@string/Settings"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            android:label="@string/Settings">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </activity>
-        <activity android:name=".activities.TestActivity"
-            android:screenOrientation="locked"
-            android:label="@string/Test"/>
-        <activity android:name=".activities.SearchActivity"
-            android:label="@string/Search">
-        </activity>
-        <activity android:name=".activities.AddEditSetActivity"
+        <activity
+            android:name=".activities.SearchActivity"
+            android:label="@string/Search" />
+        <activity
+            android:name=".activities.AddEditSetActivity"
             android:label="@string/title_activity_repeats_add_edit" />
-        <activity android:name=".activities.TestResultsActivity"
-            android:label="@string/Test"/>
-        <activity android:name=".activities.SplashScreenActivity"
-            android:theme="@style/SplashScreenTheme"
-            android:noHistory="true">
+        <activity
+            android:name=".activities.SplashScreenActivity"
+            android:noHistory="true"
+            android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.EnableSetsListActivity"
-            android:label="@string/notifiFromSets"/>
+        <activity
+            android:name=".activities.EnableSetsListActivity"
+            android:label="@string/notifiFromSets" />
+        <activity
+            android:name=".activities.FastLearningActivity"
+            android:label="@string/FastLearning" />
+        <activity
+            android:name=".activities.SilenceHoursActivity"
+            android:label="@string/silenceHours" />
+        <activity
+            android:name=".activities.ChangeDeliveryListActivity"
+            android:label="@string/deliverySettings" />
+        <activity
+            android:name=".activities.AddAdvancedTimeActivity"
+            android:label="@string/editRule" />
     </application>
 
 </manifest>

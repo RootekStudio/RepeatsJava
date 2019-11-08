@@ -7,6 +7,9 @@ import java.util.Scanner;
 public class CheckAnswer {
 
     public static boolean isAnswerCorrect(String user, String correct, String ignore) {
+
+        user = RepeatsHelper.removeSpaces(user);
+
         if (ignore.equals("true")) {
             user = Normalizer.normalize(user, Normalizer.Form.NFD)
                     .replaceAll(" ", "")
@@ -24,17 +27,16 @@ public class CheckAnswer {
 
         }
 
-        if(!correct.contains(RepeatsHelper.breakLine)) {
+        if (!correct.contains(RepeatsHelper.breakLine)) {
             if (user.equals(correct)) {
                 return true;
             } else {
                 return false;
             }
-        }
-        else {
+        } else {
             Scanner scanner = new Scanner(correct);
             boolean foundedCorrect = false;
-            while(scanner.hasNextLine()) {
+            while (scanner.hasNextLine()) {
                 String singleCorrect = scanner.nextLine();
                 if (singleCorrect.equals(user)) {
                     foundedCorrect = true;
@@ -42,7 +44,7 @@ public class CheckAnswer {
                 }
             }
 
-            if(!foundedCorrect) {
+            if (!foundedCorrect) {
                 return false;
             }
         }
