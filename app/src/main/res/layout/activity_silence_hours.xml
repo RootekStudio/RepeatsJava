@@ -20,7 +20,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-            app:icon="@drawable/ic_add_white_24dp"
+            app:icon="@drawable/ic_add"
             android:id="@+id/addHoursButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

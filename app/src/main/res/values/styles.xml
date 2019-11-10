@@ -1,25 +1,55 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/DayColorPrimaryDark</item>
-        <item name="colorPrimaryDark">@color/DayColorPrimaryDark</item>
+        <item name="colorPrimary">@color/dayColorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/dayColorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/tintDark</item>
         <item name="android:tint">@color/tintDark</item>
         <item name="iconTint">@color/tintDark</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+
+        <item name="customButtonColor">@color/buttonLight</item>
+        <item name="customItemColor">@color/lightMainItem</item>
+        <item name="customEditTextColor">@color/lightEditTextColor</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
-    <style name="DarkAppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <style name="DarkAppTheme" parent="Theme.AppCompat.DayNight">
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:tint">#FFFFFF</item>
+        <item name="android:tint">@color/tintLight</item>
         <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+
+        <item name="customButtonColor">@color/buttonDark</item>
+        <item name="customItemColor">@color/darkMainItem</item>
+        <item name="customEditTextColor">@color/darkEditTextColor</item>
+        <item name="bottomSheetDialogTheme">@style/DarkAppBottomSheetDialogTheme</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="DarkAppBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_nav_style</item>
+    </style>
+
+    <style name="DarkAppTheme.ActionBar.Transparent" parent="DarkAppTheme">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorAccent">#FFFFFF</item>
     </style>
 
     <style name="ActionBarStyle" parent="@style/Widget.AppCompat.ActionBar.Solid">

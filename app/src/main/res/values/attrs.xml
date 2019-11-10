@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="customButtonColor" format="reference"/>
+    <attr name="customItemColor" format="reference"/>
+    <attr name="customEditTextColor" format="reference"/>
+
+</resources>

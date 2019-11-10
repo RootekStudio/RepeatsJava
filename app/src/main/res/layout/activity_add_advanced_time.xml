@@ -59,7 +59,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="10dp"
-                android:background="@drawable/layout_mainshape_dark"
+                android:background="@drawable/layout_mainshape"
                 android:orientation="vertical"
                 android:elevation="3dp">
 
@@ -160,7 +160,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="10dp"
-                android:background="@drawable/layout_mainshape_dark"
+                android:background="@drawable/layout_mainshape"
                 android:orientation="vertical"
                 android:elevation="3dp">
 
@@ -188,7 +188,7 @@
                     android:layout_marginBottom="15dp"
                     android:text="@string/addHours"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    app:icon="@drawable/ic_add_white_24dp" />
+                    app:icon="@drawable/ic_add" />
 
             </LinearLayout>
 
@@ -201,7 +201,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="10dp"
-                android:background="@drawable/layout_mainshape_dark"
+                android:background="@drawable/layout_mainshape"
                 android:orientation="vertical"
                 android:elevation="3dp">
 
@@ -224,7 +224,7 @@
                         android:id="@+id/editFreqAdvanced"
                         android:layout_width="50dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/edittext_shape_dark"
+                        android:background="@drawable/edittext_shape"
                         android:textAlignment="center" />
 
                     <TextView
@@ -246,7 +246,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginStart="10dp"
-                android:background="@drawable/layout_mainshape_dark"
+                android:background="@drawable/layout_mainshape"
                 android:orientation="vertical"
                 android:elevation="3dp">
 

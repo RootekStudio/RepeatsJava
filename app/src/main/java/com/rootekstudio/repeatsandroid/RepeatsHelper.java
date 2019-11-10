@@ -186,13 +186,13 @@ public class RepeatsHelper {
         if (theme.equals("0")) {
             if(!onlyCheck) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                context.setTheme(R.style.AppTheme);
+                context.getApplicationContext().setTheme(R.style.AppTheme);
             }
             return false;
         } else if (theme.equals("1")) {
             if(!onlyCheck) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                context.setTheme(R.style.DarkAppTheme);
+                context.getApplicationContext().setTheme(R.style.DarkAppTheme);
             }
             return true;
         } else {

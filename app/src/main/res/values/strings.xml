@@ -145,4 +145,10 @@
     <string name="accept">Save</string>
     <string name="firstRunInfo">Repeats\' main feature is to deliver notification with question to your device.\n\nChoose notification delivery mode:</string>
     <string name="canChangeDefault">You can change default settings but first you have to add first set.</string>
+    <string name="sign_in_email">Sign in via email</string>
+    <string name="sign_in_google">Sign in with Google</string>
+    <string name="no_sign_in">Continue without signing in (not recommended)</string>
+    <string name="email" translatable="false">E-mail</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
 </resources>

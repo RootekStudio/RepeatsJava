@@ -16,7 +16,7 @@
         android:inputType="textCapSentences"
         android:layout_toLeftOf="@id/delAnswer"
         android:layout_toStartOf="@id/delAnswer"
-        android:background="@drawable/edittext_shape_dark"
+        android:background="@drawable/edittext_shape"
         android:padding="10dp"/>
 
     <ImageButton

@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:backgroundTint="@color/colorPrimaryDark"
+        app:backgroundTint="?attr/colorPrimary"
         app:fabAlignmentMode="end"
         app:hideOnScroll="true" />
 
@@ -50,7 +50,7 @@
         android:id="@+id/AddQuestionFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_add_white_24dp"
+        android:src="@drawable/ic_add"
         app:layout_anchor="@id/AddQuestionBar"
         android:tint="#FFFFFF"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

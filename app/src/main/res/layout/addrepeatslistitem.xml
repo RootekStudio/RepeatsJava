@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/layout_mainshape_dark"
+    android:background="@drawable/layout_mainshape"
     android:layout_margin="10dp"
     android:id="@+id/RelativeAddItem"
     android:elevation="5dp"
@@ -88,7 +88,7 @@
             android:imeOptions="actionNext"
             android:inputType="textCapSentences"
             android:padding="10dp"
-            android:background="@drawable/edittext_shape_dark" />
+            android:background="@drawable/edittext_shape" />
 
         <EditText
             android:id="@+id/answerBox"
@@ -100,6 +100,6 @@
             android:imeOptions="actionNext"
             android:inputType="textCapSentences"
             android:padding="10dp"
-            android:background="@drawable/edittext_shape_dark"/>
+            android:background="@drawable/edittext_shape"/>
     </LinearLayout>
 </RelativeLayout>

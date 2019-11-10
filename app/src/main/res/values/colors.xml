@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#247ee6</color>
-    <color name="DayColorPrimaryDark">#FFFFFF</color>
-    <color name="colorPrimaryDark">#252525</color>
     <color name="colorAccent">#247ee6</color>
-    <color name="buttonLight">#ECECEC</color>
-    <color name="buttonDark">#292929</color>
-    <color name="tintDark">#3A3A3A</color>
-    <color name="darkMainItem">#383838</color>
-    <color name="lightMainItem">#F5F5F5</color>
+    <color name="secondColorAccent">#00BCD4</color>
 
+<!--Light theme-->
+    <color name="dayColorPrimaryDark">#FFFFFF</color>
+    <color name="buttonLight">#ECECEC</color>
+    <color name="lightMainItem">#F5F5F5</color>
+    <color name="tintDark">#3A3A3A</color>
+    <color name="lightEditTextColor">#EBEBEB</color>
+
+<!--Dark theme-->
+    <color name="colorPrimaryDark">#252525</color>
+    <color name="buttonDark">#292929</color>
+    <color name="darkMainItem">#383838</color>
+    <color name="tintLight">#FFFFFF</color>
+    <color name="darkEditTextColor">#414141</color>
 </resources>

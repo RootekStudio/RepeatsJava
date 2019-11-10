@@ -109,7 +109,6 @@ public class AddEditSetActivity extends AppCompatActivity {
 
         if (!IsDark) {
             editName.setBackgroundResource(R.drawable.editname_light);
-            bottomAppBar.setBackgroundTint(ContextCompat.getColorStateList(this, R.color.DayColorPrimaryDark));
         }
 
         //Configuring bottom app bar menu click listener
@@ -282,12 +281,6 @@ public class AddEditSetActivity extends AppCompatActivity {
                     imgbut.setOnClickListener(deleteImageClick);
                     addAnswer.setOnClickListener(addAnswerClick);
 
-                    if (!IsDark) {
-                        RL.setBackgroundResource(R.drawable.layout_mainshape);
-                        Q.setBackgroundResource(R.drawable.edittext_shape);
-                        A.setBackgroundResource(R.drawable.edittext_shape);
-                    }
-
                     A.setFilters(new InputFilter[]{inputFilter});
 
                     Q.setText(Question);
@@ -375,12 +368,6 @@ public class AddEditSetActivity extends AppCompatActivity {
         answer.setOnFocusChangeListener(newAnswer);
 
         answer.setFilters(new InputFilter[]{inputFilter});
-
-        if (!IsDark) {
-            rel.setBackgroundResource(R.drawable.layout_mainshape);
-            question.setBackgroundResource(R.drawable.edittext_shape);
-            answer.setBackgroundResource(R.drawable.edittext_shape);
-        }
 
         //Adding item to root view
         viewGroup.addView(item);
@@ -552,10 +539,6 @@ public class AddEditSetActivity extends AppCompatActivity {
         answerBoxPlus.setFilters(new InputFilter[]{inputFilter});
         answerBoxPlus.setText(text);
         answerBoxPlus.setOnFocusChangeListener(newAnswer);
-
-        if(!IsDark) {
-            answerBoxPlus.setBackgroundResource(R.drawable.edittext_shape);
-        }
 
         delAnswer.setOnClickListener(new View.OnClickListener() {
             @Override

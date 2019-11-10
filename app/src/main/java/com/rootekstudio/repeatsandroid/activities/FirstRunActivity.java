@@ -1,20 +1,21 @@
 package com.rootekstudio.repeatsandroid.activities;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
-import com.rootekstudio.repeatsandroid.OnSystemBoot;
+import com.rootekstudio.repeatsandroid.MailSignIn;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
@@ -25,7 +26,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class FirstRunActivity extends AppCompatActivity {
 
@@ -41,40 +41,48 @@ public class FirstRunActivity extends AppCompatActivity {
         final Context context = this;
         getSupportActionBar().hide();
 
-        Button save = findViewById(R.id.saveFirstRunSettings);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.secondColorAccent));
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                if (!sharedPreferences.contains("firstRun")) {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putInt("firstRun", selected);
-                    editor.apply();
-                }
+        //Button save = findViewById(R.id.saveFirstRunSettings);
 
-                Intent intent = new Intent(context, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        save.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+//                if (!sharedPreferences.contains("firstRun")) {
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putInt("firstRun", selected);
+//                    editor.apply();
+//                }
+
+//                Intent intent = new Intent(context, MainActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
     }
 
-    public void radioButtonClicked(View view) {
-        boolean checked = ((RadioButton) view).isChecked();
-        TextView txtView = findViewById(R.id.defaultInfo);
+//    public void radioButtonClicked(View view) {
+//        boolean checked = ((RadioButton) view).isChecked();
+//        TextView txtView = findViewById(R.id.defaultInfo);
+//
+//        if (view.getId() == R.id.constFreqButton) {
+//            if (checked) {
+//                txtView.setText(R.string.freqDefault);
+//                selected = 1;
+//            }
+//        } else {
+//            if (checked) {
+//                txtView.setText(R.string.advancedDefault);
+//                selected = 2;
+//            }
+//        }
+//    }
 
-        if (view.getId() == R.id.constFreqButton) {
-            if (checked) {
-                txtView.setText(R.string.freqDefault);
-                selected = 1;
-            }
-        } else {
-            if (checked) {
-                txtView.setText(R.string.advancedDefault);
-                selected = 2;
-            }
-        }
+    public void emailClicked(View view){
+        Intent intent = new Intent(this, MailSignIn.class);
+        startActivity(intent);
     }
 
     void defaultSettings() {

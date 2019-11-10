@@ -21,10 +21,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.rootekstudio.repeatsandroid.BottomNavDrawerFragment;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
@@ -39,17 +44,25 @@ import java.io.InputStream;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    static boolean IsDark;
     Activity activity = null;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        IsDark = RepeatsHelper.DarkTheme(this, false);
         createNotificationChannel();
 
+        RepeatsHelper.DarkTheme(this, false);
+
         RepeatsHelper.askAboutBattery(this);
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String displayname = currentUser.getDisplayName();
+        String email = currentUser.getEmail();
+
+        int i  =1;
+
     }
 
     @Override
@@ -65,8 +78,18 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.logo);
 
-        BottomAppBar bottomAppBar = findViewById(R.id.bar);
-        bottomAppBar.inflateMenu(R.menu.bottomappbarmain);
+        final NavigationView navDrawer = findViewById(R.id.navigation);
+
+
+        final BottomAppBar bottomAppBar = findViewById(R.id.bar);
+        bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BottomNavDrawerFragment bottomNavDrawerFragment = BottomNavDrawerFragment.newInstance();
+                bottomNavDrawerFragment.show(getSupportFragmentManager(), "bottomNav");
+            }
+        });
+
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -80,10 +103,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-        if (!IsDark) {
-            bottomAppBar.setBackgroundTint(ContextCompat.getColorStateList(this, R.color.DayColorPrimaryDark));
-        }
 
         DatabaseHelper DB = new DatabaseHelper(this);
 
@@ -105,11 +124,6 @@ public class MainActivity extends AppCompatActivity {
             String tablename = Item.getTableName();
             String title = Item.getitle();
             String IgnoreChars = Item.getIgnoreChars();
-
-            if (IsDark) {
-                but.setBackgroundResource(R.drawable.layout_mainshape_dark);
-                TakeTest.setBackgroundResource(R.drawable.layout_buttonshape_dark);
-            }
 
             but.setTag(R.string.Tag_id_0, tablename);
             but.setTag(R.string.Tag_id_1, title);

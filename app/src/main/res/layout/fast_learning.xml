@@ -18,7 +18,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/layout_mainshape_dark"
+            android:background="@drawable/layout_mainshape"
             android:elevation="5dp"
             android:orientation="vertical">
 
@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@drawable/edittext_shape_dark"
+                android:background="@drawable/edittext_shape"
                 android:hint="@string/Answer"
                 android:inputType="textCapSentences"
                 android:padding="10dp" />

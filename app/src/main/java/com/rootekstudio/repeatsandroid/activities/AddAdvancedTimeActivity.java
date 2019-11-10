@@ -81,14 +81,14 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!isEdit.equals("")){
+                if (!isEdit.equals("")) {
                     JSONObject rootObject = null;
                     try {
                         rootObject = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if(rootObject.length() != 1) {
+                    if (rootObject.length() != 1) {
                         rootObject.remove(isEdit);
                         JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
                         NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(isEdit));
@@ -113,19 +113,9 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
             loadSaved(isEdit);
         }
 
-        if(!isDark){
-            LinearLayout daysBox = findViewById(R.id.daysBox);
-            LinearLayout hoursBox = findViewById(R.id.hoursBox);
-            LinearLayout freqBox = findViewById(R.id.frequencyBox);
-            LinearLayout setsBox = findViewById(R.id.setsBox);
+        if (!isDark) {
             View lineA = findViewById(R.id.lineA);
-
             lineA.setBackgroundColor(Color.parseColor("#bfbfbf"));
-            editFreq.setBackgroundResource(R.drawable.edittext_shape);
-            daysBox.setBackgroundResource(R.drawable.layout_mainshape);
-            hoursBox.setBackgroundResource(R.drawable.layout_mainshape);
-            freqBox.setBackgroundResource(R.drawable.layout_mainshape);
-            setsBox.setBackgroundResource(R.drawable.layout_mainshape);
         }
     }
 
@@ -150,7 +140,7 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
                 }
             }
 
-            for(int i = 0; i < 7; i++) {
+            for (int i = 0; i < 7; i++) {
                 CheckBox checkBox = (CheckBox) daysGrid.getChildAt(i);
                 checkBox.setOnCheckedChangeListener(daysCheckedChangeListener);
             }
@@ -186,8 +176,7 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
                         checkBox.setOnCheckedChangeListener(setsCheckedChangeListener);
                         setsChecked++;
                         break;
-                    }
-                    else {
+                    } else {
                         checkBox.setOnCheckedChangeListener(setsCheckedChangeListener);
                     }
                 }
@@ -223,27 +212,26 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
 
             checkBox.setText(titles.get(i));
             checkBox.setTag(TableNames.get(i));
-            if(defaultCheck){
+            if (defaultCheck) {
                 checkBox.setChecked(true);
                 checkBox.setOnCheckedChangeListener(setsCheckedChangeListener);
                 setsChecked++;
-            }
-            else {
+            } else {
                 checkBox.setOnCheckedChangeListener(setsCheckedChangeListener);
             }
 
             setsLinear.addView(singleCheckSet);
         }
     }
+
     CompoundButton.OnCheckedChangeListener daysCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-            if(b) {
+            if (b) {
                 daysChecked++;
-            }
-            else {
-                if(daysChecked == 1) {
+            } else {
+                if (daysChecked == 1) {
                     compoundButton.setChecked(true);
                     return;
                 }
@@ -255,11 +243,10 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
     CompoundButton.OnCheckedChangeListener setsCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            if(b){
+            if (b) {
                 setsChecked++;
-            }
-            else {
-                if(setsChecked == 1) {
+            } else {
+                if (setsChecked == 1) {
                     compoundButton.setChecked(true);
                     return;
                 }
@@ -295,8 +282,8 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
         deleteHour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(hoursLinear.getChildCount() != 1) {
-                    hoursLinear.removeView((View)view.getParent());
+                if (hoursLinear.getChildCount() != 1) {
+                    hoursLinear.removeView((View) view.getParent());
                 }
             }
         });
@@ -370,10 +357,9 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
 
             EditText editFreq = parentView.findViewById(R.id.editFreqAdvanced);
             String freq;
-            if(editFreq.getText().length() == 0){
+            if (editFreq.getText().length() == 0) {
                 freq = "30";
-            }
-            else {
+            } else {
                 freq = editFreq.getText().toString();
             }
 
@@ -436,10 +422,9 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
                 //put everything to one json
                 rootObject.put(String.valueOf(lastKey), values);
 
-                if(isEdit.equals("")){
+                if (isEdit.equals("")) {
                     JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
-                }
-                else {
+                } else {
                     NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(isEdit));
                     rootObject.remove(isEdit);
                     JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
@@ -459,10 +444,8 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
     };
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        if(item.getItemId() == android.R.id.home)
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return true;

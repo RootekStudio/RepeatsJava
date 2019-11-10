@@ -136,4 +136,9 @@
     <string name="accept">Gotowe</string>
     <string name="firstRunInfo">Główną funkcją aplikacji Repeats jest wysyłanie powiadomień z pytaniami na Twoje urządzenie.\n\nWybierz tryb dostarczania powiadomień:</string>
     <string name="canChangeDefault">Możesz zmienić ustawienia domyślne po dodaniu pierwszego zestawu.</string>
+    <string name="sign_in_email">Zaloguj się przez maila</string>
+    <string name="sign_in_google">Zaloguj się przez Google</string>
+    <string name="no_sign_in">Kontynuuj bez logowania (niezalecane)</string>
+    <string name="password">Hasło</string>
+    <string name="repeat_password">Powtórz hasło</string>
 </resources>
