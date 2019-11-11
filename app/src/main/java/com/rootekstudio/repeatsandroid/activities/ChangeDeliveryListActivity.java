@@ -68,7 +68,7 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
         timeItems = new ArrayList<>();
 
@@ -107,7 +107,7 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
                 for (int i = 0; i < daysCount; i++) {
                     String day = days.getString(i);
 
-                    switch(day){
+                    switch (day) {
                         case "1":
                             daysBuilder.append(getString(R.string.sun));
                             break;
@@ -157,7 +157,7 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
                     hoursBuilder.append(" - ");
                     hoursBuilder.append(to);
 
-                    if(count != hoursLength-1) {
+                    if (count != hoursLength - 1) {
                         hoursBuilder.append(", ");
                     }
 
@@ -197,10 +197,8 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        if(item.getItemId() == android.R.id.home)
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return true;

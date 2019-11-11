@@ -15,8 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/DarkAppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".activities.FirstRunActivity" />
+        <activity android:name=".activities.SignInActivity"/>
+        <activity
+            android:name=".activities.ProfileInfoActivity"
+            android:label="@string/repeats_account" />
+        <activity
+            android:name=".activities.FirstRunActivity" />
 
         <receiver
             android:name=".OnSystemBoot"
@@ -37,10 +41,10 @@
         </provider>
 
         <activity android:name=".activities.MainActivity" />
-
-        <activity android:name=".MailSignIn"
+        <activity
+            android:name=".activities.MailSignIn"
             android:label="@string/sign_in_email"
-            android:theme="@style/DarkAppTheme.ActionBar.Transparent"/>
+            android:theme="@style/MailSignInStyle" />
 
         <receiver
             android:name=".notifications.RepeatsQuestionSend"

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.ProfileInfoActivity">
+
+    <ImageView
+        android:id="@+id/profileImageInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher_round"
+        android:tint="@android:color/transparent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/nickInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mr. Example"
+        android:layout_below="@id/profileImageInfo"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/emailInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="example@example.com"
+        android:layout_below="@id/nickInfo"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/changePasswordButton"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/emailInfo"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:text="@string/changePassword"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        app:icon="@drawable/ic_edit"
+        android:onClick="changePassword"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logOutButton"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/changePasswordButton"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:text="@string/logout"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        app:icon="@drawable/ic_logout"
+        android:onClick="logout"/>
+</RelativeLayout>

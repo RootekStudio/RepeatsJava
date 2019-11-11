@@ -19,14 +19,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.rootekstudio.repeatsandroid.BottomNavDrawerFragment;
@@ -45,7 +43,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Activity activity = null;
-    private FirebaseAuth mAuth;
+    static FirebaseAuth mAuth;
+
+    public static String userNick;
+    public static String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +56,6 @@ public class MainActivity extends AppCompatActivity {
         RepeatsHelper.DarkTheme(this, false);
 
         RepeatsHelper.askAboutBattery(this);
-
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        String displayname = currentUser.getDisplayName();
-        String email = currentUser.getEmail();
-
-        int i  =1;
-
     }
 
     @Override
@@ -77,15 +70,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.logo);
+        final BottomNavDrawerFragment bottomNavDrawerFragment = BottomNavDrawerFragment.newInstance();
 
-        final NavigationView navDrawer = findViewById(R.id.navigation);
+        userNick = null;
+        userEmail = null;
 
+        mAuth = FirebaseAuth.getInstance();
+
+        loginInfoUpdateUI();
 
         final BottomAppBar bottomAppBar = findViewById(R.id.bar);
         bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomNavDrawerFragment bottomNavDrawerFragment = BottomNavDrawerFragment.newInstance();
                 bottomNavDrawerFragment.show(getSupportFragmentManager(), "bottomNav");
             }
         });
@@ -96,9 +93,6 @@ public class MainActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.app_bar_search) {
                     Intent intent = new Intent(cnt, SearchActivity.class);
                     startActivity(intent);
-                } else if (item.getItemId() == R.id.app_bar_settings) {
-                    Intent settings = new Intent(cnt, SettingsActivity.class);
-                    startActivity(settings);
                 }
                 return true;
             }
@@ -255,6 +249,24 @@ public class MainActivity extends AppCompatActivity {
                 thread.start();
             }
         }
+    }
+
+    void loginInfoUpdateUI() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+
+                if (currentUser != null) {
+                    String displayName = currentUser.getDisplayName();
+                    String email = currentUser.getEmail();
+
+                    userNick = displayName;
+                    userEmail = email;
+                }
+            }
+        });
+        thread.start();
     }
 
     private void createNotificationChannel() {

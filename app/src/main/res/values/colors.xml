@@ -17,4 +17,5 @@
     <color name="darkMainItem">#383838</color>
     <color name="tintLight">#FFFFFF</color>
     <color name="darkEditTextColor">#414141</color>
+    <color name="greyImage">#525252</color>
 </resources>

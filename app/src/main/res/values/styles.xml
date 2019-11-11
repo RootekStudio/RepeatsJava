@@ -45,7 +45,7 @@
         <item name="android:background">@drawable/bottom_nav_style</item>
     </style>
 
-    <style name="DarkAppTheme.ActionBar.Transparent" parent="DarkAppTheme">
+    <style name="MailSignInStyle" parent="Theme.AppCompat">
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="colorPrimary">@android:color/transparent</item>

@@ -5,9 +5,5 @@
         android:id="@+id/app_bar_search"
         android:icon="@drawable/ic_search"
         android:title="@string/Search"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/app_bar_settings"
-        android:title="@string/Settings"
-        app:showAsAction="never"/>
+        app:showAsAction="always"/>
 </menu>
