@@ -44,6 +44,8 @@ public class JsonFile {
             }
             json = sb.toString();
 
+            jReader.close();
+
         }catch (Exception e) {
             e.printStackTrace();
         }

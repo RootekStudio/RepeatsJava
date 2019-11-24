@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -15,12 +16,33 @@
         android:supportsRtl="true"
         android:theme="@style/DarkAppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.SignInActivity"/>
+        <activity android:name=".DynamicLinks"
+            android:theme="@style/SplashScreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="rootekstudio.wordpress.com"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.PreviewAndDownloadSetActivity"
+            android:label="@string/setPreview"/>
+        <activity
+            android:name=".activities.ShareActivity"
+            android:label="@string/sharing" />
+        <activity
+            android:name=".activities.RepeatsCommunityStartActivity"
+            android:label="@string/repeatsCommunity" />
+        <activity android:name=".activities.SignInActivity" />
         <activity
             android:name=".activities.ProfileInfoActivity"
             android:label="@string/repeats_account" />
-        <activity
-            android:name=".activities.FirstRunActivity" />
+        <activity android:name=".activities.FirstRunActivity" />
 
         <receiver
             android:name=".OnSystemBoot"

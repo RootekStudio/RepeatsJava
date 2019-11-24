@@ -160,4 +160,25 @@
     <string name="passwords_notsame">Hasła nie są takie same</string>
     <string name="logout_success">Wylogowano pomyślnie</string>
     <string name="google_auth_failed">Wystąpił błąd z logowaniem do konta Google</string>
+    <string name="loadFromCommunity">Pobierz zestawy ze Społeczności Repeats (Beta)</string>
+    <string name="startQuestionRC">Czego chcesz się dzisiaj nauczyć?</string>
+    <string name="repeatsCommunity">Społeczność Repeats (Beta)</string>
+    <string name="searchRChint">Szukaj po nazwie zestawu lub jego zawartości</string>
+    <string name="share_to_community">Udostępnij do Społeczności Repeats (Beta)</string>
+    <string name="sharing">Udostępnianie</string>
+    <string name="share_to_file">Zapisz do pliku i udostępnij</string>
+    <string name="string_group">Do grupy</string>
+    <string name="string_public">Publicznie</string>
+    <string name="string_private">Prywatnie</string>
+    <string name="public_desc">Udostępnij dla każdego w Społeczności. Każdy będzie mógł znaleźć i pobrać Twój zestaw.</string>
+    <string name="group_desc">Udostępnij do jednej z Twoich grup. Każdy w grupie będzie mógł znaleźć i pobrać Twój zestaw.</string>
+    <string name="private_desc">Wyślij do Społeczności, ale tylko na własny użytek. Będziesz mógł udostępnić ten zestaw za pomocą linka.</string>
+    <string name="downloadSet">Pobierz zestaw</string>
+    <string name="questions">Pytania:</string>
+    <string name="answers">Odpowiedzi:</string>
+    <string name="setPreview">Podgląd</string>
+    <string name="downloading">Pobieranie...</string>
+    <string name="successDownload">Pobieranie zakończone</string>
+    <string name="successShare">Udostępniono pomyślnie</string>
+    <string name="somethingWentWrong">Coś poszło nie tak</string>
 </resources>

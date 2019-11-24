@@ -313,6 +313,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void insertSetToDatabase(String setID, ArrayList<String> questions, ArrayList<String> answers, ArrayList<String> images) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        if(images == null) {
+            for(int i = 0; i < questions.size(); i++) {
+                ContentValues values = new ContentValues();
+
+                values.put("question", questions.get(i));
+                values.put("answer", answers.get(i));
+                values.put("image", "");
+
+                db.insert(setID, null, values);
+            }
+        }
+        else {
+            for(int i = 0; i < questions.size(); i++) {
+                ContentValues values = new ContentValues();
+
+                values.put("question", questions.get(i));
+                values.put("answer", answers.get(i));
+                values.put("image", images.get(i));
+
+                db.insert(setID, null, values);
+            }
+        }
+
+        db.close();
+    }
+
     public void ResetEnabled() {
         SQLiteDatabase db = this.getWritableDatabase();
         String Command;

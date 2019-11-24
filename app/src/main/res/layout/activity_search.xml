@@ -11,9 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
-        android:queryHint="@string/search_hint">
-    </SearchView>
-
+        android:queryHint="@string/search_hint"
+        android:focusable="false"/>
 
     <ListView
         android:id="@+id/searchList"

@@ -75,11 +75,14 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="SplashScreenTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <style name="SplashScreenTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/secondColorAccent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBarOverlay">true</item>
     </style>
 
     <style name="DarkAppTheme.NoActionBar">

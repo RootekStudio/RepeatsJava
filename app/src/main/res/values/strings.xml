@@ -170,4 +170,25 @@
     <string name="passwords_notsame">Passwords are not the same</string>
     <string name="logout_success">Log out successfully</string>
     <string name="google_auth_failed">Google sign in failed</string>
+    <string name="loadFromCommunity">Load sets from Repeats Community (Beta)</string>
+    <string name="startQuestionRC">What do you want to learn today?</string>
+    <string name="repeatsCommunity">Repeats Community (Beta)</string>
+    <string name="searchRChint">Search by name of the set or its contents</string>
+    <string name="share_to_community">Share to Repeats Community (Beta)</string>
+    <string name="sharing">Sharing</string>
+    <string name="share_to_file">Save to local file and share</string>
+    <string name="string_public">Public</string>
+    <string name="string_group">To group</string>
+    <string name="string_private">Private</string>
+    <string name="public_desc">Share to everyone in the Community. Everyone can find and download your set.</string>
+    <string name="group_desc">Share to one of your group. Everyone in group can find and download your set.</string>
+    <string name="private_desc">Upload to Community, but only for your personal use. You can still share this set via link.</string>
+    <string name="downloadSet">Download set</string>
+    <string name="questions">Questions:</string>
+    <string name="answers">Answers:</string>
+    <string name="setPreview">Preview</string>
+    <string name="downloading">Downloading...</string>
+    <string name="successDownload">Download completed</string>
+    <string name="successShare">Shared successfully</string>
+    <string name="somethingWentWrong">Somethinf Went Wrong</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.rootekstudio.repeatsandroid.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,7 +26,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -38,7 +36,7 @@ import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
 import com.rootekstudio.repeatsandroid.RequestCodes;
-import com.rootekstudio.repeatsandroid.ShareButton;
+import com.rootekstudio.repeatsandroid.Share;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
@@ -101,8 +99,6 @@ public class AddEditSetActivity extends AppCompatActivity {
         final EditText editName = findViewById(R.id.projectname);
         editName.setOnFocusChangeListener(newName);
 
-        final Activity activity = this;
-
         //Replacing default menu of the bottom app bar
         BottomAppBar bottomAppBar = findViewById(R.id.AddQuestionBar);
         bottomAppBar.replaceMenu(R.menu.bottomappbar_addset);
@@ -152,9 +148,6 @@ public class AddEditSetActivity extends AppCompatActivity {
                                 editor.putString("ListNotifi", "0");
                                 editor.apply();
                             }
-
-
-
                             deleted = true;
                             AddEditSetActivity.super.onBackPressed();
                         }
@@ -164,14 +157,17 @@ public class AddEditSetActivity extends AppCompatActivity {
                     if (item.isChecked()) {
                         DB.ignoreChars(id, "false");
                         item.setChecked(false);
-                    } else {
                         DB.ignoreChars(id, "true");
                         item.setChecked(true);
+                    } else {
                     }
                 } else if (item.getItemId() == R.id.share) {
 
                     resetFocus();
-                    ShareButton.ShareClick(context, editName.getText().toString(), id, activity);
+                    Intent intentShare = new Intent(context, ShareActivity.class);
+                    intentShare.putExtra("name", editName.getText().toString());
+                    intentShare.putExtra("id", id);
+                    startActivity(intentShare);
                 }
                 return false;
             }
