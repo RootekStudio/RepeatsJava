@@ -11,48 +11,40 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.rootekstudio.repeatsandroid.BottomNavDrawerFragment;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.ZipSet;
+import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     Activity activity = null;
-    static FirebaseAuth mAuth;
+    public static FirebaseAuth mAuth;
 
     public static String userNick;
     public static String userEmail;
@@ -61,9 +53,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createNotificationChannel();
-
-        RepeatsHelper.DarkTheme(this, false);
-
         RepeatsHelper.askAboutBattery(this);
 
 
@@ -80,7 +69,13 @@ public class MainActivity extends AppCompatActivity {
         RepeatsHelper.CheckDir(this);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        boolean darkTheme = RepeatsHelper.DarkTheme(this, true);
         getSupportActionBar().setCustomView(R.layout.logo);
+        if(!darkTheme) {
+            ImageView logo = findViewById(R.id.logoMain);
+            logo.setImageResource(R.drawable.repeats_for_light_bg);
+        }
+
         final BottomNavDrawerFragment bottomNavDrawerFragment = BottomNavDrawerFragment.newInstance();
 
         userNick = null;
@@ -104,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.app_bar_search) {
                     Intent intent = new Intent(cnt, SearchActivity.class);
                     startActivity(intent);
+                }
+                else if (item.getItemId() == R.id.app_bar_settings) {
+                    Intent settings = new Intent(cnt, SettingsActivity.class);
+                    startActivity(settings);
                 }
                 return true;
             }

@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid.activities;
+package com.rootekstudio.repeatsandroid.account;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,10 +17,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.activities.MainActivity;
+import com.rootekstudio.repeatsandroid.community.GroupsListActivity;
+import com.rootekstudio.repeatsandroid.community.MySetsActivity;
 
 public class ProfileInfoActivity extends AppCompatActivity {
 
@@ -43,14 +44,16 @@ public class ProfileInfoActivity extends AppCompatActivity {
         account = GoogleSignIn.getLastSignedInAccount(this);
     }
 
+    public void mySets (View view) {
+        Intent intent = new Intent(this, MySetsActivity.class);
+        startActivity(intent);
+    }
+
     public void changePassword(View view) {
 
     }
 
     public void logout(View view) {
-
-
-
         if (account != null) {
             view.setEnabled(false);
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

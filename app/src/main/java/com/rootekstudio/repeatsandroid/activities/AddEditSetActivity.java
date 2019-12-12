@@ -29,6 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
@@ -112,7 +113,7 @@ public class AddEditSetActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.deleteButton) {
-                    AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(context);
+                    MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
 
                     ALERTbuilder.setMessage(R.string.WantDelete);
                     ALERTbuilder.setNegativeButton(R.string.Cancel, null);
@@ -157,9 +158,9 @@ public class AddEditSetActivity extends AppCompatActivity {
                     if (item.isChecked()) {
                         DB.ignoreChars(id, "false");
                         item.setChecked(false);
+                    } else {
                         DB.ignoreChars(id, "true");
                         item.setChecked(true);
-                    } else {
                     }
                 } else if (item.getItemId() == R.id.share) {
 

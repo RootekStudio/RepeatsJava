@@ -186,13 +186,11 @@ public class RepeatsHelper {
         if (theme.equals("0")) {
             if(!onlyCheck) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                context.setTheme(R.style.AppTheme);
             }
             return false;
         } else if (theme.equals("1")) {
             if(!onlyCheck) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                context.setTheme(R.style.DarkAppTheme);
             }
             return true;
         } else {
@@ -201,13 +199,11 @@ public class RepeatsHelper {
             if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
                 if(!onlyCheck) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    context.setTheme(R.style.DarkAppTheme);
                 }
                 return true;
             } else {
                 if(!onlyCheck) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    context.setTheme(R.style.AppTheme);
                 }
                 return false;
             }

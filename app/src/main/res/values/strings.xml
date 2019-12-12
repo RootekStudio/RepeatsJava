@@ -191,4 +191,13 @@
     <string name="successDownload">Download completed</string>
     <string name="successShare">Shared successfully</string>
     <string name="somethingWentWrong">Somethinf Went Wrong</string>
+    <string name="groupName">Group name</string>
+    <string name="create">Create</string>
+    <string name="myGroups">My groups</string>
+    <string name="creatingGroup">Creating new group</string>
+    <string name="createGroup">Create group</string>
+    <string name="yourGroups">Your groups</string>
+    <string name="group">Group</string>
+    <string name="inviteToGroup">Invite to group</string>
+    <string name="mySets">My sets</string>
 </resources>

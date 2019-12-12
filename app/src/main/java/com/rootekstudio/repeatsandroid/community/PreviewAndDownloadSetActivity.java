@@ -1,14 +1,11 @@
-package com.rootekstudio.repeatsandroid.activities;
+package com.rootekstudio.repeatsandroid.community;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,24 +14,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.rootekstudio.repeatsandroid.PreviewAdapter;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RCmainListAdapter;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
+import com.rootekstudio.repeatsandroid.activities.MainActivity;
+import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,23 +54,28 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
-                                ArrayList<?> questions = (ArrayList<?>) task.getResult().get("questions");
-                                ArrayList<?> answers = (ArrayList<?>) task.getResult().get("answers");
+                                if(task.getResult().exists()) {
+                                    ArrayList<?> questions = (ArrayList<?>) task.getResult().get("questions");
+                                    ArrayList<?> answers = (ArrayList<?>) task.getResult().get("answers");
 
-                                setItems = new ArrayList<>();
+                                    setItems = new ArrayList<>();
 
-                                for(int i = 0; i < questions.size(); i++) {
-                                    setItems.add(questions.get(i).toString());
-                                    setItems.add(answers.get(i).toString());
+                                    for(int i = 0; i < questions.size(); i++) {
+                                        setItems.add(questions.get(i).toString());
+                                        setItems.add(answers.get(i).toString());
+                                    }
+
+                                    setName = task.getResult().get("displayName").toString();
+
+                                    GridView gridView = findViewById(R.id.gridSetItemsList);
+                                    gridView.setAdapter(new PreviewAdapter(context, setItems));
+
+                                    findViewById(R.id.downloadSetButton).setEnabled(true);
+
+                                    TextView textView = findViewById(R.id.setNamePreview);
+                                    textView.setText(setName);
                                 }
 
-                                setName = task.getResult().get("displayName").toString();
-
-                                GridView gridView = findViewById(R.id.gridSetItemsList);
-                                gridView.setAdapter(new PreviewAdapter(context, setItems));
-
-                                TextView textView = findViewById(R.id.setNamePreview);
-                                textView.setText(setName);
 
                             } else {
                                 Log.d("tag", "Error getting documents: ", task.getException());
@@ -96,6 +92,8 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
 
             TextView textView = findViewById(R.id.setNamePreview);
             textView.setText(setName);
+
+            findViewById(R.id.downloadSetButton).setEnabled(true);
         }
     }
 

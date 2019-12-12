@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid.activities;
+package com.rootekstudio.repeatsandroid.community;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,9 +19,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.rootekstudio.repeatsandroid.R;
@@ -93,13 +91,14 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
                             resultNames = new ArrayList<>();
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                documents.add(document);
-                                resultNames.add(document.get("displayName").toString());
-
-                                Log.d("tag", document.getId() + " => " + document.getData());
+                                String a = (String)document.get("availability");
+                                if(a.equals("PUBLIC")) {
+                                    documents.add(document);
+                                    resultNames.add(document.get("displayName").toString());
+                                }
                             }
 
-                            mAdapter = new RCmainListAdapter(resultNames);
+                            mAdapter = new RCmainListAdapter(resultNames,0);
                             mAdapter.notifyDataSetChanged();
                             recyclerView.setAdapter(mAdapter);
 

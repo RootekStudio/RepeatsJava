@@ -13,7 +13,6 @@ import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.Share;
 
 public class ShareActivity extends AppCompatActivity {
-
     boolean shareToRC = true;
     String howShareRC = "PUBLIC";
     String name;
@@ -40,13 +39,13 @@ public class ShareActivity extends AppCompatActivity {
         if(view.getId()==R.id.communityRadio) {
 ;           findViewById(R.id.publicRadio).setEnabled(true);
 //            findViewById(R.id.groupRadio).setEnabled(true);
-//            findViewById(R.id.privateRadio).setEnabled(true);
+            findViewById(R.id.privateRadio).setEnabled(true);
             shareToRC = true;
         }
         else if(view.getId() == R.id.JSONradio) {
             findViewById(R.id.publicRadio).setEnabled(false);
 //            findViewById(R.id.groupRadio).setEnabled(false);
-//            findViewById(R.id.privateRadio).setEnabled(false);
+            findViewById(R.id.privateRadio).setEnabled(false);
 
             shareToRC = false;
         }
@@ -56,9 +55,9 @@ public class ShareActivity extends AppCompatActivity {
         if(view.getId() == R.id.publicRadio) {
             howShareRC = "PUBLIC";
         }
-        else if(view.getId() == R.id.groupRadio) {
-            howShareRC = "GROUP";
-        }
+//        else if(view.getId() == R.id.groupRadio) {
+//            howShareRC = "GROUP";
+//        }
         else if(view.getId() == R.id.privateRadio) {
             howShareRC = "PRIVATE";
         }
@@ -72,9 +71,9 @@ public class ShareActivity extends AppCompatActivity {
             if(howShareRC.equals("PUBLIC")) {
                 Share.shareToCommunity(this, setId, name,"PUBLIC", this);
             }
-            else if(howShareRC.equals("GROUP")) {
-                Share.shareToCommunity(this, setId, name,"GROUP", this);
-            }
+//            else if(howShareRC.equals("GROUP")) {
+//                Share.shareToCommunity(this, setId, name,"GROUP", this);
+//            }
             else if(howShareRC.equals("PRIVATE")) {
                 Share.shareToCommunity(this, setId, name,"PRIVATE", this);
             }

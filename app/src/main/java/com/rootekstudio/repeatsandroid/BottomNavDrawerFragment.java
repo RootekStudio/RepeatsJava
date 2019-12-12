@@ -1,7 +1,6 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
@@ -17,9 +16,9 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.rootekstudio.repeatsandroid.activities.MainActivity;
-import com.rootekstudio.repeatsandroid.activities.ProfileInfoActivity;
+import com.rootekstudio.repeatsandroid.account.ProfileInfoActivity;
 import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
-import com.rootekstudio.repeatsandroid.activities.SignInActivity;
+import com.rootekstudio.repeatsandroid.account.SignInActivity;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

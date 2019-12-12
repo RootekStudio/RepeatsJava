@@ -181,4 +181,13 @@
     <string name="successDownload">Pobieranie zakończone</string>
     <string name="successShare">Udostępniono pomyślnie</string>
     <string name="somethingWentWrong">Coś poszło nie tak</string>
+    <string name="groupName">Nazwa grupy</string>
+    <string name="create">Utwórz</string>
+    <string name="myGroups">Moje grupy</string>
+    <string name="creatingGroup">Tworzenie grupy</string>
+    <string name="createGroup">Utwórz nową grupę</string>
+    <string name="yourGroups">Twoje grupy</string>
+    <string name="group">Grupa</string>
+    <string name="inviteToGroup">Zaproś do grupy</string>
+    <string name="mySets">Moje zestawy</string>
 </resources>

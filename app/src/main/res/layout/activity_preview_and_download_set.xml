@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.PreviewAndDownloadSetActivity"
+    tools:context=".community.PreviewAndDownloadSetActivity"
     android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
@@ -28,7 +28,9 @@
         app:iconGravity="textStart"
         app:iconPadding="10dp"
         android:textAllCaps="false"
-        android:onClick="downloadSet"/>
+        android:onClick="downloadSet"
+        android:enabled="false"
+        android:id="@+id/downloadSetButton"/>
 
     <GridView
         android:layout_width="match_parent"

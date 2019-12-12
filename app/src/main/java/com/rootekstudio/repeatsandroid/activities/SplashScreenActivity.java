@@ -1,10 +1,12 @@
 package com.rootekstudio.repeatsandroid.activities;
 
+import android.app.UiModeManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
@@ -16,8 +18,9 @@ public class SplashScreenActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
         RepeatsHelper.DarkTheme(this, false);
+
+        super.onCreate(savedInstanceState);
 
         Intent intent;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);

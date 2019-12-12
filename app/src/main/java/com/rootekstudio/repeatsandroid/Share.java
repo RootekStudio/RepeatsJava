@@ -22,11 +22,14 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,11 +102,16 @@ public class Share {
             answers.add(singleSet.get(i).getAnswer());
         }
 
+        SimpleDateFormat simpleDate = new SimpleDateFormat("dd.MM.yyyy");
+        String createDate = simpleDate.format(new Date());
+
         final Map<String, Object> set = new HashMap<>();
         set.put("availability", availability);
         set.put("displayName", name);
         set.put("questions", questions);
         set.put("answers", answers);
+        set.put("userID", MainActivity.mAuth.getUid());
+        set.put("creationDate", createDate);
 
 // Add a new document with a generated ID
         db.collection("sets")

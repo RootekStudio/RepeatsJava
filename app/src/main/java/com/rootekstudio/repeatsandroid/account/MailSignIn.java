@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid.activities;
+package com.rootekstudio.repeatsandroid.account;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.activities.MainActivity;
 
 public class MailSignIn extends AppCompatActivity {
 

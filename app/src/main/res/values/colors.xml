@@ -4,18 +4,29 @@
     <color name="colorAccent">#247ee6</color>
     <color name="secondColorAccent">#00BCD4</color>
 
+    <color name="primaryColor">#247ee6</color>
+    <color name="primaryLightColor">#6cadff</color>
+    <color name="primaryDarkColor">#0053b3</color>
+    <color name="secondaryColor">#00bcd4</color>
+    <color name="secondaryLightColor">#62efff</color>
+    <color name="secondaryDarkColor">#008ba3</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
+
 <!--Light theme-->
     <color name="dayColorPrimaryDark">#FFFFFF</color>
     <color name="buttonLight">#ECECEC</color>
-    <color name="lightMainItem">#F5F5F5</color>
+    <color name="lightMainItem">#fafafa</color>
     <color name="tintDark">#3A3A3A</color>
     <color name="lightEditTextColor">#EBEBEB</color>
+    <color name="lightSplashScreenColor">#FFFFFF</color>
 
 <!--Dark theme-->
     <color name="colorPrimaryDark">#252525</color>
-    <color name="buttonDark">#292929</color>
-    <color name="darkMainItem">#383838</color>
+    <color name="buttonDark">#262626</color>
+    <color name="darkMainItem">#1c1c1c</color>
     <color name="tintLight">#FFFFFF</color>
-    <color name="darkEditTextColor">#414141</color>
+    <color name="darkEditTextColor">#222222</color>
     <color name="greyImage">#525252</color>
+    <color name="darkSplashScreenColor">#000000</color>
 </resources>

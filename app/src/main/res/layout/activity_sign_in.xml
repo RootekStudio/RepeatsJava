@@ -10,7 +10,7 @@
         android:layout_height="35dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:src="@drawable/repeats_logo_android" />
+        android:src="@drawable/repeats_for_dark_bg" />
 
     <TextView
         android:id="@+id/signInText"

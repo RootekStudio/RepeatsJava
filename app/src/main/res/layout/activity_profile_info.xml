@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ProfileInfoActivity">
+    tools:context=".account.ProfileInfoActivity">
 
     <ImageView
         android:id="@+id/profileImageInfo"
@@ -50,11 +50,25 @@
         android:onClick="changePassword"/>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/mySetsButton"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/changePasswordButton"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:text="@string/mySets"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        app:icon="@drawable/ic_edit"
+        android:onClick="mySets" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/logOutButton"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/changePasswordButton"
+        android:layout_below="@id/mySetsButton"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"

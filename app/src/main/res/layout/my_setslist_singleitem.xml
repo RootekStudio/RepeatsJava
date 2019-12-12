@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_gravity="center"
+    android:clickable="true"
+    android:onClick="previewSetMySets"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:background="@drawable/layout_mainshape"
+    android:layout_margin="7dp">
+
+    <TextView
+        android:id="@+id/setNameMySetsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Konstantynopolitanczykowianeczka"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="30dp"
+        android:layout_toStartOf="@id/createLinkRC"
+        android:textSize="10pt"
+        android:textStyle="bold"
+        android:layout_marginEnd="30dp"
+        android:textAlignment="viewStart"/>
+
+    <ImageButton
+        android:id="@+id/createLinkRC"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_link_24px"
+        android:text="Button"
+        android:tint="@color/colorPrimary"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@id/deleteSetRC"
+        android:onClick="createLinkMySets"
+        android:foreground="?android:attr/selectableItemBackground"/>
+
+    <ImageButton
+        android:id="@+id/deleteSetRC"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="Button"
+        android:src="@drawable/ic_delete"
+        android:background="@android:color/transparent"
+        android:tint="@android:color/holo_red_dark"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:onClick="deleteSetMySets"
+        android:foreground="?android:attr/selectableItemBackground"/>
+</RelativeLayout>

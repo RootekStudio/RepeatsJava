@@ -13,7 +13,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
-import com.rootekstudio.repeatsandroid.activities.PreviewAndDownloadSetActivity;
+import com.rootekstudio.repeatsandroid.community.PreviewAndDownloadSetActivity;
 
 public class DynamicLinks extends AppCompatActivity {
 Context context;

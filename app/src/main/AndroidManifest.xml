@@ -14,9 +14,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/DarkAppTheme"
+        android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".DynamicLinks"
+        <activity android:name=".community.MySetsActivity"
+            android:label="@string/mySets"/>
+        <activity
+            android:name=".community.GroupActivity"
+            android:label="@string/group" />
+        <activity
+            android:name=".community.GroupsListActivity"
+            android:label="@string/yourGroups" />
+        <activity
+            android:name=".DynamicLinks"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -30,17 +39,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.PreviewAndDownloadSetActivity"
-            android:label="@string/setPreview"/>
+            android:name=".community.PreviewAndDownloadSetActivity"
+            android:label="@string/setPreview" />
         <activity
             android:name=".activities.ShareActivity"
             android:label="@string/sharing" />
         <activity
-            android:name=".activities.RepeatsCommunityStartActivity"
+            android:name=".community.RepeatsCommunityStartActivity"
             android:label="@string/repeatsCommunity" />
-        <activity android:name=".activities.SignInActivity" />
+        <activity android:name=".account.SignInActivity" />
         <activity
-            android:name=".activities.ProfileInfoActivity"
+            android:name=".account.ProfileInfoActivity"
             android:label="@string/repeats_account" />
         <activity android:name=".activities.FirstRunActivity" />
 
@@ -64,7 +73,7 @@
 
         <activity android:name=".activities.MainActivity" />
         <activity
-            android:name=".activities.MailSignIn"
+            android:name=".account.MailSignIn"
             android:label="@string/sign_in_email"
             android:theme="@style/MailSignInStyle" />
 
@@ -106,7 +115,6 @@
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

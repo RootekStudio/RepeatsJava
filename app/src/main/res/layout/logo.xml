@@ -4,8 +4,10 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="90dp"
+        android:id="@+id/logoMain"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/repeats_logo_android"
-        android:layout_centerInParent="true" />
+        android:src="@drawable/repeats_for_dark_bg"
+        android:layout_centerInParent="true"
+        android:tint="@android:color/transparent"/>
 </RelativeLayout>

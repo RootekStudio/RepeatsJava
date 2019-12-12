@@ -18,22 +18,18 @@
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bar"
-        style="@style/Widget.MaterialComponents.BottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:backgroundTint="?attr/colorPrimaryDark"
         app:fabAlignmentMode="center"
         app:hideOnScroll="true"
-        app:menu="@menu/bottomappbarmain"
-        app:navigationIcon="@drawable/ic_menu" />
+        app:menu="@menu/bottomappbarmain" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add"
-        android:tint="#FFFFFF"
         app:layout_anchor="@id/bar" />
 
     <RelativeLayout

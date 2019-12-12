@@ -52,20 +52,20 @@
                 android:text="@string/public_desc"
                 android:layout_marginStart="32dp"
                 android:textColor="@android:color/darker_gray"/>
-            <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/string_group"
-                android:layout_marginTop="5dp"
-                android:onClick="selectShareCommunity"
-                android:id="@+id/groupRadio"
-                android:enabled="false"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/group_desc"
-                android:layout_marginStart="32dp"
-                android:textColor="@android:color/darker_gray"/>
+<!--            <RadioButton-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/string_group"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:onClick="selectShareCommunity"-->
+<!--                android:id="@+id/groupRadio"-->
+<!--                android:enabled="false"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/group_desc"-->
+<!--                android:layout_marginStart="32dp"-->
+<!--                android:textColor="@android:color/darker_gray"/>-->
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
