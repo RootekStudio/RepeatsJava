@@ -60,6 +60,9 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
 
                                     setItems = new ArrayList<>();
 
+                                    setItems.add(getString(R.string.questions));
+                                    setItems.add(getString(R.string.answers));
+
                                     for(int i = 0; i < questions.size(); i++) {
                                         setItems.add(questions.get(i).toString());
                                         setItems.add(answers.get(i).toString());
@@ -75,8 +78,6 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
                                     TextView textView = findViewById(R.id.setNamePreview);
                                     textView.setText(setName);
                                 }
-
-
                             } else {
                                 Log.d("tag", "Error getting documents: ", task.getException());
                             }
@@ -84,8 +85,8 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
                     });
         }
         else {
-            setItems = RepeatsCommunityStartActivity.setItems;
-            setName = RepeatsCommunityStartActivity.setName;
+            setItems = RepeatsHelper.setItems;
+            setName = RepeatsHelper.setName;
 
             GridView gridView = findViewById(R.id.gridSetItemsList);
             gridView.setAdapter(new PreviewAdapter(this, setItems));

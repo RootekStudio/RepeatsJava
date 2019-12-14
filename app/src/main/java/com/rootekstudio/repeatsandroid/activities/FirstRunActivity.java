@@ -4,12 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import com.rootekstudio.repeatsandroid.R;
@@ -24,10 +29,9 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class FirstRunActivity extends AppCompatActivity {
-
     int selected = 0;
-
     Context context;
+    ViewFlipper viewFlipper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,23 +43,30 @@ public class FirstRunActivity extends AppCompatActivity {
         context = this;
         getSupportActionBar().hide();
 
-        Button save = findViewById(R.id.saveFirstRunSettings);
+        Animation in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        viewFlipper = findViewById(R.id.view_flipper_firstrun);
+        viewFlipper.setInAnimation(in);
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                if (!sharedPreferences.contains("firstRun")) {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putInt("firstRun", selected);
-                    editor.apply();
-                }
+        TextView terms = findViewById(R.id.termsOfUseView);
+        terms.setMovementMethod(LinkMovementMethod.getInstance());
+    }
 
-                Intent intent = new Intent(context, MainActivity.class);
-                startActivity(intent);
-                finish();
+    public void nextClick(View view) {
+        if(viewFlipper.getDisplayedChild() == 2) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            if (!sharedPreferences.contains("firstRun")) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("firstRun", selected);
+                editor.apply();
             }
-        });
+
+            Intent intent = new Intent(context, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            viewFlipper.showNext();
+        }
     }
 
     public void radioButtonClicked(View view) {

@@ -1,118 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".activities.FirstRunActivity"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/firstRunInfo"
+    android:layout_height="match_parent">
+        <ViewFlipper
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:id="@+id/view_flipper_firstrun"
+            android:layout_above="@id/buttonNext">
 
-            <TextView
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/welcome"
+                    android:textAlignment="center"
+                    android:textSize="13pt"
+                    android:layout_above="@id/logoFirstRun"
+                    android:layout_centerHorizontal="true" />
+                <ImageView
+                    android:id="@+id/logoFirstRun"
+                    android:layout_width="200dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/repeats_for_dark_bg"
+                    android:tint="@android:color/transparent"
+                    android:layout_centerInParent="true"/>
+
+                <TextView
+                    android:id="@+id/termsOfUseView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="25dp"
+                    android:text="@string/termsOfUse"
+                    android:textAlignment="center"
+                    android:layout_below="@id/logoFirstRun"
+                    android:layout_centerHorizontal="true"
+                    android:layout_above="@id/configureText"
+                    android:gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:clickable="true"
+                    android:linksClickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/configureText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="25dp"
+                    android:text="@string/weWillConfigure"
+                    android:textAlignment="center"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"/>
+            </RelativeLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
-                android:text="@string/welcome"
-                android:textAlignment="center" />
+                android:layout_marginTop="20dp">
 
-            <ImageView
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/repeats_for_dark_bg" />
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/notifications_active_24px"
+                    android:layout_centerInParent="true"/>
 
-            <TextView
-                android:layout_width="300dp"
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginBottom="30dp"
+                    android:text="@string/firstRunInfo"
+                    android:textAlignment="center"
+                    android:textSize="8pt"
+                    android:lineSpacingExtra="3dp"/>
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="35dp"
-                android:layout_marginBottom="30dp"
-                android:text="@string/firstRunInfo"
-                android:textAlignment="center" />
-        </LinearLayout>
+                tools:context=".activities.FirstRunActivity"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp">
+                    <TextView
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="35dp"
+                        android:layout_marginBottom="30dp"
+                        android:text="@string/deliveryMode"
+                        android:textAlignment="center"
+                        android:textSize="8pt" />
+                    <RadioGroup
+                        android:id="@+id/radioGroupFirstRun"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:checkedButton="@id/constFreqButton">
 
-        <RadioGroup
-            android:id="@+id/radioGroupFirstRun"
+                        <RadioButton
+                            android:id="@+id/constFreqButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="radioButtonClicked"
+                            android:text="@string/const_freq"
+                            android:textSize="7pt"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="34dp"
+                            android:layout_marginBottom="15dp"
+                            android:text="@string/constFreqInfo"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="7pt"/>
+
+                        <RadioButton
+                            android:id="@+id/advancedDeliveryButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="radioButtonClicked"
+                            android:text="@string/advanced_notifi"
+                            android:textSize="7pt"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="34dp"
+                            android:layout_marginBottom="15dp"
+                            android:text="@string/advancedInfo"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="7pt"/>
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/defaultInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="30dp"
+                        android:text="@string/freqDefault"
+                        android:textAlignment="center"
+                        android:textSize="7pt" />
+
+                    <TextView
+                        android:id="@+id/defaultChangeInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="30dp"
+                        android:text="@string/canChangeDefault"
+                        android:textAlignment="center"
+                        android:textSize="7pt"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="30dp">
+                    </LinearLayout>
+                </LinearLayout>
+
+            </ScrollView>
+        </ViewFlipper>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonNext"
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:checkedButton="@id/constFreqButton">
-
-            <RadioButton
-                android:id="@+id/constFreqButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="radioButtonClicked"
-                android:text="@string/const_freq" />
-
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="34dp"
-                android:layout_marginBottom="15dp"
-                android:text="@string/constFreqInfo"
-                android:textColor="@android:color/darker_gray" />
-
-            <RadioButton
-                android:id="@+id/advancedDeliveryButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="radioButtonClicked"
-                android:text="@string/advanced_notifi" />
-
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="34dp"
-                android:layout_marginBottom="15dp"
-                android:text="@string/advancedInfo"
-                android:textColor="@android:color/darker_gray" />
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/defaultInfo"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:text="@string/freqDefault"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/defaultChangeInfo"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:text="@string/canChangeDefault"
-            android:textAlignment="center" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/saveFirstRunSettings"
-                style="@style/Widget.MaterialComponents.Button.Icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/accept"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                app:icon="@drawable/ic_check" />
-        </LinearLayout>
-    </LinearLayout>
-
-</ScrollView>
+            android:text="@string/next"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            app:icon="@drawable/ic_navigate_next"
+            android:onClick="nextClick"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"/>
+</RelativeLayout>

@@ -1,7 +1,6 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +10,10 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.documentfile.provider.DocumentFile;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
 
@@ -25,11 +26,12 @@ import java.util.List;
 
 public class Backup {
     public static void createBackup(final Context context, final Activity activity) {
-        final AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         final View view1 = layoutInflater.inflate(R.layout.where_backup, null);
         ALERTbuilder.setView(view1);
-        ALERTbuilder.setMessage(R.string.where_Backup);
+        ALERTbuilder.setTitle(R.string.where_Backup);
+        ALERTbuilder.setBackground(context.getDrawable(R.drawable.dialog_shape));
         final AlertDialog alert = ALERTbuilder.show();
 
         RelativeLayout relCloud = view1.findViewById(R.id.relCloud);

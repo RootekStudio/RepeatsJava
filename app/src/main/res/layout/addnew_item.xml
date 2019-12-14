@@ -8,16 +8,16 @@
         android:layout_height="60dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/addImg"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_add"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp" />
+            android:layout_marginStart="24dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,8 +25,7 @@
             android:layout_toRightOf="@id/addImg"
             android:layout_toEndOf="@id/addImg"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:textSize="14sp"/>
     </RelativeLayout>
 
@@ -41,11 +40,10 @@
 
         <ImageView
             android:id="@+id/loadImg"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="24dp"
             android:src="@drawable/ic_save_alt_24px" />
 
         <TextView
@@ -55,8 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="@string/LoadSet"
-            android:layout_marginLeft="30dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:textSize="14sp"/>
     </RelativeLayout>
 
@@ -71,11 +68,10 @@
 
         <ImageView
             android:id="@+id/loadCloud"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="24dp"
             android:src="@drawable/ic_group_24px" />
 
         <TextView
@@ -84,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="@string/loadFromCommunity"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:textSize="14sp"/>
     </RelativeLayout>
 </RelativeLayout>

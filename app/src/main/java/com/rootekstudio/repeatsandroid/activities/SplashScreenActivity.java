@@ -13,6 +13,8 @@ import androidx.preference.PreferenceManager;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 
+import java.util.UUID;
+
 public class SplashScreenActivity extends AppCompatActivity
 {
     @Override
@@ -29,6 +31,13 @@ public class SplashScreenActivity extends AppCompatActivity
         }
         else {
             intent = new Intent(this, MainActivity.class);
+        }
+
+        if(!sharedPreferences.contains("userID")) {
+            String uniqueID = UUID.randomUUID().toString();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("userID", uniqueID);
+            editor.apply();
         }
         startActivity(intent);
         finish();

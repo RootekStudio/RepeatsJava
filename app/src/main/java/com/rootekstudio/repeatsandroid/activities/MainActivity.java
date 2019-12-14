@@ -2,7 +2,6 @@ package com.rootekstudio.repeatsandroid.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
@@ -20,19 +19,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.rootekstudio.repeatsandroid.BottomNavDrawerFragment;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.ZipSet;
+import com.rootekstudio.repeatsandroid.community.MySetsActivity;
 import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
@@ -44,10 +43,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Activity activity = null;
-    public static FirebaseAuth mAuth;
-
-    public static String userNick;
-    public static String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,22 +71,7 @@ public class MainActivity extends AppCompatActivity {
             logo.setImageResource(R.drawable.repeats_for_light_bg);
         }
 
-        final BottomNavDrawerFragment bottomNavDrawerFragment = BottomNavDrawerFragment.newInstance();
-
-        userNick = null;
-        userEmail = null;
-
-        mAuth = FirebaseAuth.getInstance();
-
-        loginInfoUpdateUI();
-
         final BottomAppBar bottomAppBar = findViewById(R.id.bar);
-        bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomNavDrawerFragment.show(getSupportFragmentManager(), "bottomNav");
-            }
-        });
 
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -103,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
                 else if (item.getItemId() == R.id.app_bar_settings) {
                     Intent settings = new Intent(cnt, SettingsActivity.class);
                     startActivity(settings);
+                }
+
+                else if (item.getItemId() == R.id.your_sets_rc_button) {
+                    Intent intent = new Intent(cnt, MySetsActivity.class);
+                    startActivity(intent);
                 }
                 return true;
             }
@@ -177,12 +162,12 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
-                final AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(cnt);
+                final MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(cnt);
                 LayoutInflater layoutInflater = LayoutInflater.from(cnt);
                 final View view1 = layoutInflater.inflate(R.layout.addnew_item, null);
                 ALERTbuilder.setView(view1);
-
-                ALERTbuilder.setMessage(R.string.AddSet);
+                ALERTbuilder.setTitle(R.string.AddSet);
+                ALERTbuilder.setBackground(getDrawable(R.drawable.dialog_shape));
                 final AlertDialog alert = ALERTbuilder.show();
 
                 RelativeLayout relA = view1.findViewById(R.id.relAdd);
@@ -270,24 +255,6 @@ public class MainActivity extends AppCompatActivity {
                 thread.start();
             }
         }
-    }
-
-    void loginInfoUpdateUI() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-
-                if (currentUser != null) {
-                    String displayName = currentUser.getDisplayName();
-                    String email = currentUser.getEmail();
-
-                    userNick = displayName;
-                    userEmail = email;
-                }
-            }
-        });
-        thread.start();
     }
 
     private void createNotificationChannel() {

@@ -1,7 +1,6 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,17 +22,22 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class RepeatsHelper {
     public static final String breakLine = "\r\n";
     public static final int staticFrequencyCode = 10000;
+    public static ArrayList<String> setItems;
+    public static String setName;
 
     private static AlertDialog dialog = null;
 
@@ -53,8 +57,8 @@ public class RepeatsHelper {
 
     public static void AskAboutTime(final Context context, final boolean IsSet, final Activity activity, final Intent intent) {
 
-        AlertDialog.Builder ALERTbuilder = new AlertDialog.Builder(context);
-
+        MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
+        ALERTbuilder.setBackground(context.getDrawable(R.drawable.dialog_shape));
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
         final View view1 = layoutInflater.inflate(R.layout.ask, null);
@@ -83,7 +87,7 @@ public class RepeatsHelper {
         });
 
         ALERTbuilder.setView(view1);
-        ALERTbuilder.setMessage(R.string.QuestionFreq);
+        ALERTbuilder.setTitle(R.string.QuestionFreq);
         ALERTbuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -123,7 +127,7 @@ public class RepeatsHelper {
         RepeatsHelper.SaveFrequency(context, frequency);
         ConstNotifiSetup.CancelNotifications(context);
         ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
-        dialog.dismiss();
+        //dialog.dismiss();
 
         resetActivity(context, activity);
     }
@@ -137,7 +141,8 @@ public class RepeatsHelper {
                 PowerManager pm = (PowerManager) cnt.getSystemService(Context.POWER_SERVICE);
 
                 if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(cnt);
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(cnt);
+                    dialog.setBackground(cnt.getDrawable(R.drawable.dialog_shape));
                     dialog.setTitle(R.string.batteryAskTitle);
                     dialog.setMessage(R.string.batteryAskMessage);
                     dialog.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
@@ -211,7 +216,9 @@ public class RepeatsHelper {
     }
 
     public static AlertDialog showLoadingDialog(Context context) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+        builder.setBackground(context.getDrawable(R.drawable.dialog_shape));
+
         final LayoutInflater layoutInflater = LayoutInflater.from(context);
         final View view1 = layoutInflater.inflate(R.layout.progress, null);
 

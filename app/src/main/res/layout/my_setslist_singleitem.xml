@@ -2,19 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
     android:clickable="true"
     android:onClick="previewSetMySets"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:background="@drawable/layout_mainshape"
-    android:layout_margin="7dp">
+    android:layout_margin="7dp"
+    android:elevation="5dp"
+    tools:targetApi="lollipop">
 
     <TextView
         android:id="@+id/setNameMySetsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Konstantynopolitanczykowianeczka"
         android:layout_centerVertical="true"
         android:layout_marginStart="30dp"
         android:layout_toStartOf="@id/createLinkRC"

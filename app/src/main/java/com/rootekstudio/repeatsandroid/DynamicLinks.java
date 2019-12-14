@@ -32,9 +32,9 @@ Context context;
                             deepLink = pendingDynamicLinkData.getLink();
 
                             String path = deepLink.getPath();
-                            if(path.startsWith("/shareset/")) {
+                            if(path.startsWith("/repeatsc/shareset/")) {
                                 Intent intent = new Intent(context, PreviewAndDownloadSetActivity.class);
-                                intent.putExtra("databaseSetID", path.substring(9));
+                                intent.putExtra("databaseSetID", path.substring(19));
                                 startActivity(intent);
 
                             }

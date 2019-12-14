@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rootekstudio.repeatsandroid.CheckAnswer;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
@@ -77,14 +78,12 @@ public class AnswerActivity extends AppCompatActivity {
 
         final String IGNORE = ignoreChars;
 
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        final MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(this);
+        alertDialog.setBackground(context.getDrawable(R.drawable.dialog_shape));
 
         View view = getLayoutInflater().inflate(R.layout.ask, null);
         final EditText userAnswer = view.findViewById(R.id.EditAsk);
         userAnswer.setHint(R.string.ReplyText);
-        if(!RepeatsHelper.DarkTheme(context, true)) {
-            userAnswer.setBackgroundResource(R.drawable.edittext_shape);
-        }
         userAnswer.requestFocus();
 
         if (!ImageName.equals("")) {
@@ -145,7 +144,9 @@ public class AnswerActivity extends AppCompatActivity {
                             alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Check), false, "", "", jsonIndex);
                         }
                     }
-                })
-                .show();
+                });
+
+                AlertDialog dialog = alertDialog.create();
+                dialog.show();
     }
 }

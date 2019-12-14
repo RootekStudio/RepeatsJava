@@ -26,6 +26,7 @@ import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RCmainListAdapter;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -35,8 +36,6 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     ArrayList<String> resultNames;
     ArrayList<QueryDocumentSnapshot> documents;
-    static ArrayList<String> setItems;
-    static String setName;
     FirebaseFirestore db;
     ProgressBar progressBar;
 
@@ -121,20 +120,18 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
 
     public void searchResultClick(View view) {
         int tag = (Integer) view.findViewById(R.id.setNameListItemRC).getTag();
-        setItems = new ArrayList<>();
+        ArrayList<String> setItems = new ArrayList<>();
         QueryDocumentSnapshot doc = documents.get(tag);
         ArrayList<?> questions = (ArrayList<?>) doc.get("questions");
         ArrayList<?> answers = (ArrayList<?>) doc.get("answers");
-        setName = doc.get("displayName").toString();
-
-        setItems.add(getString(R.string.questions));
-        setItems.add(getString(R.string.answers));
+        RepeatsHelper.setName = doc.get("displayName").toString();
 
         for(int i = 0; i < questions.size(); i++) {
             setItems.add(questions.get(i).toString());
             setItems.add(answers.get(i).toString());
         }
 
+        RepeatsHelper.setItems = setItems;
         Intent intent = new Intent(this, PreviewAndDownloadSetActivity.class);
         startActivity(intent);
     }

@@ -16,14 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <activity android:name=".activities.FirstRunActivity"/>
+
+        <activity
+            android:name=".community.RepeatsCommunityStartActivity"
+            android:label="@string/repeatsCommunity" />
+
         <activity android:name=".community.MySetsActivity"
             android:label="@string/mySets"/>
-        <activity
-            android:name=".community.GroupActivity"
-            android:label="@string/group" />
-        <activity
-            android:name=".community.GroupsListActivity"
-            android:label="@string/yourGroups" />
         <activity
             android:name=".DynamicLinks"
             android:theme="@style/SplashScreenTheme">
@@ -34,7 +35,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="rootekstudio.wordpress.com"
+                    android:host="kubas20020.wixsite.com"
                     android:scheme="https" />
             </intent-filter>
         </activity>
@@ -44,14 +45,6 @@
         <activity
             android:name=".activities.ShareActivity"
             android:label="@string/sharing" />
-        <activity
-            android:name=".community.RepeatsCommunityStartActivity"
-            android:label="@string/repeatsCommunity" />
-        <activity android:name=".account.SignInActivity" />
-        <activity
-            android:name=".account.ProfileInfoActivity"
-            android:label="@string/repeats_account" />
-        <activity android:name=".activities.FirstRunActivity" />
 
         <receiver
             android:name=".OnSystemBoot"
@@ -72,11 +65,6 @@
         </provider>
 
         <activity android:name=".activities.MainActivity" />
-        <activity
-            android:name=".account.MailSignIn"
-            android:label="@string/sign_in_email"
-            android:theme="@style/MailSignInStyle" />
-
         <receiver
             android:name=".notifications.RepeatsQuestionSend"
             android:enabled="true"

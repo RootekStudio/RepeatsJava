@@ -14,7 +14,9 @@
         android:textAlignment="center"
         android:textSize="10pt"
         android:textStyle="bold"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"/>
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -33,7 +35,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
@@ -52,20 +53,6 @@
                 android:text="@string/public_desc"
                 android:layout_marginStart="32dp"
                 android:textColor="@android:color/darker_gray"/>
-<!--            <RadioButton-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/string_group"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:onClick="selectShareCommunity"-->
-<!--                android:id="@+id/groupRadio"-->
-<!--                android:enabled="false"/>-->
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/group_desc"-->
-<!--                android:layout_marginStart="32dp"-->
-<!--                android:textColor="@android:color/darker_gray"/>-->
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,12 +60,6 @@
                 android:layout_marginTop="5dp"
                 android:onClick="selectShareCommunity"
                 android:id="@+id/privateRadio" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/private_desc"
-                android:layout_marginStart="32dp"
-                android:textColor="@android:color/darker_gray"/>
         </RadioGroup>
         <RadioButton
             android:layout_width="match_parent"
@@ -100,6 +81,16 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:onClick="shareClick"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Udostępnianie zdjęć do Społeczności Repeats (Beta) jest na chwilę obecną nieobsługiwane"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/darker_gray"
+        android:textAlignment="center"/>
 
     <ProgressBar
         android:id="@+id/progressBarSharing"

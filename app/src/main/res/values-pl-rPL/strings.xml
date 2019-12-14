@@ -127,14 +127,14 @@
     <string name="cantLoadSet">Nie można załadować żadnego zestawu</string>
     <string name="specialThanksDawid">Specjalne podziękowania dla Dawida Poradzińskiego za gruntowne testowanie aplikacji</string>
     <string name="welcome">Witaj w</string>
-    <string name="constFreqInfo">Powiadomienia będą wysyłane cały czas, z wyjątkiem godzin ustawionych jako godziny ciszy</string>
+    <string name="constFreqInfo">Powiadomienia będą wysyłane ze stałą częstotliwością, z wyjątkiem godzin ustawionych jako godziny ciszy</string>
     <string name="action_settings">Ustawienia</string>
     <string name="advancedInfo">Powiadomienia będą przychodzić w dniu i godzinie określonej przez użytkownika</string>
     <string name="freqDefault">Domyślnie: Powiadomienia przychodzą co 30 minut ze wszystkich zestawów, godziny ciszy od 22:00 do 06:00</string>
     <string name="advancedDefault">Domyślnie: Powiadomienia przychodzą codziennie co 30 minut, ze wszystkich zestawów, w godzinach od 08:00 do 22:00</string>
     <string name="change">Zmień</string>
     <string name="accept">Gotowe</string>
-    <string name="firstRunInfo">Główną funkcją aplikacji Repeats jest wysyłanie powiadomień z pytaniami na Twoje urządzenie.\n\nWybierz tryb dostarczania powiadomień:</string>
+    <string name="firstRunInfo">Główną funkcją aplikacji Repeats jest wysyłanie powiadomień, które zawierają pytania z zestawów utworzonych przez użytkownika</string>
     <string name="canChangeDefault">Możesz zmienić ustawienia domyślne po dodaniu pierwszego zestawu.</string>
     <string name="sign_in_email">Zaloguj się przez maila</string>
     <string name="sign_in_google">Zaloguj się przez Google</string>
@@ -169,10 +169,9 @@
     <string name="share_to_file">Zapisz do pliku i udostępnij</string>
     <string name="string_group">Do grupy</string>
     <string name="string_public">Publicznie</string>
-    <string name="string_private">Prywatnie</string>
+    <string name="string_private">Udostępnij za pomocą linka</string>
     <string name="public_desc">Udostępnij dla każdego w Społeczności. Każdy będzie mógł znaleźć i pobrać Twój zestaw.</string>
     <string name="group_desc">Udostępnij do jednej z Twoich grup. Każdy w grupie będzie mógł znaleźć i pobrać Twój zestaw.</string>
-    <string name="private_desc">Wyślij do Społeczności, ale tylko na własny użytek. Będziesz mógł udostępnić ten zestaw za pomocą linka.</string>
     <string name="downloadSet">Pobierz zestaw</string>
     <string name="questions">Pytania:</string>
     <string name="answers">Odpowiedzi:</string>
@@ -190,4 +189,11 @@
     <string name="group">Grupa</string>
     <string name="inviteToGroup">Zaproś do grupy</string>
     <string name="mySets">Moje zestawy</string>
+    <string name="theme">Motyw</string>
+    <string name="yourSets">Twoje zestawy w Społeczności Repeats</string>
+    <string name="next">Dalej</string>
+    <string name="weWillConfigure">Skonfigurujemy teraz podstawowe funkcje aplikacji</string>
+    <string name="deliveryMode">Wybierz tryb dostarczania powiadomień</string>
+    <string name="noMySets">Nie masz żadnych zestawów w Społeczności Repeats (Beta)</string>
+    <string name="termsOfUse">Korzystając z aplikacji Repeats wyrażasz zgodę na <a href="https://rootekstudio.wordpress.com/warunki-uzytkowania/">Warunki użytkowania</a> oraz <a href="https://rootekstudio.wordpress.com/polityka-prywatnosci/">Politykę prywatności</a></string>
 </resources>

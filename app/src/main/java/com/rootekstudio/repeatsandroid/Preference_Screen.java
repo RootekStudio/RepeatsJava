@@ -77,6 +77,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         notifiListPreference.setEntries(R.array.notifications);
         notifiListPreference.setEntryValues(R.array.notificationsValue);
         notifiListPreference.setValue("0");
+        notifiListPreference.setDialogTitle(R.string.notifi_mode);
 
         notifiListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -292,6 +293,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         theme.setIconSpaceReserved(false);
         theme.setKey("theme");
         theme.setTitle(R.string.changeTheme);
+        theme.setDialogTitle(R.string.theme);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             theme.setEntries(R.array.themesQ);
             theme.setEntryValues(R.array.ThemeValuesQ);

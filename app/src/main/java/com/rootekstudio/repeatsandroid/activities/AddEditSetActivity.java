@@ -102,7 +102,6 @@ public class AddEditSetActivity extends AppCompatActivity {
 
         //Replacing default menu of the bottom app bar
         BottomAppBar bottomAppBar = findViewById(R.id.AddQuestionBar);
-        bottomAppBar.replaceMenu(R.menu.bottomappbar_addset);
 
         if (!IsDark) {
             editName.setBackgroundResource(R.drawable.editname_light);
@@ -114,8 +113,9 @@ public class AddEditSetActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.deleteButton) {
                     MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
+                    ALERTbuilder.setBackground(getDrawable(R.drawable.dialog_shape));
 
-                    ALERTbuilder.setMessage(R.string.WantDelete);
+                    ALERTbuilder.setTitle(R.string.WantDelete);
                     ALERTbuilder.setNegativeButton(R.string.Cancel, null);
 
                     ALERTbuilder.setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {

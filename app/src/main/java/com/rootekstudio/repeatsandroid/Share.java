@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -105,12 +107,15 @@ public class Share {
         SimpleDateFormat simpleDate = new SimpleDateFormat("dd.MM.yyyy");
         String createDate = simpleDate.format(new Date());
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String userID = sharedPreferences.getString("userID", "");
+
         final Map<String, Object> set = new HashMap<>();
         set.put("availability", availability);
         set.put("displayName", name);
         set.put("questions", questions);
         set.put("answers", answers);
-        set.put("userID", MainActivity.mAuth.getUid());
+        set.put("userID", userID);
         set.put("creationDate", createDate);
 
 // Add a new document with a generated ID
@@ -122,7 +127,7 @@ public class Share {
                         Toast.makeText(context, R.string.successShare, Toast.LENGTH_SHORT).show();
                         if(availability.equals("PRIVATE")) {
                             Task<ShortDynamicLink> shortDynamicLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                                    .setLink(Uri.parse("https://rootekstudio.wordpress.com/" + "shareset/" +documentReference.getId()))
+                                    .setLink(Uri.parse("https://kubas20020.wixsite.com/repeatsc/" + "shareset/" + documentReference.getId()))
                                     .setDomainUriPrefix("https://repeats.page.link")
                                     .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
                                     .buildShortDynamicLink()
@@ -136,10 +141,13 @@ public class Share {
                                             shareLink.putExtra(Intent.EXTRA_SUBJECT, "something");
                                             shareLink.putExtra(Intent.EXTRA_TEXT, dynamicLink);
                                             activity.startActivity(Intent.createChooser(shareLink, context.getString(R.string.share)));
+                                            activity.finish();
                                         }
                                     });
                         }
-//                        activity.finish();
+                        else {
+                            activity.finish();
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

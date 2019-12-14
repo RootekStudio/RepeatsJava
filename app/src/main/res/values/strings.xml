@@ -143,7 +143,7 @@
     <string name="advancedDefault">Default: Notifications comes every day, every 30 minutes, from all sets, from 08:00 AM to 10:00 PM</string>
     <string name="change">Change</string>
     <string name="accept">Save</string>
-    <string name="firstRunInfo">Repeats\' main feature is to deliver notification with question to your device.\n\nChoose notification delivery mode:</string>
+    <string name="firstRunInfo">"Repeats' main feature is to deliver notification with question to your device. "</string>
     <string name="canChangeDefault">You can change default settings but first you have to add first set.</string>
     <string name="sign_in_email">Sign in via email</string>
     <string name="sign_in_google">Sign in with Google</string>
@@ -179,7 +179,7 @@
     <string name="share_to_file">Save to local file and share</string>
     <string name="string_public">Public</string>
     <string name="string_group">To group</string>
-    <string name="string_private">Private</string>
+    <string name="string_private">Share via link</string>
     <string name="public_desc">Share to everyone in the Community. Everyone can find and download your set.</string>
     <string name="group_desc">Share to one of your group. Everyone in group can find and download your set.</string>
     <string name="private_desc">Upload to Community, but only for your personal use. You can still share this set via link.</string>
@@ -200,4 +200,11 @@
     <string name="group">Group</string>
     <string name="inviteToGroup">Invite to group</string>
     <string name="mySets">My sets</string>
+    <string name="theme">Theme</string>
+    <string name="yourSets">Your sets in Repeats Community</string>
+    <string name="next">Next</string>
+    <string name="weWillConfigure">" 49/5000 We will now configure the basic functions of the app"</string>
+    <string name="deliveryMode">Select notification delivery mode</string>
+    <string name="noMySets">You don\'t have any set in Repeats Community (Beta)</string>
+    <string name="termsOfUse">By using the Repeats app you agree to <a href="https://rootekstudio.wordpress.com/warunki-uzytkowania/">Terms of use</a> and <a href="https://rootekstudio.wordpress.com/polityka-prywatnosci/">Privacy policy</a></string>
 </resources>
