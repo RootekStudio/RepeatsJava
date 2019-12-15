@@ -1,102 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ShareActivity"
-    android:orientation="vertical">
-
-    <TextView
+    tools:context=".activities.ShareActivity">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/setNameShare"
-        android:textAlignment="center"
-        android:textSize="10pt"
-        android:textStyle="bold"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"/>
+        android:orientation="vertical">
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:checkedButton="@id/communityRadio">
-
-        <RadioButton
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/share_to_community"
-            android:onClick="selectHowShare"
-            android:id="@+id/communityRadio"/>
+            android:id="@+id/setNameShare"
+            android:textAlignment="center"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"/>
 
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
-            android:checkedButton="@id/publicRadio"
-            android:id="@+id/communityRadios">
+            android:layout_margin="10dp"
+            android:checkedButton="@id/communityRadio">
+
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/string_public"
+                android:text="@string/share_to_community"
+                android:onClick="selectHowShare"
+                android:id="@+id/communityRadio"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:checkedButton="@id/publicRadio">
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/string_public"
+                    android:layout_marginTop="5dp"
+                    android:onClick="selectShareCommunity"
+                    android:id="@+id/publicRadio"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/public_desc"
+                    android:layout_marginStart="32dp"
+                    android:textColor="@android:color/darker_gray"/>
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/string_private"
+                    android:layout_marginTop="5dp"
+                    android:onClick="selectShareCommunity"
+                    android:id="@+id/privateRadio" />
+            </RadioGroup>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/share_to_file"
                 android:layout_marginTop="5dp"
-                android:onClick="selectShareCommunity"
-                android:id="@+id/publicRadio"/>
+                android:onClick="selectHowShare"
+                android:id="@+id/JSONradio"/>
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/tagsLinear">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/public_desc"
-                android:layout_marginStart="32dp"
-                android:textColor="@android:color/darker_gray"/>
-            <RadioButton
+                android:textAlignment="center"
+                android:text="@string/tagsInfo"/>
+
+            <EditText
+                android:id="@+id/editTextTags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/string_private"
-                android:layout_marginTop="5dp"
-                android:onClick="selectShareCommunity"
-                android:id="@+id/privateRadio" />
-        </RadioGroup>
-        <RadioButton
+                android:background="@drawable/edittext_shape"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp">
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/share"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                app:icon="@drawable/ic_share"
+                android:layout_gravity="center"
+                android:layout_marginStart="45dp"
+                android:onClick="shareClick"/>
+            <ProgressBar
+                android:id="@+id/progressBarSharing"
+                android:layout_width="45dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:visibility="invisible"/>
+        </LinearLayout>
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/share_to_file"
-            android:layout_marginTop="5dp"
-            android:onClick="selectHowShare"
-            android:id="@+id/JSONradio"/>
-    </RadioGroup>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/acceptShareButton"
-        style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/share"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-        app:icon="@drawable/ic_share"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:onClick="shareClick"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Udostępnianie zdjęć do Społeczności Repeats (Beta) jest na chwilę obecną nieobsługiwane"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="20dp"
-        android:textColor="@android:color/darker_gray"
-        android:textAlignment="center"/>
-
-    <ProgressBar
-        android:id="@+id/progressBarSharing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:visibility="gone"/>
-</LinearLayout>
+            android:text="@string/imageSharingInfo"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="30dp"
+            android:textColor="@android:color/darker_gray"
+            android:textAlignment="center"
+            android:id="@+id/imageSharingInfo"/>
+    </LinearLayout>
+</ScrollView>

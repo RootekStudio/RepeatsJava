@@ -456,6 +456,42 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
+        Preference terms = new Preference(context);
+        terms.setIconSpaceReserved(false);
+        terms.setKey("terms");
+        terms.setTitle(R.string.termsOfUse);
+        terms.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent send = new Intent(Intent.ACTION_VIEW, Uri.parse("https://rootekstudio.wordpress.com/warunki-uzytkowania"));
+                try {
+                    startActivity(send);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(context, R.string.storeNotFound, Toast.LENGTH_LONG).show();
+                }
+
+                return true;
+            }
+        });
+
+        Preference privacy = new Preference(context);
+        privacy.setIconSpaceReserved(false);
+        privacy.setKey("terms");
+        privacy.setTitle(R.string.privacyPolicy);
+        privacy.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent send = new Intent(Intent.ACTION_VIEW, Uri.parse("https://rootekstudio.wordpress.com/polityka-prywatnosci"));
+                try {
+                    startActivity(send);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(context, R.string.storeNotFound, Toast.LENGTH_LONG).show();
+                }
+
+                return true;
+            }
+        });
+
         PreferenceCategory about_cat = new PreferenceCategory(context);
         about_cat.setIconSpaceReserved(false);
         about_cat.setKey("about_cat");
@@ -463,6 +499,8 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         screen.addPreference(about_cat);
         about_cat.addPreference(rate);
         about_cat.addPreference(SendFeedback);
+        about_cat.addPreference(terms);
+        about_cat.addPreference(privacy);
         about_cat.addPreference(About);
 
         screen.setIconSpaceReserved(false);

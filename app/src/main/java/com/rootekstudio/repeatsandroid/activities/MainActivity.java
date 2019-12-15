@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         RepeatsHelper.CheckDir(this);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        boolean darkTheme = RepeatsHelper.DarkTheme(this, true);
+        boolean darkTheme = RepeatsHelper.DarkTheme(this, false);
         getSupportActionBar().setCustomView(R.layout.logo);
         if(!darkTheme) {
             ImageView logo = findViewById(R.id.logoMain);

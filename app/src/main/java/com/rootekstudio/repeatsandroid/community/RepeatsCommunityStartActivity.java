@@ -1,10 +1,5 @@
 package com.rootekstudio.repeatsandroid.community;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,8 +9,15 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,7 +28,6 @@ import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RCmainListAdapter;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -38,6 +39,8 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
     ArrayList<QueryDocumentSnapshot> documents;
     FirebaseFirestore db;
     ProgressBar progressBar;
+    LinearLayout linearSearchInfo;
+    TextView searchInfoText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,9 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
+        linearSearchInfo = findViewById(R.id.linearSearchInfo);
+        searchInfoText = findViewById(R.id.searchInfoText);
+
         final EditText search = findViewById(R.id.searchRC);
         search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -62,6 +68,8 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
                     String queryText = search.getText().toString();
                     if (!queryText.equals("")) {
                         progressBar.setVisibility(View.VISIBLE);
+                        linearSearchInfo.setVisibility(View.GONE);
+
                         search(queryText);
                         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                         assert imm != null;
@@ -77,10 +85,26 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
     }
 
     void search(String text) {
+        text = text + " ";
+        ArrayList<String> queries = new ArrayList<>();
+        while(text.contains(" ")) {
+            String tag = text.substring(0, text.indexOf(" "));
+            text = text.replace(tag + " ", "");
+            String upper = tag.substring(0,1).toUpperCase() + tag.substring(1);
+            queries.add(upper);
+            String lower = tag.substring(0,1).toLowerCase() + tag.substring(1);
+            queries.add(lower);
+        }
+
+        if(queries.size() > 10) {
+            Toast.makeText(this, R.string.upTo5Words, Toast.LENGTH_LONG).show();
+            progressBar.setVisibility(View.GONE);
+            linearSearchInfo.setVisibility(View.VISIBLE);
+            searchInfoText.setText(R.string.nothingFound);
+            return;
+        }
         db.collection("sets")
-                .orderBy("displayName")
-                .startAt(text)
-                .endAt(text + "\uf8ff")
+                .whereArrayContainsAny("tags", queries)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -101,21 +125,17 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
                             mAdapter.notifyDataSetChanged();
                             recyclerView.setAdapter(mAdapter);
 
+                            if(documents.size() == 0) {
+                                linearSearchInfo.setVisibility(View.VISIBLE);
+                                searchInfoText.setText(R.string.nothingFound);
+                            }
+
                             progressBar.setVisibility(View.GONE);
                         } else {
                             Log.d("tag", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-//        for(int i = 0; i < 100; i++) {
-//            resultNames.add("test");
-//        }
-//
-//        mAdapter = new RCmainListAdapter(resultNames);
-//        mAdapter.notifyDataSetChanged();
-//        recyclerView.setAdapter(mAdapter);
-
     }
 
     public void searchResultClick(View view) {
@@ -125,6 +145,9 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
         ArrayList<?> questions = (ArrayList<?>) doc.get("questions");
         ArrayList<?> answers = (ArrayList<?>) doc.get("answers");
         RepeatsHelper.setName = doc.get("displayName").toString();
+
+        setItems.add(getString(R.string.questions));
+        setItems.add(getString(R.string.answers));
 
         for(int i = 0; i < questions.size(); i++) {
             setItems.add(questions.get(i).toString());

@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -24,7 +23,6 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
 import java.io.FileNotFoundException;
@@ -88,7 +86,7 @@ public class Share {
 
     }
 
-    public static void shareToCommunity(final Context context, String setID, String name, final String availability, final Activity activity) {
+    public static void shareToCommunity(final Context context, String setID, String name, final String availability, ArrayList<String> tags, final Activity activity) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // Create a new user with a first and last name
@@ -117,6 +115,7 @@ public class Share {
         set.put("answers", answers);
         set.put("userID", userID);
         set.put("creationDate", createDate);
+        set.put("tags", tags);
 
 // Add a new document with a generated ID
         db.collection("sets")
@@ -125,7 +124,6 @@ public class Share {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(context, R.string.successShare, Toast.LENGTH_SHORT).show();
-                        if(availability.equals("PRIVATE")) {
                             Task<ShortDynamicLink> shortDynamicLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
                                     .setLink(Uri.parse("https://kubas20020.wixsite.com/repeatsc/" + "shareset/" + documentReference.getId()))
                                     .setDomainUriPrefix("https://repeats.page.link")
@@ -144,10 +142,6 @@ public class Share {
                                             activity.finish();
                                         }
                                     });
-                        }
-                        else {
-                            activity.finish();
-                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

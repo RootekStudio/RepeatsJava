@@ -2,7 +2,6 @@ package com.rootekstudio.repeatsandroid.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;

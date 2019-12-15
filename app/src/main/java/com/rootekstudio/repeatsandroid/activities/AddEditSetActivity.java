@@ -1,6 +1,5 @@
 package com.rootekstudio.repeatsandroid.activities;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,7 +36,6 @@ import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
 import com.rootekstudio.repeatsandroid.RequestCodes;
-import com.rootekstudio.repeatsandroid.Share;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
@@ -210,7 +208,7 @@ public class AddEditSetActivity extends AppCompatActivity {
             readSetFromDatabase(editing, SetName);
         }
 
-        int firstRun = sharedPreferences.getInt("firstRun", 3);
+        int firstRun = sharedPreferences.getInt("firstRunTerms", 3);
         if(firstRun != 3) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("ListNotifi", String.valueOf(firstRun));
@@ -223,7 +221,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                 RegisterNotifications.registerAdvancedDelivery(context);
             }
 
-            editor.putInt("firstRun", 3);
+            editor.putInt("firstRunTerms", 3);
             editor.apply();
         }
 

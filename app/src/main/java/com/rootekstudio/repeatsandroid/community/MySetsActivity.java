@@ -1,11 +1,5 @@
 package com.rootekstudio.repeatsandroid.community;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -14,6 +8,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,9 +25,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.rootekstudio.repeatsandroid.MySetsListAdapter;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RCmainListAdapter;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.activities.MainActivity;
 
 import java.util.ArrayList;
 
@@ -38,6 +36,7 @@ public class MySetsActivity extends AppCompatActivity {
     FirebaseFirestore db;
     ArrayList<String> resultNames;
     ProgressBar progressBar;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +54,7 @@ public class MySetsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         db = FirebaseFirestore.getInstance();
+        textView = findViewById(R.id.emptyMySetsText);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String userID = sharedPreferences.getString("userID", "");
@@ -77,7 +77,6 @@ public class MySetsActivity extends AppCompatActivity {
                             recyclerView.setAdapter(mAdapter);
                             progressBar.setVisibility(View.GONE);
                             if(documents.size() == 0) {
-                                TextView textView = findViewById(R.id.emptyMySetsText);
                                 textView.setVisibility(View.VISIBLE);
                             }
 
@@ -107,8 +106,11 @@ public class MySetsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void createLinkMySets(View view) {
+    public void createLinkMySets(final View view) {
+        view.setEnabled(false);
         View vParent = (View)view.getParent();
+        final ProgressBar progressLink = vParent.findViewById(R.id.progressLink);
+        progressLink.setVisibility(View.VISIBLE);
         int id = (Integer)vParent.findViewById(R.id.setNameMySetsList).getTag();
         Task<ShortDynamicLink> shortDynamicLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(Uri.parse("https://kubas20020.wixsite.com/repeatsc/" + "shareset/" +documents.get(id).getId()))
@@ -125,6 +127,9 @@ public class MySetsActivity extends AppCompatActivity {
                         shareLink.putExtra(Intent.EXTRA_SUBJECT, "something");
                         shareLink.putExtra(Intent.EXTRA_TEXT, dynamicLink);
                         startActivity(Intent.createChooser(shareLink, getString(R.string.share)));
+
+                        view.setEnabled(true);
+                        progressLink.setVisibility(View.GONE);
                     }
                 });
     }
@@ -135,6 +140,9 @@ public class MySetsActivity extends AppCompatActivity {
         db.collection("sets").document(documents.get(id).getId()).delete();
         resultNames.remove(id);
         mAdapter.notifyDataSetChanged();
+        if(resultNames.size() == 0) {
+            textView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

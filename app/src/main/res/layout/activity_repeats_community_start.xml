@@ -46,6 +46,22 @@
             android:id="@+id/progressBarSearchC"
             android:visibility="gone"
             android:layout_centerInParent="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:id="@+id/linearSearchInfo">
+            <TextView
+                android:id="@+id/searchInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/searchResultHere"
+                android:textAlignment="center"
+ />
+        </LinearLayout>
+
     </RelativeLayout>
 
 

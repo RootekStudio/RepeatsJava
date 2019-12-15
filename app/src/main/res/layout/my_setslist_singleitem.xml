@@ -23,7 +23,15 @@
         android:textSize="10pt"
         android:textStyle="bold"
         android:layout_marginEnd="30dp"
-        android:textAlignment="viewStart"/>
+        android:textAlignment="viewStart" />
+
+    <ProgressBar
+        android:id="@+id/progressLink"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignStart="@id/createLinkRC"
+        android:layout_alignBottom="@id/createLinkRC"
+        android:visibility="gone"/>
 
     <ImageButton
         android:id="@+id/createLinkRC"

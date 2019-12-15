@@ -81,6 +81,7 @@
             android:layout_centerVertical="true"
             android:text="@string/loadFromCommunity"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:textSize="14sp"/>
     </RelativeLayout>
 </RelativeLayout>

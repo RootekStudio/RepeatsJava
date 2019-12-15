@@ -8,13 +8,11 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import com.rootekstudio.repeatsandroid.R;
@@ -54,9 +52,9 @@ public class FirstRunActivity extends AppCompatActivity {
     public void nextClick(View view) {
         if(viewFlipper.getDisplayedChild() == 2) {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            if (!sharedPreferences.contains("firstRun")) {
+            if (!sharedPreferences.contains("firstRunTerms")) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("firstRun", selected);
+                editor.putInt("firstRunTerms", selected);
                 editor.apply();
             }
 

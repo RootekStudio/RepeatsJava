@@ -41,9 +41,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="25dp"
-                    android:text="@string/termsOfUse"
+                    android:text="@string/termsInfo"
                     android:textAlignment="center"
-                    android:layout_below="@id/logoFirstRun"
                     android:layout_centerHorizontal="true"
                     android:layout_above="@id/configureText"
                     android:gravity="center"
@@ -114,7 +113,6 @@
                         android:textAlignment="center"
                         android:textSize="8pt" />
                     <RadioGroup
-                        android:id="@+id/radioGroupFirstRun"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -138,7 +136,6 @@
                             android:textSize="7pt"/>
 
                         <RadioButton
-                            android:id="@+id/advancedDeliveryButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:onClick="radioButtonClicked"
@@ -166,7 +163,6 @@
                         android:textSize="7pt" />
 
                     <TextView
-                        android:id="@+id/defaultChangeInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

@@ -4,19 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
 import androidx.preference.PreferenceManager;
 
-import com.rootekstudio.repeatsandroid.notifications.AdvancedTimeNotification;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
-import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 import com.rootekstudio.repeatsandroid.notifications.RegisterNotifications;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Iterator;
 
 public class OnSystemBoot extends BroadcastReceiver {
     @Override
