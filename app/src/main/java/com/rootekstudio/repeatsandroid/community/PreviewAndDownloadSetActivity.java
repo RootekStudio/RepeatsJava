@@ -2,6 +2,7 @@ package com.rootekstudio.repeatsandroid.community;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -12,18 +13,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.PreviewAdapter;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
+import com.rootekstudio.repeatsandroid.notifications.RegisterNotifications;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -129,6 +134,26 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
         DB.CreateSet(id);
         DB.AddName(list);
         DB.insertSetToDatabase(id, questions, answers, null);
+        JsonFile.putSetToJSON(context, id);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        int firstRun = sharedPreferences.getInt("firstRunTerms", 3);
+        if(firstRun != 3) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("ListNotifi", String.valueOf(firstRun));
+            editor.apply();
+
+            if(firstRun == 1) {
+                ConstNotifiSetup.RegisterNotifications(context,null, RepeatsHelper.staticFrequencyCode);
+            }
+            else if(firstRun == 2) {
+                RegisterNotifications.registerAdvancedDelivery(context);
+            }
+
+            editor.putInt("firstRunTerms", 3);
+            editor.apply();
+        }
 
         Toast.makeText(this, R.string.successDownload, Toast.LENGTH_SHORT).show();
 

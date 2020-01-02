@@ -46,4 +46,20 @@
         <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
         <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
     </style>
+
+    <style name="transculentTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="customItemColor">@color/lightMainItem</item>
+        <item name="customEditTextColor">@color/lightEditTextColor</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">?attr/splashScreenColor</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:alertDialogTheme">@style/customDialog</item>
+        <item name="alertDialogTheme">@style/customDialog</item>
+    </style>
+
 </resources>

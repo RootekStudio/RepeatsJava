@@ -152,7 +152,7 @@
     <string name="theme">Theme</string>
     <string name="yourSets">Your sets in Repeats Community</string>
     <string name="next">Next</string>
-    <string name="weWillConfigure">" 49/5000 We will now configure the basic functions of the app"</string>
+    <string name="weWillConfigure">"We will now configure the basic functions of the app"</string>
     <string name="deliveryMode">Select notification delivery mode</string>
     <string name="noMySets">You don\'t have any set in Repeats Community (Beta)</string>
     <string name="termsInfo">By using the Repeats app you agree to <a href="https://rootekstudio.wordpress.com/warunki-uzytkowania/">Terms of use</a> and <a href="https://rootekstudio.wordpress.com/polityka-prywatnosci/">Privacy policy</a></string>

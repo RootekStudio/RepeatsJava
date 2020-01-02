@@ -8,6 +8,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -34,12 +35,17 @@ public class FirstRunActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RepeatsHelper.DarkTheme(this, false);
+        boolean dark = RepeatsHelper.DarkTheme(this, false);
         setContentView(R.layout.activity_first_run);
         defaultSettings();
         selected = 1;
         context = this;
         getSupportActionBar().hide();
+
+        if(!dark) {
+            ImageView imageView = findViewById(R.id.logoFirstRun);
+            imageView.setImageResource(R.drawable.repeats_for_light_bg);
+        }
 
         Animation in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
         viewFlipper = findViewById(R.id.view_flipper_firstrun);

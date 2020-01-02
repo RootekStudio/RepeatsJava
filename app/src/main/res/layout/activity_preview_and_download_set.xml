@@ -44,5 +44,6 @@
         android:textAlignment="center"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:horizontalSpacing="20dp" />
 </LinearLayout>

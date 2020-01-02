@@ -134,7 +134,7 @@ public class FastLearningActivity extends AppCompatActivity {
                     badge.setVisibility(View.VISIBLE);
                     correctA.setVisibility(View.VISIBLE);
                     if (!FL.checkAnswered(answer)) {
-                        String notCorrect = getString(R.string.IncorrectAnswer2) + ": " + qanda[1];
+                        String notCorrect = getString(R.string.IncorrectAnswer2) + " " + qanda[1];
                         badge.setImageResource(R.drawable.ic_clear);
                         badge.setColorFilter(ContextCompat.getColor(context, android.R.color.holo_red_dark));
                         correctA.setText(notCorrect);

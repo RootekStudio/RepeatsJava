@@ -48,6 +48,7 @@
 
     <style name="transculentTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorSecondary">@color/colorPrimary</item>
         <item name="customItemColor">@color/darkMainItem</item>
         <item name="customEditTextColor">@color/darkEditTextColor</item>
         <item name="android:windowIsTranslucent">true</item>

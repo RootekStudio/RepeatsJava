@@ -87,12 +87,22 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
     void search(String text) {
         text = text + " ";
         ArrayList<String> queries = new ArrayList<>();
-        while(text.contains(" ")) {
+
+        outerloop:
+        while (text.contains(" ")) {
             String tag = text.substring(0, text.indexOf(" "));
+            while (tag.equals("")) {
+                text = text.replaceFirst(" ", "");
+                if(text.length()==0) {
+                    break outerloop;
+                }
+                tag = text.substring(0, text.indexOf(" "));
+            }
+
             text = text.replace(tag + " ", "");
-            String upper = tag.substring(0,1).toUpperCase() + tag.substring(1);
+            String upper = tag.substring(0, 1).toUpperCase() + tag.substring(1);
             queries.add(upper);
-            String lower = tag.substring(0,1).toLowerCase() + tag.substring(1);
+            String lower = tag.substring(0, 1).toLowerCase() + tag.substring(1);
             queries.add(lower);
         }
 
@@ -103,6 +113,14 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
             searchInfoText.setText(R.string.nothingFound);
             return;
         }
+
+        if(queries.size() == 0) {
+            progressBar.setVisibility(View.GONE);
+            linearSearchInfo.setVisibility(View.VISIBLE);
+            searchInfoText.setText(R.string.nothingFound);
+            return;
+        }
+
         db.collection("sets")
                 .whereArrayContainsAny("tags", queries)
                 .get()

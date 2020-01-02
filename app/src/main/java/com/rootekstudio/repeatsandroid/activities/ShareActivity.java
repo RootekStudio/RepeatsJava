@@ -21,12 +21,14 @@ public class ShareActivity extends AppCompatActivity {
     String name;
     String setId;
     ArrayList<String> tagsArray;
+    EditText editText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RepeatsHelper.DarkTheme(this, false);
 
         setContentView(R.layout.activity_share);
+        editText = findViewById(R.id.editTextTags);
 
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
@@ -35,22 +37,10 @@ public class ShareActivity extends AppCompatActivity {
         TextView textViewName = findViewById(R.id.setNameShare);
         textViewName.setText(name);
 
-        String tags = name.replaceAll(" ", ";");
-        tags = tags + ";";
+        String nameTag = name.replaceAll(" ", ";");
+        nameTag = nameTag + ";";
 
-        EditText editText = findViewById(R.id.editTextTags);
-        editText.setText(tags);
-
-        tagsArray = new ArrayList<>();
-
-        while(tags.contains(";")) {
-            String tag = tags.substring(0, tags.indexOf(";"));
-            tags = tags.replace(tag + ";", "");
-            String upper = tag.substring(0,1).toUpperCase() + tag.substring(1);
-            tagsArray.add(upper);
-            String lower = tag.substring(0,1).toLowerCase() + tag.substring(1);
-            tagsArray.add(lower);
-        }
+        editText.setText(nameTag);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -85,6 +75,32 @@ public class ShareActivity extends AppCompatActivity {
     public void shareClick(View view) {
         view.setEnabled(false);
         findViewById(R.id.progressBarSharing).setVisibility(View.VISIBLE);
+
+        String tags = editText.getText().toString();
+
+        if(!tags.endsWith(";")) {
+            tags = tags + ";";
+        }
+
+        tagsArray = new ArrayList<>();
+
+        outerloop:
+        while(tags.contains(";")) {
+            String tag = tags.substring(0, tags.indexOf(";"));
+            while (tag.equals("")) {
+                tags = tags.replaceFirst(";", "");
+                if(tags.length()==0) {
+                    break outerloop;
+                }
+                tag = tags.substring(0, tags.indexOf(";"));
+            }
+            tags = tags.replace(tag + ";", "");
+
+            String upper = tag.substring(0,1).toUpperCase() + tag.substring(1);
+            tagsArray.add(upper);
+            String lower = tag.substring(0,1).toLowerCase() + tag.substring(1);
+            tagsArray.add(lower);
+        }
 
         if(shareToRC) {
             if(howShareRC.equals("PUBLIC")) {
