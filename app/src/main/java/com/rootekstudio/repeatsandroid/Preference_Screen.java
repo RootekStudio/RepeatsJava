@@ -28,6 +28,7 @@ import androidx.preference.SwitchPreferenceCompat;
 import com.rootekstudio.repeatsandroid.activities.ChangeDeliveryListActivity;
 import com.rootekstudio.repeatsandroid.activities.EnableSetsListActivity;
 import com.rootekstudio.repeatsandroid.activities.FirstRunActivity;
+import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
 import com.rootekstudio.repeatsandroid.activities.SilenceHoursActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
@@ -306,7 +307,14 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                RepeatsHelper.resetActivity(context, getActivity());
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+                else {
+                    RepeatsHelper.resetActivity(context, getActivity());
+                }
 
                 return true;
             }
@@ -476,7 +484,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
         Preference privacy = new Preference(context);
         privacy.setIconSpaceReserved(false);
-        privacy.setKey("terms");
+        privacy.setKey("privacy");
         privacy.setTitle(R.string.privacyPolicy);
         privacy.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -512,13 +520,6 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             createBackup.setVisible(false);
             noSetsInDatabaseInfo.setVisible(true);
             notification_category.setEnabled(false);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            findPreference("batteryOptimization").setVisible(true);
-        }
-        else {
-            findPreference("batteryOptimization").setVisible(false);
         }
 
         int getNotifiMode = Integer.parseInt(sharedPreferences.getString("ListNotifi", "0"));

@@ -56,7 +56,6 @@ public class RepeatsHelper {
     }
 
     public static void AskAboutTime(final Context context, final boolean IsSet, final Activity activity, final Intent intent) {
-
         MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
         ALERTbuilder.setBackground(context.getDrawable(R.drawable.dialog_shape));
         LayoutInflater layoutInflater = LayoutInflater.from(context);

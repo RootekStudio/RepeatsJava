@@ -4,5 +4,4 @@
     <attr name="customItemColor" format="reference"/>
     <attr name="customEditTextColor" format="reference"/>
     <attr name="splashScreenColor" format="reference"/>
-
 </resources>

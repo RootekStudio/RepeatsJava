@@ -33,6 +33,7 @@
                     android:layout_gravity="center"
                     android:src="@drawable/repeats_for_dark_bg"
                     android:tint="@android:color/transparent"
+                    app:tint="@android:color/transparent"
                     android:layout_centerInParent="true"/>
 
                 <TextView

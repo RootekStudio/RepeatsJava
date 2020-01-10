@@ -14,15 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class SearchAdapter extends BaseAdapter
-{
+public class SearchAdapter extends BaseAdapter {
     Context context;
     private LayoutInflater inflater;
     private List<SearchItem> items;
     private ArrayList<SearchItem> arrayItems;
 
-    public SearchAdapter(Context context, List<SearchItem> items)
-    {
+    public SearchAdapter(Context context, List<SearchItem> items) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.items = items;
@@ -32,54 +30,44 @@ public class SearchAdapter extends BaseAdapter
     }
 
     @Override
-    public int getCount()
-    {
+    public int getCount() {
         return items.size();
     }
 
     @Override
-    public Object getItem(int position)
-    {
+    public Object getItem(int position) {
         return items.get(position);
     }
 
     @Override
-    public long getItemId(int position)
-    {
+    public long getItemId(int position) {
         return position;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
-            convertView = inflater.inflate(R.layout.search_item, null);
-            TextView t1 = convertView.findViewById(R.id.SearchQ);
-            TextView t2 = convertView.findViewById(R.id.SearchA);
-            TextView t3 =  convertView.findViewById(R.id.SearchS);
+    public View getView(int position, View convertView, ViewGroup parent) {
+        convertView = inflater.inflate(R.layout.search_item, null);
+        TextView t1 = convertView.findViewById(R.id.SearchQ);
+        TextView t2 = convertView.findViewById(R.id.SearchA);
+        TextView t3 = convertView.findViewById(R.id.SearchS);
 
-            SearchItem item = items.get(position);
-            t1.setText(item.gQuestion());
-            t2.setText(item.gAnswer());
-            t3.setText(item.gTitle());
+        SearchItem item = items.get(position);
+        t1.setText(item.gQuestion());
+        t2.setText(item.gAnswer());
+        t3.setText(item.gTitle());
 
         return convertView;
     }
 
-    public void search(String text)
-    {
+    public void search(String text) {
         text = text.toLowerCase(Locale.getDefault()).replaceAll(" ", "");
         items.clear();
 
-        if(text.length() == 0)
-        {
+        if (text.length() == 0) {
             items.addAll(arrayItems);
-        }
-        else
-        {
-            for(SearchItem x : arrayItems)
-            {
-                if(x.gItem().toLowerCase(Locale.getDefault()).contains(text))
-                {
+        } else {
+            for (SearchItem x : arrayItems) {
+                if (x.gItem().toLowerCase(Locale.getDefault()).contains(text)) {
                     items.add(x);
                 }
             }

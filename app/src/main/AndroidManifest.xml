@@ -44,7 +44,8 @@
             android:label="@string/setPreview" />
         <activity
             android:name=".activities.ShareActivity"
-            android:label="@string/sharing" />
+            android:label="@string/sharing"
+            android:windowSoftInputMode="stateHidden"/>
 
         <receiver
             android:name=".OnSystemBoot"
@@ -120,7 +121,8 @@
             android:label="@string/deliverySettings" />
         <activity
             android:name=".activities.AddAdvancedTimeActivity"
-            android:label="@string/editRule" />
+            android:label="@string/editRule"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

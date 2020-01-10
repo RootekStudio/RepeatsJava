@@ -43,14 +43,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Activity activity = null;
+    boolean darkTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createNotificationChannel();
         RepeatsHelper.askAboutBattery(this);
-
-
     }
 
     @Override
@@ -58,13 +57,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         final Context cnt = this;
-
         activity = this;
-
         RepeatsHelper.CheckDir(this);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        boolean darkTheme = RepeatsHelper.DarkTheme(this, false);
+        darkTheme = RepeatsHelper.DarkTheme(this, false);
         getSupportActionBar().setCustomView(R.layout.logo);
         if(!darkTheme) {
             ImageView logo = findViewById(R.id.logoMain);
