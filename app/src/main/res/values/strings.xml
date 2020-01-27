@@ -97,12 +97,6 @@
     <string name="notifi_mode">Notifications mode</string>
     <string name="silenceHours">Silence Hours</string>
     <string name="silenceHoursSummary">When enabled, notifications will not be delivered at certain times</string>
-
-    <!-- Preference Titles -->
-
-    <!-- Messages Preferences -->
-
-    <!-- Sync Preferences -->
     <string name="changeSilenceHours">Change silence hours</string>
     <string name="batteryOptimization">Battery optimization</string>
     <string name="changeDelivery">Change notification delivery settings</string>
@@ -147,7 +141,7 @@
     <string name="downloading">Downloading...</string>
     <string name="successDownload">Download completed</string>
     <string name="successShare">Shared successfully</string>
-    <string name="somethingWentWrong">Somethinf Went Wrong</string>
+    <string name="somethingWentWrong">Something Went Wrong</string>
     <string name="mySets">My sets</string>
     <string name="theme">Theme</string>
     <string name="yourSets">Your sets in Repeats Community</string>
@@ -163,4 +157,14 @@
     <string name="termsOfUse">Terms of use</string>
     <string name="privacyPolicy">Privacy policy</string>
     <string name="searchResultHere">The search results will appear here</string>
+    <string name="question_lang">Languages of questions</string>
+    <string name="answer_lang">Language of answers</string>
+    <string name="select_language">Select language</string>
+    <string name="start" translatable="false">Start</string>
+    <string name="default_">Default</string>
+    <string name="default_pl">Language of questions (default: polski (Polska))</string>
+    <string name="default_second_en">Language of answers (default: english (Great Britain))</string>
+    <string name="default_tts_settings">Default:\nLanguage of questions: english (United States)\nLanguage of answers: french (France)</string>
+    <string name="tts" translatable="false">TTS</string>
+    <string name="stopping">Stopping...</string>
 </resources>

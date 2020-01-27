@@ -48,7 +48,6 @@
             android:layout_height="wrap_content"
             android:text="Date"
             android:layout_below="@id/NameTextView"
-            android:layout_marginLeft="30dp"
             android:layout_marginStart="30dp"
             android:textSize="12sp"
             android:layout_marginTop="15dp"
@@ -64,9 +63,8 @@
         android:layout_height="70dp"
         android:background="@drawable/layout_buttonshape"
         android:orientation="vertical"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp"
+        android:layout_toStartOf="@id/TTSbutton"
+
         android:layout_marginEnd="10dp"
         android:layout_centerVertical="true"
         android:focusable="true"
@@ -88,6 +86,40 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:text="@string/Test"
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/transparent"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/TTSbutton"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/layout_buttonshape"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_centerVertical="true"
+        android:focusable="true"
+        android:elevation="10dp"
+        tools:targetApi="lollipop">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/hearing_24px"
+            android:layout_marginTop="6dp"
+            android:background="@android:color/transparent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/tts"
             android:layout_marginBottom="5dp"
             android:background="@android:color/transparent"/>
     </RelativeLayout>

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.ReadSetsAloud;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RequestCodes;
@@ -36,6 +38,7 @@ import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
 
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -44,6 +47,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     Activity activity = null;
     boolean darkTheme;
+    ReadSetsAloud readSetsAloud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
             final RelativeLayout but = view.findViewById(R.id.RelativeMAIN);
             RelativeLayout TakeTest = view.findViewById(R.id.Test);
+            RelativeLayout readAloud = view.findViewById(R.id.TTSbutton);
 
             String tablename = Item.getTableName();
             String title = Item.getitle();
@@ -118,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
             TakeTest.setTag(R.string.Tag_id_0, tablename);
             TakeTest.setTag(R.string.Tag_id_1, title);
             TakeTest.setTag(R.string.Tag_id_2, IgnoreChars);
+
+            readAloud.setTag(tablename);
 
             TakeTest.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,6 +139,29 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("title", s1);
                     intent.putExtra("IgnoreChars", s2);
                     startActivity(intent);
+                }
+            });
+
+            readAloud.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String setID = view.getTag().toString();
+                    if(readSetsAloud == null){
+                        readSetsAloud = new ReadSetsAloud(cnt, setID);
+                    }
+                    else {
+                        TextToSpeech tts = readSetsAloud.getTextToSpeech();
+                        if(tts.isSpeaking()) {
+                            Toast.makeText(cnt, R.string.stopping, Toast.LENGTH_SHORT).show();
+                            tts.stop();
+                            tts.shutdown();
+                            readSetsAloud = null;
+                        }
+                        else {
+                            readSetsAloud = new ReadSetsAloud(cnt, setID);
+                        }
+
+                    }
                 }
             });
 
@@ -158,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
         final FloatingActionButton btn = findViewById(R.id.fab);
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
                 final MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(cnt);
                 LayoutInflater layoutInflater = LayoutInflater.from(cnt);
                 final View view1 = layoutInflater.inflate(R.layout.addnew_item, null);

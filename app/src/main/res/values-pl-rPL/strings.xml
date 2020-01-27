@@ -56,7 +56,7 @@
     <string name="rate">Oceń aplikację w Google Play</string>
     <string name="savingInProgress">Trwa zapisywanie zestawu...</string>
     <string name="explorerNotFound">Explorator plików nie został znaleziony. Nie można wczytać zestawu z pliku.</string>
-    <string name="storeNotFound">Sklep Google Play nie został zainstalowany na urządzeniu</string>
+    <string name="storeNotFound">Z</string>
     <string name="enterNumber">Wprowadź liczbę</string>
     <string name="imageError">Nie udało się uzyskać dostępu do zdjęcia. Spróbuj jeszcze raz załadować zdjęcie, tym razem aplikacja spróbuje zrobić to inną metodą</string>
     <string name="batteryO">Wyłącz optymalizację baterii</string>
@@ -155,4 +155,12 @@
     <string name="termsOfUse">Warunki użytkowania</string>
     <string name="privacyPolicy">Polityka prywatności</string>
     <string name="searchResultHere">Tutaj pojawią się wyniki wyszukiwania</string>
+    <string name="question_lang">Język pytań</string>
+    <string name="answer_lang">Język odpowiedzi</string>
+    <string name="select_language">Wybierz język</string>
+    <string name="default_">Domyślnie</string>
+    <string name="default_pl">Język pytań (domyślnie: polski (Polska)</string>
+    <string name="default_second_en">Język odpowiedzi (domyślnie: angielski (Wielka Brytania)</string>
+    <string name="default_tts_settings">Domyślnie:\nJęzyk pytań: polski (Polska)\nJęzyk odpowiedzi: angielski (Wielka Brytania)</string>
+    <string name="stopping">Zatrzymywanie...</string>
 </resources>
