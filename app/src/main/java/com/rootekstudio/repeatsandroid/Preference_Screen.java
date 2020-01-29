@@ -49,6 +49,8 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.preference_screen, rootKey);
+
         context = getPreferenceManager().getContext();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -64,21 +66,12 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                 edit.apply();
             }
         }
-
-        PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
         DatabaseHelper DB = new DatabaseHelper(context);
         List<RepeatsListDB> all = DB.AllItemsLIST();
 
         final int freq = sharedPreferences.getInt("frequency", 0);
 
-        final ListPreference notifiListPreference = new ListPreference(context);
-        notifiListPreference.setIconSpaceReserved(false);
-        notifiListPreference.setKey("ListNotifi");
-        notifiListPreference.setTitle(R.string.notifi_mode);
-        notifiListPreference.setEntries(R.array.notifications);
-        notifiListPreference.setEntryValues(R.array.notificationsValue);
-        notifiListPreference.setValue("0");
-        notifiListPreference.setDialogTitle(R.string.notifi_mode);
+        final ListPreference notifiListPreference = findPreference("ListNotifi");
 
         notifiListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -160,10 +153,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        Preference timeAsk = new Preference(context);
-        timeAsk.setIconSpaceReserved(false);
-        timeAsk.setKey("timeAsk");
-        timeAsk.setTitle(R.string.FreqAskPref);
+        Preference timeAsk = findPreference("timeAsk");
         timeAsk.setSummary(getString(R.string.FreqText) + " " + freq + " " + getString(R.string.minutes));
         timeAsk.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -173,11 +163,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        Preference enableSets = new Preference(context);
-        enableSets.setIconSpaceReserved(false);
-        enableSets.setKey("EnableSets");
-        enableSets.setTitle(R.string.EnableTitle);
-        enableSets.setSummary(R.string.EnableSummary);
+        Preference enableSets = findPreference("EnableSets");
         enableSets.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -187,36 +173,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        Preference reset = new Preference(context);
-        reset.setIconSpaceReserved(false);
-        reset.setKey("reset");
-        reset.setTitle(R.string.resetTitle);
-        reset.setSummary(R.string.resetSummary);
-        reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                DatabaseHelper DB = new DatabaseHelper(context);
-                DB.ResetEnabled();
-
-                RepeatsHelper.SaveFrequency(context, 5);
-                ConstNotifiSetup.CancelNotifications(context);
-                ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
-
-                int frequency = sharedPreferences.getInt("frequency", 0);
-                findPreference("timeAsk").setSummary(getString(R.string.FreqText) + " " + frequency + " " + getString(R.string.minutes));
-
-                Toast.makeText(context, getString(R.string.ResetSuccessfully), Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
-
-
-        SwitchPreferenceCompat silenceHours = new SwitchPreferenceCompat(context);
-        silenceHours.setIconSpaceReserved(false);
-        silenceHours.setKey("silenceHoursSwitch");
-        silenceHours.setTitle(R.string.silenceHours);
-        silenceHours.setSummary(R.string.silenceHoursSummary);
+        SwitchPreferenceCompat silenceHours = findPreference("silenceHoursSwitch");
         silenceHours.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -235,10 +192,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        Preference silenceHoursSettings = new Preference(context);
-        silenceHoursSettings.setIconSpaceReserved(false);
-        silenceHoursSettings.setKey("silenceHoursSettings");
-        silenceHoursSettings.setTitle(R.string.changeSilenceHours);
+        Preference silenceHoursSettings = findPreference("silenceHoursSettings");
         silenceHoursSettings.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
             @Override
@@ -251,10 +205,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        Preference advancedDelivery = new Preference(context);
-        advancedDelivery.setIconSpaceReserved(false);
-        advancedDelivery.setKey("advancedDelivery");
-        advancedDelivery.setTitle(R.string.changeDelivery);
+        Preference advancedDelivery = findPreference("advancedDelivery");
         advancedDelivery.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -264,7 +215,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        Preference noSetsInDatabaseInfo = new Preference(context);
+        Preference noSetsInDatabaseInfo = findPreference("noSetsInDatabaseInfo");
         Drawable drawable = context.getDrawable(R.drawable.ic_info_outline);
         if(RepeatsHelper.DarkTheme(context, true)){
             drawable.setColorFilter(Color.parseColor("#6d6d6d"), PorterDuff.Mode.SRC_IN);
@@ -272,37 +223,17 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         else {
             drawable.setColorFilter(Color.parseColor("#bfbfbf"), PorterDuff.Mode.SRC_IN);
         }
-
         noSetsInDatabaseInfo.setIcon(drawable);
-        noSetsInDatabaseInfo.setSummary(R.string.noSetsInfoSettings);
-        noSetsInDatabaseInfo.setVisible(false);
 
-        PreferenceCategory notification_category = new PreferenceCategory(context);
-        notification_category.setIconSpaceReserved(false);
-        notification_category.setKey("NotifiCat");
-        notification_category.setTitle(R.string.notifications);
-        screen.addPreference(notification_category);
-        notification_category.addPreference(notifiListPreference);
-        notification_category.addPreference(timeAsk);
-        notification_category.addPreference(enableSets);
-        notification_category.addPreference(silenceHours);
-        notification_category.addPreference(silenceHoursSettings);
-        notification_category.addPreference(advancedDelivery);
-        notification_category.addPreference(noSetsInDatabaseInfo);
-
-        final ListPreference theme = new ListPreference(context);
-        theme.setIconSpaceReserved(false);
-        theme.setKey("theme");
-        theme.setTitle(R.string.changeTheme);
-        theme.setDialogTitle(R.string.theme);
+        final ListPreference theme = findPreference("theme");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             theme.setEntries(R.array.themesQ);
             theme.setEntryValues(R.array.ThemeValuesQ);
-            theme.setValue("2");
+            theme.setDefaultValue("2");
         } else {
             theme.setEntries(R.array.themes);
             theme.setEntryValues(R.array.ThemeValues);
-            theme.setValue("1");
+            theme.setDefaultValue("1");
         }
         theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -315,22 +246,11 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                 else {
                     RepeatsHelper.resetActivity(context, getActivity());
                 }
-
                 return true;
             }
         });
 
-        PreferenceCategory theme_cat = new PreferenceCategory(context);
-        theme_cat.setIconSpaceReserved(false);
-        theme_cat.setKey("theme_cat");
-        theme_cat.setTitle(R.string.Theme);
-        screen.addPreference(theme_cat);
-        theme_cat.addPreference(theme);
-
-        Preference createBackup = new Preference(context);
-        createBackup.setIconSpaceReserved(false);
-        createBackup.setKey("create_backup");
-        createBackup.setTitle(R.string.createBackup);
+        Preference createBackup = findPreference("create_backup");
         createBackup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -339,10 +259,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        Preference restoreBackup = new Preference(context);
-        restoreBackup.setIconSpaceReserved(false);
-        restoreBackup.setKey("restore_backup");
-        restoreBackup.setTitle(R.string.restoreBackup);
+        Preference restoreBackup = findPreference("restore_backup");
         restoreBackup.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -351,20 +268,8 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        PreferenceCategory backup = new PreferenceCategory(context);
-        backup.setIconSpaceReserved(false);
-        backup.setKey("backup");
-        backup.setTitle(R.string.backup);
-        screen.addPreference(backup);
-        backup.addPreference(createBackup);
-        backup.addPreference(restoreBackup);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            CheckBoxPreference optimizationPreference = new CheckBoxPreference(context);
-            optimizationPreference.setIconSpaceReserved(false);
-            optimizationPreference.setKey("batteryOptimization");
-            optimizationPreference.setTitle(R.string.batteryO);
-            optimizationPreference.setSummary(R.string.batteryOsummary);
+            CheckBoxPreference optimizationPreference = findPreference("batteryOptimization");
             optimizationPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -393,12 +298,11 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                 }
             });
 
-            PreferenceCategory batteryOptimizationCat = new PreferenceCategory(context);
-            batteryOptimizationCat.setIconSpaceReserved(false);
-            batteryOptimizationCat.setKey("batteryCat");
-            batteryOptimizationCat.setTitle(R.string.batteryOptimization);
-            screen.addPreference(batteryOptimizationCat);
-            batteryOptimizationCat.addPreference(optimizationPreference);
+
+        }
+        else {
+            PreferenceCategory batteryOptimizationCat = findPreference("batteryOptimizationCategory");
+            batteryOptimizationCat.setVisible(false);
         }
 
         PackageInfo pInfo = null;
@@ -411,10 +315,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         final String version = pInfo.versionName;
 
 
-        Preference About = new Preference(context);
-        About.setIconSpaceReserved(false);
-        About.setKey("about");
-        About.setTitle(null);
+        Preference About = findPreference("about");
         About.setSummary("Repeats " + version + "\n" + "Developer: Jakub Sieradzki" + "\n\n" + getString(R.string.specialThanksDawid));
         About.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -428,10 +329,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        Preference SendFeedback = new Preference(context);
-        SendFeedback.setIconSpaceReserved(false);
-        SendFeedback.setKey("feedback");
-        SendFeedback.setTitle(R.string.SendFeedback);
+        Preference SendFeedback = findPreference("feedback");
         SendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -446,10 +344,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        Preference rate = new Preference(context);
-        rate.setIconSpaceReserved(false);
-        rate.setKey("rate");
-        rate.setTitle(R.string.rate);
+        Preference rate = findPreference("rate");
         rate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -464,10 +359,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        Preference terms = new Preference(context);
-        terms.setIconSpaceReserved(false);
-        terms.setKey("terms");
-        terms.setTitle(R.string.termsOfUse);
+        Preference terms = findPreference("terms");
         terms.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -482,10 +374,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         });
 
-        Preference privacy = new Preference(context);
-        privacy.setIconSpaceReserved(false);
-        privacy.setKey("privacy");
-        privacy.setTitle(R.string.privacyPolicy);
+        Preference privacy = findPreference("privacy");
         privacy.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -499,27 +388,12 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                 return true;
             }
         });
-
-        PreferenceCategory about_cat = new PreferenceCategory(context);
-        about_cat.setIconSpaceReserved(false);
-        about_cat.setKey("about_cat");
-        about_cat.setTitle(R.string.About);
-        screen.addPreference(about_cat);
-        about_cat.addPreference(rate);
-        about_cat.addPreference(SendFeedback);
-        about_cat.addPreference(terms);
-        about_cat.addPreference(privacy);
-        about_cat.addPreference(About);
-
-        screen.setIconSpaceReserved(false);
-        setPreferenceScreen(screen);
-
         //Load settings
 
         if (all.size() == 0) {
             createBackup.setVisible(false);
             noSetsInDatabaseInfo.setVisible(true);
-            notification_category.setEnabled(false);
+            findPreference("notificationsGroup").setEnabled(false);
         }
 
         int getNotifiMode = Integer.parseInt(sharedPreferences.getString("ListNotifi", "0"));
@@ -574,11 +448,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                     edit.putBoolean("batteryOptimization", true);
                     edit.apply();
                 }
-
-                this.getActivity().finish();
-                this.getActivity().overridePendingTransition(0, 0);
-                startActivity(this.getActivity().getIntent());
-                this.getActivity().overridePendingTransition(0, 0);
+                RepeatsHelper.resetActivity(context, getActivity());
             } else if (requestCode == 124) {
                 if (!pm.isIgnoringBatteryOptimizations(packageName)) {
                     edit.putBoolean("batteryOptimization", false);

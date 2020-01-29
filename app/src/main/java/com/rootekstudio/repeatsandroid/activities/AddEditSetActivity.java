@@ -109,50 +109,7 @@ public class AddEditSetActivity extends AppCompatActivity {
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.deleteButton) {
-                    MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
-                    ALERTbuilder.setBackground(getDrawable(R.drawable.dialog_shape));
-
-                    ALERTbuilder.setTitle(R.string.WantDelete);
-                    ALERTbuilder.setNegativeButton(R.string.Cancel, null);
-
-                    ALERTbuilder.setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            DeleteSet(id);
-                            JsonFile.removeSetFromJSON(context, id);
-
-                            List<RepeatsListDB> a = DB.AllItemsLIST();
-                            int size = a.size();
-
-                            //if there is no set left in database, turn off notifications
-                            if (size == 0) {
-                                ConstNotifiSetup.CancelNotifications(context);
-
-                                try {
-                                    JSONObject advancedFile = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
-
-                                    Iterator<String> iterator = advancedFile.keys();
-
-                                    while(iterator.hasNext()) {
-                                        String key = iterator.next();
-                                        NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(key));
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("ListNotifi", "0");
-                                editor.apply();
-                            }
-                            deleted = true;
-                            AddEditSetActivity.super.onBackPressed();
-                        }
-                    });
-                    ALERTbuilder.show();
-                } else if (item.getItemId() == R.id.ignoreCharsItem) {
+                if (item.getItemId() == R.id.ignoreCharsItem) {
                     if (item.isChecked()) {
                         DB.ignoreChars(id, "false");
                         item.setChecked(false);
@@ -209,15 +166,14 @@ public class AddEditSetActivity extends AppCompatActivity {
         }
 
         int firstRun = sharedPreferences.getInt("firstRunTerms", 3);
-        if(firstRun != 3) {
+        if (firstRun != 3) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("ListNotifi", String.valueOf(firstRun));
             editor.apply();
 
-            if(firstRun == 1) {
-                ConstNotifiSetup.RegisterNotifications(context,null, RepeatsHelper.staticFrequencyCode);
-            }
-            else if(firstRun == 2) {
+            if (firstRun == 1) {
+                ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
+            } else if (firstRun == 2) {
                 RegisterNotifications.registerAdvancedDelivery(context);
             }
 
@@ -567,26 +523,6 @@ public class AddEditSetActivity extends AppCompatActivity {
     }
 
     //endregion
-
-    void DeleteSet(String x) {
-        DatabaseHelper DB = new DatabaseHelper(this);
-        ArrayList<String> allImages = new ArrayList<>();
-        if (!x.equals("FALSE")) {
-            allImages = DB.getAllImages(x);
-            DB.deleteOneFromList(x);
-            DB.DeleteSet(x);
-        }
-
-        int count = allImages.size();
-
-        if (count != 0) {
-            for (int j = 0; j < count; j++) {
-                String imgName = allImages.get(j);
-                File file = new File(getFilesDir(), imgName);
-                boolean bool = file.delete();
-            }
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

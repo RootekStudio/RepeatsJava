@@ -5,6 +5,8 @@
     <string name="Answer">Answer</string>
     <string name="Tag_id_0" translatable="false">0</string>
     <string name="Tag_id_1" translatable="false">1</string>
+    <string name="Tag_id_2" translatable="false">2</string>
+    <string name="Tag_id_3" translatable="false">3</string>
     <string name="ReplyText">Answer the question</string>
     <string name="Reply">Answer</string>
     <string name="CorrectAnswer2">Congrats! This is the correct answer!</string>
@@ -48,7 +50,6 @@
     <string name="About">About</string>
     <string name="SetName">Name of the set</string>
     <string name="IngoreChars">Ignore special characters</string>
-    <string name="Tag_id_2" translatable="false">2</string>
     <string name="CreateNew">Create new set</string>
     <string name="LoadSet">Load already created set</string>
     <string name="AddSet">Add set</string>
@@ -167,4 +168,8 @@
     <string name="default_tts_settings">Default:\nLanguage of questions: english (United States)\nLanguage of answers: french (France)</string>
     <string name="tts" translatable="false">TTS</string>
     <string name="stopping">Stopping...</string>
+    <string name="speed_tts">Reading speed</string>
+    <string name="readAloud">Reading aloud</string>
+    <string name="manageNotifications">Manage notifications</string>
+    <string name="setSettings">Set settings</string>
 </resources>

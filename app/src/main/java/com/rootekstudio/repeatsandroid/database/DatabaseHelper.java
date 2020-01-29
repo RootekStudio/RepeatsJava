@@ -66,7 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<RepeatsListDB> AllItemsLIST() {
         List<RepeatsListDB> ALL = new LinkedList<>();
-        String query = "SELECT * FROM " + NAME;
+        String query = "SELECT * FROM " + NAME + " ORDER BY id DESC;";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         RepeatsListDB list;

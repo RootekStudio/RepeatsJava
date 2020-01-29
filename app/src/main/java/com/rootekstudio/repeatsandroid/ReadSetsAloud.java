@@ -24,6 +24,8 @@ public class ReadSetsAloud {
     Context context;
     String setID;
     AlertDialog alertDialog;
+    AutoCompleteTextView autoCompleteTextView;
+    AutoCompleteTextView autoCompleteTextView1;
 
     public ReadSetsAloud(Context context, String setID) {
         this.context = context;
@@ -35,15 +37,18 @@ public class ReadSetsAloud {
         textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
-                selectLanguages();
+                textToSpeech.setSpeechRate(0.7f);
             }
         });
+
+        selectLanguages();
     }
 
     private void selectLanguages() {
+        final HashMap<String, String> detailLocaleList = new HashMap<>();
         Locale[] locales = Locale.getAvailableLocales();
         List<String> displayedlocaleList = new ArrayList<>();
-        final HashMap<String, String> detailLocaleList = new HashMap<>();
+
         for (Locale locale : locales) {
             int res = textToSpeech.isLanguageAvailable(locale);
             if (res == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
@@ -52,16 +57,17 @@ public class ReadSetsAloud {
             }
         }
 
-        Collections.sort(displayedlocaleList);
-
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.select_language_tts, null);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.select_language_single_item, displayedlocaleList);
-        final AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.firstLanguageSelect);
-        final AutoCompleteTextView autoCompleteTextView1 = view.findViewById(R.id.secondLanguageSelect);
+        autoCompleteTextView = view.findViewById(R.id.firstLanguageSelect);
+        autoCompleteTextView1 = view.findViewById(R.id.secondLanguageSelect);
         autoCompleteTextView.setAdapter(adapter);
         autoCompleteTextView1.setAdapter(adapter);
 
+        Collections.sort(displayedlocaleList);
+
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
         alertDialogBuilder.setTitle(R.string.select_language);
         alertDialogBuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -98,8 +104,8 @@ public class ReadSetsAloud {
             }
         });
         alertDialogBuilder.setView(view);
-        alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        alertDialog = alertDialogBuilder.show();
+
     }
 
     private void readSetAloud(final String locale0, final String locale1) {
@@ -110,7 +116,7 @@ public class ReadSetsAloud {
                 List<RepeatsSingleSetDB> itemsSetList = DB.AllItemsSET(setID);
                 for (int i = 0; i < itemsSetList.size(); i++) {
                     final RepeatsSingleSetDB item = itemsSetList.get(i);
-                    textToSpeech.setSpeechRate(0.7f);
+
                     textToSpeech.setLanguage(new Locale(locale0));
                     textToSpeech.speak(item.getQuestion(), TextToSpeech.QUEUE_ADD, null, "");
                     textToSpeech.setLanguage(new Locale(locale1));

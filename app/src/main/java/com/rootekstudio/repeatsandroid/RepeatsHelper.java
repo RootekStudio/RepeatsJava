@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
+import android.provider.ContactsContract;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -28,10 +29,19 @@ import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
+import com.rootekstudio.repeatsandroid.activities.MainActivity;
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
+import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class RepeatsHelper {
     public static final String breakLine = "\r\n";
@@ -62,7 +72,7 @@ public class RepeatsHelper {
 
         final View view1 = layoutInflater.inflate(R.layout.ask, null);
         final EditText editText = view1.findViewById(R.id.EditAsk);
-        if(!DarkTheme(context, true)) {
+        if (!DarkTheme(context, true)) {
             editText.setBackgroundResource(R.drawable.edittext_shape);
         }
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -74,10 +84,10 @@ public class RepeatsHelper {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
 
-                if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER ) {
-                    EditText time = (EditText)view;
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    EditText time = (EditText) view;
                     String timeText = time.getText().toString();
-                    if(!timeText.equals("")){
+                    if (!timeText.equals("")) {
                         saveTime(context, timeText, IsSet, activity, intent);
                     }
                 }
@@ -90,10 +100,9 @@ public class RepeatsHelper {
         ALERTbuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if(IsSet) {
+                if (IsSet) {
                     activity.startActivity(intent);
-                }
-                else {
+                } else {
                     resetActivity(context, activity);
                 }
             }
@@ -134,7 +143,7 @@ public class RepeatsHelper {
     public static void askAboutBattery(final Context cnt) {
 
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
-        if(!sharedPreferences.contains("batteryOptimization")) {
+        if (!sharedPreferences.contains("batteryOptimization")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 final String packageName = cnt.getPackageName();
                 PowerManager pm = (PowerManager) cnt.getSystemService(Context.POWER_SERVICE);
@@ -188,12 +197,12 @@ public class RepeatsHelper {
         }
 
         if (theme.equals("0")) {
-            if(!onlyCheck) {
+            if (!onlyCheck) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
             return false;
         } else if (theme.equals("1")) {
-            if(!onlyCheck) {
+            if (!onlyCheck) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             }
             return true;
@@ -201,12 +210,12 @@ public class RepeatsHelper {
             Configuration config = context.getApplicationContext().getResources().getConfiguration();
             int currentNightMode = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
             if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
-                if(!onlyCheck) {
+                if (!onlyCheck) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
                 return true;
             } else {
-                if(!onlyCheck) {
+                if (!onlyCheck) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
                 return false;
@@ -253,7 +262,7 @@ public class RepeatsHelper {
         return inSampleSize;
     }
 
-    public static String removeSpaces(String string){
+    public static String removeSpaces(String string) {
         if (string.contains(" ")) {
             String testSpace = string.replaceAll(" ", "");
             if (testSpace.length() != 0) {
@@ -263,8 +272,7 @@ public class RepeatsHelper {
                 while (string.lastIndexOf(" ") == string.length() - 1) {
                     string = string.substring(0, string.length() - 1);
                 }
-            }
-            else {
+            } else {
                 return testSpace;
             }
         }
@@ -296,5 +304,74 @@ public class RepeatsHelper {
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         share.setType("application/zip");
         activity.startActivityForResult(Intent.createChooser(share, context.getString(R.string.send)), RequestCodes.SHARE_SET);
+    }
+
+    public static void deleteSet(final String id, final Context context, final int position) {
+        MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
+        ALERTbuilder.setBackground(context.getDrawable(R.drawable.dialog_shape));
+
+        ALERTbuilder.setTitle(R.string.WantDelete);
+        ALERTbuilder.setNegativeButton(R.string.Cancel, null);
+
+        ALERTbuilder.setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                RepeatsHelper.DeleteSet(id, context);
+                JsonFile.removeSetFromJSON(context, id);
+
+                DatabaseHelper DB = new DatabaseHelper(context);
+                List<RepeatsListDB> a = DB.AllItemsLIST();
+                int size = a.size();
+
+                //if there is no set left in database, turn off notifications
+                if (size == 0) {
+                    ConstNotifiSetup.CancelNotifications(context);
+
+                    try {
+                        JSONObject advancedFile = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
+
+                        Iterator<String> iterator = advancedFile.keys();
+
+                        while (iterator.hasNext()) {
+                            String key = iterator.next();
+                            NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(key));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("ListNotifi", "0");
+                    editor.apply();
+                }
+
+                MainActivity.repeatsList.remove(position);
+                MainActivity.mAdapter.notifyDataSetChanged();
+
+            }
+        });
+        ALERTbuilder.show();
+    }
+
+    private static void DeleteSet(String x, Context context) {
+        DatabaseHelper DB = new DatabaseHelper(context);
+        ArrayList<String> allImages = new ArrayList<>();
+        if (!x.equals("FALSE")) {
+            allImages = DB.getAllImages(x);
+            DB.deleteOneFromList(x);
+            DB.DeleteSet(x);
+        }
+
+        int count = allImages.size();
+
+        if (count != 0) {
+            for (int j = 0; j < count; j++) {
+                String imgName = allImages.get(j);
+                File file = new File(context.getFilesDir(), imgName);
+                boolean bool = file.delete();
+            }
+        }
     }
 }

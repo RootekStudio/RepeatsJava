@@ -163,4 +163,8 @@
     <string name="default_second_en">Język odpowiedzi (domyślnie: angielski (Wielka Brytania)</string>
     <string name="default_tts_settings">Domyślnie:\nJęzyk pytań: polski (Polska)\nJęzyk odpowiedzi: angielski (Wielka Brytania)</string>
     <string name="stopping">Zatrzymywanie...</string>
+    <string name="speed_tts">Prędkość czytania</string>
+    <string name="readAloud">Czytanie na głos</string>
+    <string name="manageNotifications">Zarządzaj powiadomieniami</string>
+    <string name="setSettings">Ustawienia zestawu</string>
 </resources>

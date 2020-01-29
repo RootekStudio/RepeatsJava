@@ -12,8 +12,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,11 +24,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.rootekstudio.repeatsandroid.MainActivityAdapter;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.ReadSetsAloud;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
@@ -48,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
     Activity activity = null;
     boolean darkTheme;
     ReadSetsAloud readSetsAloud;
+    String selectedSetID;
+    Intent addEditActivityIntent;
+    public static List<RepeatsListDB> repeatsList;
+
+    RecyclerView recyclerView;
+    public static RecyclerView.Adapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +86,17 @@ public class MainActivity extends AppCompatActivity {
             logo.setImageResource(R.drawable.repeats_for_light_bg);
         }
 
+        recyclerView = findViewById(R.id.recycler_view_main);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        DatabaseHelper DB = new DatabaseHelper(this);
+        repeatsList = DB.AllItemsLIST();
+        mAdapter = new MainActivityAdapter(repeatsList);
+
+        recyclerView.setAdapter(mAdapter);
+
         final BottomAppBar bottomAppBar = findViewById(R.id.bar);
 
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -94,96 +119,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        DatabaseHelper DB = new DatabaseHelper(this);
-
-        final Intent intent = new Intent(this, AddEditSetActivity.class);
-        final LinearLayout listLayout = findViewById(R.id.mainList);
-        final LayoutInflater inflater = LayoutInflater.from(this);
-        final List<RepeatsListDB> ALL = DB.AllItemsLIST();
-        int ItemsCounts = ALL.size();
-
-        for (int i = 0; i < ItemsCounts; i++) {
-            RepeatsListDB Item = ALL.get(i);
-
-            inflater.inflate(R.layout.mainactivitylistitem, listLayout);
-            View view = listLayout.getChildAt(i);
-
-            final RelativeLayout but = view.findViewById(R.id.RelativeMAIN);
-            RelativeLayout TakeTest = view.findViewById(R.id.Test);
-            RelativeLayout readAloud = view.findViewById(R.id.TTSbutton);
-
-            String tablename = Item.getTableName();
-            String title = Item.getitle();
-            String IgnoreChars = Item.getIgnoreChars();
-
-            but.setTag(R.string.Tag_id_0, tablename);
-            but.setTag(R.string.Tag_id_1, title);
-            but.setTag(R.string.Tag_id_2, IgnoreChars);
-
-            TakeTest.setTag(R.string.Tag_id_0, tablename);
-            TakeTest.setTag(R.string.Tag_id_1, title);
-            TakeTest.setTag(R.string.Tag_id_2, IgnoreChars);
-
-            readAloud.setTag(tablename);
-
-            TakeTest.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    RelativeLayout button = (RelativeLayout) v;
-                    String s0 = button.getTag(R.string.Tag_id_0).toString();
-                    String s1 = button.getTag(R.string.Tag_id_1).toString();
-                    String s2 = button.getTag(R.string.Tag_id_2).toString();
-
-                    Intent intent = new Intent(cnt, FastLearningActivity.class);
-                    intent.putExtra("TableName", s0);
-                    intent.putExtra("title", s1);
-                    intent.putExtra("IgnoreChars", s2);
-                    startActivity(intent);
-                }
-            });
-
-            readAloud.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String setID = view.getTag().toString();
-                    if(readSetsAloud == null){
-                        readSetsAloud = new ReadSetsAloud(cnt, setID);
-                    }
-                    else {
-                        TextToSpeech tts = readSetsAloud.getTextToSpeech();
-                        if(tts.isSpeaking()) {
-                            Toast.makeText(cnt, R.string.stopping, Toast.LENGTH_SHORT).show();
-                            tts.stop();
-                            tts.shutdown();
-                            readSetsAloud = null;
-                        }
-                        else {
-                            readSetsAloud = new ReadSetsAloud(cnt, setID);
-                        }
-
-                    }
-                }
-            });
-
-            TextView Name = view.findViewById(R.id.NameTextView);
-            TextView Date = view.findViewById(R.id.DateTextView);
-
-            Name.setText(Item.getitle());
-            Date.setText(Item.getCreateDate());
-
-            but.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String TITLE = v.getTag(R.string.Tag_id_0).toString();
-                    String TABLE_NAME = v.getTag(R.string.Tag_id_1).toString();
-                    String IGNORE_CHARS = v.getTag(R.string.Tag_id_2).toString();
-                    intent.putExtra("ISEDIT", TITLE);
-                    intent.putExtra("NAME", TABLE_NAME);
-                    intent.putExtra("IGNORE_CHARS", IGNORE_CHARS);
-                    startActivity(intent);
-                }
-            });
-        }
+        addEditActivityIntent = new Intent(this, AddEditSetActivity.class);
 
         final FloatingActionButton btn = findViewById(R.id.fab);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -203,11 +139,11 @@ public class MainActivity extends AppCompatActivity {
                 relA.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        intent.putExtra("ISEDIT", "FALSE");
-                        intent.putExtra("IGNORE_CHARS", "false");
+                        addEditActivityIntent.putExtra("ISEDIT", "FALSE");
+                        addEditActivityIntent.putExtra("IGNORE_CHARS", "false");
                         alert.dismiss();
 
-                        startActivity(intent);
+                        startActivity(addEditActivityIntent);
                     }
                 });
 
@@ -236,10 +172,70 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (listLayout.getChildCount() == 0) {
+        if (mAdapter.getItemCount() == 0) {
             RelativeLayout r = findViewById(R.id.EmptyHereText);
             r.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void setItemClick(View view) {
+        String TITLE = view.getTag(R.string.Tag_id_0).toString();
+        String TABLE_NAME = view.getTag(R.string.Tag_id_1).toString();
+        String IGNORE_CHARS = view.getTag(R.string.Tag_id_2).toString();
+        addEditActivityIntent.putExtra("ISEDIT", TITLE);
+        addEditActivityIntent.putExtra("NAME", TABLE_NAME);
+        addEditActivityIntent.putExtra("IGNORE_CHARS", IGNORE_CHARS);
+        startActivity(addEditActivityIntent);
+    }
+
+    public void setOptionsClick(View view) {
+        selectedSetID = view.getTag().toString();
+        RecyclerView recyclerView = (RecyclerView) view.getParent().getParent();
+        final int position = recyclerView.getChildAdapterPosition((View)view.getParent());
+
+        PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.set_options, popupMenu.getMenu());
+        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(MainActivity.this, (MenuBuilder)popupMenu.getMenu(), view);
+        menuPopupHelper.setForceShowIcon(true);
+        menuPopupHelper.show();
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int itemId = item.getItemId();
+
+                if(itemId == R.id.fastLearningOption) {
+                    Intent intent = new Intent(MainActivity.this, FastLearningActivity.class);
+                    intent.putExtra("TableName", selectedSetID);
+                    startActivity(intent);
+                }
+                else if(itemId == R.id.readAloudOption){
+                    if(readSetsAloud == null){
+                        readSetsAloud = new ReadSetsAloud(MainActivity.this, selectedSetID);
+                    }
+                    else {
+                        TextToSpeech tts = readSetsAloud.getTextToSpeech();
+                        if(tts.isSpeaking()) {
+                            Toast.makeText(MainActivity.this, R.string.stopping, Toast.LENGTH_SHORT).show();
+                            tts.stop();
+                            tts.shutdown();
+                            readSetsAloud = null;
+                        }
+                        else {
+                            readSetsAloud = new ReadSetsAloud(MainActivity.this, selectedSetID);
+                        }
+
+                    }
+                }
+                else if(itemId == R.id.manageSetSettingsOption) {
+
+                }
+                else if(itemId == R.id.deleteSetOption) {
+                    RepeatsHelper.deleteSet(selectedSetID, MainActivity.this, position);
+                }
+                return true;
+            }
+        });
     }
 
     @Override

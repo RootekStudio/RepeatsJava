@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="all">
-
-        <item
-            android:id="@+id/deleteButton"
-            android:icon="@drawable/ic_delete_forever"
-            android:title="@string/DeleteSet"
-            app:showAsAction="ifRoom"/>
-
         <item
             android:id="@+id/share"
             android:icon="@drawable/ic_share"
