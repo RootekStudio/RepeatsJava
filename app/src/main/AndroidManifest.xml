@@ -16,15 +16,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <activity android:name=".activities.SetSettingsActivity"
+            android:label="@string/setSettings"/>
+        <activity
+            android:name=".activities.ReadAloudActivity"
+            android:label="@string/readAloud" />
         <activity android:name=".activities.FirstRunActivity" />
-
         <activity
             android:name=".community.RepeatsCommunityStartActivity"
             android:label="@string/repeatsCommunity" />
-
-        <activity android:name=".community.MySetsActivity"
-            android:label="@string/mySets"/>
+        <activity
+            android:name=".community.MySetsActivity"
+            android:label="@string/mySets" />
         <activity
             android:name=".DynamicLinks"
             android:theme="@style/SplashScreenTheme">
@@ -45,7 +48,7 @@
         <activity
             android:name=".activities.ShareActivity"
             android:label="@string/sharing"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
 
         <receiver
             android:name=".OnSystemBoot"
@@ -66,6 +69,7 @@
         </provider>
 
         <activity android:name=".activities.MainActivity" />
+
         <receiver
             android:name=".notifications.RepeatsQuestionSend"
             android:enabled="true"
@@ -104,6 +108,7 @@
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -122,7 +127,7 @@
         <activity
             android:name=".activities.AddAdvancedTimeActivity"
             android:label="@string/editRule"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

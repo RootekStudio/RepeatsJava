@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearTextReadAloud"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_below="@id/setNameReadAloud"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:padding="15dp"
+    android:background="@drawable/layout_mainshape"
+    android:elevation="6dp"
+    android:layout_marginTop="20dp">
+    <TextView
+        android:id="@+id/firstLanguageRead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/darker_gray"
+        android:textAlignment="center"
+        android:textSize="6pt"/>
+    <TextView
+        android:id="@+id/firstWordRead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="false"
+        android:textAlignment="center"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:textSize="15pt" />
+    <TextView
+        android:id="@+id/secondLanguageRead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:textColor="@android:color/darker_gray"
+        android:textAlignment="center"
+        android:textSize="6pt"/>
+    <TextView
+        android:id="@+id/secondWordRead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:textSize="15pt"/>
+    <TextView
+        android:id="@+id/wordCountRead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/darker_gray"
+        android:textAlignment="center"
+        android:textSize="6pt"
+        android:layout_marginTop="20dp"/>
+</LinearLayout>

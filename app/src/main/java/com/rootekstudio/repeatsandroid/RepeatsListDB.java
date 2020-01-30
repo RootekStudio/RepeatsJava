@@ -7,17 +7,21 @@ public class RepeatsListDB {
     public String IsEnabled;
     public String Avatar;
     public String IgnoreChars;
+    public String firstLanguage;
+    public String secondLanguage;
 
     public RepeatsListDB() {
     }
 
-    public RepeatsListDB(String Title, String TableName, String CreateDate, String IsEnabled, String Avatar, String IgnoreChars) {
+    public RepeatsListDB(String Title, String TableName, String CreateDate, String IsEnabled, String Avatar, String IgnoreChars, String firstLanguage, String secondLanguage) {
         this.Title = Title;
         this.TableName = TableName;
         this.CreateDate = CreateDate;
         this.IsEnabled = IsEnabled;
         this.Avatar = Avatar;
         this.IgnoreChars = IgnoreChars;
+        this.firstLanguage = firstLanguage;
+        this.secondLanguage = secondLanguage;
     }
 
     public String getitle() {
@@ -44,6 +48,10 @@ public class RepeatsListDB {
         return IgnoreChars;
     }
 
+    public String getFirstLanguage() {return firstLanguage;}
+
+    public String getSecondLanguage() {return secondLanguage;}
+
     public void setTitle(String Title) {
         this.Title = Title;
     }
@@ -67,4 +75,8 @@ public class RepeatsListDB {
     public void setIgnoreChars(String IgnoreChars) {
         this.IgnoreChars = IgnoreChars;
     }
+
+    public void setFirstLanguage(String firstLanguage) {this.firstLanguage = firstLanguage;}
+
+    public void setSecondLanguage(String secondLanguage) {this.secondLanguage = secondLanguage;}
 }

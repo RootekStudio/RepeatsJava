@@ -33,6 +33,7 @@ import com.rootekstudio.repeatsandroid.notifications.RegisterNotifications;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class PreviewAndDownloadSetActivity extends AppCompatActivity {
     ArrayList<String> setItems;
@@ -128,7 +129,13 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
             answers.add(set.get(i));
         }
 
-        RepeatsListDB list = new RepeatsListDB(setName, id, createDate, "true", "", "false");
+        RepeatsListDB list;
+        if(Locale.getDefault().toString().equals("pl_PL")) {
+            list = new RepeatsListDB(setName, id, createDate, "true", "", "false", "pl_PL", "en_GB");
+        }
+        else {
+            list = new RepeatsListDB(setName, id, createDate, "true", "", "false", "en_US", "es_ES");
+        }
 
         //Registering set in database
         DB.CreateSet(id);

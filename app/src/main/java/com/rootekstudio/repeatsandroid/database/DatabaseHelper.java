@@ -12,6 +12,7 @@ import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String NAME = "TitleTable";
@@ -24,12 +25,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String[] COLUMNS = {KEY_TITLE, KEY_TNAME, KEY_DATE, KEY_ENABLED, KEY_AVATAR};
 
     public DatabaseHelper(Context context) {
-        super(context, "repeats", null, 2);
+        super(context, "repeats", null, 3);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TITLETABLE = "CREATE TABLE IF NOT EXISTS TitleTable (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, TableName TEXT, CreateDate TEXT, IsEnabled TEXT, Avatar TEXT, IgnoreChars TEXT)";
+        String CREATE_TITLETABLE = "CREATE TABLE IF NOT EXISTS TitleTable (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, TableName TEXT, CreateDate TEXT, IsEnabled TEXT, Avatar TEXT, IgnoreChars TEXT, firstLanguage TEXT, secondLanguage TEXT)";
         db.execSQL(CREATE_TITLETABLE);
     }
 
@@ -41,9 +42,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(command);
             db.execSQL(command2);
         }
+
+        if(oldVersion == 2) {
+            String command = "ALTER TABLE TitleTable ADD COLUMN firstLanguage TEXT";
+            String command1 = "ALTER TABLE TitleTable ADD COLUMN secondLanguage TEXT";
+            String command2 = "";
+            String command3 = "";
+            if(Locale.getDefault().toString().equals("pl_PL")) {
+                command2 = "UPDATE TitleTable SET firstLanguage='pl_PL'";
+                command3 = "UPDATE TitleTable SET secondLanguage='en_GB'";
+            }
+            else {
+                command2 = "UPDATE TitleTable SET firstLanguage='en_US'";
+                command3 = "UPDATE TitleTable SET secondLanguage='es_ES'";
+            }
+
+            db.execSQL(command);
+            db.execSQL(command1);
+            db.execSQL(command2);
+            db.execSQL(command3);
+        }
     }
 
-    RepeatsListDB getSingleItemLIST(String setID) {
+    public RepeatsListDB getSingleItemLIST(String setID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM TitleTable WHERE TableName='" + setID + "'";
         Cursor cursor = db.rawQuery(query, null);
@@ -59,6 +80,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         list.setIsEnabled(cursor.getString(4));
         list.setAvatar(cursor.getString(5));
         list.setIgnoreChars(cursor.getString(6));
+        list.setFirstLanguage(cursor.getString(7));
+        list.setSecondLanguage(cursor.getString(8));
 
         cursor.close();
         return list;
@@ -80,6 +103,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 list.setIsEnabled(cursor.getString(4));
                 list.setAvatar(cursor.getString(5));
                 list.setIgnoreChars(cursor.getString(6));
+                list.setFirstLanguage(cursor.getString(7));
+                list.setSecondLanguage(cursor.getString(8));
                 ALL.add(list);
             } while (cursor.moveToNext());
         }
@@ -105,6 +130,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 list.setIsEnabled(cursor.getString(4));
                 list.setAvatar(cursor.getString(5));
                 list.setIgnoreChars(cursor.getString(6));
+                list.setFirstLanguage(cursor.getString(7));
+                list.setSecondLanguage(cursor.getString(8));
                 ALL.add(list);
             } while (cursor.moveToNext());
         }
@@ -232,6 +259,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_ENABLED, List.getIsEnabled());
         values.put(KEY_AVATAR, List.getAvatar());
         values.put(KEY_IGNORE_CHARS, List.getIgnoreChars());
+        values.put("firstLanguage", List.getFirstLanguage());
+        values.put("secondLanguage", List.getSecondLanguage());
 
         db.insert(NAME, null, values);
         db.close();

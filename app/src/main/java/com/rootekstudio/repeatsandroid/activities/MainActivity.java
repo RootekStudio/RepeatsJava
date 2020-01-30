@@ -55,7 +55,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     Activity activity = null;
     boolean darkTheme;
-    ReadSetsAloud readSetsAloud;
     String selectedSetID;
     Intent addEditActivityIntent;
     public static List<RepeatsListDB> repeatsList;
@@ -210,25 +209,14 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else if(itemId == R.id.readAloudOption){
-                    if(readSetsAloud == null){
-                        readSetsAloud = new ReadSetsAloud(MainActivity.this, selectedSetID);
-                    }
-                    else {
-                        TextToSpeech tts = readSetsAloud.getTextToSpeech();
-                        if(tts.isSpeaking()) {
-                            Toast.makeText(MainActivity.this, R.string.stopping, Toast.LENGTH_SHORT).show();
-                            tts.stop();
-                            tts.shutdown();
-                            readSetsAloud = null;
-                        }
-                        else {
-                            readSetsAloud = new ReadSetsAloud(MainActivity.this, selectedSetID);
-                        }
-
-                    }
+                    Intent intent = new Intent(MainActivity.this, ReadAloudActivity.class);
+                    intent.putExtra("setID", selectedSetID);
+                    startActivity(intent);
                 }
                 else if(itemId == R.id.manageSetSettingsOption) {
-
+                    Intent intent = new Intent(MainActivity.this, SetSettingsActivity.class);
+                    intent.putExtra("setID", selectedSetID);
+                    startActivity(intent);
                 }
                 else if(itemId == R.id.deleteSetOption) {
                     RepeatsHelper.deleteSet(selectedSetID, MainActivity.this, position);

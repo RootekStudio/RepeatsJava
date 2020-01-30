@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 public class SaveShared {
     public static String ID;
@@ -77,7 +78,14 @@ public class SaveShared {
 
                 name = keys.get(setIndex);
 
-                RepeatsListDB list = new RepeatsListDB(name, id, createDate, "true", "", "false");
+                RepeatsListDB list;
+                if(Locale.getDefault().toString().equals("pl_PL")) {
+                    list = new RepeatsListDB(name, id, createDate, "true", "", "false", "pl_PL", "en_GB");
+                }
+                else {
+                    list = new RepeatsListDB(name, id, createDate, "true", "", "false", "en_US", "es_ES");
+                }
+
                 DB.CreateSet(id);
                 DB.AddName(list);
 

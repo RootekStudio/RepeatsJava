@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class SaveSharedLegacy {
     static void saveSharedLegacy(Context context, DatabaseHelper DB) {
@@ -46,7 +47,14 @@ public class SaveSharedLegacy {
             String id = "R" + date;
             SaveShared.ID = id;
 
-            RepeatsListDB list = new RepeatsListDB(name, id, createDate, "true", "", "false");
+            RepeatsListDB list;
+            if(Locale.getDefault().toString().equals("pl_PL")) {
+                list = new RepeatsListDB(name, id, createDate, "true", "", "false", "pl_PL", "en_GB");
+            }
+            else {
+                list = new RepeatsListDB(name, id, createDate, "true", "", "false", "en_US", "es_ES");
+            }
+
             DB.CreateSet(id);
             DB.AddName(list);
 

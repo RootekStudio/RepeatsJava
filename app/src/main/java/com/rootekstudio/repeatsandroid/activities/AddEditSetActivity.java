@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class AddEditSetActivity extends AppCompatActivity {
@@ -147,7 +148,13 @@ public class AddEditSetActivity extends AppCompatActivity {
             SimpleDateFormat createD = new SimpleDateFormat("dd.MM.yyyy");
             String createDate = createD.format(new Date());
 
-            RepeatsListDB list = new RepeatsListDB("", id, createDate, "true", "", "false");
+            RepeatsListDB list;
+            if(Locale.getDefault().toString().equals("pl_PL")) {
+                list = new RepeatsListDB("", id, createDate, "true", "", "false", "pl_PL", "en_GB");
+            }
+            else {
+                list = new RepeatsListDB("", id, createDate, "true", "", "false", "en_US", "es_ES");
+            }
 
             //Registering set in database
             DB.CreateSet(id);
