@@ -172,4 +172,6 @@
     <string name="readAloud">Reading aloud</string>
     <string name="manageNotifications">Manage notifications</string>
     <string name="setSettings">Set settings</string>
+    <string name="languageSettings">Language settings</string>
+    <string name="cantShareSet">You can\'t share this set. Name the set differently.</string>
 </resources>

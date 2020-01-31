@@ -167,4 +167,6 @@
     <string name="readAloud">Czytanie na głos</string>
     <string name="manageNotifications">Zarządzaj powiadomieniami</string>
     <string name="setSettings">Ustawienia zestawu</string>
+    <string name="languageSettings">Ustawienia języka</string>
+    <string name="cantShareSet">Nie możesz udostępnić tego zestawu. Nazwij go inaczej.</string>
 </resources>

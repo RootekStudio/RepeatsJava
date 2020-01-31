@@ -22,7 +22,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/setNameReadAloud"
-        android:layout_above="@id/readingSpeedLinear"/>
+        android:layout_above="@id/readingSpeedLinear">
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/readingSpeedLinear"

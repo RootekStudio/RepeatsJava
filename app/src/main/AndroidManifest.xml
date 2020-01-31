@@ -20,7 +20,8 @@
             android:label="@string/setSettings"/>
         <activity
             android:name=".activities.ReadAloudActivity"
-            android:label="@string/readAloud" />
+            android:label="@string/readAloud"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.FirstRunActivity" />
         <activity
             android:name=".community.RepeatsCommunityStartActivity"

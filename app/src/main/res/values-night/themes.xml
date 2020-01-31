@@ -11,6 +11,7 @@
         <item name="colorSurface">#121212</item>
         <item name="colorOnSurface">#FFFFFF</item>
         <item name="tint">#FFFFFF</item>
+        <item name="iconTint">#FFFFFF</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="scrimBackground">#000000</item>
 

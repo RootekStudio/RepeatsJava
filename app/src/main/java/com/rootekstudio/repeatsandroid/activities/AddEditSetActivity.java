@@ -119,12 +119,19 @@ public class AddEditSetActivity extends AppCompatActivity {
                         item.setChecked(true);
                     }
                 } else if (item.getItemId() == R.id.share) {
-
                     resetFocus();
-                    Intent intentShare = new Intent(context, ShareActivity.class);
-                    intentShare.putExtra("name", editName.getText().toString());
-                    intentShare.putExtra("id", id);
-                    startActivity(intentShare);
+                    String name = editName.getText().toString();
+                    name = name.trim();
+                    if(name.equals("") || name.equals("text") || name.equals("Text") || name.equals("text text") || name.equals("text text text")) {
+                        Toast.makeText(AddEditSetActivity.this, R.string.cantShareSet, Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Intent intentShare = new Intent(context, ShareActivity.class);
+                        intentShare.putExtra("name", name);
+                        intentShare.putExtra("id", id);
+                        startActivity(intentShare);
+                    }
+
                 }
                 return false;
             }
