@@ -169,4 +169,11 @@
     <string name="setSettings">Ustawienia zestawu</string>
     <string name="languageSettings">Ustawienia języka</string>
     <string name="cantShareSet">Nie możesz udostępnić tego zestawu. Nazwij go inaczej.</string>
+    <string name="playing_set">Odtwarzanie zestawu:</string>
+    <string name="click_here_read_notifi">Kliknij tutaj aby przejść do odtwarzacza</string>
+    <string name="see_whats_now">Zobacz co nowego</string>
+    <string name="welcome_to">Witaj w Repeats</string>
+    <string name="app_updated_info">Zaktualizowano aplikację do najnowszej wersji</string>
+    <string name="channelname4">Powiadomienie stałe funkcji Czytanie na głos</string>
+    <string name="channeldesc4">Powiadomienie pokazujące się podczas odsłuchiwania zestawu za pomocą funkcji Czytanie na głos</string>
 </resources>

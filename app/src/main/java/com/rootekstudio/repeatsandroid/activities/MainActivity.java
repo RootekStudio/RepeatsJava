@@ -10,16 +10,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -36,7 +31,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.MainActivityAdapter;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.ReadSetsAloud;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RequestCodes;
@@ -45,7 +39,7 @@ import com.rootekstudio.repeatsandroid.community.MySetsActivity;
 import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
-
+import com.rootekstudio.repeatsandroid.readAloud.ReadAloudActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     String selectedSetID;
     Intent addEditActivityIntent;
     public static List<RepeatsListDB> repeatsList;
+    boolean loaded = false;
 
     RecyclerView recyclerView;
     public static RecyclerView.Adapter mAdapter;
@@ -80,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         darkTheme = RepeatsHelper.DarkTheme(this, false);
         getSupportActionBar().setCustomView(R.layout.logo);
-        if(!darkTheme) {
+        if (!darkTheme) {
             ImageView logo = findViewById(R.id.logoMain);
             logo.setImageResource(R.drawable.repeats_for_light_bg);
         }
@@ -104,13 +99,10 @@ public class MainActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.app_bar_search) {
                     Intent intent = new Intent(cnt, SearchActivity.class);
                     startActivity(intent);
-                }
-                else if (item.getItemId() == R.id.app_bar_settings) {
+                } else if (item.getItemId() == R.id.app_bar_settings) {
                     Intent settings = new Intent(cnt, SettingsActivity.class);
                     startActivity(settings);
-                }
-
-                else if (item.getItemId() == R.id.your_sets_rc_button) {
+                } else if (item.getItemId() == R.id.your_sets_rc_button) {
                     Intent intent = new Intent(cnt, MySetsActivity.class);
                     startActivity(intent);
                 }
@@ -190,11 +182,11 @@ public class MainActivity extends AppCompatActivity {
     public void setOptionsClick(View view) {
         selectedSetID = view.getTag().toString();
         RecyclerView recyclerView = (RecyclerView) view.getParent().getParent();
-        final int position = recyclerView.getChildAdapterPosition((View)view.getParent());
+        final int position = recyclerView.getChildAdapterPosition((View) view.getParent());
 
         PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
         popupMenu.getMenuInflater().inflate(R.menu.set_options, popupMenu.getMenu());
-        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(MainActivity.this, (MenuBuilder)popupMenu.getMenu(), view);
+        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(MainActivity.this, (MenuBuilder) popupMenu.getMenu(), view);
         menuPopupHelper.setForceShowIcon(true);
         menuPopupHelper.show();
 
@@ -203,22 +195,20 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 int itemId = item.getItemId();
 
-                if(itemId == R.id.fastLearningOption) {
+                if (itemId == R.id.fastLearningOption) {
                     Intent intent = new Intent(MainActivity.this, FastLearningActivity.class);
                     intent.putExtra("TableName", selectedSetID);
                     startActivity(intent);
-                }
-                else if(itemId == R.id.readAloudOption){
-                    Intent intent = new Intent(MainActivity.this, ReadAloudActivity.class);
-                    intent.putExtra("setID", selectedSetID);
-                    startActivity(intent);
-                }
-                else if(itemId == R.id.manageSetSettingsOption) {
+                } else if (itemId == R.id.readAloudOption) {
+                        Intent intent = new Intent(MainActivity.this, ReadAloudActivity.class);
+                        intent.putExtra("setID", selectedSetID);
+                        intent.putExtra("newReadAloud", true);
+                        startActivity(intent);
+                } else if (itemId == R.id.manageSetSettingsOption) {
                     Intent intent = new Intent(MainActivity.this, SetSettingsActivity.class);
                     intent.putExtra("setID", selectedSetID);
                     startActivity(intent);
-                }
-                else if(itemId == R.id.deleteSetOption) {
+                } else if (itemId == R.id.deleteSetOption) {
                     RepeatsHelper.deleteSet(selectedSetID, MainActivity.this, position);
                 }
                 return true;
@@ -295,6 +285,15 @@ public class MainActivity extends AppCompatActivity {
 
             NotificationManager notificationManager3 = getSystemService(NotificationManager.class);
             notificationManager3.createNotificationChannel(channel3);
+
+            CharSequence name4 = getString(R.string.channelname4);
+            String description4 = getString(R.string.channeldesc4);
+            int importance4 = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel4 = new NotificationChannel("RepeatsReadAloudChannel", name4, importance4);
+            channel4.setDescription(description4);
+
+            NotificationManager notificationManager4 = getSystemService(NotificationManager.class);
+            notificationManager4.createNotificationChannel(channel4);
         }
     }
 }

@@ -174,4 +174,11 @@
     <string name="setSettings">Set settings</string>
     <string name="languageSettings">Language settings</string>
     <string name="cantShareSet">You can\'t share this set. Name the set differently.</string>
+    <string name="playing_set">Playing set:</string>
+    <string name="click_here_read_notifi">Click here to go to the player</string>
+    <string name="see_whats_now">See what\'s new</string>
+    <string name="welcome_to">Welcome to Repeats</string>
+    <string name="app_updated_info">App has been updated to the latest version</string>
+    <string name="channelname4">Read Aloud notification</string>
+    <string name="channeldesc4">This notification will show up when you are listening to the set</string>
 </resources>

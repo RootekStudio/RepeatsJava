@@ -9,5 +9,6 @@ public class RequestCodes {
     public static int PICK_CATALOG = 6;
     public static int SELECT_FILE_TO_RESTORE = 7;
     public static int RC_SIGN_IN = 8;
+    public static int READ_ALOUD_NOTIFICATION_ID = 9;
 
 }

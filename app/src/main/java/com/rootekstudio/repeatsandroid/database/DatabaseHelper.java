@@ -83,6 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         list.setFirstLanguage(cursor.getString(7));
         list.setSecondLanguage(cursor.getString(8));
 
+        db.close();
         cursor.close();
         return list;
     }

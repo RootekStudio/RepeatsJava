@@ -1,11 +1,8 @@
 package com.rootekstudio.repeatsandroid.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,10 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
-
-import org.w3c.dom.Text;
+import com.rootekstudio.repeatsandroid.readAloud.ReadAloudActivity;
+import com.rootekstudio.repeatsandroid.readAloud.ReadAloudConnector;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +29,7 @@ public class SetSettingsActivity extends AppCompatActivity {
     AutoCompleteTextView autoCompleteTextView1;
     DatabaseHelper DB;
     String setID;
+    boolean fromReadAloud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class SetSettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         setID = intent.getStringExtra("setID");
+        fromReadAloud = intent.getBooleanExtra("fromReadAloud", false);
         DB = new DatabaseHelper(this);
         initTTS();
     }
@@ -52,7 +53,6 @@ public class SetSettingsActivity extends AppCompatActivity {
     }
 
     private void selectLanguages() {
-
         final HashMap<String, String> detailLocaleList = new HashMap<>();
         Locale[] locales = Locale.getAvailableLocales();
         List<String> displayedlocaleList = new ArrayList<>();
@@ -81,6 +81,8 @@ public class SetSettingsActivity extends AppCompatActivity {
                 String localeString = detailLocaleList.get(autoCompleteTextView.getText().toString());
                 if (localeString != null) {
                     DB.UpdateTable("TitleTable", "firstLanguage='" + localeString + "'", "TableName='" + setID + "'");
+                    ReadAloudConnector.locale0 = localeString;
+
                 }
             }
         });
@@ -92,6 +94,7 @@ public class SetSettingsActivity extends AppCompatActivity {
                 String localeString = detailLocaleList.get(autoCompleteTextView.getText().toString());
                 if (localeString != null) {
                     DB.UpdateTable("TitleTable", "secondLanguage='" + localeString + "'", "TableName='" + setID + "'");
+                    ReadAloudConnector.locale1 = localeString;
                 }
             }
         });
@@ -104,14 +107,23 @@ public class SetSettingsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            if (fromReadAloud && !ReadAloudConnector.isTTSStopped) {
+                Intent intent = new Intent(this, ReadAloudActivity.class);
+                intent.putExtra("setID", setID);
+                intent.putExtra("loadedFromNotification", true);
+                startActivity(intent);
+                finish();
+            } else {
+                ReadAloudConnector.returnFromSettings = true;
+                onBackPressed();
+            }
         }
         return true;
     }
 
     @Override
     protected void onDestroy() {
-        if(textToSpeech != null) {
+        if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
         }
