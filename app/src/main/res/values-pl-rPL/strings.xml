@@ -46,7 +46,7 @@
     <string name="EmptyHere">\nTrochę tu pusto…\nAby dodać nowy zestaw kliknij na +</string>
     <string name="About">O aplikacji</string>
     <string name="SetName">Nazwa zestawu</string>
-    <string name="IngoreChars">Ignoruj znaki specjalne</string>
+    <string name="IgnoreChars">Ignoruj znaki specjalne</string>
     <string name="CreateNew">Utwórz nowy zestaw</string>
     <string name="LoadSet">Wczytaj zestaw</string>
     <string name="AddSet">Dodawanie zestawu</string>
@@ -176,4 +176,7 @@
     <string name="app_updated_info">Zaktualizowano aplikację do najnowszej wersji</string>
     <string name="channelname4">Powiadomienie stałe funkcji Czytanie na głos</string>
     <string name="channeldesc4">Powiadomienie pokazujące się podczas odsłuchiwania zestawu za pomocą funkcji Czytanie na głos</string>
+    <string name="checking_answers">Sprawdzanie odpowiedzi</string>
+    <string name="set_languages">Języki zestawu</string>
+    <string name="ignore_chars_info">Po włączeniu tej funkcji wielkość liter, spacje i znaki diakrytyczne będą igonorowane przy sprawdzaniu poprawności odpowiedzi. Uwaga: Funkcja nie działa poprawnie z pismem chińskim.</string>
 </resources>

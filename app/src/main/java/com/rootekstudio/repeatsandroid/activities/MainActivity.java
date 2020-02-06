@@ -208,8 +208,6 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, SetSettingsActivity.class);
                     intent.putExtra("setID", selectedSetID);
                     startActivity(intent);
-                } else if (itemId == R.id.deleteSetOption) {
-                    RepeatsHelper.deleteSet(selectedSetID, MainActivity.this, position);
                 }
                 return true;
             }

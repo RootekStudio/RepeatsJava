@@ -18,7 +18,8 @@
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".activities.SetSettingsActivity"
-            android:label="@string/setSettings"/>
+            android:label="@string/setSettings"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".readAloud.ReadAloudActivity"
             android:label="@string/readAloud"

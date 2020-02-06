@@ -48,7 +48,6 @@ public class ReadAloudService extends Service {
         readAloudIntent.putExtra("loadedFromNotification", true);
         readAloudIntent.putExtra("setID", ReadAloudConnector.setID);
         readAloudIntent.putExtra("speedRate", ReadAloudConnector.speechRate);
-        readAloudIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, readAloudIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -212,12 +211,14 @@ public class ReadAloudService extends Service {
         }
         RepeatsSingleSetDB singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
         textToSpeech.speak(singleSetDB.getQuestion(), TextToSpeech.QUEUE_ADD, null, String.valueOf(ReadAloudConnector.speakItemIndex));
+        ReadAloudConnector.speakItemIndex++;
     }
 
     public void speak1() {
         checkAndChangeLocale();
         RepeatsSingleSetDB singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
         textToSpeech1.speak(singleSetDB.getAnswer(), TextToSpeech.QUEUE_ADD, null, String.valueOf(ReadAloudConnector.speakItemIndex));
+        ReadAloudConnector.speakItemIndex++;
     }
 
     private void checkAndChangeLocale() {

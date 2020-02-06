@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="all">
-        <item
-            android:id="@+id/share"
-            android:icon="@drawable/ic_share"
-            android:title="@string/share"
-            app:showAsAction="always"
-            android:checkable="false"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/deleteSet"
+        android:icon="@drawable/delete_outline_24px"
+        android:title="@string/DeleteSet"
+        app:showAsAction="always" />
 
-        <item
-            android:id="@+id/ignoreCharsItem"
-            android:icon="@drawable/ic_text_fields"
-            android:title="@string/IngoreChars"
-            app:showAsAction="never"
-            android:checkable="true"/>
-    </group>
-
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/ic_share"
+        android:title="@string/share"
+        app:showAsAction="always" />
 </menu>

@@ -26,6 +26,7 @@ import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.ReadAloudItemFragment;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
+import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.activities.SetSettingsActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
@@ -125,7 +126,16 @@ public class ReadAloudActivity extends AppCompatActivity {
         ReadAloudConnector.isActivityAlive = true;
         if (fromNotification) {
             startPlayingShowButtons();
-
+            if(ReadAloudConnector.speakItemIndex%2 == 0) {
+                speaking = false;
+                updateLayout1();
+                speaking = true;
+            }
+            else {
+                speaking = false;
+                updateLayout0();
+                speaking = true;
+            }
         }
         createAndBindService();
 
@@ -212,7 +222,7 @@ public class ReadAloudActivity extends AppCompatActivity {
             return;
         }
         RepeatsSingleSetDB singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
-        String counter = ReadAloudConnector.speakItemSetIndex + 1 + "/" + allItems;
+        String counter = ReadAloudConnector.speakItemSetIndex + 1 + "/" + ReadAloudConnector.singleSet.size();
 
         ArrayList<String> info = new ArrayList<>();
         info.add(firstLocale.getDisplayName());
@@ -247,7 +257,7 @@ public class ReadAloudActivity extends AppCompatActivity {
             return;
         }
         RepeatsSingleSetDB singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
-        String counter = ReadAloudConnector.speakItemSetIndex + 1 + "/" + allItems;
+        String counter = ReadAloudConnector.speakItemSetIndex + 1 + "/" + ReadAloudConnector.singleSet.size();
 
         ArrayList<String> info = new ArrayList<>();
         info.add(firstLocale.getDisplayName());
@@ -363,7 +373,6 @@ public class ReadAloudActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.read_aloud_menu, menu);
         return true;
     }
@@ -397,5 +406,12 @@ public class ReadAloudActivity extends AppCompatActivity {
         unregisterReceiver(broadcastReceiver);
 
         super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

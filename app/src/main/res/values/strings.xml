@@ -49,7 +49,7 @@
     <string name="CorrectAnswer1">Congrats!</string>
     <string name="About">About</string>
     <string name="SetName">Name of the set</string>
-    <string name="IngoreChars">Ignore special characters</string>
+    <string name="IgnoreChars">Ignore special characters</string>
     <string name="CreateNew">Create new set</string>
     <string name="LoadSet">Load already created set</string>
     <string name="AddSet">Add set</string>
@@ -181,4 +181,7 @@
     <string name="app_updated_info">App has been updated to the latest version</string>
     <string name="channelname4">Read Aloud notification</string>
     <string name="channeldesc4">This notification will show up when you are listening to the set</string>
+    <string name="checking_answers">Checking answers</string>
+    <string name="set_languages">Set languages</string>
+    <string name="ignore_chars_info">When this feature is enabled, case sensitive characters, spaces, and diacritics will be ignored when checking the correctness of the answer. Note: This function does not work properly with Chinese script.</string>
 </resources>
