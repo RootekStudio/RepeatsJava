@@ -5,7 +5,7 @@
     <color name="secondColorAccent">#00BCD4</color>
 
     <!--Light theme-->
-    <color name="buttonLight">#ECECEC</color>
+    <color name="buttonLight">#fafafa</color>
     <color name="lightMainItem">#fafafa</color>
     <color name="lightEditTextColor">#EBEBEB</color>
 

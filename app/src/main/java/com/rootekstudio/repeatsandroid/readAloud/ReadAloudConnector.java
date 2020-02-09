@@ -5,6 +5,7 @@ import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
 import java.util.List;
 
 public class ReadAloudConnector {
+    static ReadAloudService readAloudService;
     static int speakItemIndex = 0;
     static int speakItemSetIndex = 0;
     public static String locale0;

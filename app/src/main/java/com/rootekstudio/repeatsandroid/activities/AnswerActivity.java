@@ -126,8 +126,18 @@ public class AnswerActivity extends AppCompatActivity {
                             boolean check = CheckAnswer.isAnswerCorrect(uAnswerString, ReallyCorrect, IGNORE);
 
                             if(check) {
-                                dialog.dismiss();
-                                alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Next), false, "", "", jsonIndex);
+                                if(ReallyCorrect.contains("\n")) {
+                                    ReallyCorrect = ReallyCorrect.replace("\r\n", ", ");
+                                    dialog.dismiss();
+                                    alarmDialog(getString(R.string.CorrectAnswer1),
+                                            getString(R.string.CorrectAnswer2) + "\n" + getString(R.string.otherCorrectAnswers) + " " + ReallyCorrect,
+                                            getString(R.string.Next), false, "", "", jsonIndex);
+                                }
+                                else {
+                                    dialog.dismiss();
+                                    alarmDialog(getString(R.string.CorrectAnswer1), getString(R.string.CorrectAnswer2), getString(R.string.Next), false, "", "", jsonIndex);
+                                }
+
                             }
                             else {
                                 dialog.dismiss();

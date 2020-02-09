@@ -139,7 +139,15 @@ public class FastLearningActivity extends AppCompatActivity {
                         badge.setColorFilter(ContextCompat.getColor(context, android.R.color.holo_red_dark));
                         correctA.setText(notCorrect);
                     } else {
-                        correctA.setText(R.string.CorrectAnswer2);
+                        if(qanda[1].contains("\n")) {
+                            String correctAnswers = qanda[1].replace("\r\n", ", ");
+                            String info = getString(R.string.CorrectAnswer2) +"\n\n" + getString(R.string.otherCorrectAnswers) + "\n" + correctAnswers;
+                            correctA.setText(info);
+                        }
+                        else {
+                            correctA.setText(R.string.CorrectAnswer2);
+                        }
+
                         badge.setImageResource(R.drawable.ic_check);
                         badge.setColorFilter(ContextCompat.getColor(context, android.R.color.holo_green_light));
                     }
@@ -151,10 +159,10 @@ public class FastLearningActivity extends AppCompatActivity {
     }
 
     void end() {
-        linearQbox.setVisibility(View.INVISIBLE);
+        linearQbox.setVisibility(View.GONE);
         correctA.setText(R.string.FLendText);
         button.setText(R.string.OnceAgain);
-        badge.setVisibility(View.INVISIBLE);
+        badge.setVisibility(View.GONE);
         button.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_refresh, 0, 0, 0);
 
         button.setOnClickListener(new View.OnClickListener() {

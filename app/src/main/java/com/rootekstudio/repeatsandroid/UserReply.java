@@ -24,9 +24,17 @@ public class UserReply extends BroadcastReceiver {
         boolean check = CheckAnswer.isAnswerCorrect(UserAnswer, Correct, IgnoreChars);
 
         if(check) {
-            RepeatsNotificationTemplate.AnswerNotifi(context,
-                    context.getString(R.string.CorrectAnswer1),
-                    context.getString(R.string.CorrectAnswer2));
+            if(ReallyCorrect.contains("\n")) {
+                ReallyCorrect = ReallyCorrect.replace("\r\n", ", ");
+                RepeatsNotificationTemplate.AnswerNotifi(context,
+                        context.getString(R.string.CorrectAnswer1),
+                        context.getString(R.string.CorrectAnswer2) + "\n" +  context.getString(R.string.otherCorrectAnswers) + " " + ReallyCorrect);
+            }
+            else {
+                RepeatsNotificationTemplate.AnswerNotifi(context,
+                        context.getString(R.string.CorrectAnswer1),
+                        context.getString(R.string.CorrectAnswer2));
+            }
         }
         else {
             RepeatsNotificationTemplate.AnswerNotifi(context,

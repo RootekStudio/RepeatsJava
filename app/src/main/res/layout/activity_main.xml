@@ -4,11 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
+        android:id="@+id/relativeUpdateInfoRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <include android:id="@+id/infoLayout"
-            layout="@layout/update_info"/>
+            layout="@layout/update_info"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_main"

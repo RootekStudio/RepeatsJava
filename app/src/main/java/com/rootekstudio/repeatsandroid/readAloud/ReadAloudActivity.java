@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.rootekstudio.repeatsandroid.readAloud.ReadAloudConnector.readAloudService;
+
 public class ReadAloudActivity extends AppCompatActivity {
     RepeatsListDB setInfo;
     TextView setName;
@@ -46,17 +48,19 @@ public class ReadAloudActivity extends AppCompatActivity {
     List<RepeatsSingleSetDB> singleSet;
     int allItems;
 
-    ReadAloudService readAloudService;
     boolean readAloudBound = false;
     boolean fromNotification;
     boolean speaking;
 
     public static Intent serviceIntent = null;
 
+    static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
+        context = this;
         fromNotification = intent.getBooleanExtra("loadedFromNotification", false);
 
         setContentView(R.layout.activity_read_aloud);
@@ -105,6 +109,7 @@ public class ReadAloudActivity extends AppCompatActivity {
     }
 
     private void reset() {
+        readAloudService = null;
         ReadAloudConnector.isTTSStopped = false;
         ReadAloudConnector.speakItemIndex = 0;
         ReadAloudConnector.speechRate = 0.5f;
@@ -126,12 +131,11 @@ public class ReadAloudActivity extends AppCompatActivity {
         ReadAloudConnector.isActivityAlive = true;
         if (fromNotification) {
             startPlayingShowButtons();
-            if(ReadAloudConnector.speakItemIndex%2 == 0) {
+            if (ReadAloudConnector.speakItemIndex % 2 == 0) {
                 speaking = false;
                 updateLayout1();
                 speaking = true;
-            }
-            else {
+            } else {
                 speaking = false;
                 updateLayout0();
                 speaking = true;
@@ -149,8 +153,13 @@ public class ReadAloudActivity extends AppCompatActivity {
 
         serviceIntent = new Intent(this, ReadAloudService.class);
         if (!fromNotification) {
-            if(!ReadAloudConnector.returnFromSettings) {
-                startService(serviceIntent);
+            if (!ReadAloudConnector.returnFromSettings) {
+                if(readAloudService == null) {
+                    startService(serviceIntent);
+                }
+            }
+            else {
+                ReadAloudConnector.returnFromSettings = false;
             }
         }
         bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
@@ -173,7 +182,7 @@ public class ReadAloudActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getBooleanExtra("loadingDone", false)) {
-                singleSet = readAloudService.singleSet;
+                singleSet = ReadAloudConnector.singleSet;
                 allItems = singleSet.size();
                 startPlayingShowButtons();
                 if (ReadAloudConnector.isTTSStopped) {
@@ -198,7 +207,7 @@ public class ReadAloudActivity extends AppCompatActivity {
             SeekBar seekBar = findViewById(R.id.readingSpeedSeekBar);
 
             if (fromNotification) {
-                singleSet = readAloudService.singleSet;
+                singleSet = ReadAloudConnector.singleSet;
                 allItems = singleSet.size();
                 fromNotification = false;
                 seekBar.setProgress(Math.round(ReadAloudConnector.speechRate * 100));
@@ -218,7 +227,7 @@ public class ReadAloudActivity extends AppCompatActivity {
             ImageView playPause = findViewById(R.id.playPauseImageView);
             playPause.setImageResource(R.drawable.replay_24px);
             readAloudService.stopTextToSpeech();
-            readAloudService.stopSpeakService();
+            readAloudService.stopForegroundServ();
             return;
         }
         RepeatsSingleSetDB singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
@@ -253,7 +262,7 @@ public class ReadAloudActivity extends AppCompatActivity {
             ImageView playPause = findViewById(R.id.playPauseImageView);
             playPause.setImageResource(R.drawable.replay_24px);
             readAloudService.stopTextToSpeech();
-            readAloudService.stopSpeakService();
+            readAloudService.stopForegroundServ();
             return;
         }
         RepeatsSingleSetDB singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
@@ -322,18 +331,11 @@ public class ReadAloudActivity extends AppCompatActivity {
                 imageView.setImageResource(R.drawable.pause_24px);
             }
         } else {
-            if (readAloudService.getTextToSpeech().isSpeaking() || readAloudService.getTextToSpeech1().isSpeaking()) {
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                readAloudService.stopTextToSpeech();
-                readAloudService.stopForegroundServ();
-                imageView.setImageResource(R.drawable.play_arrow_24px);
-            } else {
-                ReadAloudConnector.speakItemSetIndex = 0;
-                imageView.setImageResource(R.drawable.pause_24px);
-                speaking = true;
-                readAloudService.resumeForeground();
-                updateLayout0();
-            }
+            ReadAloudConnector.speakItemSetIndex = 0;
+            imageView.setImageResource(R.drawable.pause_24px);
+            speaking = true;
+            readAloudService.resumeForeground();
+            updateLayout0();
         }
     }
 
@@ -370,6 +372,12 @@ public class ReadAloudActivity extends AppCompatActivity {
         public void onStopTrackingTouch(SeekBar seekBar) {
         }
     };
+
+    public static void returnToMainActivity() {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -22,7 +22,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.rootekstudio.repeatsandroid.activities.ChangeDeliveryListActivity;
@@ -31,6 +30,7 @@ import com.rootekstudio.repeatsandroid.activities.FirstRunActivity;
 import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
 import com.rootekstudio.repeatsandroid.activities.SilenceHoursActivity;
+import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
@@ -367,7 +367,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                 try {
                     startActivity(send);
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(context, R.string.storeNotFound, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.browserNotFound, Toast.LENGTH_LONG).show();
                 }
 
                 return true;
@@ -382,9 +382,18 @@ public class Preference_Screen extends PreferenceFragmentCompat {
                 try {
                     startActivity(send);
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(context, R.string.storeNotFound, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.browserNotFound, Toast.LENGTH_LONG).show();
                 }
 
+                return true;
+            }
+        });
+        Preference whatsNew = findPreference("whatsNew");
+        whatsNew.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(context, WhatsNewActivity.class);
+                startActivity(intent);
                 return true;
             }
         });

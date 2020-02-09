@@ -40,15 +40,6 @@
             app:isPreferenceVisible="false"/>
     </PreferenceCategory>
 
-<!--    <PreferenceCategory-->
-<!--        app:iconSpaceReserved="false"-->
-<!--        app:title="@string/readAloud">-->
-<!--        <Preference-->
-<!--            app:layout="@layout/select_language_tts"-->
-<!--            app:key="ttsPreference"-->
-<!--            app:selectable="false"/>-->
-<!--    </PreferenceCategory>-->
-
     <PreferenceCategory
         app:title="@string/Theme"
         app:iconSpaceReserved="false">
@@ -94,6 +85,10 @@
             app:iconSpaceReserved="false"
             app:key="feedback"
             app:title="@string/SendFeedback"/>
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="whatsNew"
+            app:title="@string/whatsNew"/>
         <Preference
             app:iconSpaceReserved="false"
             app:key="terms"

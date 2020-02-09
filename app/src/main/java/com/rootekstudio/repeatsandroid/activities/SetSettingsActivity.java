@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,6 +35,7 @@ public class SetSettingsActivity extends AppCompatActivity {
     String setID;
     boolean fromReadAloud;
     RepeatsListDB singleSetInfo;
+    CheckBox ignoreCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +47,7 @@ public class SetSettingsActivity extends AppCompatActivity {
         fromReadAloud = intent.getBooleanExtra("fromReadAloud", false);
         DB = new DatabaseHelper(this);
         singleSetInfo = DB.getSingleItemLIST(setID);
-        CheckBox ignoreCheckBox = findViewById(R.id.ignoreCheckBox);
-        ignoreCheckBox.setOnCheckedChangeListener(onCheckedChangeListener);
-
+        ignoreCheckBox = findViewById(R.id.ignoreCheckBox);
         if(singleSetInfo.getIgnoreChars().equals("true")) {
             ignoreCheckBox.setChecked(true);
         }
@@ -55,12 +55,10 @@ public class SetSettingsActivity extends AppCompatActivity {
             ignoreCheckBox.setChecked(false);
         }
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        ignoreCheckBox.setOnCheckedChangeListener(onCheckedChangeListener);
+
+
                 initTTS();
-            }
-        }).start();
     }
 
     CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
@@ -79,7 +77,14 @@ public class SetSettingsActivity extends AppCompatActivity {
         textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
-                selectLanguages();
+                if(i == TextToSpeech.SUCCESS) {
+                    selectLanguages();
+                }
+                else {
+                    findViewById(R.id.linearSetLanguages).setVisibility(View.GONE);
+                    Toast.makeText(SetSettingsActivity.this, getString(R.string.cannotLoadLangList), Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -154,6 +159,16 @@ public class SetSettingsActivity extends AppCompatActivity {
                 autoCompleteTextView1.setAdapter(adapter);
             }
         });
+    }
+
+    public void ignoreDescriptionClick(View view) {
+        if(ignoreCheckBox.isChecked()){
+            ignoreCheckBox.setChecked(false);
+        }
+        else {
+            ignoreCheckBox.setChecked(true);
+        }
+
     }
 
     @Override

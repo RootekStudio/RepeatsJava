@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,6 +80,21 @@ public class MainActivity extends AppCompatActivity {
         if (!darkTheme) {
             ImageView logo = findViewById(R.id.logoMain);
             logo.setImageResource(R.drawable.repeats_for_light_bg);
+        }
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if(!sharedPreferences.contains("version")) {
+            if(sharedPreferences.getInt("firstRunTerms", 3) == 3) {
+                findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
+            }
+            else {
+                saveVersion();
+            }
+        }
+        else {
+            if(!sharedPreferences.getString("version", "2.5").equals(RepeatsHelper.version)) {
+                findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
+            }
         }
 
         recyclerView = findViewById(R.id.recycler_view_main);
@@ -212,6 +229,25 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    void saveVersion() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("version", RepeatsHelper.version);
+        editor.apply();
+    }
+
+    public void whatsNewClickMain(View view) {
+        saveVersion();
+        Intent intent = new Intent(this, WhatsNewActivity.class);
+        startActivity(intent);
+    }
+
+    public void closeUpdateInfo(View view) {
+        saveVersion();
+        RelativeLayout relativeLayout = findViewById(R.id.relativeUpdateInfoRecyclerView);
+        relativeLayout.removeView(findViewById(R.id.infoLayout));
     }
 
     @Override

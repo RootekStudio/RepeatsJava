@@ -6,7 +6,6 @@
     <string name="Tag_id_0" translatable="false">0</string>
     <string name="Tag_id_1" translatable="false">1</string>
     <string name="Tag_id_2" translatable="false">2</string>
-    <string name="Tag_id_3" translatable="false">3</string>
     <string name="ReplyText">Answer the question</string>
     <string name="Reply">Answer</string>
     <string name="CorrectAnswer2">Congrats! This is the correct answer!</string>
@@ -28,14 +27,10 @@
     <string name="FreqAskPref">Change the frequency of sending notifications</string>
     <string name="FreqText">Notifications are delivered every</string>
     <string name="minutes">minutes</string>
-    <string name="resetTitle">Reset notifications</string>
-    <string name="resetSummary">If notifications are not delivered or not displayed properly, you can reset them</string>
     <string name="changeTheme">Change theme</string>
     <string name="Theme">Theme</string>
     <string name="Light">Light</string>
     <string name="Dark">Dark</string>
-    <string name="ResetSuccessfully">Reset successfully</string>
-    <string name="Test">Test</string>
     <string name="search_hint">Search</string>
     <string name="channelname2">Notifications with answer</string>
     <string name="channeldesc2">This channel is responsible for delivery notification with answer</string>
@@ -144,7 +139,6 @@
     <string name="successShare">Shared successfully</string>
     <string name="somethingWentWrong">Something Went Wrong</string>
     <string name="mySets">My sets</string>
-    <string name="theme">Theme</string>
     <string name="yourSets">Your sets in Repeats Community</string>
     <string name="next">Next</string>
     <string name="weWillConfigure">"We will now configure the basic functions of the app"</string>
@@ -160,28 +154,34 @@
     <string name="searchResultHere">The search results will appear here</string>
     <string name="question_lang">Languages of questions</string>
     <string name="answer_lang">Language of answers</string>
-    <string name="select_language">Select language</string>
-    <string name="start" translatable="false">Start</string>
-    <string name="default_">Default</string>
-    <string name="default_pl">Language of questions (default: polski (Polska))</string>
-    <string name="default_second_en">Language of answers (default: english (Great Britain))</string>
-    <string name="default_tts_settings">Default:\nLanguage of questions: english (United States)\nLanguage of answers: french (France)</string>
-    <string name="tts" translatable="false">TTS</string>
-    <string name="stopping">Stopping...</string>
     <string name="speed_tts">Reading speed</string>
     <string name="readAloud">Reading aloud</string>
-    <string name="manageNotifications">Manage notifications</string>
     <string name="setSettings">Set settings</string>
     <string name="languageSettings">Language settings</string>
     <string name="cantShareSet">You can\'t share this set. Name the set differently.</string>
     <string name="playing_set">Playing set:</string>
     <string name="click_here_read_notifi">Click here to go to the player</string>
     <string name="see_whats_now">See what\'s new</string>
-    <string name="welcome_to">Welcome to Repeats</string>
+    <string name="welcome_to_update">Welcome to Repeats</string>
     <string name="app_updated_info">App has been updated to the latest version</string>
     <string name="channelname4">Read Aloud notification</string>
     <string name="channeldesc4">This notification will show up when you are listening to the set</string>
     <string name="checking_answers">Checking answers</string>
     <string name="set_languages">Set languages</string>
     <string name="ignore_chars_info">When this feature is enabled, case sensitive characters, spaces, and diacritics will be ignored when checking the correctness of the answer. Note: This function does not work properly with Chinese script.</string>
+    <string name="whatsNew">What\'s new</string>
+    <string name="homePageRedesign">Home page redesign</string>
+    <string name="otherCorrectAnswers">Other correct answers:</string>
+    <string name="cannotLoadLangList">We could not load the list of languages</string>
+    <string name="cannotLoadTTS">We were unable to load Text-to-Speech. Check if you have this app installed on your device.</string>
+    <string name="whatsNewDesc0">The new Read Aloud feature lets you listen to sets of questions and answers. The words played are displayed on the screen. You can change the speed of reading words.\n\nThe function works in the background, so when listening to the set, you can use other applications or listen to the set on the go without having to constantly use the phone. You can go back to the previous word, go to the next one, or stop playback at any time.
+\n\nReading aloud can be found on the main page in the set menu (3 dots next to the set name).</string>
+    <string name="whatsNewDesc1">In update 2.5, the appearance of the main page was slightly rebuilt.\n\nThe Test button has been replaced by a drop-down menu with links to the Fast Learning and Read Aloud functions as well as a link to the Set Settings.
+\n\nIn addition, with version 2.5 sets on the main page are sorted from newest to oldest (not as before from oldest to newest).\n\nThe display of the set name has also been changed. If the name is long, it will be scaled to a smaller size.</string>
+    <string name="whatsNewDesc2">The new Set Settings page allows you to edit the configuration of the set, i.e. enable/disable ignoring special characters and change the set languages (used in the Read aloud function).
+\n\nIn the future, more options and settings will appear there.</string>
+    <string name="whatsNewDesc3">- The application settings code has been rewritten, so the settings should load faster   - If the user answers the question correctly when more than one answer is correct, the remaining correct answers will be displayed   - Prevented sharing of unnamed sets   - A message has been added on the home page that shows when the application is updated to the latest feature update   - Added What\'s New page with a list of changes in the latest feature update</string>
+    <string name="otherImprovements">Other improvements</string>
+    <string name="browserNotFound">Browser not found</string>
+
 </resources>

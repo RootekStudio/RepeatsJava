@@ -26,14 +26,10 @@
     <string name="FreqAskPref">Zmień częstotliwość wysyłania powiadomień</string>
     <string name="FreqText">Powiadomienia przychodzą co</string>
     <string name="minutes">minut</string>
-    <string name="resetTitle">Resetuj powiadomienia</string>
-    <string name="resetSummary">Jeśli powiadomienia nie przychodzą lub nie wyświetlają się prawidłowo, spróbuj je zresetować</string>
     <string name="changeTheme">Zmień motyw</string>
     <string name="Theme">Motyw</string>
     <string name="Light">Jasny</string>
     <string name="Dark">Ciemny</string>
-    <string name="ResetSuccessfully">Zresetowano pomyślnie</string>
-    <string name="Test">Test</string>
     <string name="search_hint">Wyszukaj</string>
     <string name="channelname2">Powiadomienia z odpowiedzią</string>
     <string name="channeldesc2">Ten kanał odpowiada za dostrczenie powiadomienia z odpowiedzią</string>
@@ -56,7 +52,7 @@
     <string name="rate">Oceń aplikację w Google Play</string>
     <string name="savingInProgress">Trwa zapisywanie zestawu...</string>
     <string name="explorerNotFound">Explorator plików nie został znaleziony. Nie można wczytać zestawu z pliku.</string>
-    <string name="storeNotFound">Z</string>
+    <string name="storeNotFound">Nie znaleziono Sklepu Google Play</string>
     <string name="enterNumber">Wprowadź liczbę</string>
     <string name="imageError">Nie udało się uzyskać dostępu do zdjęcia. Spróbuj jeszcze raz załadować zdjęcie, tym razem aplikacja spróbuje zrobić to inną metodą</string>
     <string name="batteryO">Wyłącz optymalizację baterii</string>
@@ -141,7 +137,6 @@
     <string name="successShare">Udostępniono pomyślnie</string>
     <string name="somethingWentWrong">Coś poszło nie tak</string>
     <string name="mySets">Moje zestawy</string>
-    <string name="theme">Motyw</string>
     <string name="yourSets">Twoje zestawy w Społeczności Repeats</string>
     <string name="next">Dalej</string>
     <string name="weWillConfigure">Skonfigurujemy teraz podstawowe funkcje aplikacji</string>
@@ -157,26 +152,37 @@
     <string name="searchResultHere">Tutaj pojawią się wyniki wyszukiwania</string>
     <string name="question_lang">Język pytań</string>
     <string name="answer_lang">Język odpowiedzi</string>
-    <string name="select_language">Wybierz język</string>
-    <string name="default_">Domyślnie</string>
-    <string name="default_pl">Język pytań (domyślnie: polski (Polska)</string>
-    <string name="default_second_en">Język odpowiedzi (domyślnie: angielski (Wielka Brytania)</string>
-    <string name="default_tts_settings">Domyślnie:\nJęzyk pytań: polski (Polska)\nJęzyk odpowiedzi: angielski (Wielka Brytania)</string>
-    <string name="stopping">Zatrzymywanie...</string>
     <string name="speed_tts">Prędkość czytania</string>
     <string name="readAloud">Czytanie na głos</string>
-    <string name="manageNotifications">Zarządzaj powiadomieniami</string>
     <string name="setSettings">Ustawienia zestawu</string>
     <string name="languageSettings">Ustawienia języka</string>
     <string name="cantShareSet">Nie możesz udostępnić tego zestawu. Nazwij go inaczej.</string>
     <string name="playing_set">Odtwarzanie zestawu:</string>
     <string name="click_here_read_notifi">Kliknij tutaj aby przejść do odtwarzacza</string>
     <string name="see_whats_now">Zobacz co nowego</string>
-    <string name="welcome_to">Witaj w Repeats</string>
+    <string name="welcome_to_update">Witaj w Repeats 2.5</string>
     <string name="app_updated_info">Zaktualizowano aplikację do najnowszej wersji</string>
     <string name="channelname4">Powiadomienie stałe funkcji Czytanie na głos</string>
     <string name="channeldesc4">Powiadomienie pokazujące się podczas odsłuchiwania zestawu za pomocą funkcji Czytanie na głos</string>
     <string name="checking_answers">Sprawdzanie odpowiedzi</string>
     <string name="set_languages">Języki zestawu</string>
     <string name="ignore_chars_info">Po włączeniu tej funkcji wielkość liter, spacje i znaki diakrytyczne będą igonorowane przy sprawdzaniu poprawności odpowiedzi. Uwaga: Funkcja nie działa poprawnie z pismem chińskim.</string>
+    <string name="whatsNew">Co nowego</string>
+    <string name="homePageRedesign">Przebudowa strony głównej</string>
+    <string name="otherCorrectAnswers">Inne poprawne odpowiedzi:</string>
+    <string name="cannotLoadLangList">Nie mogliśmy załadować listy języków</string>
+    <string name="cannotLoadTTS">Nie mogliśmy załadować Zamiany tekstu na mowę Google. Sprawdź czy masz tę aplikację zainstalowaną na swoim urządzeniu.</string>
+    <string name="whatsNewDesc0">Nowa funkcja Czytanie na głos pozwala na odsłuchiwanie zestawów pytań i odpowiedzi. Odtwarzane słowa są wyświetlane na ekranie. Istnieje możliwość zmiany szybkości czytania słów. \n\nFunkcja działa w tle, więc podczas słuchania zestawu można korzystać z innych aplikacji lub słuchać zestawów w drodze (np. do szkoły) bez konieczności ciągłego korzystania z telefonu. W każdej chwili można cofnąć się do poprzedniego słowa, przejść do następnego lub zatrzymać odtwarzanie.
+\n\nCzytanie na głos można znaleźć na stronie głównej w menu zestawu (3 kropki obok nazwy zestawu).</string>
+    <string name="whatsNewDesc1">W aktualizacji 2.5 wygląd strony głównej został lekko przebudowany. \n\nPrzycisk Test zastąpiono rozwijanym menu, w którym znajdują się odnośniki do funkcji Szybka nauka i Czytanie na głos, jak również link do Ustawień zestawu.
+\n\nOprócz tego wraz z wersją 2.5 zestawy na stronie głównej są sortowane od najnowszego do najstarszego (a nie tak jak wcześniej od najstarszego do najnowszego). \n\nZmieniono również sposób wyświetlania nazwy zestawu. Jeżeli nazwa jest długa to zostanie przeskalowana do mniejszych rozmiarów.</string>
+    <string name="whatsNewDesc2">Nowa strona Ustawienia zestawu pozwala na edytowanie konfiguracji zestawu, czyli włączanie/wyłączanie ignorowania znaków specjalnych oraz zmiana języków zestawu (używanych w funkcji Czytanie na głos).
+                \n\nW przyszłości pojawi się tam więcej opcji i ustawień.</string>
+    <string name="whatsNewDesc3">- Przepisano na nowo kod ustawień aplikacji, dzięki czemu ustawienia powinny wczytywać się szybciej
+\n\n- Jeżeli użytkownik odpowie poprawnie na pytanie w sytuacji gdy poprawnych jest więcej niż jedna odpowiedź, zostaną wyświetlone pozostałe prawidłowe odpowiedzi
+\n\n- Uniemożliwiono udostępnianie zestawów bez nazwy
+\n\n- Dodano komunikat na stronie głównej pokazujący się gdy aplikacja zostanie zaktualizowana do najnowszej aktualizacji funkcji
+\n\n- Dodano stronę Co nowego na której będzie zamieszczona lista zmian w najnowszej aktualizacji funkcji</string>
+    <string name="otherImprovements">Inne usprawnienia</string>
+    <string name="browserNotFound">Nie znaleziono przeglądarki internetowej</string>
 </resources>

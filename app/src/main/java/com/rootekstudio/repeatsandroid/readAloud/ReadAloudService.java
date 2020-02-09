@@ -7,6 +7,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -21,10 +22,10 @@ public class ReadAloudService extends Service {
     private final IBinder binder = new ReadAloudBinder();
     private TextToSpeech textToSpeech;
     private TextToSpeech textToSpeech1;
-    List<RepeatsSingleSetDB> singleSet;
+    private List<RepeatsSingleSetDB> singleSet;
     private String locale0;
     private String locale1;
-    NotificationCompat.Builder builder;
+    private NotificationCompat.Builder builder;
 
     public class ReadAloudBinder extends Binder {
         ReadAloudService getService() {
@@ -67,10 +68,15 @@ public class ReadAloudService extends Service {
 
     @Override
     public void onDestroy() {
-        textToSpeech.stop();
-        textToSpeech1.stop();
-        textToSpeech.shutdown();
-        textToSpeech1.shutdown();
+        if(textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+
+        if(textToSpeech1 != null) {
+            textToSpeech1.stop();
+            textToSpeech1.shutdown();
+        }
 
         stopForeground(true);
         super.onDestroy();
@@ -98,6 +104,11 @@ public class ReadAloudService extends Service {
                             }
                         }
                     });
+                }
+                else {
+                    Toast.makeText(ReadAloudService.this, getString(R.string.cannotLoadTTS), Toast.LENGTH_LONG).show();
+                    ReadAloudActivity.returnToMainActivity();
+                    stopSelf();
                 }
             }
         });
@@ -161,7 +172,7 @@ public class ReadAloudService extends Service {
                         speak0();
                     } else {
                         stopTextToSpeech();
-                        stopSpeakService();
+                        stopForegroundServ();
                     }
                 }
             }
@@ -197,11 +208,6 @@ public class ReadAloudService extends Service {
     public void setSpeechRate() {
         textToSpeech.setSpeechRate(ReadAloudConnector.speechRate);
         textToSpeech1.setSpeechRate(ReadAloudConnector.speechRate);
-    }
-
-    public void stopSpeakService() {
-        stopForeground(true);
-        stopSelf();
     }
 
     public void speak0() {

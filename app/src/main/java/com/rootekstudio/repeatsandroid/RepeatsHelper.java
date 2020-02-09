@@ -12,7 +12,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
-import android.provider.ContactsContract;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -29,25 +28,17 @@ import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
-import com.rootekstudio.repeatsandroid.activities.MainActivity;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
-import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class RepeatsHelper {
     public static final String breakLine = "\r\n";
     public static final int staticFrequencyCode = 10000;
     public static ArrayList<String> setItems;
     public static String setName;
+    public static String version = "2.5";
 
     private static AlertDialog dialog = null;
 

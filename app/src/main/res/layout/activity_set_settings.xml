@@ -42,7 +42,10 @@
                 android:layout_marginStart="47dp"
                 android:layout_marginEnd="20dp"
                 android:text="@string/ignore_chars_info"
-                android:textColor="@android:color/darker_gray" />
+                android:textColor="@android:color/darker_gray"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="ignoreDescriptionClick"/>
         </LinearLayout>
 
         <View
@@ -53,7 +56,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/linearSetLanguages">
 
             <TextView
                 android:layout_width="match_parent"
