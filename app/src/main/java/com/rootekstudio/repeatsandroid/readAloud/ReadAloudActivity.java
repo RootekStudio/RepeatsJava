@@ -54,13 +54,10 @@ public class ReadAloudActivity extends AppCompatActivity {
 
     public static Intent serviceIntent = null;
 
-    static Context context;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        context = this;
         fromNotification = intent.getBooleanExtra("loadedFromNotification", false);
 
         setContentView(R.layout.activity_read_aloud);
@@ -305,7 +302,9 @@ public class ReadAloudActivity extends AppCompatActivity {
         }
 
         if (ReadAloudConnector.speakItemSetIndex == singleSet.size()) {
-            ReadAloudConnector.speakItemSetIndex -= 2;
+            if(singleSet.size() != 1) {
+                ReadAloudConnector.speakItemSetIndex -= 2;
+            }
         } else {
             if (ReadAloudConnector.speakItemSetIndex != 0) {
                 ReadAloudConnector.speakItemSetIndex--;
@@ -372,12 +371,6 @@ public class ReadAloudActivity extends AppCompatActivity {
         public void onStopTrackingTouch(SeekBar seekBar) {
         }
     };
-
-    public static void returnToMainActivity() {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        context.startActivity(intent);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

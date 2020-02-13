@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
 import com.rootekstudio.repeatsandroid.RequestCodes;
+import com.rootekstudio.repeatsandroid.activities.MainActivity;
 
 import java.util.List;
 import java.util.Locale;
@@ -107,7 +108,9 @@ public class ReadAloudService extends Service {
                 }
                 else {
                     Toast.makeText(ReadAloudService.this, getString(R.string.cannotLoadTTS), Toast.LENGTH_LONG).show();
-                    ReadAloudActivity.returnToMainActivity();
+                    Intent intent = new Intent(ReadAloudService.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                     stopSelf();
                 }
             }

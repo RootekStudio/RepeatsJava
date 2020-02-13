@@ -82,20 +82,26 @@ public class MainActivity extends AppCompatActivity {
             logo.setImageResource(R.drawable.repeats_for_light_bg);
         }
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if(!sharedPreferences.contains("version")) {
-            if(sharedPreferences.getInt("firstRunTerms", 3) == 3) {
-                findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
+        try {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            if(!sharedPreferences.contains("version")) {
+                if(sharedPreferences.getInt("firstRunTerms", 3) == 3) {
+                    findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
+                }
+                else {
+                    saveVersion();
+                }
             }
             else {
-                saveVersion();
+                if(!sharedPreferences.getString("version", "2.5").equals(RepeatsHelper.version)) {
+                    findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
+                }
             }
         }
-        else {
-            if(!sharedPreferences.getString("version", "2.5").equals(RepeatsHelper.version)) {
-                findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
-            }
+        catch(Exception e) {
+            e.printStackTrace();
         }
+
 
         recyclerView = findViewById(R.id.recycler_view_main);
         recyclerView.setHasFixedSize(true);
