@@ -201,4 +201,8 @@
     <string name="wrongAnswersT">błędnych odpowiedzi</string>
     <string name="allAnswersT">wszystkich odpowiedzi</string>
     <string name="clickToDetails">Kliknij aby zobaczyć szczegóły</string>
+    <string name="swapQwithA">Zamień pytania z odpowiedziami</string>
+    <string name="contentSettings">Ustawienia zawartości</string>
+    <string name="operationSuccess">Operacja zakończona pomyślnie</string>
+    <string name="operationFailed">Operacja zakończona niepowodzeniem</string>
 </resources>

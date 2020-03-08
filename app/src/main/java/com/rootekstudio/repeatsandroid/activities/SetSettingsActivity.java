@@ -10,16 +10,21 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.readAloud.ReadAloudActivity;
 import com.rootekstudio.repeatsandroid.readAloud.ReadAloudConnector;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,45 +53,44 @@ public class SetSettingsActivity extends AppCompatActivity {
         DB = new DatabaseHelper(this);
         singleSetInfo = DB.getSingleItemLIST(setID);
         ignoreCheckBox = findViewById(R.id.ignoreCheckBox);
-        if(singleSetInfo.getIgnoreChars().equals("true")) {
+        if (singleSetInfo.getIgnoreChars().equals("true")) {
             ignoreCheckBox.setChecked(true);
-        }
-        else {
+        } else {
             ignoreCheckBox.setChecked(false);
         }
-
         ignoreCheckBox.setOnCheckedChangeListener(onCheckedChangeListener);
 
-
-                initTTS();
+        initTTS();
     }
 
     CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-            if(checked) {
+            if (checked) {
                 DB.ignoreChars(setID, "true");
-            }
-            else {
+            } else {
                 DB.ignoreChars(setID, "false");
             }
         }
     };
 
     private void initTTS() {
-        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+        new Thread(new Runnable() {
             @Override
-            public void onInit(int i) {
-                if(i == TextToSpeech.SUCCESS) {
-                    selectLanguages();
-                }
-                else {
-                    findViewById(R.id.linearSetLanguages).setVisibility(View.GONE);
-                    Toast.makeText(SetSettingsActivity.this, getString(R.string.cannotLoadLangList), Toast.LENGTH_SHORT).show();
-                }
-
+            public void run() {
+                textToSpeech = new TextToSpeech(SetSettingsActivity.this, new TextToSpeech.OnInitListener() {
+                    @Override
+                    public void onInit(int i) {
+                        if (i == TextToSpeech.SUCCESS) {
+                            selectLanguages();
+                        } else {
+                            findViewById(R.id.linearSetLanguages).setVisibility(View.GONE);
+                            Toast.makeText(SetSettingsActivity.this, getString(R.string.cannotLoadLangList), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
-        });
+        }).start();
     }
 
     private void selectLanguages() {
@@ -162,13 +166,36 @@ public class SetSettingsActivity extends AppCompatActivity {
     }
 
     public void ignoreDescriptionClick(View view) {
-        if(ignoreCheckBox.isChecked()){
+        if (ignoreCheckBox.isChecked()) {
             ignoreCheckBox.setChecked(false);
-        }
-        else {
+        } else {
             ignoreCheckBox.setChecked(true);
         }
 
+    }
+
+    public void swapQuestionsWithAnswersClick(View view) {
+        view.setEnabled(false);
+        LinearLayout linearLayout = findViewById(R.id.operationInfo);
+        TextView textView = linearLayout.findViewById(R.id.operationInfoTextView);
+        ImageView imageView = linearLayout.findViewById(R.id.operationInfoImageView);
+
+        try {
+            DB.swapQuestionsWithAnswers(setID);
+
+            imageView.setImageDrawable(getDrawable(R.drawable.ic_check));
+            imageView.setColorFilter(ContextCompat.getColor(this, R.color.greenRepeats), android.graphics.PorterDuff.Mode.SRC_IN);
+            textView.setText(R.string.operationSuccess);
+        } catch (Exception e) {
+            imageView.setImageDrawable(getDrawable(R.drawable.ic_clear));
+            imageView.setColorFilter(ContextCompat.getColor(this, R.color.redRepeats), android.graphics.PorterDuff.Mode.SRC_IN);
+            textView.setText(R.string.operationFailed);
+
+            e.printStackTrace();
+        }
+
+        linearLayout.setVisibility(View.VISIBLE);
+        view.setEnabled(true);
     }
 
     @Override

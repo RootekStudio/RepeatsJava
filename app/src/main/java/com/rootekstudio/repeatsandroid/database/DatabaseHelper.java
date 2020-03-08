@@ -501,6 +501,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return sum;
     }
 
+    public void swapQuestionsWithAnswers(String setID) {
+        String query = "UPDATE " + setID + " SET question = answer, answer = question";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
     public void ResetEnabled() {
         SQLiteDatabase db = this.getWritableDatabase();
         String Command;

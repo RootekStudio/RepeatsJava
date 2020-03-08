@@ -199,5 +199,9 @@
     <string name="wrongAnswersT">wrong answers</string>
     <string name="allAnswersT">all answers</string>
     <string name="clickToDetails">Click to see details</string>
+    <string name="swapQwithA">Swap questions with answers</string>
+    <string name="contentSettings">Content settings</string>
+    <string name="operationSuccess">Operation completed successfully</string>
+    <string name="operationFailed">Operation failed</string>
 
 </resources>
