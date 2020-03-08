@@ -9,6 +9,9 @@ public class RepeatsListDB {
     public String IgnoreChars;
     public String firstLanguage;
     public String secondLanguage;
+    public int goodAnswers;
+    public int wrongAnswers;
+    public int allAnswers;
 
     public RepeatsListDB() {
     }
@@ -22,6 +25,9 @@ public class RepeatsListDB {
         this.IgnoreChars = IgnoreChars;
         this.firstLanguage = firstLanguage;
         this.secondLanguage = secondLanguage;
+        this.goodAnswers = 0;
+        this.wrongAnswers = 0;
+        this.allAnswers = 0;
     }
 
     public String getitle() {
@@ -52,6 +58,12 @@ public class RepeatsListDB {
 
     public String getSecondLanguage() {return secondLanguage;}
 
+    public int getGoodAnswers() {return goodAnswers;}
+
+    public int getWrongAnswers() {return wrongAnswers;}
+
+    public int getAllAnswers() {return allAnswers;}
+
     public void setTitle(String Title) {
         this.Title = Title;
     }
@@ -79,4 +91,10 @@ public class RepeatsListDB {
     public void setFirstLanguage(String firstLanguage) {this.firstLanguage = firstLanguage;}
 
     public void setSecondLanguage(String secondLanguage) {this.secondLanguage = secondLanguage;}
+
+    public void setGoodAnswers(int goodAnswers) {this.goodAnswers = goodAnswers;}
+
+    public void setWrongAnswers(int wrongAnswers) {this.wrongAnswers = wrongAnswers;}
+
+    public void setAllAnswers(int allAnswers) {this.allAnswers = allAnswers;}
 }

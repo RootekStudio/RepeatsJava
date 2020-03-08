@@ -41,6 +41,7 @@ public class FastLearningActivity extends AppCompatActivity {
     Context context;
 
     String setID;
+    DatabaseHelper DB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +51,12 @@ public class FastLearningActivity extends AppCompatActivity {
 
         setContentView(R.layout.fast_learning);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         context = this;
-
         FL = new FLCore();
-
         Intent intent = getIntent();
-
         setID = intent.getStringExtra("TableName");
-
-        DatabaseHelper DB = new DatabaseHelper(this);
-        List<RepeatsSingleSetDB> itemsSetList = DB.AllItemsSET(setID);
+        DB = new DatabaseHelper(this);
+        List<RepeatsSingleSetDB> itemsSetList = DB.AllItemsSET(setID, -1);
         String isIgnoring = DB.getValue("IgnoreChars", "TitleTable", "TableName='" + setID + "'");
 
         FL.start(itemsSetList, isIgnoring);
@@ -138,6 +134,18 @@ public class FastLearningActivity extends AppCompatActivity {
                         badge.setImageResource(R.drawable.ic_clear);
                         badge.setColorFilter(ContextCompat.getColor(context, android.R.color.holo_red_dark));
                         correctA.setText(notCorrect);
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                DB.increaseValueInSet(setID, Integer.parseInt(qanda[3]), "wrongAnswers", 1);
+                                DB.increaseValueInSet(setID, Integer.parseInt(qanda[3]), "allAnswers", 1);
+                                DB.increaseValueInTitleTable(setID, "wrongAnswers", 1);
+                                DB.increaseValueInTitleTable(setID, "allAnswers", 1);
+                            }
+                        }).start();
+
+
                     } else {
                         if(qanda[1].contains("\n")) {
                             String correctAnswers = qanda[1].replace("\r\n", ", ");
@@ -147,6 +155,16 @@ public class FastLearningActivity extends AppCompatActivity {
                         else {
                             correctA.setText(R.string.CorrectAnswer2);
                         }
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                DB.increaseValueInSet(setID, Integer.parseInt(qanda[3]), "goodAnswers", 1);
+                                DB.increaseValueInSet(setID, Integer.parseInt(qanda[3]), "allAnswers", 1);
+                                DB.increaseValueInTitleTable(setID, "goodAnswers", 1);
+                                DB.increaseValueInTitleTable(setID, "allAnswers", 1);
+                            }
+                        }).start();
 
                         badge.setImageResource(R.drawable.ic_check);
                         badge.setColorFilter(ContextCompat.getColor(context, android.R.color.holo_green_light));

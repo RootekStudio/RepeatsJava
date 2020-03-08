@@ -16,4 +16,9 @@
         android:id="@+id/app_bar_settings"
         android:title="@string/Settings"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/stats_button"
+        android:title="@string/stats"
+        app:showAsAction="never"/>
 </menu>

@@ -81,7 +81,7 @@ public class ReadAloudActivity extends AppCompatActivity {
             ReadAloudConnector.setID = intent.getStringExtra("setID");
             DatabaseHelper DB = new DatabaseHelper(this);
             setInfo = DB.getSingleItemLIST(ReadAloudConnector.setID);
-            singleSet = DB.AllItemsSET(ReadAloudConnector.setID);
+            singleSet = DB.AllItemsSET(ReadAloudConnector.setID, -1);
 
             setName.setText(setInfo.getitle());
             locale0 = setInfo.getFirstLanguage();

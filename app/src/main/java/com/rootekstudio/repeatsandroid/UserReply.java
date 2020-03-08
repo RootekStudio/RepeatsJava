@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.RepeatsNotificationTemplate;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
@@ -28,18 +29,18 @@ public class UserReply extends BroadcastReceiver {
                 ReallyCorrect = ReallyCorrect.replace("\r\n", ", ");
                 RepeatsNotificationTemplate.AnswerNotifi(context,
                         context.getString(R.string.CorrectAnswer1),
-                        context.getString(R.string.CorrectAnswer2) + "\n" +  context.getString(R.string.otherCorrectAnswers) + " " + ReallyCorrect);
+                        context.getString(R.string.CorrectAnswer2) + "\n" +  context.getString(R.string.otherCorrectAnswers) + " " + ReallyCorrect, true, intent.getStringExtra("setID"), intent.getIntExtra("itemID", -1));
             }
             else {
                 RepeatsNotificationTemplate.AnswerNotifi(context,
                         context.getString(R.string.CorrectAnswer1),
-                        context.getString(R.string.CorrectAnswer2));
+                        context.getString(R.string.CorrectAnswer2), true, intent.getStringExtra("setID"), intent.getIntExtra("itemID", -1));
             }
         }
         else {
             RepeatsNotificationTemplate.AnswerNotifi(context,
                     context.getString(R.string.IncorrectAnswer1),
-                    context.getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect);
+                    context.getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect, false, intent.getStringExtra("setID"), intent.getIntExtra("itemID", -1));
         }
     }
 

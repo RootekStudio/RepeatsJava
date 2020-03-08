@@ -18,13 +18,11 @@ import com.rootekstudio.repeatsandroid.search.SearchItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener
-{
+public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     SearchAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         RepeatsHelper.DarkTheme(this, false);
@@ -43,11 +41,10 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             String TableName = singleitem.TableName;
             String title = singleitem.Title;
 
-            List<RepeatsSingleSetDB> single = DB.AllItemsSET(TableName);
+            List<RepeatsSingleSetDB> single = DB.AllItemsSET(TableName, -1);
 
             int singlecount = single.size();
-            for (int j = 0; j < singlecount; j++)
-            {
+            for (int j = 0; j < singlecount; j++) {
                 RepeatsSingleSetDB singleSetDB = single.get(j);
                 String Q = singleSetDB.getQuestion();
                 String A = singleSetDB.getAnswer();
@@ -64,24 +61,20 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        if(item.getItemId() == android.R.id.home)
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return true;
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query)
-    {
+    public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
     @Override
-    public boolean onQueryTextChange(String newText)
-    {
+    public boolean onQueryTextChange(String newText) {
         adapter.search(newText);
         return false;
     }

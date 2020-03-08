@@ -12,11 +12,13 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.RemoteInput;
 
+import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.UserReply;
 import com.rootekstudio.repeatsandroid.activities.AnswerActivity;
 import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
-import com.rootekstudio.repeatsandroid.database.SingleItemInfo;
+import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.GetQuestion;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,16 +32,16 @@ public class RepeatsNotificationTemplate {
 
     static void NotifiTemplate(Context context, Boolean IsNext, String json) {
         NotificationCompat.Builder mBuilder;
-        SingleItemInfo item;
+        GetQuestion item;
         jsonIndex = json;
         boolean error = false;
 
         if(json != null) {
-            ArrayList<String> setsID = NotificationHelper.getSelectedSetsIdFromJSON(context, jsonIndex);
-            item = new SingleItemInfo(context, setsID);
+            ArrayList<String> setsID = JsonFile.getSelectedSetsIdFromJSON(context, jsonIndex);
+            item = new GetQuestion(context, setsID);
         }
         else {
-            item = new SingleItemInfo(context);
+            item = new GetQuestion(context);
         }
 
         String Question;
@@ -47,6 +49,8 @@ public class RepeatsNotificationTemplate {
         String tablename;
         String picturename = "";
         String ignorechars = "";
+        String setID = "";
+        int itemID = -1;
 
         if(item.getQuestion() != null) {
             Question = item.getQuestion();
@@ -54,6 +58,8 @@ public class RepeatsNotificationTemplate {
             tablename = item.getTitle();
             picturename = item.getPictureName();
             ignorechars = item.getIgnoreChars();
+            setID = item.getSetID();
+            itemID = item.getItemID();
         }
         else {
             error = true;
@@ -71,6 +77,8 @@ public class RepeatsNotificationTemplate {
         answerActivity.putExtra("Image", picturename);
         answerActivity.putExtra("IgnoreChars", ignorechars);
         answerActivity.putExtra("jsonIndex", jsonIndex);
+        answerActivity.putExtra("setID", setID);
+        answerActivity.putExtra("itemID", itemID);
         answerActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, rnd, answerActivity, 0);
 
@@ -126,6 +134,8 @@ public class RepeatsNotificationTemplate {
             Intent intent1 = new Intent(context, UserReply.class);
             intent1.putExtra("Correct", Answer);
             intent1.putExtra("IgnoreChars", ignorechars);
+            intent1.putExtra("setID", setID);
+            intent1.putExtra("itemID", itemID);
 
             PendingIntent replyPendingIntent = PendingIntent.getBroadcast(context,
                     11, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -144,7 +154,26 @@ public class RepeatsNotificationTemplate {
         notificationManager.notify(11, mBuilder.build());
     }
 
-    public static void AnswerNotifi(Context context, String Title, String Text) {
+    public static void AnswerNotifi(final Context context, String Title, String Text, final boolean goodAnswer, final String setID, final int itemID) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DatabaseHelper DB = new DatabaseHelper(context);
+                if(goodAnswer) {
+                    DB.increaseValueInSet(setID, itemID, "goodAnswers", 1);
+                    DB.increaseValueInSet(setID, itemID, "allAnswers", 1);
+                    DB.increaseValueInTitleTable(setID, "goodAnswers", 1);
+                    DB.increaseValueInTitleTable(setID, "allAnswers", 1);
+                }
+                else {
+                    DB.increaseValueInSet(setID, itemID, "wrongAnswers", 1);
+                    DB.increaseValueInSet(setID, itemID, "allAnswers", 1);
+                    DB.increaseValueInTitleTable(setID, "wrongAnswers", 1);
+                    DB.increaseValueInTitleTable(setID, "allAnswers", 1);
+                }
+            }
+        }).start();
+
         Intent intent1;
         if(jsonIndex != null) {
             intent1 = new Intent(context, AdvancedTimeNotification.class);

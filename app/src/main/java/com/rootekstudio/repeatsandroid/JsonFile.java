@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -104,5 +105,24 @@ public class JsonFile {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ArrayList<String> getSelectedSetsIdFromJSON(Context context, String jsonIndex) {
+        ArrayList<String> sets = new ArrayList<>();
+        try {
+            JSONObject rootObject = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
+            JSONObject singleCondition = rootObject.getJSONObject(jsonIndex);
+
+            JSONArray setsArray = singleCondition.getJSONArray("sets");
+
+            for (int i = 0; i < setsArray.length(); i++) {
+                sets.add(setsArray.getString(i));
+            }
+
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return sets;
     }
 }

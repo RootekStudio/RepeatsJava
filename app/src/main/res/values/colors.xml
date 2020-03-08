@@ -3,6 +3,8 @@
     <color name="colorPrimary">#247ee6</color>
     <color name="colorAccent">#247ee6</color>
     <color name="secondColorAccent">#00BCD4</color>
+    <color name="greenRepeats">#32CD32</color>
+    <color name="redRepeats">#DC143C</color>
 
     <!--Light theme-->
     <color name="buttonLight">#fafafa</color>

@@ -185,4 +185,20 @@
 \n\n- Dodano stronę Co nowego na której będzie zamieszczona lista zmian w najnowszej aktualizacji funkcji</string>
     <string name="otherImprovements">Inne usprawnienia</string>
     <string name="browserNotFound">Nie znaleziono przeglądarki internetowej</string>
+    <string name="scan_image">Skanuj obraz</string>
+    <string name="stats">Statystyki</string>
+    <string name="details">Szczegóły</string>
+    <string name="na">Brak danych</string>
+    <string name="setStats">Statystyki zestawu</string>
+    <string name="sortGood">poprawnych odpowiedzi</string>
+    <string name="sortWrong">błędnych odpowiedzi</string>
+    <string name="sortCreationDateA">daty utworzenia (rosnąco)</string>
+    <string name="sortCreationDateD">daty utworzenia (malejąco)</string>
+    <string name="goodAnswersText">poprawnych\nodpowiedzi</string>
+    <string name="wrongAnswersText">błędnych\nodpowiedzi</string>
+    <string name="sortBy">Sortuj według</string>
+    <string name="goodAnswersT">poprawnych odpowiedzi</string>
+    <string name="wrongAnswersT">błędnych odpowiedzi</string>
+    <string name="allAnswersT">wszystkich odpowiedzi</string>
+    <string name="clickToDetails">Kliknij aby zobaczyć szczegóły</string>
 </resources>

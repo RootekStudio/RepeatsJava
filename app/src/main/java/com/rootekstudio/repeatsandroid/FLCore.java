@@ -81,6 +81,6 @@ public class FLCore {
     public static String[] gQuestionAndAnswer()
     {
         RepeatsSingleSetDB single = selectedItems.get(answered);
-        return new String[]{single.getQuestion(), single.getAnswer(), single.getImag()};
+        return new String[]{single.getQuestion(), single.getAnswer(), single.getImag(), String.valueOf(single.getID())};
     }
 }

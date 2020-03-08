@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.rootekstudio.repeatsandroid.RepeatsListDB;
 import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
+import com.rootekstudio.repeatsandroid.SetStats;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -22,15 +23,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_ENABLED = "IsEnabled";
     private static final String KEY_AVATAR = "Avatar";
     private static final String KEY_IGNORE_CHARS = "IgnoreChars";
-    private static final String[] COLUMNS = {KEY_TITLE, KEY_TNAME, KEY_DATE, KEY_ENABLED, KEY_AVATAR};
+    private static final String KEY_FIRST_LANGUAGE = "firstLanguage";
+    private static final String KEY_SECOND_LANGUAGE = "secondLanguage";
+    private static final String KEY_GOOD_ANSWERS = "goodAnswers";
+    private static final String KEY_WRONG_ANSWERS = "wrongAnswers";
+    private static final String KEY_ALL_ANSWERS = "allAnswers";
 
     public DatabaseHelper(Context context) {
-        super(context, "repeats", null, 3);
+        super(context, "repeats", null, 4);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TITLETABLE = "CREATE TABLE IF NOT EXISTS TitleTable (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, TableName TEXT, CreateDate TEXT, IsEnabled TEXT, Avatar TEXT, IgnoreChars TEXT, firstLanguage TEXT, secondLanguage TEXT)";
+        String CREATE_TITLETABLE = "CREATE TABLE IF NOT EXISTS TitleTable (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, TableName TEXT, CreateDate TEXT, IsEnabled TEXT, " +
+                "Avatar TEXT, IgnoreChars TEXT, firstLanguage TEXT, secondLanguage TEXT, goodAnswers INTEGER DEFAULT 0, wrongAnswers INTEGER DEFAULT 0, allAnswers INTEGER DEFAULT 0)";
         db.execSQL(CREATE_TITLETABLE);
     }
 
@@ -62,6 +68,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(command2);
             db.execSQL(command3);
         }
+
+        if(oldVersion == 3) {
+            String command = "ALTER TABLE TitleTable ADD COLUMN goodAnswers INTEGER DEFAULT 0";
+            String command1 = "ALTER TABLE TitleTable ADD COLUMN wrongAnswers INTEGER DEFAULT 0";
+            String command2 = "ALTER TABLE TitleTable ADD COLUMN allAnswers INTEGER DEFAULT 0";
+
+            db.execSQL(command);
+            db.execSQL(command1);
+            db.execSQL(command2);
+
+            String query = "SELECT TableName FROM TitleTable";
+            Cursor cursor = db.rawQuery(query, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    String id = cursor.getString(0);
+                    String singleSetCommand = "ALTER TABLE " + id + " ADD COLUMN goodAnswers INTEGER DEFAULT 0";
+                    String singleSetCommand1 = "ALTER TABLE " + id + " ADD COLUMN wrongAnswers INTEGER DEFAULT 0";
+                    String singleSetCommand2 = "ALTER TABLE " + id + " ADD COLUMN allAnswers INTEGER DEFAULT 0";
+
+                    db.execSQL(singleSetCommand);
+                    db.execSQL(singleSetCommand1);
+                    db.execSQL(singleSetCommand2);
+                }
+                while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
     }
 
     public RepeatsListDB getSingleItemLIST(String setID) {
@@ -82,6 +116,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         list.setIgnoreChars(cursor.getString(6));
         list.setFirstLanguage(cursor.getString(7));
         list.setSecondLanguage(cursor.getString(8));
+        list.setGoodAnswers(cursor.getInt(9));
+        list.setWrongAnswers(cursor.getInt(10));
+        list.setAllAnswers(cursor.getInt(11));
 
         db.close();
         cursor.close();
@@ -106,6 +143,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 list.setIgnoreChars(cursor.getString(6));
                 list.setFirstLanguage(cursor.getString(7));
                 list.setSecondLanguage(cursor.getString(8));
+                list.setGoodAnswers(cursor.getInt(9));
+                list.setWrongAnswers(cursor.getInt(10));
+                list.setAllAnswers(cursor.getInt(11));
                 ALL.add(list);
             } while (cursor.moveToNext());
         }
@@ -133,6 +173,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 list.setIgnoreChars(cursor.getString(6));
                 list.setFirstLanguage(cursor.getString(7));
                 list.setSecondLanguage(cursor.getString(8));
+                list.setGoodAnswers(cursor.getInt(9));
+                list.setWrongAnswers(cursor.getInt(10));
+                list.setAllAnswers(cursor.getInt(11));
                 ALL.add(list);
             } while (cursor.moveToNext());
         }
@@ -164,11 +207,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void InsertValue(String SetID, int ID, String column, String what) {
+    public void InsertValueByID(String SetID, int ID, String column, String what) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(column, what);
         db.update(SetID, values, "id=?", new String[]{String.valueOf(ID)});
+        db.close();
+    }
+
+    public void increaseValueInTitleTable(String setID, String column, int value) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String command = "UPDATE TitleTable SET " + column + " = " + column + " + " + value + " WHERE TableName = '" + setID + "'";
+        db.execSQL(command);
+        db.close();
+    }
+
+    public void increaseValueInSet(String setID, int itemID, String column, int value) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String command = "UPDATE " + setID + " SET " + column + " = " + column + " + " + value + " WHERE id = " + itemID;
+        db.execSQL(command);
         db.close();
     }
 
@@ -260,9 +317,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_ENABLED, List.getIsEnabled());
         values.put(KEY_AVATAR, List.getAvatar());
         values.put(KEY_IGNORE_CHARS, List.getIgnoreChars());
-        values.put("firstLanguage", List.getFirstLanguage());
-        values.put("secondLanguage", List.getSecondLanguage());
-
+        values.put(KEY_FIRST_LANGUAGE, List.getFirstLanguage());
+        values.put(KEY_SECOND_LANGUAGE, List.getSecondLanguage());
+        values.put(KEY_GOOD_ANSWERS, List.getGoodAnswers());
+        values.put(KEY_WRONG_ANSWERS, List.getWrongAnswers());
+        values.put(KEY_ALL_ANSWERS, List.getAllAnswers());
         db.insert(NAME, null, values);
         db.close();
     }
@@ -277,7 +336,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void CreateSet(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String CREATE_SET = "CREATE TABLE IF NOT EXISTS " + name + " (id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, answer TEXT, image TEXT)";
+        String CREATE_SET = "CREATE TABLE IF NOT EXISTS " + name + " (id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, answer TEXT, image TEXT, " +
+                "goodAnswers INTEGER DEFAULT 0, wrongAnswers INTEGER DEFAULT 0, allAnswers INTEGER DEFAULT 0)";
         db.execSQL(CREATE_SET);
         db.close();
     }
@@ -289,9 +349,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<RepeatsSingleSetDB> AllItemsSET(String SETNAME) {
+    public List<RepeatsSingleSetDB> AllItemsSET(String SETNAME, int sortOption) {
+        String order = "";
+        if(sortOption == 0) {
+            order = " ORDER BY goodAnswers DESC";
+        }
+        else if(sortOption == 1) {
+            order = " ORDER BY wrongAnswers DESC";
+        }
+        else if(sortOption == 2) {
+            order = " ORDER BY id ASC";
+        }
+        else if(sortOption == 3) {
+            order = " ORDER BY id DESC";
+        }
         List<RepeatsSingleSetDB> ALL = new LinkedList<>();
-        String query = "SELECT * FROM " + SETNAME;
+        String query = "SELECT * FROM " + SETNAME + order;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         RepeatsSingleSetDB list;
@@ -303,6 +376,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 list.setQuestion(cursor.getString(1));
                 list.setAnswer(cursor.getString(2));
                 list.setImag(cursor.getString(3));
+                list.setGoodAnswers(cursor.getInt(4));
+                list.setWrongAnswers(cursor.getInt(5));
+                list.setAllAnswers(cursor.getInt(6));
                 ALL.add(list);
             } while (cursor.moveToNext());
         }
@@ -370,6 +446,59 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         db.close();
+    }
+
+    public List<SetStats> selectSetsStatsInfo(int sortOption) {
+        String order = "";
+
+        if(sortOption == 0) {
+            order = "ORDER BY CAST(goodAnswers AS FLOAT)/allAnswers DESC";
+        }
+        else if(sortOption == 1) {
+            order = "ORDER BY CAST(wrongAnswers AS FLOAT)/allAnswers DESC";
+        }
+        else if(sortOption == 2) {
+            order = "ORDER BY id ASC";
+        }
+        else if(sortOption == 3) {
+            order = "ORDER BY id DESC";
+        }
+
+        List<SetStats> setStats = new LinkedList<>();
+        String query = "SELECT title, TableName, goodAnswers, wrongAnswers, allAnswers" + " FROM TitleTable " + order;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                SetStats stats = new SetStats();
+                stats.setName(cursor.getString(0));
+                stats.setSetID(cursor.getString(1));
+                stats.setGoodAnswers(cursor.getInt(2));
+                stats.setWrongAnswers(cursor.getInt(3));
+                stats.setAllAnswers(cursor.getInt(4));
+                setStats.add(stats);
+            }while(cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+
+        return setStats;
+    }
+
+    public int columnSum(String table, String column) {
+        int sum = -1;
+        String query = "SELECT SUM(" + column + ") FROM " + table;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()) {
+            sum = cursor.getInt(0);
+        }
+
+        db.close();
+        cursor.close();
+        return sum;
     }
 
     public void ResetEnabled() {

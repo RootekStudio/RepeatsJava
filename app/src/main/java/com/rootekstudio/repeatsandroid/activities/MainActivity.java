@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     String selectedSetID;
     Intent addEditActivityIntent;
     public static List<RepeatsListDB> repeatsList;
-    boolean loaded = false;
 
     RecyclerView recyclerView;
     public static RecyclerView.Adapter mAdapter;
@@ -127,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(settings);
                 } else if (item.getItemId() == R.id.your_sets_rc_button) {
                     Intent intent = new Intent(cnt, MySetsActivity.class);
+                    startActivity(intent);
+                }
+                else if(item.getItemId() == R.id.stats_button) {
+                    Intent intent = new Intent(cnt, StatsActivity.class);
                     startActivity(intent);
                 }
                 return true;

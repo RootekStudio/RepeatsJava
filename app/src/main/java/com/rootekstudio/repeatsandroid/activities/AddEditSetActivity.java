@@ -93,7 +93,6 @@ public class AddEditSetActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String editing = intent.getStringExtra("ISEDIT");
         String SetName = intent.getStringExtra("NAME");
-        String ignore = intent.getStringExtra("IGNORE_CHARS");
 
         //Project name edit text
         final EditText editName = findViewById(R.id.projectname);
@@ -246,7 +245,7 @@ public class AddEditSetActivity extends AppCompatActivity {
         Thread readFromDatabase = new Thread(new Runnable() {
             @Override
             public void run() {
-                List<RepeatsSingleSetDB> SET = DB.AllItemsSET(SetID);
+                List<RepeatsSingleSetDB> SET = DB.AllItemsSET(SetID, -1);
                 int ItemsCount = SET.size();
 
                 for (int i = 0; i < ItemsCount; i++) {
@@ -474,7 +473,7 @@ public class AddEditSetActivity extends AppCompatActivity {
 
                 String question = RepeatsHelper.removeSpaces(editText.getText().toString());
 
-                DB.InsertValue(id, index, column, question);
+                DB.InsertValueByID(id, index, column, question);
 
                 editText.setText(question);
             }
@@ -514,7 +513,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                     newAnswer = answer;
                 }
 
-                DB.InsertValue(id, index, "answer", newAnswer);
+                DB.InsertValueByID(id, index, "answer", newAnswer);
 
                 editText.setText(answer);
             }
@@ -553,12 +552,12 @@ public class AddEditSetActivity extends AppCompatActivity {
 
                 if (!answer.isEmpty()) {
                     String delAnswer = allAnswers.replace(RepeatsHelper.breakLine + answer, "");
-                    DB.InsertValue(id, index, "answer", delAnswer);
+                    DB.InsertValueByID(id, index, "answer", delAnswer);
                 }
 
                 if (allAnswers.contains(RepeatsHelper.breakLine + RepeatsHelper.breakLine)) {
                     String delAnswer = allAnswers.replace(RepeatsHelper.breakLine + RepeatsHelper.breakLine, RepeatsHelper.breakLine);
-                    DB.InsertValue(id, index, "answer", delAnswer);
+                    DB.InsertValueByID(id, index, "answer", delAnswer);
                 }
                 linear.removeView(p);
             }
@@ -617,7 +616,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                         ViewGroup parent = (ViewGroup) rel.getParent();
                         int index = Integer.parseInt(rel.getTag().toString());
 
-                        DB.InsertValue(id, index, "image", ImageName);
+                        DB.InsertValueByID(id, index, "image", ImageName);
 
                     } catch (IOException e) {
                         e.printStackTrace();

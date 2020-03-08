@@ -183,5 +183,21 @@
     <string name="whatsNewDesc3">- The application settings code has been rewritten, so the settings should load faster   - If the user answers the question correctly when more than one answer is correct, the remaining correct answers will be displayed   - Prevented sharing of unnamed sets   - A message has been added on the home page that shows when the application is updated to the latest feature update   - Added What\'s New page with a list of changes in the latest feature update</string>
     <string name="otherImprovements">Other improvements</string>
     <string name="browserNotFound">Browser not found</string>
+    <string name="scan_image">Scan image</string>
+    <string name="stats">Stats</string>
+    <string name="details">Details</string>
+    <string name="na">N/A</string>
+    <string name="setStats">Set stats</string>
+    <string name="sortGood">good answers</string>
+    <string name="sortWrong">wrong answers</string>
+    <string name="sortCreationDateA">creation date (ascending)</string>
+    <string name="sortCreationDateD">creation date (descending)</string>
+    <string name="goodAnswersText">good\nAnswers</string>
+    <string name="wrongAnswersText">wrong\nAnswers</string>
+    <string name="sortBy">Sort by</string>
+    <string name="goodAnswersT">good answers</string>
+    <string name="wrongAnswersT">wrong answers</string>
+    <string name="allAnswersT">all answers</string>
+    <string name="clickToDetails">Click to see details</string>
 
 </resources>

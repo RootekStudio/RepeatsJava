@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/sortGoodAnswers"
+        android:title="@string/sortGood"/>
+    <item
+        android:id="@+id/sortWrongAnswers"
+        android:title="@string/sortWrong"/>
+    <item
+        android:id="@+id/sortCreationDateAscending"
+        android:title="@string/sortCreationDateA"/>
+    <item
+        android:id="@+id/sortCreationDateDescending"
+        android:title="@string/sortCreationDateD"/>
+</menu>

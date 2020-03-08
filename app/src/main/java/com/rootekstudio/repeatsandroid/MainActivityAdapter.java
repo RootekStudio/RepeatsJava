@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.MainViewHolder> {
-    List<RepeatsListDB> repeatsList;
+    private List<RepeatsListDB> repeatsList;
 
-    public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public RelativeLayout relativeLayout;
-        public MainViewHolder(RelativeLayout rl) {
+    static class MainViewHolder extends RecyclerView.ViewHolder {
+        RelativeLayout relativeLayout;
+        MainViewHolder(RelativeLayout rl) {
             super(rl);
             relativeLayout = rl;
         }

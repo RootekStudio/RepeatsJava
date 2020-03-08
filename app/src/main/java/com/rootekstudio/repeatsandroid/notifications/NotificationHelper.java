@@ -196,23 +196,4 @@ public class NotificationHelper {
         AlarmManager alarmManager = (AlarmManager) cnt.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
     }
-
-    public static ArrayList<String> getSelectedSetsIdFromJSON(Context context, String jsonIndex) {
-        ArrayList<String> sets = new ArrayList<>();
-        try {
-            JSONObject rootObject = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
-            JSONObject singleCondition = rootObject.getJSONObject(jsonIndex);
-
-            JSONArray setsArray = singleCondition.getJSONArray("sets");
-
-            for (int i = 0; i < setsArray.length(); i++) {
-                sets.add(setsArray.getString(i));
-            }
-
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        return sets;
-    }
 }

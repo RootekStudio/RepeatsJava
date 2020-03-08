@@ -92,7 +92,7 @@ public class Share {
         // Create a new user with a first and last name
 
         DatabaseHelper DB = new DatabaseHelper(context);
-        List<RepeatsSingleSetDB> singleSet = DB.AllItemsSET(setID);
+        List<RepeatsSingleSetDB> singleSet = DB.AllItemsSET(setID, -1);
 
         ArrayList<String> questions = new ArrayList<>();
         ArrayList<String> answers = new ArrayList<>();
