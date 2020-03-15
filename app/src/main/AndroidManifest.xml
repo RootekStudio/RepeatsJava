@@ -17,10 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.SetStatsActivity"
-            android:label="@string/setStats"/>
+        <activity android:name=".fastlearning.FastLearningActivity"></activity>
         <activity
-            android:name=".activities.StatsActivity"
+            android:name=".statistics.SetStatsActivity"
+            android:label="@string/setStats" />
+        <activity
+            android:name=".statistics.StatsActivity"
             android:label="@string/stats" />
         <activity
             android:name=".activities.WhatsNewActivity"
@@ -30,7 +32,7 @@
             android:label="@string/setSettings"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".readAloud.ReadAloudActivity"
+            android:name=".readaloud.ReadAloudActivity"
             android:label="@string/readAloud"
             android:screenOrientation="portrait" />
         <activity android:name=".activities.FirstRunActivity" />
@@ -41,7 +43,7 @@
             android:name=".community.MySetsActivity"
             android:label="@string/mySets" />
         <activity
-            android:name=".DynamicLinks"
+            android:name=".community.DynamicLinks"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -113,7 +115,7 @@
             android:label="@string/Search" />
         <activity
             android:name=".activities.AddEditSetActivity"
-            android:label="@string/title_activity_repeats_add_edit" />
+            android:label="@string/Set" />
         <activity
             android:name=".activities.SplashScreenActivity"
             android:noHistory="true"
@@ -128,7 +130,7 @@
             android:name=".activities.EnableSetsListActivity"
             android:label="@string/notifiFromSets" />
         <activity
-            android:name=".activities.FastLearningActivity"
+            android:name=".fastlearning.FastLearningConfigActivity"
             android:label="@string/FastLearning" />
         <activity
             android:name=".activities.SilenceHoursActivity"
@@ -141,7 +143,7 @@
             android:label="@string/editRule"
             android:windowSoftInputMode="stateHidden" />
 
-        <service android:name=".readAloud.ReadAloudService" />
+        <service android:name=".readaloud.ReadAloudService" />
     </application>
 
 </manifest>

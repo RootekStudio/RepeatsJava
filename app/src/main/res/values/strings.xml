@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Repeats</string>
-    <string name="title_activity_repeats_add_edit">Set</string>
+    <string name="Set">Set</string>
     <string name="Question">Question</string>
     <string name="Answer">Answer</string>
     <string name="Tag_id_0" translatable="false">0</string>
@@ -203,5 +203,22 @@
     <string name="contentSettings">Content settings</string>
     <string name="operationSuccess">Operation completed successfully</string>
     <string name="operationFailed">Operation failed</string>
+    <string name="chooseSetToStart">Choose set(s) to get started:</string>
+    <string name="questions2">questions</string>
+    <string name="selected">Selected</string>
+    <string name="back">Back</string>
+    <string name="correctAnswer">Correct answer:</string>
+    <string name="enterAnswer">Enter answer</string>
+    <string name="answer2">Answer:</string>
+    <string name="question2">Question:</string>
+    <string name="noAnswer">No answer</string>
+    <string name="time">Time</string>
+    <string name="exit">Exit</string>
+    <string name="finishFastLearning">Exit Fast learning</string>
+    <string name="finishFastLearningQuestion">Are you sure you want to exit Fast learning?</string>
+    <string name="in">In</string>
+    <string name="seconds">seconds</string>
+    <string name="youLearned">you learned</string>
+    <string name="words">words</string>
 
 </resources>

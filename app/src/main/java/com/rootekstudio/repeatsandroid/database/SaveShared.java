@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsListDB;
+import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,12 +78,12 @@ public class SaveShared {
 
                 name = keys.get(setIndex);
 
-                RepeatsListDB list;
+                RepeatsSetInfo list;
                 if(Locale.getDefault().toString().equals("pl_PL")) {
-                    list = new RepeatsListDB(name, id, createDate, "true", "", "false", "pl_PL", "en_GB");
+                    list = new RepeatsSetInfo(name, id, createDate, "true", "", "false", "pl_PL", "en_GB");
                 }
                 else {
-                    list = new RepeatsListDB(name, id, createDate, "true", "", "false", "en_US", "es_ES");
+                    list = new RepeatsSetInfo(name, id, createDate, "true", "", "false", "en_US", "es_ES");
                 }
 
                 DB.CreateSet(id);

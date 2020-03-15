@@ -19,12 +19,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsListDB;
+import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
-import com.rootekstudio.repeatsandroid.readAloud.ReadAloudActivity;
-import com.rootekstudio.repeatsandroid.readAloud.ReadAloudConnector;
-
-import org.w3c.dom.Text;
+import com.rootekstudio.repeatsandroid.readaloud.ReadAloudActivity;
+import com.rootekstudio.repeatsandroid.readaloud.ReadAloudConnector;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +37,7 @@ public class SetSettingsActivity extends AppCompatActivity {
     DatabaseHelper DB;
     String setID;
     boolean fromReadAloud;
-    RepeatsListDB singleSetInfo;
+    RepeatsSetInfo singleSetInfo;
     CheckBox ignoreCheckBox;
 
     @Override

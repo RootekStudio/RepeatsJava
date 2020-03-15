@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid.activities;
+package com.rootekstudio.repeatsandroid.statistics;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -8,10 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,8 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.SetStats;
-import com.rootekstudio.repeatsandroid.StatsActivityAdapter;
+import com.rootekstudio.repeatsandroid.statistics.SetStats;
+import com.rootekstudio.repeatsandroid.statistics.StatsActivityAdapter;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
 import java.util.List;

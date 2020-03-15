@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.community;
 
 import android.content.Context;
 import android.content.Intent;

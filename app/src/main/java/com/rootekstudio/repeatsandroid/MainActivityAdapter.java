@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.MainViewHolder> {
-    private List<RepeatsListDB> repeatsList;
+    private List<RepeatsSetInfo> repeatsList;
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout relativeLayout;
@@ -21,8 +21,8 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         }
     }
 
-    public MainActivityAdapter(List<RepeatsListDB> repeatsListDB) {
-        repeatsList = repeatsListDB;
+    public MainActivityAdapter(List<RepeatsSetInfo> repeatsSetInfo) {
+        repeatsList = repeatsSetInfo;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
     @Override
     public void onBindViewHolder(MainViewHolder holder, int position) {
         RelativeLayout view = holder.relativeLayout;
-        RepeatsListDB Item = repeatsList.get(position);
+        RepeatsSetInfo Item = repeatsList.get(position);
 
         RelativeLayout but = view.findViewById(R.id.RelativeMAIN);
         ImageButton options = view.findViewById(R.id.optionsMainItem);

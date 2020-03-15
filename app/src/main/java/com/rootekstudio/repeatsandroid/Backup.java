@@ -57,12 +57,12 @@ public class Backup {
             @Override
             public void onClick(View view) {
                 alert.dismiss();
-                List<RepeatsListDB> list = DB.AllItemsLIST();
+                List<RepeatsSetInfo> list = DB.AllItemsLIST();
                 final ArrayList<String> names = new ArrayList<>();
                 final ArrayList<String> setsID = new ArrayList<>();
 
                 for (int i = 0; i < list.size(); i++) {
-                    RepeatsListDB item = list.get(i);
+                    RepeatsSetInfo item = list.get(i);
                     names.add(item.getitle());
                     setsID.add(item.getTableName());
                 }
@@ -113,12 +113,12 @@ public class Backup {
             @Override
             public void run() {
 
-                List<RepeatsListDB> list = DB.AllItemsLIST();
+                List<RepeatsSetInfo> list = DB.AllItemsLIST();
                 ArrayList<String> names = new ArrayList<>();
                 ArrayList<String> setsID = new ArrayList<>();
 
                 for (int i = 0; i < list.size(); i++) {
-                    RepeatsListDB item = list.get(i);
+                    RepeatsSetInfo item = list.get(i);
                     names.add(item.getitle());
                     setsID.add(item.getTableName());
                 }

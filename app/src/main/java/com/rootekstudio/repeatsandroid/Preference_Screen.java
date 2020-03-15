@@ -67,7 +67,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         }
         DatabaseHelper DB = new DatabaseHelper(context);
-        List<RepeatsListDB> all = DB.AllItemsLIST();
+        List<RepeatsSetInfo> all = DB.AllItemsLIST();
 
         final int freq = sharedPreferences.getInt("frequency", 0);
 

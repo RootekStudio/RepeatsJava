@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsListDB;
-import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
+import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
+import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.search.SearchAdapter;
 import com.rootekstudio.repeatsandroid.search.SearchItem;
@@ -33,19 +33,19 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         DatabaseHelper DB = new DatabaseHelper(this);
         List<SearchItem> sItem = new ArrayList<>();
 
-        List<RepeatsListDB> list = DB.AllItemsLIST();
+        List<RepeatsSetInfo> list = DB.AllItemsLIST();
         int count = list.size();
 
         for (int i = 0; i < count; i++) {
-            RepeatsListDB singleitem = list.get(i);
-            String TableName = singleitem.TableName;
-            String title = singleitem.Title;
+            RepeatsSetInfo singleitem = list.get(i);
+            String TableName = singleitem.getTableName();
+            String title = singleitem.getitle();
 
-            List<RepeatsSingleSetDB> single = DB.AllItemsSET(TableName, -1);
+            List<RepeatsSingleItem> single = DB.AllItemsSET(TableName, -1);
 
             int singlecount = single.size();
             for (int j = 0; j < singlecount; j++) {
-                RepeatsSingleSetDB singleSetDB = single.get(j);
+                RepeatsSingleItem singleSetDB = single.get(j);
                 String Q = singleSetDB.getQuestion();
                 String A = singleSetDB.getAnswer();
 

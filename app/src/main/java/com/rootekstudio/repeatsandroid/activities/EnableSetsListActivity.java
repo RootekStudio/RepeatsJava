@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsListDB;
+import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
 import java.util.List;
@@ -28,13 +28,13 @@ public class EnableSetsListActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final DatabaseHelper DB = new DatabaseHelper(this);
-        List<RepeatsListDB> AllSets = DB.AllItemsLIST();
+        List<RepeatsSetInfo> AllSets = DB.AllItemsLIST();
         int count = AllSets.size();
         LinearLayout linear = findViewById(R.id.EnableSetsLinear);
 
         for(int i = 0; i < count; i++)
         {
-            RepeatsListDB item = AllSets.get(i);
+            RepeatsSetInfo item = AllSets.get(i);
             String name = item.getTableName();
             String isenabled = item.getIsEnabled();
             String title = item.getitle();

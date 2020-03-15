@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid.readAloud;
+package com.rootekstudio.repeatsandroid.readaloud;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -23,9 +23,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.ReadAloudItemFragment;
-import com.rootekstudio.repeatsandroid.RepeatsListDB;
-import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
+import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
+import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
 import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.activities.SetSettingsActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
@@ -34,10 +33,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.rootekstudio.repeatsandroid.readAloud.ReadAloudConnector.readAloudService;
+import static com.rootekstudio.repeatsandroid.readaloud.ReadAloudConnector.readAloudService;
 
 public class ReadAloudActivity extends AppCompatActivity {
-    RepeatsListDB setInfo;
+    RepeatsSetInfo setInfo;
     TextView setName;
     ScrollView scrollView;
     LinearLayout linearButtons;
@@ -45,7 +44,7 @@ public class ReadAloudActivity extends AppCompatActivity {
     Locale firstLocale;
     Locale secondLocale;
 
-    List<RepeatsSingleSetDB> singleSet;
+    List<RepeatsSingleItem> singleSet;
     int allItems;
 
     boolean readAloudBound = false;
@@ -227,7 +226,7 @@ public class ReadAloudActivity extends AppCompatActivity {
             readAloudService.stopForegroundServ();
             return;
         }
-        RepeatsSingleSetDB singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
+        RepeatsSingleItem singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
         String counter = ReadAloudConnector.speakItemSetIndex + 1 + "/" + ReadAloudConnector.singleSet.size();
 
         ArrayList<String> info = new ArrayList<>();
@@ -262,7 +261,7 @@ public class ReadAloudActivity extends AppCompatActivity {
             readAloudService.stopForegroundServ();
             return;
         }
-        RepeatsSingleSetDB singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
+        RepeatsSingleItem singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
         String counter = ReadAloudConnector.speakItemSetIndex + 1 + "/" + ReadAloudConnector.singleSet.size();
 
         ArrayList<String> info = new ArrayList<>();

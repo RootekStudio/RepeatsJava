@@ -1,22 +1,22 @@
 package com.rootekstudio.repeatsandroid;
 
-public class RepeatsListDB {
-    public String Title;
-    public String TableName;
-    public String CreateDate;
-    public String IsEnabled;
-    public String Avatar;
-    public String IgnoreChars;
-    public String firstLanguage;
-    public String secondLanguage;
-    public int goodAnswers;
-    public int wrongAnswers;
-    public int allAnswers;
+public class RepeatsSetInfo {
+    private String Title;
+    private String TableName;
+    private String CreateDate;
+    private String IsEnabled;
+    private String Avatar;
+    private String IgnoreChars;
+    private String firstLanguage;
+    private String secondLanguage;
+    private int goodAnswers;
+    private int wrongAnswers;
+    private int allAnswers;
 
-    public RepeatsListDB() {
+    public RepeatsSetInfo() {
     }
 
-    public RepeatsListDB(String Title, String TableName, String CreateDate, String IsEnabled, String Avatar, String IgnoreChars, String firstLanguage, String secondLanguage) {
+    public RepeatsSetInfo(String Title, String TableName, String CreateDate, String IsEnabled, String Avatar, String IgnoreChars, String firstLanguage, String secondLanguage) {
         this.Title = Title;
         this.TableName = TableName;
         this.CreateDate = CreateDate;

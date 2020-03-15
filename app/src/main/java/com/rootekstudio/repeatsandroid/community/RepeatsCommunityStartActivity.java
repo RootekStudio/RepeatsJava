@@ -25,7 +25,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RCmainListAdapter;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 
 import java.util.ArrayList;

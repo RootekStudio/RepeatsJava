@@ -1,18 +1,16 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.statistics;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.rootekstudio.repeatsandroid.activities.SetStatsActivity;
+import com.rootekstudio.repeatsandroid.R;
 
 import java.util.List;
 

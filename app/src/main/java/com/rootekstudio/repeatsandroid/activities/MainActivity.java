@@ -34,14 +34,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.MainActivityAdapter;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsListDB;
+import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.ZipSet;
 import com.rootekstudio.repeatsandroid.community.MySetsActivity;
 import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
-import com.rootekstudio.repeatsandroid.readAloud.ReadAloudActivity;
+import com.rootekstudio.repeatsandroid.fastlearning.FastLearningConfigActivity;
+import com.rootekstudio.repeatsandroid.readaloud.ReadAloudActivity;
+import com.rootekstudio.repeatsandroid.statistics.StatsActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     boolean darkTheme;
     String selectedSetID;
     Intent addEditActivityIntent;
-    public static List<RepeatsListDB> repeatsList;
+    public static List<RepeatsSetInfo> repeatsList;
 
     RecyclerView recyclerView;
     public static RecyclerView.Adapter mAdapter;
@@ -222,8 +224,8 @@ public class MainActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
 
                 if (itemId == R.id.fastLearningOption) {
-                    Intent intent = new Intent(MainActivity.this, FastLearningActivity.class);
-                    intent.putExtra("TableName", selectedSetID);
+                    Intent intent = new Intent(MainActivity.this, FastLearningConfigActivity.class);
+                    intent.putExtra("setID", selectedSetID);
                     startActivity(intent);
                 } else if (itemId == R.id.readAloudOption) {
                         Intent intent = new Intent(MainActivity.this, ReadAloudActivity.class);

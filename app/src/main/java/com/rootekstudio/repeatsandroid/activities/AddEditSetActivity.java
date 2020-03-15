@@ -33,8 +33,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsListDB;
-import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
+import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
+import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
@@ -137,7 +137,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                             DeleteSet(id);
                             JsonFile.removeSetFromJSON(context, id);
 
-                            List<RepeatsListDB> a = DB.AllItemsLIST();
+                            List<RepeatsSetInfo> a = DB.AllItemsLIST();
                             int size = a.size();
 
                             //if there is no set left in database, turn off notifications
@@ -185,12 +185,12 @@ public class AddEditSetActivity extends AppCompatActivity {
             SimpleDateFormat createD = new SimpleDateFormat("dd.MM.yyyy");
             String createDate = createD.format(new Date());
 
-            RepeatsListDB list;
+            RepeatsSetInfo list;
             if(Locale.getDefault().toString().equals("pl_PL")) {
-                list = new RepeatsListDB("", id, createDate, "true", "", "false", "pl_PL", "en_GB");
+                list = new RepeatsSetInfo("", id, createDate, "true", "", "false", "pl_PL", "en_GB");
             }
             else {
-                list = new RepeatsListDB("", id, createDate, "true", "", "false", "en_US", "es_ES");
+                list = new RepeatsSetInfo("", id, createDate, "true", "", "false", "en_US", "es_ES");
             }
 
             //Registering set in database
@@ -245,12 +245,12 @@ public class AddEditSetActivity extends AppCompatActivity {
         Thread readFromDatabase = new Thread(new Runnable() {
             @Override
             public void run() {
-                List<RepeatsSingleSetDB> SET = DB.AllItemsSET(SetID, -1);
+                List<RepeatsSingleItem> SET = DB.AllItemsSET(SetID, -1);
                 int ItemsCount = SET.size();
 
                 for (int i = 0; i < ItemsCount; i++) {
-                    RepeatsSingleSetDB Single = SET.get(i);
-                    int ID = Single.getID();
+                    RepeatsSingleItem Single = SET.get(i);
+                    int ID = Single.getItemID();
                     String Question = Single.getQuestion();
                     String Answer = Single.getAnswer();
                     String Image = Single.getImag();

@@ -21,10 +21,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rootekstudio.repeatsandroid.JsonFile;
-import com.rootekstudio.repeatsandroid.PreviewAdapter;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsListDB;
+import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
@@ -129,12 +128,12 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
             answers.add(set.get(i));
         }
 
-        RepeatsListDB list;
+        RepeatsSetInfo list;
         if(Locale.getDefault().toString().equals("pl_PL")) {
-            list = new RepeatsListDB(setName, id, createDate, "true", "", "false", "pl_PL", "en_GB");
+            list = new RepeatsSetInfo(setName, id, createDate, "true", "", "false", "pl_PL", "en_GB");
         }
         else {
-            list = new RepeatsListDB(setName, id, createDate, "true", "", "false", "en_US", "es_ES");
+            list = new RepeatsSetInfo(setName, id, createDate, "true", "", "false", "en_US", "es_ES");
         }
 
         //Registering set in database

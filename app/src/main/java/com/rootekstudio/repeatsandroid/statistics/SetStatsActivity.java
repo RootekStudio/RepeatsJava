@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid.activities;
+package com.rootekstudio.repeatsandroid.statistics;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -16,15 +16,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
-import com.rootekstudio.repeatsandroid.SetStats;
-import com.rootekstudio.repeatsandroid.SetStatsActivityAdapter;
-import com.rootekstudio.repeatsandroid.StatsActivityAdapter;
+import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
 import java.util.List;
-
-import static java.security.AccessController.getContext;
 
 public class SetStatsActivity extends AppCompatActivity {
 
@@ -68,8 +63,8 @@ public class SetStatsActivity extends AppCompatActivity {
                 final String goodAnswers = String.valueOf(DB.columnSum(setID, "goodAnswers"));
                 final String wrongAnswers = String.valueOf(DB.columnSum(setID, "wrongAnswers"));
                 final String allAnswers = String.valueOf(DB.columnSum(setID, "allAnswers"));
-                List<RepeatsSingleSetDB> setsStats = DB.AllItemsSET(setID, 0);
-                setsStats.add(0, new RepeatsSingleSetDB());
+                List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, 0);
+                setsStats.add(0, new RepeatsSingleItem());
                 adapter = new SetStatsActivityAdapter(setsStats);
 
                 runOnUiThread(new Runnable() {
@@ -100,27 +95,27 @@ public class SetStatsActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if(item.getItemId() == R.id.sortGoodAnswers) {
-                    List<RepeatsSingleSetDB> setsStats = DB.AllItemsSET(setID, 0);
-                    setsStats.add(0, new RepeatsSingleSetDB());
+                    List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, 0);
+                    setsStats.add(0, new RepeatsSingleItem());
                     adapter = new SetStatsActivityAdapter(setsStats);
                     recyclerView.setAdapter(adapter);
                 }
                 else if(item.getItemId() == R.id.sortWrongAnswers) {
-                    List<RepeatsSingleSetDB> setsStats = DB.AllItemsSET(setID, 1);
-                    setsStats.add(0, new RepeatsSingleSetDB());
+                    List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, 1);
+                    setsStats.add(0, new RepeatsSingleItem());
                     adapter = new SetStatsActivityAdapter(setsStats);
                     recyclerView.setAdapter(adapter);
                 }
                 else if(item.getItemId() == R.id.sortCreationDateAscending) {
-                    List<RepeatsSingleSetDB> setsStats = DB.AllItemsSET(setID, 2);
-                    setsStats.add(0, new RepeatsSingleSetDB());
+                    List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, 2);
+                    setsStats.add(0, new RepeatsSingleItem());
                     adapter = new SetStatsActivityAdapter(setsStats);
                     recyclerView.setAdapter(adapter);
 
                 }
                 else if(item.getItemId() == R.id.sortCreationDateDescending) {
-                    List<RepeatsSingleSetDB> setsStats = DB.AllItemsSET(setID, 3);
-                    setsStats.add(0, new RepeatsSingleSetDB());
+                    List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, 3);
+                    setsStats.add(0, new RepeatsSingleItem());
                     adapter = new SetStatsActivityAdapter(setsStats);
                     recyclerView.setAdapter(adapter);
                 }

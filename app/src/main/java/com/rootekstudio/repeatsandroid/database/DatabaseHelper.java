@@ -6,9 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.rootekstudio.repeatsandroid.RepeatsListDB;
-import com.rootekstudio.repeatsandroid.RepeatsSingleSetDB;
-import com.rootekstudio.repeatsandroid.SetStats;
+import com.rootekstudio.repeatsandroid.fastlearning.FastLearningSetsListItem;
+import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
+import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
+import com.rootekstudio.repeatsandroid.statistics.SetStats;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -98,7 +99,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public RepeatsListDB getSingleItemLIST(String setID) {
+    public RepeatsSetInfo getSingleItemLIST(String setID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM TitleTable WHERE TableName='" + setID + "'";
         Cursor cursor = db.rawQuery(query, null);
@@ -107,7 +108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
         }
 
-        RepeatsListDB list = new RepeatsListDB();
+        RepeatsSetInfo list = new RepeatsSetInfo();
         list.setTitle(cursor.getString(1));
         list.setTableName(cursor.getString(2));
         list.setCreateDate(cursor.getString(3));
@@ -125,16 +126,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public List<RepeatsListDB> AllItemsLIST() {
-        List<RepeatsListDB> ALL = new LinkedList<>();
+    public List<RepeatsSetInfo> AllItemsLIST() {
+        List<RepeatsSetInfo> ALL = new LinkedList<>();
         String query = "SELECT * FROM " + NAME + " ORDER BY id DESC;";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        RepeatsListDB list;
+        RepeatsSetInfo list;
 
         if (cursor.moveToFirst()) {
             do {
-                list = new RepeatsListDB();
+                list = new RepeatsSetInfo();
                 list.setTitle(cursor.getString(1));
                 list.setTableName(cursor.getString(2));
                 list.setCreateDate(cursor.getString(3));
@@ -155,16 +156,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return ALL;
     }
 
-    List<RepeatsListDB> ALLEnabledSets() {
-        List<RepeatsListDB> ALL = new LinkedList<>();
+    List<RepeatsSetInfo> ALLEnabledSets() {
+        List<RepeatsSetInfo> ALL = new LinkedList<>();
         String query = "SELECT * FROM TitleTable WHERE IsEnabled='true'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        RepeatsListDB list;
+        RepeatsSetInfo list;
 
         if (cursor.moveToFirst()) {
             do {
-                list = new RepeatsListDB();
+                list = new RepeatsSetInfo();
                 list.setTitle(cursor.getString(1));
                 list.setTableName(cursor.getString(2));
                 list.setCreateDate(cursor.getString(3));
@@ -308,7 +309,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void AddName(RepeatsListDB List) {
+    public void AddName(RepeatsSetInfo List) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, List.getitle());
@@ -349,7 +350,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<RepeatsSingleSetDB> AllItemsSET(String SETNAME, int sortOption) {
+    public List<RepeatsSingleItem> AllItemsSET(String setID, int sortOption) {
         String order = "";
         if(sortOption == 0) {
             order = " ORDER BY goodAnswers DESC";
@@ -363,16 +364,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else if(sortOption == 3) {
             order = " ORDER BY id DESC";
         }
-        List<RepeatsSingleSetDB> ALL = new LinkedList<>();
-        String query = "SELECT * FROM " + SETNAME + order;
+        List<RepeatsSingleItem> ALL = new LinkedList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        RepeatsSingleSetDB list;
+        String query = "SELECT * FROM " + setID + order;
+        String query1 = "SELECT title FROM TitleTable WHERE TableName = '" +  setID + "'";
+        String setName = "";
+        Cursor cursor = db.rawQuery(query1, null);
+        if(cursor.moveToFirst()) {
+            setName = cursor.getString(0);
+        }
+
+
+        cursor.close();
+        cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             do {
-                list = new RepeatsSingleSetDB();
-                list.setID(cursor.getInt(0));
+                RepeatsSingleItem list = new RepeatsSingleItem();
+                list.setSetName(setName);
+                list.setSetID(setID);
+                list.setItemID(cursor.getInt(0));
                 list.setQuestion(cursor.getString(1));
                 list.setAnswer(cursor.getString(2));
                 list.setImag(cursor.getString(3));
@@ -382,8 +393,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ALL.add(list);
             } while (cursor.moveToNext());
         }
-        db.close();
+
         cursor.close();
+        db.close();
         return ALL;
     }
 
@@ -506,6 +518,66 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(query);
         db.close();
+    }
+
+    public List<FastLearningSetsListItem> setsIdAndNameList() {
+        List<FastLearningSetsListItem> setIdAndName = new ArrayList<>();
+        String query = "SELECT title, TableName, allAnswers FROM TitleTable ORDER BY id DESC";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        FastLearningSetsListItem listItem;
+
+        if(cursor.moveToFirst()) {
+            do {
+                listItem = new FastLearningSetsListItem(cursor.getString(1), cursor.getString(0), cursor.getInt(2));
+                setIdAndName.add(listItem);
+            }while(cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+        return setIdAndName;
+    }
+
+    public List<RepeatsSingleItem> getItemsForFastLearning(List<FastLearningSetsListItem> setsList) {
+        List<RepeatsSingleItem> singleItems = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        for(int i = 0; i < setsList.size(); i++) {
+            String query = "SELECT title FROM TitleTable WHERE TableName = '" + setsList.get(i).getSetID() + "'";
+            Cursor cursor = db.rawQuery(query, null);
+            String setName = "";
+
+            if(cursor.moveToFirst()) {
+                setName = cursor.getString(0);
+            }
+
+            RepeatsSingleItem item = new RepeatsSingleItem(setName);
+            singleItems.add(item);
+
+            cursor.close();
+
+            String query1 = "SELECT question, answer, image, goodAnswers, wrongAnswers, allAnswers FROM " + setsList.get(i).getSetID();
+            cursor = db.rawQuery(query1, null);
+
+            if(cursor.moveToFirst()) {
+                do {
+                    RepeatsSingleItem fastLearningSingleItem = new RepeatsSingleItem();
+                    fastLearningSingleItem.setSetID(setsList.get(i).getSetID());
+                    fastLearningSingleItem.setSetName(setName);
+                    fastLearningSingleItem.setQuestion(cursor.getString(0));
+                    fastLearningSingleItem.setAnswer(cursor.getString(1));
+                    fastLearningSingleItem.setImag(cursor.getString(2));
+                    fastLearningSingleItem.setGoodAnswers(cursor.getInt(3));
+                    fastLearningSingleItem.setWrongAnswers(cursor.getInt(4));
+                    fastLearningSingleItem.setAllAnswers(cursor.getInt(5));
+                    singleItems.add(fastLearningSingleItem);
+                }while(cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        db.close();
+        return singleItems;
     }
 
     public void ResetEnabled() {

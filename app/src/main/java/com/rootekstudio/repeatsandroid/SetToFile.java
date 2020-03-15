@@ -42,11 +42,11 @@ class SetToFile {
 
             for (int set = 0; set < setsID.size(); set++) {
                 singleSet = new JSONObject();
-                List<RepeatsSingleSetDB> list = DB.AllItemsSET(setsID.get(set), -1);
+                List<RepeatsSingleItem> list = DB.AllItemsSET(setsID.get(set), -1);
                 int count = list.size();
 
                 for (int i = 0; i < count; i++) {
-                    RepeatsSingleSetDB single = list.get(i);
+                    RepeatsSingleItem single = list.get(i);
                     String question = single.getQuestion();
                     String answer = single.getAnswer();
                     String image = single.getImag();

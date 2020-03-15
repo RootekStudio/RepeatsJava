@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Repeats</string>
-    <string name="title_activity_repeats_add_edit">Zestaw</string>
+    <string name="Set">Zestaw</string>
     <string name="Question">Pytanie</string>
     <string name="Answer">Odpowiedź</string>
     <string name="ReplyText">Odpowiedz na pytanie</string>
@@ -205,4 +205,21 @@
     <string name="contentSettings">Ustawienia zawartości</string>
     <string name="operationSuccess">Operacja zakończona pomyślnie</string>
     <string name="operationFailed">Operacja zakończona niepowodzeniem</string>
+    <string name="chooseSetToStart">Wybierz zestaw(y) aby rozpocząć:</string>
+    <string name="questions2">pytań</string>
+    <string name="selected">Wybrano</string>
+    <string name="back">Wstecz</string>
+    <string name="correctAnswer">Poprawna odpowiedź:</string>
+    <string name="enterAnswer">Wpisz odpowiedź</string>
+    <string name="answer2">Odpowiedź:</string>
+    <string name="question2">Pytanie:</string>
+    <string name="noAnswer">Brak odpowiedzi</string>
+    <string name="time">Czas</string>
+    <string name="exit">Zakończ</string>
+    <string name="finishFastLearning">Zakończ Szybką naukę</string>
+    <string name="finishFastLearningQuestion">Czy na pewno chcesz zakończyć Szybką naukę?</string>
+    <string name="in">W ciągu</string>
+    <string name="seconds">sekund</string>
+    <string name="youLearned">udało Ci się nauczyć</string>
+    <string name="words">słówek</string>
 </resources>
