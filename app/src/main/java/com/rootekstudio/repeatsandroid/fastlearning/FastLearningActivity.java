@@ -288,11 +288,19 @@ public class FastLearningActivity extends AppCompatActivity {
     }
 
     public void exitClick(View view) {
+        askToExit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        askToExit();
+    }
+
+    private void askToExit() {
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(this);
         alertDialog.setBackground(getDrawable(R.drawable.dialog_shape))
                 .setTitle(R.string.finishFastLearning)
                 .setMessage(R.string.finishFastLearningQuestion)
-                .setCancelable(false)
                 .setNegativeButton(R.string.Cancel, null)
                 .setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
                     @Override

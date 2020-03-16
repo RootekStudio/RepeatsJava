@@ -14,6 +14,7 @@ import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FastLearningConfigActivity extends AppCompatActivity {
@@ -58,11 +59,10 @@ public class FastLearningConfigActivity extends AppCompatActivity {
 
             configStage++;
         } else if (configStage == 1) {
-            if(FastLearningInfo.randomQuestions) {
+            if (FastLearningInfo.randomQuestions) {
                 FastLearningInfo.selectedQuestions = chooseQuestions();
                 navigateToFastLearning();
-            }
-            else {
+            } else {
                 Fragment2 fragment2 = new Fragment2();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayoutFastLearning, fragment2);
@@ -85,9 +85,11 @@ public class FastLearningConfigActivity extends AppCompatActivity {
     private ArrayList<RepeatsSingleItem> chooseQuestions() {
         ArrayList<RepeatsSingleItem> selectedQuestions = new ArrayList<>();
 
+        //getting questions from sets with certain conditions
         for (List<RepeatsSingleItem> singleItemList : FastLearningInfo.setsContent.values()) {
+            int addedQuestionsFromSingleSet = 0;
             for (int i = 0; i < singleItemList.size(); i++) {
-                if(i >= FastLearningInfo.questionsCount / FastLearningInfo.setsContent.size()) {
+                if (addedQuestionsFromSingleSet >= FastLearningInfo.questionsCount / FastLearningInfo.setsContent.size()) {
                     break;
                 }
 
@@ -99,35 +101,40 @@ public class FastLearningConfigActivity extends AppCompatActivity {
 
                 if (wrongAnswersRatio > 0.5 || allAnswers == 0) {
                     selectedQuestions.add(singleItem);
+                    addedQuestionsFromSingleSet++;
                 }
             }
         }
 
+        //while user requested more questions than size of selectedQuestions
         while (selectedQuestions.size() < FastLearningInfo.questionsCount) {
             int availableSpace = FastLearningInfo.questionsCount - selectedQuestions.size();
             int addedExtraQuestionsFromSingleSet = 0;
 
+            //if there is more sets than available place to put questions
             if (availableSpace < FastLearningInfo.setsContent.size()) {
-                ArrayList<FastLearningSetsListItem> orderedSets = new ArrayList<>();
+                //sort sets by All answers
+                ArrayList<FastLearningSetsListItem> sortedSets = new ArrayList<>();
                 int lowestAllAnswers = -1;
                 for (int i = 0; i < FastLearningInfo.setsContent.size(); i++) {
                     FastLearningSetsListItem singleSetInfo = FastLearningInfo.selectedSets.get(i);
                     if (i == 0) {
                         lowestAllAnswers = singleSetInfo.getAllAnswers();
-                        orderedSets.add(singleSetInfo);
+                        sortedSets.add(singleSetInfo);
                         continue;
                     }
 
                     if (lowestAllAnswers > singleSetInfo.getAllAnswers()) {
-                        orderedSets.add(0, singleSetInfo);
+                        sortedSets.add(0, singleSetInfo);
                     } else {
-                        orderedSets.add(singleSetInfo);
+                        sortedSets.add(singleSetInfo);
                     }
                 }
 
-                int i = 0;
-                while (availableSpace != 0) {
-                    List<RepeatsSingleItem> singleItemList = FastLearningInfo.setsContent.get(orderedSets.get(i).getSetID());
+                //take one question from each set while availableSpace != 0
+                for (int i = 0; i < sortedSets.size(); i++) {
+                    List<RepeatsSingleItem> singleItemList = FastLearningInfo.setsContent.get(sortedSets.get(i).getSetID());
+                    Collections.shuffle(singleItemList);
                     for (int j = 0; j < singleItemList.size(); j++) {
                         RepeatsSingleItem singleItem = singleItemList.get(j);
                         if (!selectedQuestions.contains(singleItem)) {
@@ -136,26 +143,32 @@ public class FastLearningConfigActivity extends AppCompatActivity {
                             break;
                         }
                     }
-                    i++;
+
+                    if (availableSpace == 0) {
+                        break;
+                    }
                 }
+                //if there is more available place for questions than sets
             } else {
                 for (List<RepeatsSingleItem> singleItemList : FastLearningInfo.setsContent.values()) {
+                    addedExtraQuestionsFromSingleSet = 0;
+                    Collections.shuffle(singleItemList);
                     for (int i = 0; i < singleItemList.size(); i++) {
-                        if (addedExtraQuestionsFromSingleSet <= availableSpace / FastLearningInfo.setsContent.size()) {
+                        if (addedExtraQuestionsFromSingleSet >= availableSpace / FastLearningInfo.setsContent.size()) {
+                            break;
+                        } else {
                             RepeatsSingleItem singleItem = singleItemList.get(i);
 
                             if (!selectedQuestions.contains(singleItem)) {
                                 selectedQuestions.add(singleItem);
                                 addedExtraQuestionsFromSingleSet++;
                             }
-                        } else {
-                            addedExtraQuestionsFromSingleSet = 0;
-                            break;
                         }
                     }
                 }
             }
         }
+        Collections.shuffle(selectedQuestions);
         return selectedQuestions;
     }
 
@@ -176,8 +189,7 @@ public class FastLearningConfigActivity extends AppCompatActivity {
         configStage--;
         if (configStage == 0) {
             FastLearningInfo.reset();
-        }
-        else if(configStage == 1) {
+        } else if (configStage == 1) {
             findViewById(R.id.nextConfigFL).setEnabled(true);
         }
 
