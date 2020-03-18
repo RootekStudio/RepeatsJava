@@ -114,7 +114,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/layout_mainshape">
+        android:background="@drawable/layout_mainshape"
+        android:elevation="5dp">
         <CheckBox
             android:id="@+id/checkBoxIgnoreCharsFL"
             android:layout_width="wrap_content"

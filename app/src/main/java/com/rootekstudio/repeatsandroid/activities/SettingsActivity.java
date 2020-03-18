@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import com.rootekstudio.repeatsandroid.Backup;
-import com.rootekstudio.repeatsandroid.Preference_Screen;
+import com.rootekstudio.repeatsandroid.mainfragments.PreferenceFragment;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 
@@ -29,7 +29,7 @@ public class SettingsActivity extends AppCompatActivity
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(android.R.id.content, new Preference_Screen())
+                .replace(android.R.id.content, new PreferenceFragment())
                 .commit();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

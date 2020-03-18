@@ -98,7 +98,7 @@
     <string name="changeDelivery">Change notification delivery settings</string>
     <string name="frequency">Frequency:</string>
     <string name="days">Days:</string>
-    <string name="sets">Sets:</string>
+    <string name="sets">Sets</string>
     <string name="sun">Sun</string>
     <string name="mon">Mon</string>
     <string name="tue">Tue</string>
@@ -220,5 +220,7 @@
     <string name="seconds">seconds</string>
     <string name="youLearned">you learned</string>
     <string name="words">words</string>
+    <string name="start">Start</string>
+    <string name="chooseOnlyOneSetToStart">Choose set to start:</string>
 
 </resources>

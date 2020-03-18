@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -47,6 +48,7 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
         RepeatsHelper.DarkTheme(this, false);
         setContentView(R.layout.activity_repeats_community_start);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         progressBar = findViewById(R.id.progressBarSearchC);
 
         db = FirebaseFirestore.getInstance();
@@ -155,6 +157,12 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.repeats_community_menu, menu);
+        return true;
+    }
+
     public void searchResultClick(View view) {
         int tag = (Integer) view.findViewById(R.id.setNameListItemRC).getTag();
         ArrayList<String> setItems = new ArrayList<>();
@@ -180,6 +188,10 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+        }
+        else if(item.getItemId() == R.id.yourSetsOption) {
+            Intent intent = new Intent(this, MySetsActivity.class);
+            startActivity(intent);
         }
         return true;
     }

@@ -98,78 +98,9 @@ public class AddEditSetActivity extends AppCompatActivity {
         final EditText editName = findViewById(R.id.projectname);
         editName.setOnFocusChangeListener(newName);
 
-        //Replacing default menu of the bottom app bar
-        BottomAppBar bottomAppBar = findViewById(R.id.AddQuestionBar);
-
         if (!IsDark) {
             editName.setBackgroundResource(R.drawable.editname_light);
         }
-
-        //Configuring bottom app bar menu click listener
-        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.share) {
-                    resetFocus();
-                    String name = editName.getText().toString();
-                    name = name.trim();
-                    if(name.equals("") || name.equals("text") || name.equals("Text") || name.equals("text text") || name.equals("text text text")) {
-                        Toast.makeText(AddEditSetActivity.this, R.string.cantShareSet, Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        Intent intentShare = new Intent(context, ShareActivity.class);
-                        intentShare.putExtra("name", name);
-                        intentShare.putExtra("id", id);
-                        startActivity(intentShare);
-                    }
-                }
-                else if(item.getItemId() == R.id.deleteSet) {
-                    MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
-                    ALERTbuilder.setBackground(getDrawable(R.drawable.dialog_shape));
-
-                    ALERTbuilder.setTitle(R.string.WantDelete);
-                    ALERTbuilder.setNegativeButton(R.string.Cancel, null);
-
-                    ALERTbuilder.setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            DeleteSet(id);
-                            JsonFile.removeSetFromJSON(context, id);
-
-                            List<RepeatsSetInfo> a = DB.AllItemsLIST();
-                            int size = a.size();
-
-                            //if there is no set left in database, turn off notifications
-                            if (size == 0) {
-                                ConstNotifiSetup.CancelNotifications(context);
-
-                                try {
-                                    JSONObject advancedFile = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
-
-                                    Iterator<String> iterator = advancedFile.keys();
-
-                                    while(iterator.hasNext()) {
-                                        String key = iterator.next();
-                                        NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(key));
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("ListNotifi", "0");
-                                editor.apply();
-                            }
-                            deleted = true;
-                            AddEditSetActivity.super.onBackPressed();
-                        }
-                    });
-                    ALERTbuilder.show();
-                }
-                return false;
-            }
-        });
 
         SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
 
@@ -632,26 +563,6 @@ public class AddEditSetActivity extends AppCompatActivity {
                     photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(photoPickerIntent, RequestCodes.PICK_IMAGE);
                 }
-            }
-        }
-    }
-
-    void DeleteSet(String x) {
-        DatabaseHelper DB = new DatabaseHelper(this);
-        ArrayList<String> allImages = new ArrayList<>();
-        if (!x.equals("FALSE")) {
-            allImages = DB.getAllImages(x);
-            DB.deleteOneFromList(x);
-            DB.DeleteSet(x);
-        }
-
-        int count = allImages.size();
-
-        if (count != 0) {
-            for (int j = 0; j < count; j++) {
-                String imgName = allImages.get(j);
-                File file = new File(getFilesDir(), imgName);
-                boolean bool = file.delete();
             }
         }
     }

@@ -30,6 +30,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_WRONG_ANSWERS = "wrongAnswers";
     private static final String KEY_ALL_ANSWERS = "allAnswers";
 
+    public static final int ORDER_BY_GOOD_ANSWERS_DESC = 0;
+    public static final int ORDER_BY_WRONG_ANSWERS_DESC = 1;
+    public static final int ORDER_BY_GOOD_ANSWERS_RATIO = 2;
+    public static final int ORDER_BY_WRONG_ANSWERS_RATIO = 3;
+    public static final int ORDER_BY_ID_ASC = 4;
+    public static final int ORDER_BY_ID_DESC = 5;
+
+
     public DatabaseHelper(Context context) {
         super(context, "repeats", null, 4);
     }
@@ -126,9 +134,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public List<RepeatsSetInfo> AllItemsLIST() {
+    public List<RepeatsSetInfo> AllItemsLIST(int orderOption) {
+        String order = "";
+
+        if(orderOption == ORDER_BY_GOOD_ANSWERS_RATIO) {
+            order = "ORDER BY CAST(goodAnswers AS FLOAT)/allAnswers DESC";
+        }
+        else if(orderOption == ORDER_BY_WRONG_ANSWERS_RATIO) {
+            order = "ORDER BY CAST(wrongAnswers AS FLOAT)/allAnswers DESC";
+        }
+        else if(orderOption == ORDER_BY_ID_ASC) {
+            order = "ORDER BY id ASC";
+        }
+        else if(orderOption == ORDER_BY_ID_DESC) {
+            order = "ORDER BY id DESC";
+        }
+
         List<RepeatsSetInfo> ALL = new LinkedList<>();
-        String query = "SELECT * FROM " + NAME + " ORDER BY id DESC;";
+        String query = "SELECT * FROM " + NAME + " " + order;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         RepeatsSetInfo list;
@@ -350,18 +373,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<RepeatsSingleItem> AllItemsSET(String setID, int sortOption) {
+    public List<RepeatsSingleItem> AllItemsSET(String setID, int orderOption) {
         String order = "";
-        if(sortOption == 0) {
+        if(orderOption == ORDER_BY_GOOD_ANSWERS_DESC) {
             order = " ORDER BY goodAnswers DESC";
         }
-        else if(sortOption == 1) {
+        else if(orderOption == ORDER_BY_WRONG_ANSWERS_DESC) {
             order = " ORDER BY wrongAnswers DESC";
         }
-        else if(sortOption == 2) {
+        else if(orderOption == ORDER_BY_ID_ASC) {
             order = " ORDER BY id ASC";
         }
-        else if(sortOption == 3) {
+        else if(orderOption == ORDER_BY_ID_DESC) {
             order = " ORDER BY id DESC";
         }
         List<RepeatsSingleItem> ALL = new LinkedList<>();
@@ -460,19 +483,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<SetStats> selectSetsStatsInfo(int sortOption) {
+    public List<SetStats> selectSetsStatsInfo(int orderOption) {
         String order = "";
 
-        if(sortOption == 0) {
+        if(orderOption == ORDER_BY_GOOD_ANSWERS_RATIO) {
             order = "ORDER BY CAST(goodAnswers AS FLOAT)/allAnswers DESC";
         }
-        else if(sortOption == 1) {
+        else if(orderOption == ORDER_BY_WRONG_ANSWERS_RATIO) {
             order = "ORDER BY CAST(wrongAnswers AS FLOAT)/allAnswers DESC";
         }
-        else if(sortOption == 2) {
+        else if(orderOption == ORDER_BY_ID_ASC) {
             order = "ORDER BY id ASC";
         }
-        else if(sortOption == 3) {
+        else if(orderOption == ORDER_BY_ID_DESC) {
             order = "ORDER BY id DESC";
         }
 

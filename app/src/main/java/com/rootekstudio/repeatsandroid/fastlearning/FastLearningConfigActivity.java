@@ -30,20 +30,31 @@ public class FastLearningConfigActivity extends AppCompatActivity {
 
         DB = new DatabaseHelper(this);
         FastLearningInfo.reset();
-
         configStage = 0;
-        Fragment0 fragment0 = new Fragment0();
         fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayoutFastLearning, fragment0);
-        fragmentTransaction.commit();
+
+        String selectedSetID = getIntent().getStringExtra("setID");
+        if (selectedSetID != null) {
+            List<RepeatsSingleItem> setItems = DB.AllItemsSET(selectedSetID, -1);
+            FastLearningInfo.setsContent.put(selectedSetID, setItems);
+            FastLearningInfo.allAvailableQuestionsCount += setItems.size();
+
+            Fragment1 fragment1 = new Fragment1();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayoutFastLearning, fragment1);
+            fragmentTransaction.commit();
+            findViewById(R.id.nextConfigFL).setEnabled(true);
+            configStage++;
+        } else {
+            Fragment0 fragment0 = new Fragment0();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayoutFastLearning, fragment0);
+            fragmentTransaction.commit();
+        }
     }
 
     public void nextClick(View view) {
         if (configStage == 0) {
-            Fragment0 fragment0 = (Fragment0) getSupportFragmentManager().findFragmentById(R.id.frameLayoutFastLearning);
-            assert fragment0 != null;
-
             for (int i = 0; i < FastLearningInfo.selectedSets.size(); i++) {
                 FastLearningSetsListItem singleItem = FastLearningInfo.selectedSets.get(i);
                 List<RepeatsSingleItem> setItems = DB.AllItemsSET(singleItem.getSetID(), -1);

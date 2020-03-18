@@ -1,245 +1,128 @@
 package com.rootekstudio.repeatsandroid.activities;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.view.menu.MenuPopupHelper;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.rootekstudio.repeatsandroid.MainActivityAdapter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.rootekstudio.repeatsandroid.mainfragments.PreferenceFragment;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.ZipSet;
-import com.rootekstudio.repeatsandroid.community.MySetsActivity;
-import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
-import com.rootekstudio.repeatsandroid.fastlearning.FastLearningConfigActivity;
+import com.rootekstudio.repeatsandroid.mainfragments.SetsFragment;
+import com.rootekstudio.repeatsandroid.mainfragments.StartFragment;
+import com.rootekstudio.repeatsandroid.mainfragments.StatsFragment;
 import com.rootekstudio.repeatsandroid.readaloud.ReadAloudActivity;
-import com.rootekstudio.repeatsandroid.statistics.StatsActivity;
+import com.rootekstudio.repeatsandroid.readaloud.ReadAloudConnector;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    Activity activity = null;
     boolean darkTheme;
-    String selectedSetID;
-    Intent addEditActivityIntent;
-    public static List<RepeatsSetInfo> repeatsList;
-
-    RecyclerView recyclerView;
-    public static RecyclerView.Adapter mAdapter;
+    StartFragment startFragment;
+    SetsFragment setsFragment;
+    String currectFragment = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createNotificationChannel();
         RepeatsHelper.askAboutBattery(this);
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        final Context cnt = this;
-        activity = this;
+        darkTheme = RepeatsHelper.DarkTheme(this, false);
         RepeatsHelper.CheckDir(this);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        darkTheme = RepeatsHelper.DarkTheme(this, false);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         getSupportActionBar().setCustomView(R.layout.logo);
         if (!darkTheme) {
+            bottomNavigationView.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.white));
+
             ImageView logo = findViewById(R.id.logoMain);
             logo.setImageResource(R.drawable.repeats_for_light_bg);
         }
 
-        try {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            if(!sharedPreferences.contains("version")) {
-                if(sharedPreferences.getInt("firstRunTerms", 3) == 3) {
-                    findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
-                }
-                else {
-                    saveVersion();
-                }
-            }
-            else {
-                if(!sharedPreferences.getString("version", "2.5").equals(RepeatsHelper.version)) {
-                    findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
-                }
-            }
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
+        startFragment = new StartFragment();
+        setsFragment = new SetsFragment(this, this);
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayoutMain, startFragment);
+        fragmentTransaction.commit();
+        currectFragment = "start";
 
-        recyclerView = findViewById(R.id.recycler_view_main);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        DatabaseHelper DB = new DatabaseHelper(this);
-        repeatsList = DB.AllItemsLIST();
-        mAdapter = new MainActivityAdapter(repeatsList);
-
-        recyclerView.setAdapter(mAdapter);
-
-        final BottomAppBar bottomAppBar = findViewById(R.id.bar);
-
-        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.app_bar_search) {
-                    Intent intent = new Intent(cnt, SearchActivity.class);
-                    startActivity(intent);
-                } else if (item.getItemId() == R.id.app_bar_settings) {
-                    Intent settings = new Intent(cnt, SettingsActivity.class);
-                    startActivity(settings);
-                } else if (item.getItemId() == R.id.your_sets_rc_button) {
-                    Intent intent = new Intent(cnt, MySetsActivity.class);
-                    startActivity(intent);
-                }
-                else if(item.getItemId() == R.id.stats_button) {
-                    Intent intent = new Intent(cnt, StatsActivity.class);
-                    startActivity(intent);
-                }
-                return true;
-            }
-        });
-
-        addEditActivityIntent = new Intent(this, AddEditSetActivity.class);
-
-        final FloatingActionButton btn = findViewById(R.id.fab);
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                final MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(cnt);
-                LayoutInflater layoutInflater = LayoutInflater.from(cnt);
-                final View view1 = layoutInflater.inflate(R.layout.addnew_item, null);
-                ALERTbuilder.setView(view1);
-                ALERTbuilder.setTitle(R.string.AddSet);
-                ALERTbuilder.setBackground(getDrawable(R.drawable.dialog_shape));
-                final AlertDialog alert = ALERTbuilder.show();
-
-                RelativeLayout relA = view1.findViewById(R.id.relAdd);
-                RelativeLayout relR = view1.findViewById(R.id.relRead);
-                RelativeLayout relRC = view1.findViewById(R.id.relRC);
-
-                relA.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addEditActivityIntent.putExtra("ISEDIT", "FALSE");
-                        addEditActivityIntent.putExtra("IGNORE_CHARS", "false");
-                        alert.dismiss();
-
-                        startActivity(addEditActivityIntent);
-                    }
-                });
-
-                relR.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent zipPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                        zipPickerIntent.setType("application/*");
-                        try {
-                            startActivityForResult(zipPickerIntent, RequestCodes.READ_SHARED);
-                        } catch (ActivityNotFoundException e) {
-                            Toast.makeText(cnt, R.string.explorerNotFound, Toast.LENGTH_LONG).show();
-                        }
-                        alert.dismiss();
-                    }
-                });
-
-                relRC.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intentRC = new Intent(cnt, RepeatsCommunityStartActivity.class);
-                        alert.dismiss();
-                        startActivity(intentRC);
-                    }
-                });
-            }
-        });
-
-        if (mAdapter.getItemCount() == 0) {
-            RelativeLayout r = findViewById(R.id.EmptyHereText);
-            r.setVisibility(View.VISIBLE);
-        }
+        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
     }
 
-    public void setItemClick(View view) {
-        String TITLE = view.getTag(R.string.Tag_id_0).toString();
-        String TABLE_NAME = view.getTag(R.string.Tag_id_1).toString();
-        String IGNORE_CHARS = view.getTag(R.string.Tag_id_2).toString();
-        addEditActivityIntent.putExtra("ISEDIT", TITLE);
-        addEditActivityIntent.putExtra("NAME", TABLE_NAME);
-        addEditActivityIntent.putExtra("IGNORE_CHARS", IGNORE_CHARS);
-        startActivity(addEditActivityIntent);
-    }
-
-    public void setOptionsClick(View view) {
-        selectedSetID = view.getTag().toString();
-        RecyclerView recyclerView = (RecyclerView) view.getParent().getParent();
-        final int position = recyclerView.getChildAdapterPosition((View) view.getParent());
-
-        PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
-        popupMenu.getMenuInflater().inflate(R.menu.set_options, popupMenu.getMenu());
-        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(MainActivity.this, (MenuBuilder) popupMenu.getMenu(), view);
-        menuPopupHelper.setForceShowIcon(true);
-        menuPopupHelper.show();
-
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int itemId = item.getItemId();
-
-                if (itemId == R.id.fastLearningOption) {
-                    Intent intent = new Intent(MainActivity.this, FastLearningConfigActivity.class);
-                    intent.putExtra("setID", selectedSetID);
-                    startActivity(intent);
-                } else if (itemId == R.id.readAloudOption) {
-                        Intent intent = new Intent(MainActivity.this, ReadAloudActivity.class);
-                        intent.putExtra("setID", selectedSetID);
-                        intent.putExtra("newReadAloud", true);
-                        startActivity(intent);
-                } else if (itemId == R.id.manageSetSettingsOption) {
-                    Intent intent = new Intent(MainActivity.this, SetSettingsActivity.class);
-                    intent.putExtra("setID", selectedSetID);
-                    startActivity(intent);
-                }
-                return true;
+    BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            if(item.getItemId() == R.id.startButtonMain) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayoutMain, startFragment);
+                fragmentTransaction.commit();
+                currectFragment = "start";
             }
-        });
+            else if(item.getItemId() == R.id.setsButtonMain) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayoutMain, setsFragment);
+                fragmentTransaction.commit();
+                currectFragment = "sets";
+            }
+            else if(item.getItemId() == R.id.stats_button) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayoutMain, new StatsFragment());
+                fragmentTransaction.commit();
+                currectFragment = "stats";
+            }
+            else if(item.getItemId() == R.id.app_bar_settings) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayoutMain, new PreferenceFragment());
+                fragmentTransaction.commit();
+                currectFragment = "preferences";
+            }
+            return true;
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(currectFragment.equals("sets")) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment(this, this));
+            fragmentTransaction.commit();
+        }
     }
 
     void saveVersion() {
@@ -255,10 +138,19 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void closeUpdateInfo(View view) {
-        saveVersion();
-        RelativeLayout relativeLayout = findViewById(R.id.relativeUpdateInfoRecyclerView);
-        relativeLayout.removeView(findViewById(R.id.infoLayout));
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.top_main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.searchOption) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+        }
+        return true;
     }
 
     @Override

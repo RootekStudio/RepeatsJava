@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.mainfragments;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -16,6 +16,8 @@ import android.os.PowerManager;
 import android.provider.Settings;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -24,6 +26,12 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
 
+import com.rootekstudio.repeatsandroid.Backup;
+import com.rootekstudio.repeatsandroid.JsonFile;
+import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
+import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.activities.ChangeDeliveryListActivity;
 import com.rootekstudio.repeatsandroid.activities.EnableSetsListActivity;
 import com.rootekstudio.repeatsandroid.activities.FirstRunActivity;
@@ -42,9 +50,10 @@ import org.json.JSONObject;
 import java.util.Iterator;
 import java.util.List;
 
-public class Preference_Screen extends PreferenceFragmentCompat {
-    Context context;
-    int cliked = 0;
+public class PreferenceFragment extends PreferenceFragmentCompat {
+    private Context context;
+    private int cliked = 0;
+    private AppCompatActivity activity;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -53,6 +62,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
 
         context = getPreferenceManager().getContext();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        activity = (AppCompatActivity) getActivity();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String packageName = context.getPackageName();
@@ -67,7 +77,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
             }
         }
         DatabaseHelper DB = new DatabaseHelper(context);
-        List<RepeatsSetInfo> all = DB.AllItemsLIST();
+        List<RepeatsSetInfo> all = DB.AllItemsLIST(-1);
 
         final int freq = sharedPreferences.getInt("frequency", 0);
 
@@ -158,7 +168,7 @@ public class Preference_Screen extends PreferenceFragmentCompat {
         timeAsk.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                RepeatsHelper.AskAboutTime(context, false, SettingsActivity.activity, null);
+                RepeatsHelper.AskAboutTime(context, activity);
                 return true;
             }
         });

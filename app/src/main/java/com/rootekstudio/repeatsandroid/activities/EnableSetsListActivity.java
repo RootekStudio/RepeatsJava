@@ -28,7 +28,7 @@ public class EnableSetsListActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final DatabaseHelper DB = new DatabaseHelper(this);
-        List<RepeatsSetInfo> AllSets = DB.AllItemsLIST();
+        List<RepeatsSetInfo> AllSets = DB.AllItemsLIST(-1);
         int count = AllSets.size();
         LinearLayout linear = findViewById(R.id.EnableSetsLinear);
 

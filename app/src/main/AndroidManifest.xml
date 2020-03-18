@@ -17,13 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".fastlearning.FastLearningActivity"></activity>
+        <activity android:name=".readaloud.ReadAloudConfigActivity"
+            android:label="@string/readAloud"/>
+        <activity android:name=".fastlearning.FastLearningActivity" />
         <activity
             android:name=".statistics.SetStatsActivity"
             android:label="@string/setStats" />
-        <activity
-            android:name=".statistics.StatsActivity"
-            android:label="@string/stats" />
         <activity
             android:name=".activities.WhatsNewActivity"
             android:label="@string/whatsNew" />

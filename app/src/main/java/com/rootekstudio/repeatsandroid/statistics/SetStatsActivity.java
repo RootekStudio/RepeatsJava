@@ -63,7 +63,7 @@ public class SetStatsActivity extends AppCompatActivity {
                 final String goodAnswers = String.valueOf(DB.columnSum(setID, "goodAnswers"));
                 final String wrongAnswers = String.valueOf(DB.columnSum(setID, "wrongAnswers"));
                 final String allAnswers = String.valueOf(DB.columnSum(setID, "allAnswers"));
-                List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, 0);
+                List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, DatabaseHelper.ORDER_BY_GOOD_ANSWERS_DESC);
                 setsStats.add(0, new RepeatsSingleItem());
                 adapter = new SetStatsActivityAdapter(setsStats);
 
@@ -95,26 +95,25 @@ public class SetStatsActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if(item.getItemId() == R.id.sortGoodAnswers) {
-                    List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, 0);
+                    List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, DatabaseHelper.ORDER_BY_GOOD_ANSWERS_DESC);
                     setsStats.add(0, new RepeatsSingleItem());
                     adapter = new SetStatsActivityAdapter(setsStats);
                     recyclerView.setAdapter(adapter);
                 }
                 else if(item.getItemId() == R.id.sortWrongAnswers) {
-                    List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, 1);
+                    List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, DatabaseHelper.ORDER_BY_WRONG_ANSWERS_DESC);
                     setsStats.add(0, new RepeatsSingleItem());
                     adapter = new SetStatsActivityAdapter(setsStats);
                     recyclerView.setAdapter(adapter);
                 }
                 else if(item.getItemId() == R.id.sortCreationDateAscending) {
-                    List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, 2);
+                    List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, DatabaseHelper.ORDER_BY_ID_ASC);
                     setsStats.add(0, new RepeatsSingleItem());
                     adapter = new SetStatsActivityAdapter(setsStats);
                     recyclerView.setAdapter(adapter);
-
                 }
                 else if(item.getItemId() == R.id.sortCreationDateDescending) {
-                    List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, 3);
+                    List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, DatabaseHelper.ORDER_BY_ID_DESC);
                     setsStats.add(0, new RepeatsSingleItem());
                     adapter = new SetStatsActivityAdapter(setsStats);
                     recyclerView.setAdapter(adapter);

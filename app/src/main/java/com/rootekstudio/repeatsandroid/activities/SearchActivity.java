@@ -33,7 +33,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         DatabaseHelper DB = new DatabaseHelper(this);
         List<SearchItem> sItem = new ArrayList<>();
 
-        List<RepeatsSetInfo> list = DB.AllItemsLIST();
+        List<RepeatsSetInfo> list = DB.AllItemsLIST(-1);
         int count = list.size();
 
         for (int i = 0; i < count; i++) {

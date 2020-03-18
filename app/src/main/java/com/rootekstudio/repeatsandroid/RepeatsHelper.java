@@ -23,11 +23,17 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.rootekstudio.repeatsandroid.mainfragments.PreferenceFragment;
+import com.rootekstudio.repeatsandroid.mainfragments.StatsFragment;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 
 import java.io.File;
@@ -49,14 +55,21 @@ public class RepeatsHelper {
         editor.apply();
     }
 
-    static void resetActivity(Context cnt, Activity activity) {
+    public static void resetActivity(Context cnt, Activity activity) {
         activity.finish();
         activity.overridePendingTransition(0, 0);
         cnt.startActivity(activity.getIntent());
         activity.overridePendingTransition(0, 0);
     }
 
-    public static void AskAboutTime(final Context context, final boolean IsSet, final Activity activity, final Intent intent) {
+    private static void resetFragment(AppCompatActivity activity) {
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayoutMain, new PreferenceFragment());
+        fragmentTransaction.commit();
+    }
+
+    public static void AskAboutTime(final Context context, final AppCompatActivity activity) {
         MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
         ALERTbuilder.setBackground(context.getDrawable(R.drawable.dialog_shape));
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -79,7 +92,7 @@ public class RepeatsHelper {
                     EditText time = (EditText) view;
                     String timeText = time.getText().toString();
                     if (!timeText.equals("")) {
-                        saveTime(context, timeText, IsSet, activity, intent);
+                        saveTime(context, timeText, activity);
                     }
                 }
                 return false;
@@ -88,23 +101,14 @@ public class RepeatsHelper {
 
         ALERTbuilder.setView(view1);
         ALERTbuilder.setTitle(R.string.QuestionFreq);
-        ALERTbuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (IsSet) {
-                    activity.startActivity(intent);
-                } else {
-                    resetActivity(context, activity);
-                }
-            }
-        });
+        ALERTbuilder.setNegativeButton(R.string.Cancel, null);
 
         ALERTbuilder.setPositiveButton(R.string.Save, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String text = editText.getText().toString();
                 if (!text.equals("")) {
-                    saveTime(context, text, IsSet, activity, intent);
+                    saveTime(context, text, activity);
                     ComponentName receiver = new ComponentName(context, OnSystemBoot.class);
                     PackageManager pm = context.getPackageManager();
 
@@ -120,15 +124,14 @@ public class RepeatsHelper {
         dialog.show();
     }
 
-    static void saveTime(Context context, String text, Boolean IsSet, Activity activity, Intent intent) {
+    static void saveTime(Context context, String text, AppCompatActivity activity) {
         int frequency = Integer.parseInt(text);
 
         RepeatsHelper.SaveFrequency(context, frequency);
         ConstNotifiSetup.CancelNotifications(context);
         ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
-        //dialog.dismiss();
 
-        resetActivity(context, activity);
+        resetFragment(activity);
     }
 
     public static void askAboutBattery(final Context cnt) {

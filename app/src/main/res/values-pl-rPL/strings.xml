@@ -96,7 +96,7 @@
     <string name="changeDelivery">Zmień ustawienia dostarczania powiadomień</string>
     <string name="frequency">Częstotliwość:</string>
     <string name="days">Dni:</string>
-    <string name="sets">Zestawy:</string>
+    <string name="sets">Zestawy</string>
     <string name="fri">pt.</string>
     <string name="mon">pon.</string>
     <string name="sat">sob.</string>
@@ -222,4 +222,5 @@
     <string name="seconds">sekund</string>
     <string name="youLearned">udało Ci się nauczyć</string>
     <string name="words">słówek</string>
+    <string name="chooseOnlyOneSetToStart">Wybierz zestaw aby rozpocząć:</string>
 </resources>

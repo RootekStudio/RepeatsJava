@@ -57,7 +57,7 @@ public class Backup {
             @Override
             public void onClick(View view) {
                 alert.dismiss();
-                List<RepeatsSetInfo> list = DB.AllItemsLIST();
+                List<RepeatsSetInfo> list = DB.AllItemsLIST(-1);
                 final ArrayList<String> names = new ArrayList<>();
                 final ArrayList<String> setsID = new ArrayList<>();
 
@@ -90,7 +90,7 @@ public class Backup {
         });
     }
 
-    static void selectFileToRestore(Context context, Activity activity) {
+    public static void selectFileToRestore(Context context, Activity activity) {
         Intent zipPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
         zipPickerIntent.setType("application/zip");
         try {
@@ -113,7 +113,7 @@ public class Backup {
             @Override
             public void run() {
 
-                List<RepeatsSetInfo> list = DB.AllItemsLIST();
+                List<RepeatsSetInfo> list = DB.AllItemsLIST(-1);
                 ArrayList<String> names = new ArrayList<>();
                 ArrayList<String> setsID = new ArrayList<>();
 
