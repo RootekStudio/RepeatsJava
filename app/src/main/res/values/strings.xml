@@ -220,7 +220,8 @@
     <string name="seconds">seconds</string>
     <string name="youLearned">you learned</string>
     <string name="words">words</string>
-    <string name="start">Start</string>
+    <string name="start" translatable="false">Start</string>
     <string name="chooseOnlyOneSetToStart">Choose set to start:</string>
+    <string name="allCorrectAnswers">All correct answers:</string>
 
 </resources>

@@ -29,20 +29,32 @@ import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import java.util.List;
 
 public class SetsFragment extends Fragment {
-    private List<RepeatsSetInfo> repeatsList;
     private Context context;
-    private View loadedView;
     private AppCompatActivity appCompatActivity;
 
     public SetsFragment(Context context, AppCompatActivity activity) {
         this.context = context;
         appCompatActivity = activity;
-        loadedView = prepareView();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return loadedView;
+        DatabaseHelper DB = new DatabaseHelper(context);
+        List<RepeatsSetInfo> repeatsList = DB.AllItemsLIST(DatabaseHelper.ORDER_BY_ID_DESC);
+
+        View view = LayoutInflater.from(context).inflate(R.layout.mainfragment_sets, null);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_main);
+        RecyclerView.Adapter adapter = new MainActivityAdapter(repeatsList, context, appCompatActivity);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(fabClick);
+
+        return view;
     }
 
     private View.OnClickListener fabClick = new View.OnClickListener() {
@@ -96,27 +108,4 @@ public class SetsFragment extends Fragment {
             });
         }
     };
-
-    private void prepareData() {
-        DatabaseHelper DB = new DatabaseHelper(context);
-        repeatsList = DB.AllItemsLIST(DatabaseHelper.ORDER_BY_ID_DESC);
-    }
-
-    private View prepareView() {
-        prepareData();
-
-        View view = LayoutInflater.from(context).inflate(R.layout.mainfragment_sets, null);
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_main);
-        RecyclerView.Adapter adapter = new MainActivityAdapter(repeatsList, context, appCompatActivity);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-
-        FloatingActionButton fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(fabClick);
-
-        return view;
-    }
 }

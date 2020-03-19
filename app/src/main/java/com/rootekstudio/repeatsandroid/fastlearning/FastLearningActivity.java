@@ -134,8 +134,7 @@ public class FastLearningActivity extends AppCompatActivity {
         if (goodAnswer.contains("\n")) {
             String firstCorrect = goodAnswer.substring(0, goodAnswer.indexOf("\r\n"));
             correctAnswer.setText(firstCorrect);
-            String anotherCorrects = goodAnswer.substring(goodAnswer.indexOf("\r\n") + 2);
-            anotherCorrects = anotherCorrects.replace("\r\n", ", ");
+            String anotherCorrects = goodAnswer.replace("\r\n", ", ");
             otherCorrectAnswers.setText(anotherCorrects);
         } else {
             correctAnswer.setText(goodAnswer);

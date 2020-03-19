@@ -33,7 +33,7 @@ public class Fragment2 extends Fragment {
         return view;
     }
 
-    void generateList() {
+    private void generateList() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -44,7 +44,6 @@ public class Fragment2 extends Fragment {
                 for (int i = 0; i < questionsList.size(); i++) {
                     final RepeatsSingleItem singleItem = questionsList.get(i);
                     final View view = inflater.inflate(R.layout.fastlearning_list_singleitem, linearList, false);
-
                     final TextView textCount = getActivity().findViewById(R.id.questionsCountTextView);
                     TextView textView = view.findViewById(R.id.setNameListViewItemFL);
                     final CheckBox checkBox = view.findViewById(R.id.checkBoxListViewFL);

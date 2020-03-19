@@ -15,6 +15,7 @@ import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class FastLearningConfigActivity extends AppCompatActivity {
@@ -36,55 +37,61 @@ public class FastLearningConfigActivity extends AppCompatActivity {
         String selectedSetID = getIntent().getStringExtra("setID");
         if (selectedSetID != null) {
             List<RepeatsSingleItem> setItems = DB.AllItemsSET(selectedSetID, -1);
+            FastLearningSetsListItem newItem = DB.singleSetIdNameAndStats(selectedSetID);
+            FastLearningInfo.selectedSets.add(newItem);
             FastLearningInfo.setsContent.put(selectedSetID, setItems);
             FastLearningInfo.allAvailableQuestionsCount += setItems.size();
 
-            Fragment1 fragment1 = new Fragment1();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameLayoutFastLearning, fragment1);
-            fragmentTransaction.commit();
+            navigateToFragment1();
             findViewById(R.id.nextConfigFL).setEnabled(true);
             configStage++;
         } else {
-            Fragment0 fragment0 = new Fragment0();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameLayoutFastLearning, fragment0);
-            fragmentTransaction.commit();
+            navigateToFragment0();
         }
     }
 
     public void nextClick(View view) {
         if (configStage == 0) {
+            FastLearningInfo.setsContent = new HashMap<>();
+            FastLearningInfo.allAvailableQuestionsCount = 0;
             for (int i = 0; i < FastLearningInfo.selectedSets.size(); i++) {
                 FastLearningSetsListItem singleItem = FastLearningInfo.selectedSets.get(i);
                 List<RepeatsSingleItem> setItems = DB.AllItemsSET(singleItem.getSetID(), -1);
                 FastLearningInfo.setsContent.put(singleItem.getSetID(), setItems);
                 FastLearningInfo.allAvailableQuestionsCount += setItems.size();
             }
-
-            Fragment1 fragment1 = new Fragment1();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameLayoutFastLearning, fragment1);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-
+            navigateToFragment1();
             configStage++;
         } else if (configStage == 1) {
             if (FastLearningInfo.randomQuestions) {
                 FastLearningInfo.selectedQuestions = chooseQuestions();
                 navigateToFastLearning();
             } else {
-                Fragment2 fragment2 = new Fragment2();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayoutFastLearning, fragment2);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                navigateToFragment2();
             }
 
             configStage++;
         } else if (configStage == 2) {
             navigateToFastLearning();
         }
+    }
+
+    private void navigateToFragment0() {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayoutFastLearning, new Fragment0());
+        fragmentTransaction.commit();
+    }
+
+    private void navigateToFragment1() {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayoutFastLearning, new Fragment1());
+        fragmentTransaction.commit();
+    }
+
+    private void navigateToFragment2() {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayoutFastLearning, new Fragment2());
+        fragmentTransaction.commit();
     }
 
     private void navigateToFastLearning() {
@@ -198,13 +205,15 @@ public class FastLearningConfigActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         configStage--;
-        if (configStage == 0) {
-            FastLearningInfo.reset();
-        } else if (configStage == 1) {
+        if(configStage == -1) {
+            super.onBackPressed();
+        }
+        else if(configStage == 0) {
+            navigateToFragment0();
+        }
+        else if (configStage == 1) {
+            navigateToFragment1();
             findViewById(R.id.nextConfigFL).setEnabled(true);
         }
-
-        super.onBackPressed();
     }
-
 }

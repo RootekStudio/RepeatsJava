@@ -150,7 +150,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/otherCorrectAnswers"
+                    android:text="@string/allCorrectAnswers"
                     android:textAlignment="center"
                     android:textColor="@android:color/darker_gray"
                     android:layout_gravity="center_horizontal"

@@ -562,6 +562,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return setIdAndName;
     }
 
+    public FastLearningSetsListItem singleSetIdNameAndStats(String setID) {
+        FastLearningSetsListItem item = null;
+        String query = "SELECT title, allAnswers FROM TitleTable WHERE TableName='" + setID + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()) {
+            item = new FastLearningSetsListItem(setID, cursor.getString(0), cursor.getInt(1));
+        }
+
+        db.close();
+        cursor.close();
+
+        return item;
+    }
+
     public List<RepeatsSingleItem> getItemsForFastLearning(List<FastLearningSetsListItem> setsList) {
         List<RepeatsSingleItem> singleItems = new ArrayList<>();
 

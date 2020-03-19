@@ -26,9 +26,15 @@ public class Fragment1 extends Fragment {
         TextView maxTextView = view.findViewById(R.id.maxQuestionsTextView);
         final RelativeLayout relativeSeekBar = view.findViewById(R.id.relativeSeekBar);
         final SeekBar seekBar = view.findViewById(R.id.seekBarFastLearning);
-        final TextView seekBarSelectedAnswers = view.findViewById(R.id.seekBarSelectedAnswers);
+        final TextView textViewSelectedAnswers = view.findViewById(R.id.seekBarSelectedAnswers);
         CheckBox ignoreChars = view.findViewById(R.id.checkBoxIgnoreCharsFL);
         ignoreChars.setChecked(FastLearningInfo.ignoreChars);
+        randomQuestions.setChecked(FastLearningInfo.randomQuestions);
+        manuallySelectQuestions.setChecked(!FastLearningInfo.randomQuestions);
+
+        if(!FastLearningInfo.randomQuestions) {
+            relativeSeekBar.setVisibility(View.GONE);
+        }
 
         ignoreChars.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -61,15 +67,22 @@ public class Fragment1 extends Fragment {
 
         maxTextView.setText(String.valueOf(FastLearningInfo.allAvailableQuestionsCount));
         seekBar.setMax(FastLearningInfo.allAvailableQuestionsCount);
-        seekBar.setProgress(FastLearningInfo.allAvailableQuestionsCount);
-        FastLearningInfo.questionsCount = FastLearningInfo.allAvailableQuestionsCount;
+
+        //if user previously did not chose how many questions he want / and set default value
+        if(FastLearningInfo.questionsCount == 0) {
+            FastLearningInfo.questionsCount = FastLearningInfo.allAvailableQuestionsCount;
+            seekBar.setProgress(FastLearningInfo.allAvailableQuestionsCount);
+        }
+        else {
+            seekBar.setProgress(FastLearningInfo.questionsCount);
+        }
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 FastLearningInfo.questionsCount = i;
                 String text = FastLearningInfo.questionsCount + " " + getString(R.string.questions2);
-                seekBarSelectedAnswers.setText(text);
+                textViewSelectedAnswers.setText(text);
             }
 
             @Override
@@ -84,7 +97,7 @@ public class Fragment1 extends Fragment {
         });
 
         String seekBarSelectedAnswersText = FastLearningInfo.questionsCount + " " + getString(R.string.questions2);
-        seekBarSelectedAnswers.setText(seekBarSelectedAnswersText);
+        textViewSelectedAnswers.setText(seekBarSelectedAnswersText);
 
         return view;
     }

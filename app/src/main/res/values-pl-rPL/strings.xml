@@ -223,4 +223,5 @@
     <string name="youLearned">udało Ci się nauczyć</string>
     <string name="words">słówek</string>
     <string name="chooseOnlyOneSetToStart">Wybierz zestaw aby rozpocząć:</string>
+    <string name="allCorrectAnswers">Wszyskie poprawne odpowiedzi:</string>
 </resources>
