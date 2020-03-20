@@ -10,357 +10,455 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/recommendedLinear"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:text="Rekomendowane"
-            android:textSize="9pt" />
-
-        <RelativeLayout
-            android:id="@+id/fastLearningRecommendation"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/recommendation1_shape">
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/recommended"
+                android:textSize="9pt" />
 
             <RelativeLayout
+                android:id="@+id/notifiRecommendation"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="15dp"
-                android:layout_toStartOf="@id/linearArrow"
-                android:orientation="vertical">
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/recommendation1_shape"
+                android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/text0FirstRecommendation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:text="Naucz się więcej z zestawu"
-                    android:textColor="#FFF" />
-
-                <TextView
-                    android:id="@+id/text1FirstRecommendation"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_below="@id/text0FirstRecommendation"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerVertical="true"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:text="Oxford Solutions Pre-Intermediate Unit 4"
-                    android:textColor="#FFF"
-                    android:textSize="9pt"
-                    android:textStyle="bold"
-                    app:autoSizeTextType="uniform" />
-            </RelativeLayout>
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:layout_toStartOf="@id/linearArrowNotifi"
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/linearArrow"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="5dp"
-                android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/text0NotifiRecommendation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:text="Zwiększ wydajność nauki"
+                        android:textColor="#FFF" />
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_checktest"
-                    android:tint="#FFF"
-                    app:tint="#FFF" />
+                    <TextView
+                        android:id="@+id/text1NotifiRecommendation"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_below="@id/text0NotifiRecommendation"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerVertical="true"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:text="Włącz powiadomienia"
+                        android:textColor="#FFF"
+                        android:textSize="9pt"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+                </RelativeLayout>
 
-                <TextView
-                    android:layout_width="50dp"
+                <LinearLayout
+                    android:id="@+id/linearArrowNotifi"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Szybka nauka"
-                    android:textAlignment="center"
-                    android:textColor="#FFF" />
-            </LinearLayout>
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    android:orientation="vertical">
 
-        </RelativeLayout>
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/notifications_active_24px"
+                        android:tint="#FFF"
+                        app:tint="#FFF"
+                        android:layout_marginBottom="5dp"/>
 
-        <RelativeLayout
-            android:id="@+id/readAloudRecommendation"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/recommendation1_shape">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/go"
+                        android:textAlignment="center"
+                        android:textColor="#FFF" />
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/repeatsCommunityRecommendation"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="15dp"
-                android:layout_toStartOf="@id/linearArrowSec"
-                android:orientation="vertical">
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/recommendation1_shape"
+                android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/text0SecRecommendation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:text="Posłuchaj zestawu"
-                    android:textColor="#FFF" />
-
-                <TextView
-                    android:id="@+id/text1SecRecommendation"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_below="@id/text0SecRecommendation"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerVertical="true"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:text="Oxford Solutions Pre-Intermediate Unit 4"
-                    android:textColor="#FFF"
-                    android:textSize="9pt"
-                    android:textStyle="bold"
-                    app:autoSizeTextType="uniform" />
-            </RelativeLayout>
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:layout_toStartOf="@id/linearArrowThird"
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/linearArrowSec"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="5dp"
-                android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/text0ThirdRecommendation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/expandSetsLibrary"
+                        android:textColor="#FFF" />
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="5dp"
-                    android:src="@drawable/hearing_24px"
-                    android:tint="#FFF"
-                    app:tint="#FFF" />
+                    <TextView
+                        android:id="@+id/text1ThirdRecommendation"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_below="@id/text0ThirdRecommendation"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerVertical="true"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:text="@string/downloadFromRC"
+                        android:textColor="#FFF"
+                        android:textSize="9pt"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+                </RelativeLayout>
 
-                <TextView
-                    android:layout_width="50dp"
+                <LinearLayout
+                    android:id="@+id/linearArrowThird"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Słuchaj"
-                    android:textAlignment="center"
-                    android:textColor="#FFF" />
-            </LinearLayout>
-        </RelativeLayout>
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/repeatsCommunityRecommendation"
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:src="@drawable/ic_group_24px"
+                        android:tint="#FFF"
+                        app:tint="#FFF" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/go"
+                        android:textAlignment="center"
+                        android:textColor="#FFF" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/suggestionsLinear"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/recommendation1_shape">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="15dp"
-                android:layout_toStartOf="@id/linearArrowThird"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/text0ThirdRecommendation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:text="Poszerz swoją bibliotekę zestawów"
-                    android:textColor="#FFF" />
-
-                <TextView
-                    android:id="@+id/text1ThirdRecommendation"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_below="@id/text0ThirdRecommendation"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerVertical="true"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:text="Pobierz zestawy ze Społeczności Repeats"
-                    android:textColor="#FFF"
-                    android:textSize="9pt"
-                    android:textStyle="bold"
-                    app:autoSizeTextType="uniform" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/linearArrowThird"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="5dp"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="5dp"
-                    android:src="@drawable/ic_group_24px"
-                    android:tint="#FFF"
-                    app:tint="#FFF" />
-
-                <TextView
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Przejdź"
-                    android:textAlignment="center"
-                    android:textColor="#FFF" />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="20dp"
-            android:text="Funkcje"
-            android:textSize="9pt" />
-
-        <RelativeLayout
-            android:id="@+id/featureFastLearningMain"
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/main_function2">
-
-            <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="25dp">
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="20dp">
-                <ImageView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:src="@drawable/ic_checktest"
-                    android:tint="#FFF"
-                    app:tint="#FFF"/>
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/suggestions"
+                android:textSize="9pt" />
+            <RelativeLayout
+                android:id="@+id/fastLearningRecommendation"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/recommendation1_shape">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:layout_toStartOf="@id/linearArrow"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text0FirstRecommendation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/learnMoreFromSet"
+                        android:textColor="#FFF" />
+
+                    <TextView
+                        android:id="@+id/text1FirstRecommendation"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_below="@id/text0FirstRecommendation"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerVertical="true"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:text="Oxford Solutions Pre-Intermediate Unit 4"
+                        android:textColor="#FFF"
+                        android:textSize="9pt"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearArrow"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/FastLearning"
-                    android:textColor="#FFF"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="9pt"
-                    android:layout_marginStart="25dp"/>
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_checktest"
+                        android:tint="#FFF"
+                        app:tint="#FFF" />
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_navigate_next"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:tint="#FFF"
-                app:tint="#FFF"
-                android:layout_marginEnd="20dp"/>
-        </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/FastLearning"
+                        android:textAlignment="center"
+                        android:textColor="#FFF" />
+                </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/featureReadAloudMain"
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/readAloudRecommendation"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/recommendation1_shape">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:layout_toStartOf="@id/linearArrowSec"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text0SecRecommendation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/listenToSet"
+                        android:textColor="#FFF" />
+
+                    <TextView
+                        android:id="@+id/text1SecRecommendation"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_below="@id/text0SecRecommendation"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerVertical="true"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:text="Oxford Solutions Pre-Intermediate Unit 4"
+                        android:textColor="#FFF"
+                        android:textSize="9pt"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearArrowSec"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="5dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:src="@drawable/hearing_24px"
+                        android:tint="#FFF"
+                        app:tint="#FFF" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/listen"
+                        android:textAlignment="center"
+                        android:textColor="#FFF" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/main_function2">
-
-            <LinearLayout
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="25dp">
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="20dp">
-                <ImageView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:src="@drawable/hearing_24px"
-                    android:tint="#FFF"
-                    app:tint="#FFF"/>
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/functions"
+                android:textSize="9pt" />
 
-                <TextView
+            <RelativeLayout
+                android:id="@+id/featureFastLearningMain"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/main_function2">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/readAloud"
-                    android:textColor="#FFF"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="9pt"
-                    android:layout_marginStart="25dp"/>
+                    android:orientation="horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp">
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_checktest"
+                        android:tint="#FFF"
+                        app:tint="#FFF"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/FastLearning"
+                        android:textColor="#FFF"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="9pt"
+                        android:layout_marginStart="25dp"/>
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_navigate_next"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:tint="#FFF"
-                app:tint="#FFF"
-                android:layout_marginEnd="20dp"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/featureNotificationsMain"
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/main_function2">
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="20dp">
                 <ImageView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:src="@drawable/notifications_active_24px"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_navigate_next"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:tint="#FFF"
-                    app:tint="#FFF"/>
+                    app:tint="#FFF"
+                    android:layout_marginEnd="20dp"/>
+            </RelativeLayout>
 
-                <TextView
+            <RelativeLayout
+                android:id="@+id/featureReadAloudMain"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/main_function2">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/notifications"
-                    android:textColor="#FFF"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="9pt"
-                    android:layout_marginStart="25dp"/>
+                    android:orientation="horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp">
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/hearing_24px"
+                        android:tint="#FFF"
+                        app:tint="#FFF"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/readAloud"
+                        android:textColor="#FFF"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="9pt"
+                        android:layout_marginStart="25dp"/>
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_navigate_next"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:tint="#FFF"
-                app:tint="#FFF"
-                android:layout_marginEnd="20dp"/>
-        </RelativeLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_navigate_next"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:tint="#FFF"
+                    app:tint="#FFF"
+                    android:layout_marginEnd="20dp"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/featureNotificationsMain"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/main_function2">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp">
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/notifications_active_24px"
+                        android:tint="#FFF"
+                        app:tint="#FFF"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/notifications"
+                        android:textColor="#FFF"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="9pt"
+                        android:layout_marginStart="25dp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_navigate_next"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:tint="#FFF"
+                    app:tint="#FFF"
+                    android:layout_marginEnd="20dp"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+
     </LinearLayout>
 </ScrollView>

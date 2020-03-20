@@ -52,7 +52,14 @@ public class Fragment0 extends Fragment {
                         }
                     }
                     else {
-                        FastLearningInfo.selectedSets.remove(singleItem);
+                        for (int j = 0; j < FastLearningInfo.selectedSets.size(); j++) {
+                            FastLearningSetsListItem item = FastLearningInfo.selectedSets.get(j);
+                            if(item.getSetID().equals(singleItem.getSetID())) {
+                                FastLearningInfo.selectedSets.remove(j);
+                                break;
+                            }
+                        }
+
                         if(FastLearningInfo.selectedSets.size() == 0) {
                             getActivity().findViewById(R.id.nextConfigFL).setEnabled(false);
                         }

@@ -11,7 +11,6 @@ class FastLearningInfo {
     static List<RepeatsSingleItem> selectedQuestions;
     static HashMap<String, List<RepeatsSingleItem>> setsContent;
     static boolean randomQuestions;
-    static boolean repeatAnswers;
     static boolean ignoreChars;
     static int questionsCount;
     static int allAvailableQuestionsCount;
@@ -21,7 +20,6 @@ class FastLearningInfo {
         setsContent = new HashMap<>();
         selectedQuestions = new ArrayList<>();
         randomQuestions = true;
-        repeatAnswers = false;
         ignoreChars = false;
         questionsCount = 0;
         allAvailableQuestionsCount = 0;

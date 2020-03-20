@@ -223,5 +223,18 @@
     <string name="start" translatable="false">Start</string>
     <string name="chooseOnlyOneSetToStart">Choose set to start:</string>
     <string name="allCorrectAnswers">All correct answers:</string>
+    <string name="recommended">Recommended</string>
+    <string name="learnMoreFromSet">Learn more from</string>
+    <string name="listenToSet">Listen to</string>
+    <string name="listen">Listen</string>
+    <string name="expandSetsLibrary">Expand your sets library</string>
+    <string name="downloadFromRC">Download sets from the Repeats Community</string>
+    <string name="go">Go</string>
+    <string name="functions">Functions</string>
+    <string name="chooseHowToGenerateQuestions">Choose how to generate questions</string>
+    <string name="autoSelectQuestions">Automatically select questions</string>
+    <string name="letMeChooseQuestions">Let me choose questions</string>
+    <string name="selectNumberOfQuestions">Select the number of questions</string>
+    <string name="suggestions">Suggestions</string>
 
 </resources>

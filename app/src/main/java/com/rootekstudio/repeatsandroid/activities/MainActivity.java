@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             if(item.getItemId() == R.id.startButtonMain) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 fragmentTransaction.replace(R.id.frameLayoutMain, startFragment);
                 fragmentTransaction.commit();
                 currectFragment = "start";
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             else if(item.getItemId() == R.id.setsButtonMain) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 fragmentTransaction.replace(R.id.frameLayoutMain, setsFragment);
                 fragmentTransaction.commit();
                 currectFragment = "sets";
@@ -98,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             else if(item.getItemId() == R.id.stats_button) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 fragmentTransaction.replace(R.id.frameLayoutMain, new StatsFragment());
                 fragmentTransaction.commit();
                 currectFragment = "stats";
@@ -105,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             else if(item.getItemId() == R.id.app_bar_settings) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 fragmentTransaction.replace(R.id.frameLayoutMain, new PreferenceFragment());
                 fragmentTransaction.commit();
                 currectFragment = "preferences";

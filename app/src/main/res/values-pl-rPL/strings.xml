@@ -224,4 +224,17 @@
     <string name="words">słówek</string>
     <string name="chooseOnlyOneSetToStart">Wybierz zestaw aby rozpocząć:</string>
     <string name="allCorrectAnswers">Wszyskie poprawne odpowiedzi:</string>
+    <string name="recommended">Zalecane</string>
+    <string name="learnMoreFromSet">Naucz się więcej z zestawu</string>
+    <string name="listenToSet">Posłuchaj zestawu</string>
+    <string name="listen">Słuchaj</string>
+    <string name="expandSetsLibrary">Poszerz swoją bibliotekę zestawów</string>
+    <string name="downloadFromRC">Pobierz zestawy ze Społeczności Repeats</string>
+    <string name="go">Przejdź</string>
+    <string name="functions">Funkcje</string>
+    <string name="chooseHowToGenerateQuestions">Wybierz sposób generowania pytań</string>
+    <string name="autoSelectQuestions">Automatycznie wybierz pytania</string>
+    <string name="letMeChooseQuestions">Pozwól mi wybrać pytania</string>
+    <string name="selectNumberOfQuestions">Wybierz ilość pytań</string>
+    <string name="suggestions">Propozycje</string>
 </resources>

@@ -41,6 +41,7 @@ public class FastLearningConfigActivity extends AppCompatActivity {
             FastLearningInfo.selectedSets.add(newItem);
             FastLearningInfo.setsContent.put(selectedSetID, setItems);
             FastLearningInfo.allAvailableQuestionsCount += setItems.size();
+            FastLearningInfo.questionsCount += setItems.size();
 
             navigateToFragment1();
             findViewById(R.id.nextConfigFL).setEnabled(true);
@@ -54,11 +55,13 @@ public class FastLearningConfigActivity extends AppCompatActivity {
         if (configStage == 0) {
             FastLearningInfo.setsContent = new HashMap<>();
             FastLearningInfo.allAvailableQuestionsCount = 0;
+            FastLearningInfo.questionsCount = 0;
             for (int i = 0; i < FastLearningInfo.selectedSets.size(); i++) {
                 FastLearningSetsListItem singleItem = FastLearningInfo.selectedSets.get(i);
                 List<RepeatsSingleItem> setItems = DB.AllItemsSET(singleItem.getSetID(), -1);
                 FastLearningInfo.setsContent.put(singleItem.getSetID(), setItems);
                 FastLearningInfo.allAvailableQuestionsCount += setItems.size();
+                FastLearningInfo.questionsCount += setItems.size();
             }
             navigateToFragment1();
             configStage++;

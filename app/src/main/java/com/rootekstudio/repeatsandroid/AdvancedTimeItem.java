@@ -3,8 +3,8 @@ package com.rootekstudio.repeatsandroid;
 public class AdvancedTimeItem {
     public String id;
     public String name;
-    public String days;
-    public String hours;
+    private String days;
+    private String hours;
     public String frequency;
     public String sets;
 

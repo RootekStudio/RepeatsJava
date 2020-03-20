@@ -140,22 +140,6 @@ public class AddEditSetActivity extends AppCompatActivity {
             readSetFromDatabase(editing, SetName);
         }
 
-        int firstRun = sharedPreferences.getInt("firstRunTerms", 3);
-        if (firstRun != 3) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("ListNotifi", String.valueOf(firstRun));
-            editor.apply();
-
-            if (firstRun == 1) {
-                ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
-            } else if (firstRun == 2) {
-                RegisterNotifications.registerAdvancedDelivery(context);
-            }
-
-            editor.putInt("firstRunTerms", 3);
-            editor.apply();
-        }
-
         FloatingActionButton fab = findViewById(R.id.AddQuestionFAB);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
