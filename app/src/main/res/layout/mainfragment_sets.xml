@@ -10,6 +10,23 @@
         android:clipToPadding="false"
         android:paddingBottom="100dp"/>
 
+    <RelativeLayout
+        android:id="@+id/EmptyHereText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="45dp"
+        android:visibility="gone"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/EmptyHere" />
+
+    </RelativeLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

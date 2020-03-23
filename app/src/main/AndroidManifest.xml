@@ -34,7 +34,8 @@
             android:name=".readaloud.ReadAloudActivity"
             android:label="@string/readAloud"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.FirstRunActivity" />
+        <activity android:name=".firstrun.FirstRunActivity"
+            android:theme="@style/FirstRunTheme"/>
         <activity
             android:name=".community.RepeatsCommunityStartActivity"
             android:label="@string/repeatsCommunity" />

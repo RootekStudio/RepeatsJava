@@ -17,7 +17,6 @@ import android.provider.Settings;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -34,9 +33,8 @@ import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.activities.ChangeDeliveryListActivity;
 import com.rootekstudio.repeatsandroid.activities.EnableSetsListActivity;
-import com.rootekstudio.repeatsandroid.activities.FirstRunActivity;
+import com.rootekstudio.repeatsandroid.firstrun.FirstRunActivity;
 import com.rootekstudio.repeatsandroid.activities.MainActivity;
-import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
 import com.rootekstudio.repeatsandroid.activities.SilenceHoursActivity;
 import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;

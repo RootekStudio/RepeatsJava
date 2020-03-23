@@ -30,7 +30,7 @@ public class RepeatsNotificationTemplate {
     private static final String KEY_TEXT_REPLY = "UsersAnswer";
     private static String jsonIndex;
 
-    static void NotifiTemplate(Context context, Boolean IsNext, String json) {
+    public static void NotifiTemplate(Context context, Boolean IsNext, String json) {
         NotificationCompat.Builder mBuilder;
         GetQuestion item;
         jsonIndex = json;
@@ -79,7 +79,6 @@ public class RepeatsNotificationTemplate {
         answerActivity.putExtra("jsonIndex", jsonIndex);
         answerActivity.putExtra("setID", setID);
         answerActivity.putExtra("itemID", itemID);
-        answerActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, rnd, answerActivity, 0);
 
         if (IsNext) {

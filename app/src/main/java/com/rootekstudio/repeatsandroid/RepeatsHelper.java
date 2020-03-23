@@ -1,6 +1,8 @@
 package com.rootekstudio.repeatsandroid;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -298,5 +300,45 @@ public class RepeatsHelper {
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         share.setType("application/zip");
         activity.startActivityForResult(Intent.createChooser(share, context.getString(R.string.send)), RequestCodes.SHARE_SET);
+    }
+
+    public static void createNotificationChannel(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = context.getString(R.string.ChannelTitle);
+            String description = context.getString(R.string.ChannelDescription);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("RepeatsQuestionChannel", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
+            CharSequence name2 = context.getString(R.string.channelname2);
+            String description2 = context.getString(R.string.channeldesc2);
+            int importance2 = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel2 = new NotificationChannel("RepeatsAnswerChannel", name2, importance2);
+            channel2.setDescription(description2);
+
+            NotificationManager notificationManager2 = context.getSystemService(NotificationManager.class);
+            notificationManager2.createNotificationChannel(channel2);
+
+            CharSequence name3 = context.getString(R.string.channelname3);
+            String description3 = context.getString(R.string.channeldesc3);
+            int importance3 = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel3 = new NotificationChannel("RepeatsNextChannel", name3, importance3);
+            channel3.setDescription(description3);
+
+            NotificationManager notificationManager3 = context.getSystemService(NotificationManager.class);
+            notificationManager3.createNotificationChannel(channel3);
+
+            CharSequence name4 = context.getString(R.string.channelname4);
+            String description4 = context.getString(R.string.channeldesc4);
+            int importance4 = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel4 = new NotificationChannel("RepeatsReadAloudChannel", name4, importance4);
+            channel4.setDescription(description4);
+
+            NotificationManager notificationManager4 = context.getSystemService(NotificationManager.class);
+            notificationManager4.createNotificationChannel(channel4);
+        }
     }
 }

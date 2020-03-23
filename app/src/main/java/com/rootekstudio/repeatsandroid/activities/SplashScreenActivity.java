@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.firstrun.FirstRunActivity;
 
 import java.util.UUID;
 
@@ -23,6 +24,10 @@ public class SplashScreenActivity extends AppCompatActivity
         Intent intent;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if(!sharedPreferences.contains("firstRunTerms")) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("firstRunTerms", 1);
+            editor.apply();
+
             intent = new Intent(this, FirstRunActivity.class);
         }
         else {

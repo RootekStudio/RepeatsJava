@@ -72,6 +72,31 @@
         <item name="alertDialogTheme">@style/customDialog</item>
     </style>
 
+    <style name="FirstRunTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowBackground">@drawable/background_firsrun_small</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">#121212</item>
+        <item name="colorPrimaryVariant">#121212</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorSecondaryVariant">@color/colorPrimary</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorSurface">#121212</item>
+        <item name="colorOnSurface">#FFFFFF</item>
+        <item name="tint">#FFFFFF</item>
+        <item name="iconTint">#FFFFFF</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="scrimBackground">#000000</item>
+
+        <item name="bottomAppBarStyle">@style/bottomAppBar</item>
+        <item name="customButtonColor">@color/buttonDark</item>
+        <item name="customItemColor">@color/darkMainItem</item>
+        <item name="customEditTextColor">@color/darkEditTextColor</item>
+    </style>
+
     <style name="customDialog" parent="@style/ThemeOverlay.MaterialComponents.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_shape</item>
     </style>

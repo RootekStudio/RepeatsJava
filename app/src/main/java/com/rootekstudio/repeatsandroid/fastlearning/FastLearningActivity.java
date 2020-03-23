@@ -27,7 +27,6 @@ import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
@@ -54,7 +53,6 @@ public class FastLearningActivity extends AppCompatActivity {
     int wrongAnswersCount;
     int allAnswersCount;
 
-    int allQuestionsCount;
     int itemCount;
     String goodAnswer;
 
@@ -101,8 +99,7 @@ public class FastLearningActivity extends AppCompatActivity {
         allAnswersCount = 0;
         goodAnswer = "";
         percentTxtView.setText("0%");
-        allQuestionsCount = FastLearningInfo.questionsCount;
-        progressBar.setMax(allQuestionsCount);
+        progressBar.setMax(FastLearningInfo.questionsCount);
         progressBar.setProgress(0);
         fastLearningItemList = FastLearningInfo.selectedQuestions;
 
@@ -220,8 +217,6 @@ public class FastLearningActivity extends AppCompatActivity {
                     fastLearningItemList.add(singleItem);
                 }
 
-                allQuestionsCount++;
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -247,9 +242,9 @@ public class FastLearningActivity extends AppCompatActivity {
             String percent = Math.round((float) goodAnswersCount / FastLearningInfo.questionsCount * 100) + "%";
             percentTxtView.setText(percent);
 
-            if(allAnswersCount == fastLearningItemList.size()) {
+            if (goodAnswersCount == FastLearningInfo.questionsCount) {
                 timer.cancel();
-                String message = getString(R.string.in) +" " + minutes + " " + getString(R.string.minutes) + " " +
+                String message = getString(R.string.in) + " " + minutes + " " + getString(R.string.minutes) + " " +
                         seconds + " " + getString(R.string.seconds) + " " + getString(R.string.youLearned) + " " +
                         FastLearningInfo.questionsCount + " " + getString(R.string.words) + ".";
 

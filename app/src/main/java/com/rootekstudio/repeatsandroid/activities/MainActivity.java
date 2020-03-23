@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.mainfragments.PreferenceFragment;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        createNotificationChannel();
+        RepeatsHelper.createNotificationChannel(this);
         RepeatsHelper.askAboutBattery(this);
 
         darkTheme = RepeatsHelper.DarkTheme(this, false);
@@ -84,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
             if(item.getItemId() == R.id.startButtonMain) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 fragmentTransaction.replace(R.id.frameLayoutMain, startFragment);
                 fragmentTransaction.commit();
                 currectFragment = "start";
@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
             else if(item.getItemId() == R.id.setsButtonMain) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 fragmentTransaction.replace(R.id.frameLayoutMain, setsFragment);
                 fragmentTransaction.commit();
                 currectFragment = "sets";
@@ -100,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
             else if(item.getItemId() == R.id.stats_button) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 fragmentTransaction.replace(R.id.frameLayoutMain, new StatsFragment());
                 fragmentTransaction.commit();
                 currectFragment = "stats";
@@ -108,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
             else if(item.getItemId() == R.id.app_bar_settings) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 fragmentTransaction.replace(R.id.frameLayoutMain, new PreferenceFragment());
                 fragmentTransaction.commit();
                 currectFragment = "preferences";
@@ -196,45 +193,15 @@ public class MainActivity extends AppCompatActivity {
                 thread.start();
             }
         }
-    }
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.ChannelTitle);
-            String description = getString(R.string.ChannelDescription);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("RepeatsQuestionChannel", name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-
-            CharSequence name2 = getString(R.string.channelname2);
-            String description2 = getString(R.string.channeldesc2);
-            int importance2 = NotificationManager.IMPORTANCE_LOW;
-            NotificationChannel channel2 = new NotificationChannel("RepeatsAnswerChannel", name2, importance2);
-            channel2.setDescription(description2);
-
-            NotificationManager notificationManager2 = getSystemService(NotificationManager.class);
-            notificationManager2.createNotificationChannel(channel2);
-
-            CharSequence name3 = getString(R.string.channelname3);
-            String description3 = getString(R.string.channeldesc3);
-            int importance3 = NotificationManager.IMPORTANCE_LOW;
-            NotificationChannel channel3 = new NotificationChannel("RepeatsNextChannel", name3, importance3);
-            channel3.setDescription(description3);
-
-            NotificationManager notificationManager3 = getSystemService(NotificationManager.class);
-            notificationManager3.createNotificationChannel(channel3);
-
-            CharSequence name4 = getString(R.string.channelname4);
-            String description4 = getString(R.string.channeldesc4);
-            int importance4 = NotificationManager.IMPORTANCE_LOW;
-            NotificationChannel channel4 = new NotificationChannel("RepeatsReadAloudChannel", name4, importance4);
-            channel4.setDescription(description4);
-
-            NotificationManager notificationManager4 = getSystemService(NotificationManager.class);
-            notificationManager4.createNotificationChannel(channel4);
+        else if(requestCode == RequestCodes.SELECT_FILE_TO_RESTORE) {
+            if(resultCode == RESULT_OK) {
+                Backup.restoreBackup(this, data, this);
+            }
+        }
+        else if(requestCode == RequestCodes.PICK_CATALOG) {
+            if(resultCode == RESULT_OK) {
+                Backup.saveBackupLocally(this, data, this);
+            }
         }
     }
 }

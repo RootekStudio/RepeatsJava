@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:text="@string/welcome"
+            android:textAlignment="center"
+            android:textSize="13pt"
+            android:layout_above="@id/logoFirstRun"
+            android:layout_centerHorizontal="true" />
+        <ImageView
+            android:id="@+id/logoFirstRun"
+            android:layout_width="200dp"
+            android:layout_height="75dp"
+            android:layout_gravity="center"
+            android:src="@drawable/repeats_for_dark_bg"
+            android:tint="@android:color/transparent"
+            app:tint="@android:color/transparent"
+            android:layout_centerInParent="true" />
+
+        <TextView
+            android:id="@+id/termsOfUseView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="25dp"
+            android:text="@string/termsInfo"
+            android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/configureText"
+            android:gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:clickable="true"
+            android:linksClickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/configureText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Przejdź dalej aby poznać funkcje aplikacji"
+            android:textAlignment="center"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

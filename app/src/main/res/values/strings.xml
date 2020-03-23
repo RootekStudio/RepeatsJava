@@ -236,5 +236,8 @@
     <string name="letMeChooseQuestions">Let me choose questions</string>
     <string name="selectNumberOfQuestions">Select the number of questions</string>
     <string name="suggestions">Suggestions</string>
+    <string name="notificationsDescription">description</string>
+    <string name="fastLearningDescription">description</string>
+    <string name="readAloudDescription">description</string>
 
 </resources>

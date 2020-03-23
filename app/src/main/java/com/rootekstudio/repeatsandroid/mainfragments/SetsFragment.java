@@ -20,6 +20,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.MainActivityAdapter;
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
@@ -43,6 +44,12 @@ public class SetsFragment extends Fragment {
         List<RepeatsSetInfo> repeatsList = DB.AllItemsLIST(DatabaseHelper.ORDER_BY_ID_DESC);
 
         View view = LayoutInflater.from(context).inflate(R.layout.mainfragment_sets, null);
+
+        if(repeatsList.size() == 0) {
+            RelativeLayout emptyInfo = view.findViewById(R.id.EmptyHereText);
+            emptyInfo.setVisibility(View.VISIBLE);
+        }
+
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_main);
         RecyclerView.Adapter adapter = new MainActivityAdapter(repeatsList, context, appCompatActivity);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());

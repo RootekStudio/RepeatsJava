@@ -142,25 +142,6 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
         DB.insertSetToDatabase(id, questions, answers, null);
         JsonFile.putSetToJSON(context, id);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
-        int firstRun = sharedPreferences.getInt("firstRunTerms", 3);
-        if(firstRun != 3) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("ListNotifi", String.valueOf(firstRun));
-            editor.apply();
-
-            if(firstRun == 1) {
-                ConstNotifiSetup.RegisterNotifications(context,null, RepeatsHelper.staticFrequencyCode);
-            }
-            else if(firstRun == 2) {
-                RegisterNotifications.registerAdvancedDelivery(context);
-            }
-
-            editor.putInt("firstRunTerms", 3);
-            editor.apply();
-        }
-
         Toast.makeText(this, R.string.successDownload, Toast.LENGTH_SHORT).show();
 
         if(databaseSetID != null) {
