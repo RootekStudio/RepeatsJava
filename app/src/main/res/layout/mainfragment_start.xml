@@ -6,16 +6,24 @@
     android:scrollbars="none">
 
     <LinearLayout
+        android:id="@+id/linearStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <include
+            android:id="@+id/infoLayout"
+            layout="@layout/update_info"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/recommendedLinear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,11 +54,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:text="Zwiększ wydajność nauki"
+                        android:text="@string/increaseLearningEfficiency"
                         android:textColor="#FFF" />
 
                     <TextView
-                        android:id="@+id/text1NotifiRecommendation"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_below="@id/text0NotifiRecommendation"
@@ -58,7 +65,7 @@
                         android:layout_centerVertical="true"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
-                        android:text="Włącz powiadomienia"
+                        android:text="@string/turnOnNotifi"
                         android:textColor="#FFF"
                         android:textSize="9pt"
                         android:textStyle="bold"
@@ -78,10 +85,10 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
                         android:src="@drawable/notifications_active_24px"
                         android:tint="#FFF"
-                        app:tint="#FFF"
-                        android:layout_marginBottom="5dp"/>
+                        app:tint="#FFF" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -120,7 +127,6 @@
                         android:textColor="#FFF" />
 
                     <TextView
-                        android:id="@+id/text1ThirdRecommendation"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_below="@id/text0ThirdRecommendation"
@@ -168,8 +174,9 @@
             android:id="@+id/suggestionsLinear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="25dp">
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -177,6 +184,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="@string/suggestions"
                 android:textSize="9pt" />
+
             <RelativeLayout
                 android:id="@+id/fastLearningRecommendation"
                 android:layout_width="match_parent"
@@ -184,7 +192,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/recommendation1_shape">
+                android:background="@drawable/recommendation2_shape">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -252,7 +260,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/recommendation1_shape">
+                android:background="@drawable/recommendation2_shape">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -317,8 +325,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="25dp">
+            android:layout_marginTop="25dp"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -339,36 +348,37 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp">
+                    android:layout_marginStart="20dp"
+                    android:orientation="horizontal">
+
                     <ImageView
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:src="@drawable/ic_checktest"
                         android:tint="#FFF"
-                        app:tint="#FFF"/>
+                        app:tint="#FFF" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="25dp"
                         android:text="@string/FastLearning"
                         android:textColor="#FFF"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="9pt"
-                        android:layout_marginStart="25dp"/>
+                        android:textSize="9pt" />
 
                 </LinearLayout>
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_navigate_next"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_navigate_next"
                     android:tint="#FFF"
-                    app:tint="#FFF"
-                    android:layout_marginEnd="20dp"/>
+                    app:tint="#FFF" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -383,37 +393,39 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp">
+                    android:layout_marginStart="20dp"
+                    android:orientation="horizontal">
+
                     <ImageView
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:src="@drawable/hearing_24px"
                         android:tint="#FFF"
-                        app:tint="#FFF"/>
+                        app:tint="#FFF" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="25dp"
                         android:text="@string/readAloud"
                         android:textColor="#FFF"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="9pt"
-                        android:layout_marginStart="25dp"/>
+                        android:textSize="9pt" />
 
                 </LinearLayout>
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_navigate_next"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_navigate_next"
                     android:tint="#FFF"
-                    app:tint="#FFF"
-                    android:layout_marginEnd="20dp"/>
+                    app:tint="#FFF" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/featureNotificationsMain"
                 android:layout_width="match_parent"
@@ -426,36 +438,37 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="20dp">
+                    android:layout_marginStart="20dp"
+                    android:orientation="horizontal">
+
                     <ImageView
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:src="@drawable/notifications_active_24px"
                         android:tint="#FFF"
-                        app:tint="#FFF"/>
+                        app:tint="#FFF" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="25dp"
                         android:text="@string/notifications"
                         android:textColor="#FFF"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="9pt"
-                        android:layout_marginStart="25dp"/>
+                        android:textSize="9pt" />
 
                 </LinearLayout>
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_navigate_next"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_navigate_next"
                     android:tint="#FFF"
-                    app:tint="#FFF"
-                    android:layout_marginEnd="20dp"/>
+                    app:tint="#FFF" />
             </RelativeLayout>
         </LinearLayout>
 

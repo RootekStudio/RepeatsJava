@@ -17,7 +17,7 @@ public class RegisterNotifications {
 
             Iterator<String> iterator = advancedFile.keys();
 
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 String key = iterator.next();
 
                 JSONObject singleItem = advancedFile.getJSONObject(key);

@@ -38,11 +38,10 @@ public class ReadAloudItemFragment extends Fragment {
         secondWord.setText(info.get(3));
         wordCount.setText(info.get(4));
 
-        if(speakItemIndex%2 == 0) {
+        if (speakItemIndex % 2 == 0) {
             firstWord.setTypeface(Typeface.DEFAULT_BOLD);
             secondWord.setTypeface(Typeface.DEFAULT);
-        }
-        else {
+        } else {
             firstWord.setTypeface(Typeface.DEFAULT);
             secondWord.setTypeface(Typeface.DEFAULT_BOLD);
         }

@@ -17,13 +17,16 @@ public class MySetsListAdapter extends RecyclerView.Adapter<MySetsListAdapter.Li
 
     static class ListHolder extends RecyclerView.ViewHolder {
         TextView textView;
+
         ListHolder(View view) {
             super(view);
             textView = view.findViewById(R.id.setNameMySetsList);
         }
     }
 
-    public MySetsListAdapter(ArrayList<String> n) {names = n;}
+    public MySetsListAdapter(ArrayList<String> n) {
+        names = n;
+    }
 
     @NonNull
     @Override

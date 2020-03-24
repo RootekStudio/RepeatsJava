@@ -29,7 +29,7 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.TimeViewHolder
         }
     }
 
-    public TimeAdapter(List<AdvancedTimeItem> timeItems){
+    public TimeAdapter(List<AdvancedTimeItem> timeItems) {
         advancedTimeItems = timeItems;
     }
 

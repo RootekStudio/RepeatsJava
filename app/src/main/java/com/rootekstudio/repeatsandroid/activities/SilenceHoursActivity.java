@@ -175,7 +175,7 @@ public class SilenceHoursActivity extends AppCompatActivity {
                     }
 
                     ConstNotifiSetup.CancelNotifications(context);
-                    ConstNotifiSetup.RegisterNotifications(context, null,RepeatsHelper.staticFrequencyCode);
+                    ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
 
                     rootLayout.removeView((View) view.getParent());
                 }

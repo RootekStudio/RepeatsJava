@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid.mainfragments;
+package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,12 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
@@ -53,27 +53,25 @@ public class StartFragment extends Fragment {
             turnOnNotificationsRecommendation.setVisibility(View.VISIBLE);
         }
 
-        if(setsInfo.size() > 1) {
+        if (setsInfo.size() > 1) {
             fastLearningSetRecommendation = setsInfo.get(0);
             readAloudSetRecommendation = setsInfo.get(1);
-        }
-        else if(setsInfo.size() == 1) {
+        } else if (setsInfo.size() == 1) {
             fastLearningSetRecommendation = setsInfo.get(0);
             readAloudSetRecommendation = setsInfo.get(0);
-        }
-        else {
+        } else {
             suggestionsLinear.setVisibility(View.GONE);
         }
 
-        if(!notifiMode.equals("0") && setsInfo.size() >= 4) {
+        if (!notifiMode.equals("0") && setsInfo.size() >= 4) {
             recommendedLinear.setVisibility(View.GONE);
         }
 
-        if(setsInfo.size() < 4) {
+        if (setsInfo.size() < 4) {
             repeatsCommunityRecommendation.setVisibility(View.VISIBLE);
         }
 
-        if(fastLearningSetRecommendation != null || readAloudSetRecommendation != null) {
+        if (fastLearningSetRecommendation != null || readAloudSetRecommendation != null) {
             TextView setNameFL = fastLearningRecommendation.findViewById(R.id.text1FirstRecommendation);
             setNameFL.setText(fastLearningSetRecommendation.getitle());
             fastLearningRecommendation.setTag(fastLearningSetRecommendation.getTableName());
@@ -100,8 +98,7 @@ public class StartFragment extends Fragment {
                     startActivity(intent);
                 }
             });
-        }
-        else {
+        } else {
             try {
                 fastLearningRecommendation.setVisibility(View.GONE);
                 readAloudRecommendation.setVisibility(View.GONE);
@@ -149,6 +146,25 @@ public class StartFragment extends Fragment {
                 bottomNavigationView.setSelectedItemId(R.id.app_bar_settings);
             }
         });
+
+        try {
+            if (!sharedPreferences.contains("version")) {
+                if (sharedPreferences.getInt("firstRunTerms", 3) == 3) {
+                    view.findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("firstRunTerms", 3);
+                    editor.apply();
+                } else {
+                    RepeatsHelper.saveVersion(getContext());
+                }
+            } else {
+                if (!sharedPreferences.getString("version", "2.6").equals(RepeatsHelper.version)) {
+                    view.findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return view;
     }

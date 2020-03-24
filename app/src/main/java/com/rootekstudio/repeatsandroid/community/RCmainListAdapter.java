@@ -18,22 +18,25 @@ public class RCmainListAdapter extends RecyclerView.Adapter<RCmainListAdapter.Li
 
     static class ListHolder extends RecyclerView.ViewHolder {
         TextView textView;
+
         ListHolder(View view) {
             super(view);
             textView = view.findViewById(R.id.setNameListItemRC);
         }
     }
 
-    public RCmainListAdapter(ArrayList<String> n, int m) {names = n; mode = m;}
+    public RCmainListAdapter(ArrayList<String> n, int m) {
+        names = n;
+        mode = m;
+    }
 
     @NonNull
     @Override
     public RCmainListAdapter.ListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = null;
-        if(mode == 0) {
+        if (mode == 0) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_listitem_main_rc, parent, false);
-        }
-        else if(mode == 1) {
+        } else if (mode == 1) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_groupslist_rc, parent, false);
         }
 

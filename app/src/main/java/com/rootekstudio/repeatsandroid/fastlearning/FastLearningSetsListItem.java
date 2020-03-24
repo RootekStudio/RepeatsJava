@@ -19,7 +19,9 @@ public class FastLearningSetsListItem {
         this.setName = setName;
     }
 
-    public void setAllAnswers(int allAnswers) {this.allAnswers = allAnswers;}
+    public void setAllAnswers(int allAnswers) {
+        this.allAnswers = allAnswers;
+    }
 
     public String getSetID() {
         return setID;
@@ -29,5 +31,7 @@ public class FastLearningSetsListItem {
         return setName;
     }
 
-    public int getAllAnswers() {return allAnswers; }
+    public int getAllAnswers() {
+        return allAnswers;
+    }
 }

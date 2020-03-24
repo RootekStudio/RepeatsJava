@@ -1,18 +1,15 @@
-package com.rootekstudio.repeatsandroid.activities;
+package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.app.ActionBar;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -20,22 +17,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.rootekstudio.repeatsandroid.Backup;
-import com.rootekstudio.repeatsandroid.mainfragments.PreferenceFragment;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.ZipSet;
+import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
+import com.rootekstudio.repeatsandroid.activities.SearchActivity;
+import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
-import com.rootekstudio.repeatsandroid.mainfragments.SetsFragment;
-import com.rootekstudio.repeatsandroid.mainfragments.StartFragment;
-import com.rootekstudio.repeatsandroid.mainfragments.StatsFragment;
-import com.rootekstudio.repeatsandroid.readaloud.ReadAloudActivity;
-import com.rootekstudio.repeatsandroid.readaloud.ReadAloudConnector;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RepeatsHelper.createNotificationChannel(this);
-        RepeatsHelper.askAboutBattery(this);
 
         darkTheme = RepeatsHelper.DarkTheme(this, false);
         RepeatsHelper.CheckDir(this);
@@ -82,28 +74,25 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            if(item.getItemId() == R.id.startButtonMain) {
+            if (item.getItemId() == R.id.startButtonMain) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayoutMain, startFragment);
                 fragmentTransaction.commit();
                 currectFragment = "start";
-            }
-            else if(item.getItemId() == R.id.setsButtonMain) {
+            } else if (item.getItemId() == R.id.setsButtonMain) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayoutMain, setsFragment);
                 fragmentTransaction.commit();
                 currectFragment = "sets";
-            }
-            else if(item.getItemId() == R.id.stats_button) {
+            } else if (item.getItemId() == R.id.stats_button) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayoutMain, new StatsFragment());
                 fragmentTransaction.commit();
                 currectFragment = "stats";
-            }
-            else if(item.getItemId() == R.id.app_bar_settings) {
+            } else if (item.getItemId() == R.id.app_bar_settings) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayoutMain, new PreferenceFragment());
@@ -118,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        if(currectFragment.equals("sets")) {
+        if (currectFragment.equals("sets")) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment(this, this));
@@ -126,17 +115,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void saveVersion() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("version", RepeatsHelper.version);
-        editor.apply();
-    }
-
     public void whatsNewClickMain(View view) {
-        saveVersion();
+        RepeatsHelper.saveVersion(this);
         Intent intent = new Intent(this, WhatsNewActivity.class);
         startActivity(intent);
+    }
+
+    public void closeUpdateInfo(View view) {
+        RepeatsHelper.saveVersion(this);
+        LinearLayout linearLayout = findViewById(R.id.linearStart);
+        linearLayout.removeView(findViewById(R.id.infoLayout));
     }
 
     @Override
@@ -192,14 +180,12 @@ public class MainActivity extends AppCompatActivity {
                 });
                 thread.start();
             }
-        }
-        else if(requestCode == RequestCodes.SELECT_FILE_TO_RESTORE) {
-            if(resultCode == RESULT_OK) {
+        } else if (requestCode == RequestCodes.SELECT_FILE_TO_RESTORE) {
+            if (resultCode == RESULT_OK) {
                 Backup.restoreBackup(this, data, this);
             }
-        }
-        else if(requestCode == RequestCodes.PICK_CATALOG) {
-            if(resultCode == RESULT_OK) {
+        } else if (requestCode == RequestCodes.PICK_CATALOG) {
+            if (resultCode == RESULT_OK) {
                 Backup.saveBackupLocally(this, data, this);
             }
         }

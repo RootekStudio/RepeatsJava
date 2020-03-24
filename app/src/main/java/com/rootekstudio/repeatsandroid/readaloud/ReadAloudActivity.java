@@ -25,9 +25,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
-import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.activities.SetSettingsActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,11 +150,10 @@ public class ReadAloudActivity extends AppCompatActivity {
         serviceIntent = new Intent(this, ReadAloudService.class);
         if (!fromNotification) {
             if (!ReadAloudConnector.returnFromSettings) {
-                if(readAloudService == null) {
+                if (readAloudService == null) {
                     startService(serviceIntent);
                 }
-            }
-            else {
+            } else {
                 ReadAloudConnector.returnFromSettings = false;
             }
         }
@@ -301,7 +300,7 @@ public class ReadAloudActivity extends AppCompatActivity {
         }
 
         if (ReadAloudConnector.speakItemSetIndex == singleSet.size()) {
-            if(singleSet.size() != 1) {
+            if (singleSet.size() != 1) {
                 ReadAloudConnector.speakItemSetIndex -= 2;
             }
         } else {

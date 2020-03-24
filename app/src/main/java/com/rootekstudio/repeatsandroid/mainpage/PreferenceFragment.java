@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid.mainfragments;
+package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -33,11 +33,10 @@ import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.activities.ChangeDeliveryListActivity;
 import com.rootekstudio.repeatsandroid.activities.EnableSetsListActivity;
-import com.rootekstudio.repeatsandroid.firstrun.FirstRunActivity;
-import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.activities.SilenceHoursActivity;
 import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.firstrun.FirstRunActivity;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 import com.rootekstudio.repeatsandroid.notifications.RegisterNotifications;
@@ -62,6 +61,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         activity = (AppCompatActivity) getActivity();
 
+        RepeatsHelper.askAboutBattery(context);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String packageName = context.getPackageName();
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -85,7 +86,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-                int value = Integer.parseInt((String)newValue);
+                int value = Integer.parseInt((String) newValue);
 
                 if (value == 0) {
                     ConstNotifiSetup.CancelNotifications(context);
@@ -103,7 +104,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
                         Iterator<String> iterator = advancedFile.keys();
 
-                        while(iterator.hasNext()) {
+                        while (iterator.hasNext()) {
                             String key = iterator.next();
                             NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(key));
                         }
@@ -113,7 +114,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
                 } else if (value == 1) {
 
-                    ConstNotifiSetup.RegisterNotifications(context,null, RepeatsHelper.staticFrequencyCode);
+                    ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
 
                     findPreference("timeAsk").setVisible(true);
                     findPreference("EnableSets").setVisible(true);
@@ -121,10 +122,9 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     findPreference("advancedDelivery").setVisible(false);
 
                     boolean silenceSwitch = sharedPreferences.getBoolean("silenceHoursSwitch", true);
-                    if(silenceSwitch) {
+                    if (silenceSwitch) {
                         findPreference("silenceHoursSettings").setVisible(true);
-                    }
-                    else {
+                    } else {
                         findPreference("silenceHoursSettings").setVisible(false);
                     }
 
@@ -133,7 +133,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
                         Iterator<String> iterator = advancedFile.keys();
 
-                        while(iterator.hasNext()) {
+                        while (iterator.hasNext()) {
                             String key = iterator.next();
                             NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(key));
                         }
@@ -142,8 +142,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     }
 
                     notifiListPreference.setSummary(R.string.const_freq);
-                }
-                else if(value == 2) {
+                } else if (value == 2) {
                     ConstNotifiSetup.CancelNotifications(context);
 
                     findPreference("timeAsk").setVisible(false);
@@ -186,10 +185,9 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-                if((boolean)(newValue)){
+                if ((boolean) (newValue)) {
                     findPreference("silenceHoursSettings").setVisible(true);
-                }
-                else {
+                } else {
                     findPreference("silenceHoursSettings").setVisible(false);
                 }
 
@@ -225,10 +223,9 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         Preference noSetsInDatabaseInfo = findPreference("noSetsInDatabaseInfo");
         Drawable drawable = context.getDrawable(R.drawable.ic_info_outline);
-        if(RepeatsHelper.DarkTheme(context, true)){
+        if (RepeatsHelper.DarkTheme(context, true)) {
             drawable.setColorFilter(Color.parseColor("#6d6d6d"), PorterDuff.Mode.SRC_IN);
-        }
-        else {
+        } else {
             drawable.setColorFilter(Color.parseColor("#bfbfbf"), PorterDuff.Mode.SRC_IN);
         }
         noSetsInDatabaseInfo.setIcon(drawable);
@@ -250,8 +247,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     Intent intent = new Intent(context, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     RepeatsHelper.resetActivity(context, getActivity());
                 }
                 return true;
@@ -307,8 +303,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             });
 
 
-        }
-        else {
+        } else {
             PreferenceCategory batteryOptimizationCat = findPreference("batteryOptimizationCategory");
             batteryOptimizationCat.setVisible(false);
         }
@@ -329,7 +324,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 cliked++;
-                if(cliked == 5) {
+                if (cliked == 5) {
                     Intent intent = new Intent(context, FirstRunActivity.class);
                     startActivity(intent);
                 }
@@ -424,23 +419,20 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
             notifiListPreference.setSummary(R.string.turned_off);
 
-        } else if(getNotifiMode == 1) {
+        } else if (getNotifiMode == 1) {
             findPreference("timeAsk").setVisible(true);
             findPreference("EnableSets").setVisible(true);
             findPreference("silenceHoursSwitch").setVisible(true);
             findPreference("advancedDelivery").setVisible(false);
             boolean switchSilence = sharedPreferences.getBoolean("silenceHoursSwitch", true);
-            if(switchSilence) {
+            if (switchSilence) {
                 findPreference("silenceHoursSettings").setVisible(true);
-            }
-            else {
+            } else {
                 findPreference("silenceHoursSettings").setVisible(false);
             }
 
             notifiListPreference.setSummary(R.string.const_freq);
-        }
-
-        else if(getNotifiMode == 2) {
+        } else if (getNotifiMode == 2) {
             findPreference("timeAsk").setVisible(false);
             findPreference("EnableSets").setVisible(false);
             findPreference("silenceHoursSwitch").setVisible(false);

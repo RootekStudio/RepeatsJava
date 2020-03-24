@@ -22,7 +22,7 @@ public class Fragment0 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fastlearning_fragment0, container, false);
 
-        if(FastLearningInfo.selectedSets.size() == 0) {
+        if (FastLearningInfo.selectedSets.size() == 0) {
             getActivity().findViewById(R.id.nextConfigFL).setEnabled(false);
         }
 
@@ -30,14 +30,14 @@ public class Fragment0 extends Fragment {
         LinearLayout linearLayout = view.findViewById(R.id.linearSetsListFL);
         List<FastLearningSetsListItem> setsList = DB.setsIdAndNameList();
 
-        for(int i = 0; i < setsList.size(); i++) {
+        for (int i = 0; i < setsList.size(); i++) {
             final FastLearningSetsListItem singleItem = setsList.get(i);
             View singleView = LayoutInflater.from(linearLayout.getContext()).inflate(R.layout.fastlearning_list_singleitem, null);
 
             final CheckBox checkBox = singleView.findViewById(R.id.checkBoxListViewFL);
 
-            for(int j = 0; j < FastLearningInfo.selectedSets.size(); j++) {
-                if(FastLearningInfo.selectedSets.get(j).getSetID().equals(singleItem.getSetID())) {
+            for (int j = 0; j < FastLearningInfo.selectedSets.size(); j++) {
+                if (FastLearningInfo.selectedSets.get(j).getSetID().equals(singleItem.getSetID())) {
                     checkBox.setChecked(true);
                 }
             }
@@ -45,22 +45,21 @@ public class Fragment0 extends Fragment {
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                    if(checked) {
+                    if (checked) {
                         FastLearningInfo.selectedSets.add(singleItem);
-                        if(FastLearningInfo.selectedSets.size() == 1) {
+                        if (FastLearningInfo.selectedSets.size() == 1) {
                             getActivity().findViewById(R.id.nextConfigFL).setEnabled(true);
                         }
-                    }
-                    else {
+                    } else {
                         for (int j = 0; j < FastLearningInfo.selectedSets.size(); j++) {
                             FastLearningSetsListItem item = FastLearningInfo.selectedSets.get(j);
-                            if(item.getSetID().equals(singleItem.getSetID())) {
+                            if (item.getSetID().equals(singleItem.getSetID())) {
                                 FastLearningInfo.selectedSets.remove(j);
                                 break;
                             }
                         }
 
-                        if(FastLearningInfo.selectedSets.size() == 0) {
+                        if (FastLearningInfo.selectedSets.size() == 0) {
                             getActivity().findViewById(R.id.nextConfigFL).setEnabled(false);
                         }
                     }
@@ -70,10 +69,9 @@ public class Fragment0 extends Fragment {
             singleView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(checkBox.isChecked()) {
+                    if (checkBox.isChecked()) {
                         checkBox.setChecked(false);
-                    }
-                    else {
+                    } else {
                         checkBox.setChecked(true);
                     }
                 }

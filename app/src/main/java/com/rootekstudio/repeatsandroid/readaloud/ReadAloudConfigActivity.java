@@ -1,7 +1,5 @@
 package com.rootekstudio.repeatsandroid.readaloud;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
@@ -29,7 +29,7 @@ public class ReadAloudConfigActivity extends AppCompatActivity {
 
         LinearLayout linearLayout = findViewById(R.id.linearSetsListReadAloud);
 
-        for(int i = 0; i < setsInfo.size(); i++) {
+        for (int i = 0; i < setsInfo.size(); i++) {
             RepeatsSetInfo setInfo = setsInfo.get(i);
             View view = LayoutInflater.from(this).inflate(R.layout.readaloud_setslist_singleitem, null);
             view.setTag(setInfo.getTableName());

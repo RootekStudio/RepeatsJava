@@ -14,23 +14,19 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-public class ZipSet
-{
-    public static void zip(List<String> files, OutputStream outputStream)
-    {
+public class ZipSet {
+    public static void zip(List<String> files, OutputStream outputStream) {
         BufferedInputStream origin = null;
-        try
-        {
+        try {
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(outputStream));
             byte data[] = new byte[1024];
 
-            for (int i = 0; i < files.size(); i++)
-            {
+            for (int i = 0; i < files.size(); i++) {
                 String file = files.get(i);
                 FileInputStream fi = new FileInputStream(file);
                 origin = new BufferedInputStream(fi, 1024);
 
-                ZipEntry entry = new ZipEntry(file.substring(file.lastIndexOf("/")).replace("/",""));
+                ZipEntry entry = new ZipEntry(file.substring(file.lastIndexOf("/")).replace("/", ""));
                 out.putNextEntry(entry);
                 int count;
                 while ((count = origin.read(data, 0, 1024)) != -1) {
@@ -41,33 +37,27 @@ public class ZipSet
             origin.close();
             out.close();
 
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void UnZip(InputStream Zip, File directory)
-    {
-        try
-        {
+    public static void UnZip(InputStream Zip, File directory) {
+        try {
             ZipInputStream zis = new ZipInputStream(Zip);
             ZipEntry ze;
 
-            while((ze = zis.getNextEntry()) != null)
-            {
-                FileOutputStream fos = new FileOutputStream(directory + "/"+ ze.getName());
+            while ((ze = zis.getNextEntry()) != null) {
+                FileOutputStream fos = new FileOutputStream(directory + "/" + ze.getName());
 
                 BufferedInputStream inputStream = new BufferedInputStream(zis);
                 BufferedOutputStream outputStream = new BufferedOutputStream(fos, 1024);
 
                 byte data[] = new byte[1024];
                 int count;
-                while ((count = inputStream.read(data, 0, 1024)) != -1)
-                {
+                while ((count = inputStream.read(data, 0, 1024)) != -1) {
                     outputStream.write(data, 0, count);
                 }
 
@@ -76,13 +66,9 @@ public class ZipSet
                 outputStream.close();
                 fos.close();
             }
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

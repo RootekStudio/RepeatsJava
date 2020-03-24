@@ -54,15 +54,25 @@ public class RepeatsSetInfo {
         return IgnoreChars;
     }
 
-    public String getFirstLanguage() {return firstLanguage;}
+    public String getFirstLanguage() {
+        return firstLanguage;
+    }
 
-    public String getSecondLanguage() {return secondLanguage;}
+    public String getSecondLanguage() {
+        return secondLanguage;
+    }
 
-    public int getGoodAnswers() {return goodAnswers;}
+    public int getGoodAnswers() {
+        return goodAnswers;
+    }
 
-    public int getWrongAnswers() {return wrongAnswers;}
+    public int getWrongAnswers() {
+        return wrongAnswers;
+    }
 
-    public int getAllAnswers() {return allAnswers;}
+    public int getAllAnswers() {
+        return allAnswers;
+    }
 
     public void setTitle(String Title) {
         this.Title = Title;
@@ -88,13 +98,23 @@ public class RepeatsSetInfo {
         this.IgnoreChars = IgnoreChars;
     }
 
-    public void setFirstLanguage(String firstLanguage) {this.firstLanguage = firstLanguage;}
+    public void setFirstLanguage(String firstLanguage) {
+        this.firstLanguage = firstLanguage;
+    }
 
-    public void setSecondLanguage(String secondLanguage) {this.secondLanguage = secondLanguage;}
+    public void setSecondLanguage(String secondLanguage) {
+        this.secondLanguage = secondLanguage;
+    }
 
-    public void setGoodAnswers(int goodAnswers) {this.goodAnswers = goodAnswers;}
+    public void setGoodAnswers(int goodAnswers) {
+        this.goodAnswers = goodAnswers;
+    }
 
-    public void setWrongAnswers(int wrongAnswers) {this.wrongAnswers = wrongAnswers;}
+    public void setWrongAnswers(int wrongAnswers) {
+        this.wrongAnswers = wrongAnswers;
+    }
 
-    public void setAllAnswers(int allAnswers) {this.allAnswers = allAnswers;}
+    public void setAllAnswers(int allAnswers) {
+        this.allAnswers = allAnswers;
+    }
 }

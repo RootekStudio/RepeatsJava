@@ -17,8 +17,10 @@ import java.util.List;
 public class StatsActivityAdapter extends RecyclerView.Adapter<StatsActivityAdapter.MainViewHolder> {
     private List<SetStats> setsStats;
     private int dp;
+
     static class MainViewHolder extends RecyclerView.ViewHolder {
         LinearLayout linearLayout;
+
         MainViewHolder(LinearLayout lr) {
             super(lr);
             linearLayout = lr;
@@ -64,12 +66,12 @@ public class StatsActivityAdapter extends RecyclerView.Adapter<StatsActivityAdap
 
         setName.setText(item.getName());
 
-        if(item.getAllAnswers() != 0) {
-            float goodPercentInt = (float)(item.getGoodAnswers() * 100) / item.getAllAnswers();
+        if (item.getAllAnswers() != 0) {
+            float goodPercentInt = (float) (item.getGoodAnswers() * 100) / item.getAllAnswers();
             String goodPercent = Math.round(goodPercentInt) + "%";
             goodPercentTextView.setText(goodPercent);
 
-            float wrongPercentInt = (float)(item.getWrongAnswers() * 100) / item.getAllAnswers();
+            float wrongPercentInt = (float) (item.getWrongAnswers() * 100) / item.getAllAnswers();
             String wrongPercent = Math.round(wrongPercentInt) + "%";
             wrongPercentTextView.setText(wrongPercent);
 
@@ -86,8 +88,7 @@ public class StatsActivityAdapter extends RecyclerView.Adapter<StatsActivityAdap
 
             goodPercentView.setLayoutParams(goodLayoutParams);
             wrongPercentView.setLayoutParams(wrongLayoutParams);
-        }
-        else {
+        } else {
             relativeGraphSetStats.setVisibility(View.GONE);
             clickToSeeDetailsTextView.setVisibility(View.GONE);
         }

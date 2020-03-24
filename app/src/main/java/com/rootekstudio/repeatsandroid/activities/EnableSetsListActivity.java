@@ -17,11 +17,9 @@ import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
 import java.util.List;
 
-public class EnableSetsListActivity extends AppCompatActivity
-{
+public class EnableSetsListActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RepeatsHelper.DarkTheme(this, false);
         setContentView(R.layout.activity_enable_sets_list);
@@ -32,8 +30,7 @@ public class EnableSetsListActivity extends AppCompatActivity
         int count = AllSets.size();
         LinearLayout linear = findViewById(R.id.EnableSetsLinear);
 
-        for(int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             RepeatsSetInfo item = AllSets.get(i);
             String name = item.getTableName();
             String isenabled = item.getIsEnabled();
@@ -44,18 +41,13 @@ public class EnableSetsListActivity extends AppCompatActivity
             Switch SWITCH = view1.findViewById(R.id.EnableSwitch);
             SWITCH.setTag(name);
 
-            SWITCH.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-            {
+            SWITCH.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-                {
-                    if(isChecked)
-                    {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
                         String NAME = buttonView.getTag().toString();
                         DB.UpdateTable("TitleTable", "IsEnabled='true'", "TableName='" + NAME + "'");
-                    }
-                    else
-                    {
+                    } else {
                         String NAME = buttonView.getTag().toString();
                         DB.UpdateTable("TitleTable", "IsEnabled='false'", "TableName='" + NAME + "'");
                     }
@@ -63,12 +55,9 @@ public class EnableSetsListActivity extends AppCompatActivity
             });
 
             txtview.setText(title);
-            if(isenabled.equals("true"))
-            {
+            if (isenabled.equals("true")) {
                 SWITCH.setChecked(true);
-            }
-            else
-            {
+            } else {
                 SWITCH.setChecked(false);
             }
 
@@ -78,10 +67,8 @@ public class EnableSetsListActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        if(item.getItemId() == android.R.id.home)
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return true;

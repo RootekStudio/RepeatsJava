@@ -2,9 +2,9 @@ package com.rootekstudio.repeatsandroid.fastlearning;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -67,6 +67,10 @@ public class FastLearningConfigActivity extends AppCompatActivity {
             navigateToFragment1();
             configStage++;
         } else if (configStage == 1) {
+            if (FastLearningInfo.questionsCount == 0) {
+                Toast.makeText(this, R.string.selectAtLeastOneQuestion, Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (FastLearningInfo.randomQuestions) {
                 FastLearningInfo.selectedQuestions = chooseQuestions();
                 navigateToFastLearning();
@@ -209,13 +213,11 @@ public class FastLearningConfigActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         configStage--;
-        if(configStage == -1) {
+        if (configStage == -1) {
             super.onBackPressed();
-        }
-        else if(configStage == 0) {
+        } else if (configStage == 0) {
             navigateToFragment0();
-        }
-        else if (configStage == 1) {
+        } else if (configStage == 1) {
             navigateToFragment1();
             findViewById(R.id.nextConfigFL).setEnabled(true);
         }

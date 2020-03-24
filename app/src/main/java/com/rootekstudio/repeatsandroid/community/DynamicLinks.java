@@ -13,10 +13,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
-import com.rootekstudio.repeatsandroid.community.PreviewAndDownloadSetActivity;
 
 public class DynamicLinks extends AppCompatActivity {
-Context context;
+    Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +32,7 @@ Context context;
                             deepLink = pendingDynamicLinkData.getLink();
 
                             String path = deepLink.getPath();
-                            if(path.startsWith("/repeatsc/shareset/")) {
+                            if (path.startsWith("/repeatsc/shareset/")) {
                                 Intent intent = new Intent(context, PreviewAndDownloadSetActivity.class);
                                 intent.putExtra("databaseSetID", path.substring(19));
                                 startActivity(intent);

@@ -65,7 +65,7 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
         search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if(id == EditorInfo.IME_ACTION_SEARCH) {
+                if (id == EditorInfo.IME_ACTION_SEARCH) {
                     String queryText = search.getText().toString();
                     if (!queryText.equals("")) {
                         progressBar.setVisibility(View.VISIBLE);
@@ -94,7 +94,7 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
             String tag = text.substring(0, text.indexOf(" "));
             while (tag.equals("")) {
                 text = text.replaceFirst(" ", "");
-                if(text.length()==0) {
+                if (text.length() == 0) {
                     break outerloop;
                 }
                 tag = text.substring(0, text.indexOf(" "));
@@ -107,7 +107,7 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
             queries.add(lower);
         }
 
-        if(queries.size() > 10) {
+        if (queries.size() > 10) {
             Toast.makeText(this, R.string.upTo5Words, Toast.LENGTH_LONG).show();
             progressBar.setVisibility(View.GONE);
             linearSearchInfo.setVisibility(View.VISIBLE);
@@ -115,7 +115,7 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
             return;
         }
 
-        if(queries.size() == 0) {
+        if (queries.size() == 0) {
             progressBar.setVisibility(View.GONE);
             linearSearchInfo.setVisibility(View.VISIBLE);
             searchInfoText.setText(R.string.nothingFound);
@@ -133,18 +133,18 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
                             resultNames = new ArrayList<>();
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String a = (String)document.get("availability");
-                                if(a.equals("PUBLIC")) {
+                                String a = (String) document.get("availability");
+                                if (a.equals("PUBLIC")) {
                                     documents.add(document);
                                     resultNames.add(document.get("displayName").toString());
                                 }
                             }
 
-                            mAdapter = new RCmainListAdapter(resultNames,0);
+                            mAdapter = new RCmainListAdapter(resultNames, 0);
                             mAdapter.notifyDataSetChanged();
                             recyclerView.setAdapter(mAdapter);
 
-                            if(documents.size() == 0) {
+                            if (documents.size() == 0) {
                                 linearSearchInfo.setVisibility(View.VISIBLE);
                                 searchInfoText.setText(R.string.nothingFound);
                             }
@@ -174,7 +174,7 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
         setItems.add(getString(R.string.questions));
         setItems.add(getString(R.string.answers));
 
-        for(int i = 0; i < questions.size(); i++) {
+        for (int i = 0; i < questions.size(); i++) {
             setItems.add(questions.get(i).toString());
             setItems.add(answers.get(i).toString());
         }
@@ -188,8 +188,7 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
-        }
-        else if(item.getItemId() == R.id.yourSetsOption) {
+        } else if (item.getItemId() == R.id.yourSetsOption) {
             Intent intent = new Intent(this, MySetsActivity.class);
             startActivity(intent);
         }

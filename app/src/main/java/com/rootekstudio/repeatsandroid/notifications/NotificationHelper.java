@@ -8,11 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
-import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.OnSystemBoot;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -143,10 +139,9 @@ public class NotificationHelper {
                 int math = realDayOfWeek - setsDayOfWeek;
                 int toAdd = 7 - math;
                 calendarAlarm.add(Calendar.DAY_OF_MONTH, toAdd);
-            } else if(setsDayOfWeek == realDayOfWeek) {
+            } else if (setsDayOfWeek == realDayOfWeek) {
                 calendarAlarm.add(Calendar.DAY_OF_MONTH, 7);
-            }
-            else{
+            } else {
                 int toAdd = setsDayOfWeek - realDayOfWeek;
                 calendarAlarm.add(Calendar.DAY_OF_MONTH, toAdd);
             }
@@ -190,6 +185,7 @@ public class NotificationHelper {
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP);
     }
+
     public static void cancelAdvancedAlarm(Context cnt, int code) {
         Intent intent = new Intent(cnt, AdvancedTimeNotification.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(cnt, code, intent, 0);

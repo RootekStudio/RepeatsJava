@@ -36,11 +36,10 @@ public class PreviewAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         TextView textView;
-        if(view == null) {
+        if (view == null) {
             textView = new TextView(context);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 7);
-        }
-        else {
+        } else {
             textView = (TextView) view;
         }
 

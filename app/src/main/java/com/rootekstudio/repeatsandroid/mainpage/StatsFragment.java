@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid.mainfragments;
+package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.content.Context;
 import android.os.Bundle;

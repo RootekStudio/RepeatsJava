@@ -36,11 +36,10 @@ public class RepeatsNotificationTemplate {
         jsonIndex = json;
         boolean error = false;
 
-        if(json != null) {
+        if (json != null) {
             ArrayList<String> setsID = JsonFile.getSelectedSetsIdFromJSON(context, jsonIndex);
             item = new GetQuestion(context, setsID);
-        }
-        else {
+        } else {
             item = new GetQuestion(context);
         }
 
@@ -52,7 +51,7 @@ public class RepeatsNotificationTemplate {
         String setID = "";
         int itemID = -1;
 
-        if(item.getQuestion() != null) {
+        if (item.getQuestion() != null) {
             Question = item.getQuestion();
             Answer = item.getAnswer();
             tablename = item.getTitle();
@@ -60,8 +59,7 @@ public class RepeatsNotificationTemplate {
             ignorechars = item.getIgnoreChars();
             setID = item.getSetID();
             itemID = item.getItemID();
-        }
-        else {
+        } else {
             error = true;
             tablename = context.getString(R.string.cantLoadSet);
             Question = context.getString(R.string.checkSetSettings);
@@ -100,10 +98,9 @@ public class RepeatsNotificationTemplate {
                 .setColorized(true)
                 .setAutoCancel(true);
 
-        if(!error){
+        if (!error) {
             mBuilder.setContentIntent(pendingIntent);
-        }
-        else {
+        } else {
             Intent enableSets = new Intent(context, SettingsActivity.class);
             PendingIntent settings = PendingIntent.getActivity(context, rnd, enableSets, 0);
             mBuilder.setContentIntent(settings);
@@ -144,7 +141,7 @@ public class RepeatsNotificationTemplate {
                     .addRemoteInput(remoteInput)
                     .build();
 
-            if(!error){
+            if (!error) {
                 mBuilder.addAction(action);
             }
         }
@@ -158,13 +155,12 @@ public class RepeatsNotificationTemplate {
             @Override
             public void run() {
                 DatabaseHelper DB = new DatabaseHelper(context);
-                if(goodAnswer) {
+                if (goodAnswer) {
                     DB.increaseValueInSet(setID, itemID, "goodAnswers", 1);
                     DB.increaseValueInSet(setID, itemID, "allAnswers", 1);
                     DB.increaseValueInTitleTable(setID, "goodAnswers", 1);
                     DB.increaseValueInTitleTable(setID, "allAnswers", 1);
-                }
-                else {
+                } else {
                     DB.increaseValueInSet(setID, itemID, "wrongAnswers", 1);
                     DB.increaseValueInSet(setID, itemID, "allAnswers", 1);
                     DB.increaseValueInTitleTable(setID, "wrongAnswers", 1);
@@ -174,11 +170,10 @@ public class RepeatsNotificationTemplate {
         }).start();
 
         Intent intent1;
-        if(jsonIndex != null) {
+        if (jsonIndex != null) {
             intent1 = new Intent(context, AdvancedTimeNotification.class);
             intent1.putExtra("jsonIndex", jsonIndex);
-        }
-        else {
+        } else {
             intent1 = new Intent(context, RepeatsQuestionSend.class);
         }
 

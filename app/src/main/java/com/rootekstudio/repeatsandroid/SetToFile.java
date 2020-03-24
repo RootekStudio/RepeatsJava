@@ -77,14 +77,13 @@ class SetToFile {
                 json.put(name.get(set), singleSet);
             }
 
-            if(setsID.size() > 1) {
+            if (setsID.size() > 1) {
                 SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
                 String date = s.format(new Date());
 
                 fileName = "backup-" + date + ".zip";
                 zipFile = new File(directory, "backup-" + date + ".zip");
-            }
-            else {
+            } else {
                 fileName = name.get(0) + ".zip";
                 zipFile = new File(directory, name.get(0) + ".zip");
             }

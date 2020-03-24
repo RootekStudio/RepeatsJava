@@ -15,7 +15,7 @@ class FastLearningInfo {
     static int questionsCount;
     static int allAvailableQuestionsCount;
 
-    static void reset(){
+    static void reset() {
         selectedSets = new ArrayList<>();
         setsContent = new HashMap<>();
         selectedQuestions = new ArrayList<>();

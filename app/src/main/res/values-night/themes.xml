@@ -47,7 +47,7 @@
         <item name="iconTint">#FFFFFF</item>
     </style>
 
-    <style name="transculentTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="translucentTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorSecondary">@color/colorPrimary</item>
         <item name="customItemColor">@color/darkMainItem</item>

@@ -32,7 +32,7 @@ public class Fragment1 extends Fragment {
         randomQuestions.setChecked(FastLearningInfo.randomQuestions);
         manuallySelectQuestions.setChecked(!FastLearningInfo.randomQuestions);
 
-        if(!FastLearningInfo.randomQuestions) {
+        if (!FastLearningInfo.randomQuestions) {
             relativeSeekBar.setVisibility(View.GONE);
         }
 
@@ -46,7 +46,7 @@ public class Fragment1 extends Fragment {
         randomQuestions.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) {
+                if (b) {
                     FastLearningInfo.questionsCount = seekBar.getProgress();
                     FastLearningInfo.randomQuestions = true;
                     relativeSeekBar.setVisibility(View.VISIBLE);
@@ -57,7 +57,7 @@ public class Fragment1 extends Fragment {
         manuallySelectQuestions.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) {
+                if (b) {
                     FastLearningInfo.randomQuestions = false;
                     FastLearningInfo.questionsCount = 0;
                     relativeSeekBar.setVisibility(View.GONE);
@@ -69,11 +69,10 @@ public class Fragment1 extends Fragment {
         seekBar.setMax(FastLearningInfo.allAvailableQuestionsCount);
 
         //if user previously did not chose how many questions he want / and set default value
-        if(FastLearningInfo.questionsCount == 0) {
+        if (FastLearningInfo.questionsCount == 0) {
             FastLearningInfo.questionsCount = FastLearningInfo.allAvailableQuestionsCount;
             seekBar.setProgress(FastLearningInfo.allAvailableQuestionsCount);
-        }
-        else {
+        } else {
             seekBar.setProgress(FastLearningInfo.questionsCount);
         }
 

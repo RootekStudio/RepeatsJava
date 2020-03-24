@@ -115,12 +115,6 @@
     <string name="checkSetSettings">Check your settings</string>
     <string name="specialThanksDawid">Special thanks to Dawid Poradziński for being a very good tester</string>
     <string name="welcome">Welcome to</string>
-    <string name="constFreqInfo">Notifications will be sent all the time except for the hours set as silence hours</string>
-    <string name="advancedInfo">Notifications will be sent at the time and date you specify</string>
-    <string name="freqDefault">Default: Notifications comes every 30 minutes from all sets, silence hours from 10:00 PM to 06:00 AM</string>
-    <string name="advancedDefault">Default: Notifications comes every day, every 30 minutes, from all sets, from 08:00 AM to 10:00 PM</string>
-    <string name="firstRunInfo">"Repeats' main feature is to deliver notification with question to your device. "</string>
-    <string name="canChangeDefault">You can change default settings but first you have to add first set.</string>
     <string name="loadFromCommunity">Load sets from Repeats Community (Beta)</string>
     <string name="startQuestionRC">What do you want to learn today?</string>
     <string name="repeatsCommunity">Repeats Community (Beta)</string>
@@ -141,8 +135,6 @@
     <string name="mySets">My sets</string>
     <string name="yourSets">Your sets in Repeats Community</string>
     <string name="next">Next</string>
-    <string name="weWillConfigure">"We will now configure the basic functions of the app"</string>
-    <string name="deliveryMode">Select notification delivery mode</string>
     <string name="noMySets">You don\'t have any set in Repeats Community (Beta)</string>
     <string name="termsInfo">By using the Repeats app you agree to <a href="https://rootekstudio.wordpress.com/warunki-uzytkowania/">Terms of use</a> and <a href="https://rootekstudio.wordpress.com/polityka-prywatnosci/">Privacy policy</a></string>
     <string name="upTo5Words">You can only search up to 5 words</string>
@@ -162,7 +154,7 @@
     <string name="playing_set">Playing set:</string>
     <string name="click_here_read_notifi">Click here to go to the player</string>
     <string name="see_whats_now">See what\'s new</string>
-    <string name="welcome_to_update">Welcome to Repeats</string>
+    <string name="welcome_to_update">Welcome to Repeats 2.6</string>
     <string name="app_updated_info">App has been updated to the latest version</string>
     <string name="channelname4">Read Aloud notification</string>
     <string name="channeldesc4">This notification will show up when you are listening to the set</string>
@@ -170,30 +162,31 @@
     <string name="set_languages">Set languages</string>
     <string name="ignore_chars_info">When this feature is enabled, case sensitive characters, spaces, and diacritics will be ignored when checking the correctness of the answer. Note: This function does not work properly with Chinese script.</string>
     <string name="whatsNew">What\'s new</string>
-    <string name="homePageRedesign">Home page redesign</string>
+    <string name="homePageRedesign">New home page</string>
     <string name="otherCorrectAnswers">Other correct answers:</string>
     <string name="cannotLoadLangList">We could not load the list of languages</string>
     <string name="cannotLoadTTS">We were unable to load Text-to-Speech. Check if you have this app installed on your device.</string>
-    <string name="whatsNewDesc0">The new Read Aloud feature lets you listen to sets of questions and answers. The words played are displayed on the screen. You can change the speed of reading words.\n\nThe function works in the background, so when listening to the set, you can use other applications or listen to the set on the go without having to constantly use the phone. You can go back to the previous word, go to the next one, or stop playback at any time.
-\n\nReading aloud can be found on the main page in the set menu (3 dots next to the set name).</string>
-    <string name="whatsNewDesc1">In update 2.5, the appearance of the main page was slightly rebuilt.\n\nThe Test button has been replaced by a drop-down menu with links to the Fast Learning and Read Aloud functions as well as a link to the Set Settings.
-\n\nIn addition, with version 2.5 sets on the main page are sorted from newest to oldest (not as before from oldest to newest).\n\nThe display of the set name has also been changed. If the name is long, it will be scaled to a smaller size.</string>
-    <string name="whatsNewDesc2">The new Set Settings page allows you to edit the configuration of the set, i.e. enable/disable ignoring special characters and change the set languages (used in the Read aloud function).
-\n\nIn the future, more options and settings will appear there.</string>
-    <string name="whatsNewDesc3">- The application settings code has been rewritten, so the settings should load faster   - If the user answers the question correctly when more than one answer is correct, the remaining correct answers will be displayed   - Prevented sharing of unnamed sets   - A message has been added on the home page that shows when the application is updated to the latest feature update   - Added What\'s New page with a list of changes in the latest feature update</string>
+    <string name="whatsNewDesc0">The new home page has been divided into 4 sections:
+\n\n- Start: Suggestions for features and sets will appear here
+\n\n- Sets: List of sets saved on the device
+\n\n- Statistics: Display the number of correct, incorrect and all responses by sets
+\n\n- Application settings</string>
+    <string name="whatsNewDesc1">Completely rebuilt Fast Learning now allows you to choose one or more learning sets, as well as lets you choose a specific number of questions.
+\n\nIn addition, the user can also choose the questions from which he wants to be asked.</string>
+    <string name="whatsNewDesc2">After the user provides the answer, information on whether the answer was correct or incorrect is saved in the database. Thanks to this, it is possible to intelligently select questions based on previous user responses.
+        The user can view statistics about the entire application as well as a single set.</string>
+    <string name="whatsNewDesc3">- Welcome screen rebuilt for new users
+\n\n- The appearance of the set editing page has been improved - the add button no longer covers the interface elements
+\n\n- Easy access to all application functions from the main page</string>
     <string name="otherImprovements">Other improvements</string>
     <string name="browserNotFound">Browser not found</string>
-    <string name="scan_image">Scan image</string>
     <string name="stats">Stats</string>
-    <string name="details">Details</string>
     <string name="na">N/A</string>
     <string name="setStats">Set stats</string>
     <string name="sortGood">good answers</string>
     <string name="sortWrong">wrong answers</string>
     <string name="sortCreationDateA">creation date (ascending)</string>
     <string name="sortCreationDateD">creation date (descending)</string>
-    <string name="goodAnswersText">good\nAnswers</string>
-    <string name="wrongAnswersText">wrong\nAnswers</string>
     <string name="sortBy">Sort by</string>
     <string name="goodAnswersT">good answers</string>
     <string name="wrongAnswersT">wrong answers</string>
@@ -236,8 +229,16 @@
     <string name="letMeChooseQuestions">Let me choose questions</string>
     <string name="selectNumberOfQuestions">Select the number of questions</string>
     <string name="suggestions">Suggestions</string>
-    <string name="notificationsDescription">description</string>
-    <string name="fastLearningDescription">description</string>
-    <string name="readAloudDescription">description</string>
+    <string name="notificationsDescription">The main function of the app is to send notifications containing questions from sets of questions and answers that the user will prepare or download. The user answers the question directly in the notification and this answer is immediately checked by the application.\n\nThere is an extensive option of configuring the sending of notifications - you can choose the frequency with which they are to be sent, from what sets questions are to be shown, as well as specific days can be selected and specific times when notifications are to come.</string>
+    <string name="fastLearningDescription">In the Fast Learning module, the user chooses from which sets he wants to learn and selects the number of questions, and the application, based on his previous answers, intelligently selects the questions.\n\nThe Quick Learn session continues until the user has answered all the questions correctly. At the same time, the duration of the session and the number of correct, incorrect and all answers are counted during the Fast Learning.</string>
+    <string name="readAloudDescription">Reading aloud allows you to read the set chosen by the user. \n\nThe function works in the background, so you can listen to the sets, e.g. on the way to school. Reading aloud can also be used to learn the correct pronunciation of words from a foreign language.</string>
+    <string name="increaseLearningEfficiency">Increase learning efficiency</string>
+    <string name="turnOnNotifi">Turn on notifications</string>
+    <string name="skip">Skip</string>
+    <string name="ready">Ready</string>
+    <string name="continueToSeeFeatures">Continue to see the features of the app</string>
+    <string name="sendTestNotifi">Send test notification</string>
+    <string name="newFastLearning">New Fast learning</string>
+    <string name="selectAtLeastOneQuestion">You must select at least one question</string>
 
 </resources>

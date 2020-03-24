@@ -69,13 +69,13 @@ public class Fragment2 extends Fragment {
                                 if (b) {
                                     FastLearningInfo.selectedQuestions.add(singleItem);
                                     FastLearningInfo.questionsCount++;
-                                    if(FastLearningInfo.questionsCount == 1) {
+                                    if (FastLearningInfo.questionsCount == 1) {
                                         button.setEnabled(true);
                                     }
                                 } else {
                                     FastLearningInfo.selectedQuestions.remove(singleItem);
                                     FastLearningInfo.questionsCount--;
-                                    if(FastLearningInfo.questionsCount == 0) {
+                                    if (FastLearningInfo.questionsCount == 0) {
                                         button.setEnabled(false);
                                     }
                                 }

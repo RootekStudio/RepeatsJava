@@ -65,8 +65,8 @@ public class MySetsActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot document : task.getResult()) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
                                 documents.add(document);
                                 resultNames.add(document.get("displayName").toString());
                             }
@@ -75,7 +75,7 @@ public class MySetsActivity extends AppCompatActivity {
                             mAdapter.notifyDataSetChanged();
                             recyclerView.setAdapter(mAdapter);
                             progressBar.setVisibility(View.GONE);
-                            if(documents.size() == 0) {
+                            if (documents.size() == 0) {
                                 textView.setVisibility(View.VISIBLE);
                             }
 
@@ -85,7 +85,7 @@ public class MySetsActivity extends AppCompatActivity {
     }
 
     public void previewSetMySets(View view) {
-        int id = (Integer)view.findViewById(R.id.setNameMySetsList).getTag();
+        int id = (Integer) view.findViewById(R.id.setNameMySetsList).getTag();
         ArrayList<String> setItems = new ArrayList<>();
         QueryDocumentSnapshot doc = documents.get(id);
         ArrayList<?> questions = (ArrayList<?>) doc.get("questions");
@@ -95,7 +95,7 @@ public class MySetsActivity extends AppCompatActivity {
         setItems.add(getString(R.string.questions));
         setItems.add(getString(R.string.answers));
 
-        for(int i = 0; i < questions.size(); i++) {
+        for (int i = 0; i < questions.size(); i++) {
             setItems.add(questions.get(i).toString());
             setItems.add(answers.get(i).toString());
         }
@@ -107,12 +107,12 @@ public class MySetsActivity extends AppCompatActivity {
 
     public void createLinkMySets(final View view) {
         view.setEnabled(false);
-        View vParent = (View)view.getParent();
+        View vParent = (View) view.getParent();
         final ProgressBar progressLink = vParent.findViewById(R.id.progressLink);
         progressLink.setVisibility(View.VISIBLE);
-        int id = (Integer)vParent.findViewById(R.id.setNameMySetsList).getTag();
+        int id = (Integer) vParent.findViewById(R.id.setNameMySetsList).getTag();
         Task<ShortDynamicLink> shortDynamicLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://kubas20020.wixsite.com/repeatsc/" + "shareset/" +documents.get(id).getId()))
+                .setLink(Uri.parse("https://kubas20020.wixsite.com/repeatsc/" + "shareset/" + documents.get(id).getId()))
                 .setDomainUriPrefix("https://repeats.page.link")
                 .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
                 .buildShortDynamicLink()
@@ -134,12 +134,12 @@ public class MySetsActivity extends AppCompatActivity {
     }
 
     public void deleteSetMySets(View view) {
-        View vParent = (View)view.getParent();
-        int id = (Integer)vParent.findViewById(R.id.setNameMySetsList).getTag();
+        View vParent = (View) view.getParent();
+        int id = (Integer) vParent.findViewById(R.id.setNameMySetsList).getTag();
         db.collection("sets").document(documents.get(id).getId()).delete();
         resultNames.remove(id);
         mAdapter.notifyDataSetChanged();
-        if(resultNames.size() == 0) {
+        if (resultNames.size() == 0) {
             textView.setVisibility(View.VISIBLE);
         }
     }

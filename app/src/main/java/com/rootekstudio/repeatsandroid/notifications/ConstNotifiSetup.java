@@ -24,10 +24,9 @@ public class ConstNotifiSetup {
         if (time != 0) {
             long triggerAtMillis;
 
-            if(calendar == null) {
+            if (calendar == null) {
                 triggerAtMillis = System.currentTimeMillis() + 1000 * 60 * time;
-            }
-            else {
+            } else {
                 triggerAtMillis = calendar.getTimeInMillis();
             }
 
@@ -66,7 +65,7 @@ public class ConstNotifiSetup {
         alarmManager.cancel(pendingIntent);
     }
 
-    static void silentRegisterInFuture(int hour, int minute, Context context, int id){
+    static void silentRegisterInFuture(int hour, int minute, Context context, int id) {
         Calendar calendarAlarm = Calendar.getInstance();
 
         Calendar calendarCheck = Calendar.getInstance();

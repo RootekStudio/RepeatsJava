@@ -34,7 +34,7 @@ public class SaveShared {
         File dir = new File(context.getFilesDir(), "shared");
 
         File legacyFile = new File(dir, "Answers.txt");
-        if(legacyFile.exists()) {
+        if (legacyFile.exists()) {
             SaveSharedLegacy.saveSharedLegacy(context, DB);
             return;
         }
@@ -79,10 +79,9 @@ public class SaveShared {
                 name = keys.get(setIndex);
 
                 RepeatsSetInfo list;
-                if(Locale.getDefault().toString().equals("pl_PL")) {
+                if (Locale.getDefault().toString().equals("pl_PL")) {
                     list = new RepeatsSetInfo(name, id, createDate, "true", "", "false", "pl_PL", "en_GB");
-                }
-                else {
+                } else {
                     list = new RepeatsSetInfo(name, id, createDate, "true", "", "false", "en_US", "es_ES");
                 }
 
@@ -105,7 +104,7 @@ public class SaveShared {
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int j = 0; j < answerLength; j++) {
                             stringBuilder.append(answerArray.getString(j));
-                            if(j != answerLength-1) {
+                            if (j != answerLength - 1) {
                                 stringBuilder.append(RepeatsHelper.breakLine);
                             }
                         }
@@ -130,8 +129,7 @@ public class SaveShared {
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
                         DB.AddItemWithValues(id, question, answer, imageID);
-                    }
-                    else {
+                    } else {
                         DB.AddItemWithValues(id, question, answer, "");
                     }
 

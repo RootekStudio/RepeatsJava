@@ -1,5 +1,12 @@
 package com.rootekstudio.repeatsandroid.statistics;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
@@ -7,13 +14,6 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
@@ -94,25 +94,22 @@ public class SetStatsActivity extends AppCompatActivity {
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if(item.getItemId() == R.id.sortGoodAnswers) {
+                if (item.getItemId() == R.id.sortGoodAnswers) {
                     List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, DatabaseHelper.ORDER_BY_GOOD_ANSWERS_DESC);
                     setsStats.add(0, new RepeatsSingleItem());
                     adapter = new SetStatsActivityAdapter(setsStats);
                     recyclerView.setAdapter(adapter);
-                }
-                else if(item.getItemId() == R.id.sortWrongAnswers) {
+                } else if (item.getItemId() == R.id.sortWrongAnswers) {
                     List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, DatabaseHelper.ORDER_BY_WRONG_ANSWERS_DESC);
                     setsStats.add(0, new RepeatsSingleItem());
                     adapter = new SetStatsActivityAdapter(setsStats);
                     recyclerView.setAdapter(adapter);
-                }
-                else if(item.getItemId() == R.id.sortCreationDateAscending) {
+                } else if (item.getItemId() == R.id.sortCreationDateAscending) {
                     List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, DatabaseHelper.ORDER_BY_ID_ASC);
                     setsStats.add(0, new RepeatsSingleItem());
                     adapter = new SetStatsActivityAdapter(setsStats);
                     recyclerView.setAdapter(adapter);
-                }
-                else if(item.getItemId() == R.id.sortCreationDateDescending) {
+                } else if (item.getItemId() == R.id.sortCreationDateDescending) {
                     List<RepeatsSingleItem> setsStats = DB.AllItemsSET(setID, DatabaseHelper.ORDER_BY_ID_DESC);
                     setsStats.add(0, new RepeatsSingleItem());
                     adapter = new SetStatsActivityAdapter(setsStats);

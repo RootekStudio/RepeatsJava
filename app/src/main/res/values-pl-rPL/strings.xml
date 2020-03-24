@@ -113,12 +113,6 @@
     <string name="cantLoadSet">Nie można załadować żadnego zestawu</string>
     <string name="specialThanksDawid">Specjalne podziękowania dla Dawida Poradzińskiego za gruntowne testowanie aplikacji</string>
     <string name="welcome">Witaj w</string>
-    <string name="constFreqInfo">Powiadomienia będą wysyłane ze stałą częstotliwością, z wyjątkiem godzin ustawionych jako godziny ciszy</string>
-    <string name="advancedInfo">Powiadomienia będą przychodzić w dniu i godzinie określonej przez użytkownika</string>
-    <string name="freqDefault">Domyślnie: Powiadomienia przychodzą co 30 minut ze wszystkich zestawów, godziny ciszy od 22:00 do 06:00</string>
-    <string name="advancedDefault">Domyślnie: Powiadomienia przychodzą codziennie co 30 minut, ze wszystkich zestawów, w godzinach od 08:00 do 22:00</string>
-    <string name="firstRunInfo">Główną funkcją aplikacji Repeats jest wysyłanie powiadomień, które zawierają pytania z zestawów utworzonych przez użytkownika</string>
-    <string name="canChangeDefault">Możesz zmienić ustawienia domyślne po dodaniu pierwszego zestawu.</string>
     <string name="loadFromCommunity">Pobierz zestawy ze Społeczności Repeats (Beta)</string>
     <string name="startQuestionRC">Czego chcesz się dzisiaj nauczyć?</string>
     <string name="repeatsCommunity">Społeczność Repeats (Beta)</string>
@@ -139,8 +133,6 @@
     <string name="mySets">Moje zestawy</string>
     <string name="yourSets">Twoje zestawy w Społeczności Repeats</string>
     <string name="next">Dalej</string>
-    <string name="weWillConfigure">Skonfigurujemy teraz podstawowe funkcje aplikacji</string>
-    <string name="deliveryMode">Wybierz tryb dostarczania powiadomień</string>
     <string name="noMySets">Nie masz żadnych zestawów w Społeczności Repeats (Beta)</string>
     <string name="termsInfo">Korzystając z aplikacji Repeats wyrażasz zgodę na <a href="https://rootekstudio.wordpress.com/warunki-uzytkowania/">Warunki użytkowania</a> oraz <a href="https://rootekstudio.wordpress.com/polityka-prywatnosci/">Politykę prywatności</a></string>
     <string name="upTo5Words">Zapytanie może zawierać maksymalnie 5 słów</string>
@@ -160,7 +152,7 @@
     <string name="playing_set">Odtwarzanie zestawu:</string>
     <string name="click_here_read_notifi">Kliknij tutaj aby przejść do odtwarzacza</string>
     <string name="see_whats_now">Zobacz co nowego</string>
-    <string name="welcome_to_update">Witaj w Repeats 2.5</string>
+    <string name="welcome_to_update">Witaj w Repeats 2.6</string>
     <string name="app_updated_info">Zaktualizowano aplikację do najnowszej wersji</string>
     <string name="channelname4">Powiadomienie stałe funkcji Czytanie na głos</string>
     <string name="channeldesc4">Powiadomienie pokazujące się podczas odsłuchiwania zestawu za pomocą funkcji Czytanie na głos</string>
@@ -168,34 +160,30 @@
     <string name="set_languages">Języki zestawu</string>
     <string name="ignore_chars_info">Po włączeniu tej funkcji wielkość liter, spacje i znaki diakrytyczne będą igonorowane przy sprawdzaniu poprawności odpowiedzi. Uwaga: Funkcja nie działa poprawnie z pismem chińskim.</string>
     <string name="whatsNew">Co nowego</string>
-    <string name="homePageRedesign">Przebudowa strony głównej</string>
+    <string name="homePageRedesign">Nowa strona główna</string>
     <string name="otherCorrectAnswers">Inne poprawne odpowiedzi:</string>
     <string name="cannotLoadLangList">Nie mogliśmy załadować listy języków</string>
     <string name="cannotLoadTTS">Nie mogliśmy załadować Zamiany tekstu na mowę Google. Sprawdź czy masz tę aplikację zainstalowaną na swoim urządzeniu.</string>
-    <string name="whatsNewDesc0">Nowa funkcja Czytanie na głos pozwala na odsłuchiwanie zestawów pytań i odpowiedzi. Odtwarzane słowa są wyświetlane na ekranie. Istnieje możliwość zmiany szybkości czytania słów. \n\nFunkcja działa w tle, więc podczas słuchania zestawu można korzystać z innych aplikacji lub słuchać zestawów w drodze (np. do szkoły) bez konieczności ciągłego korzystania z telefonu. W każdej chwili można cofnąć się do poprzedniego słowa, przejść do następnego lub zatrzymać odtwarzanie.
-\n\nCzytanie na głos można znaleźć na stronie głównej w menu zestawu (3 kropki obok nazwy zestawu).</string>
-    <string name="whatsNewDesc1">W aktualizacji 2.5 wygląd strony głównej został lekko przebudowany. \n\nPrzycisk Test zastąpiono rozwijanym menu, w którym znajdują się odnośniki do funkcji Szybka nauka i Czytanie na głos, jak również link do Ustawień zestawu.
-\n\nOprócz tego wraz z wersją 2.5 zestawy na stronie głównej są sortowane od najnowszego do najstarszego (a nie tak jak wcześniej od najstarszego do najnowszego). \n\nZmieniono również sposób wyświetlania nazwy zestawu. Jeżeli nazwa jest długa to zostanie przeskalowana do mniejszych rozmiarów.</string>
-    <string name="whatsNewDesc2">Nowa strona Ustawienia zestawu pozwala na edytowanie konfiguracji zestawu, czyli włączanie/wyłączanie ignorowania znaków specjalnych oraz zmiana języków zestawu (używanych w funkcji Czytanie na głos).
-                \n\nW przyszłości pojawi się tam więcej opcji i ustawień.</string>
-    <string name="whatsNewDesc3">- Przepisano na nowo kod ustawień aplikacji, dzięki czemu ustawienia powinny wczytywać się szybciej
-\n\n- Jeżeli użytkownik odpowie poprawnie na pytanie w sytuacji gdy poprawnych jest więcej niż jedna odpowiedź, zostaną wyświetlone pozostałe prawidłowe odpowiedzi
-\n\n- Uniemożliwiono udostępnianie zestawów bez nazwy
-\n\n- Dodano komunikat na stronie głównej pokazujący się gdy aplikacja zostanie zaktualizowana do najnowszej aktualizacji funkcji
-\n\n- Dodano stronę Co nowego na której będzie zamieszczona lista zmian w najnowszej aktualizacji funkcji</string>
+    <string name="whatsNewDesc0">Nowa strona główna została podzielona na 4 sekcje:\n\n- Start: Tutaj będą pojawiać się propozycje dotyczące funkcji i zestawów
+    \n\n- Zestawy: Lista zestawów zapisanych na urządzeniu
+    \n\n- Statystyki: Wyświetlają liczbę prawidłowych, błędnych i wszystkich odpowiedzi z podziałem na zestawy
+    \n\n- Ustawienia aplikacji</string>
+    <string name="whatsNewDesc1">Całkowicie przebudowana Szybka nauka pozwala teraz na wybieranie jednego lub więcej zestawów do nauki, jak również pozwala wybrać użytkownikowi konkretną ilość pytań.
+    Oprócz tego użytkownik może również samodzielnie wybrać pytania z których chce być pytany.</string>
+    <string name="whatsNewDesc2">Po udzieleniu przez użytkownika odpowiedzi, w bazie danych zapisywana jest informacja czy odpowiedź była prawidłowa czy błędna. Dzięki temu możliwe jest inteligentne
+    dobieranie pytań na podstawie wcześniejszych odpowiedzi użytkownika. Użytkownik może przeglądać statystyki dotyczące całej aplikacji jak również pojedynczego zestawu.</string>
+    <string name="whatsNewDesc3">- Przebudowano ekran powitalny dla nowych uzytkowników
+        \n\n- Usprawniono wygląd strony edycji zestawu - plus nie zasłania już elementów interfejsu
+        \n\n- Łatwy dostęp do wszystkich funkcji aplikacji z poziomu strony głównej</string>
     <string name="otherImprovements">Inne usprawnienia</string>
     <string name="browserNotFound">Nie znaleziono przeglądarki internetowej</string>
-    <string name="scan_image">Skanuj obraz</string>
     <string name="stats">Statystyki</string>
-    <string name="details">Szczegóły</string>
     <string name="na">Brak danych</string>
     <string name="setStats">Statystyki zestawu</string>
     <string name="sortGood">poprawnych odpowiedzi</string>
     <string name="sortWrong">błędnych odpowiedzi</string>
     <string name="sortCreationDateA">daty utworzenia (rosnąco)</string>
     <string name="sortCreationDateD">daty utworzenia (malejąco)</string>
-    <string name="goodAnswersText">poprawnych\nodpowiedzi</string>
-    <string name="wrongAnswersText">błędnych\nodpowiedzi</string>
     <string name="sortBy">Sortuj według</string>
     <string name="goodAnswersT">poprawnych odpowiedzi</string>
     <string name="wrongAnswersT">błędnych odpowiedzi</string>
@@ -238,6 +226,14 @@
     <string name="selectNumberOfQuestions">Wybierz ilość pytań</string>
     <string name="suggestions">Propozycje</string>
     <string name="notificationsDescription">Główną funkcją aplikacji jest wysyłanie powiadomień zawierających pytania z zestawów pytań i odpowiedzi które przygotuje lub pobierze użytkownik. Użytkownik odpowiada na pytanie bezpośrednio w powiadomieniu i ta odpowiedź jest od razu sprawdzana przez aplikację.\n\nIstnieje rozbudowana możliwość konfiguracji wysyłania powiadomień – można wybrać częstotliwość z jaką mają być wysyłane, z jakich zestawów mają być pokazywane pytania, jak również można wybrać konkretne dni i konkretne godziny w których powiadomienia mają przychodzić.</string>
-    <string name="fastLearningDescription">W module Szybka nauka użytkownik wybiera z jakich zestawów chce przyswoić materiał i wybiera ilość pytań a aplikacja, bazując na jego wcześniejszych odpowiedziach, inteligentnie dobiera pytania na które ma odpowiedzieć.\n\nSesja Szybkiej nauki trwa dopóki użytkownik nie odpowie poprawnie na wszystkie pytania. Jednocześnie podczas trwania Szybkiej nauki liczony jest czas trwania sesji oraz ilość poprawnych, błędnych i wszystkich odpowiedzi.</string>
+    <string name="fastLearningDescription">W module Szybka nauka użytkownik wybiera z jakich zestawów chce przyswoić materiał i wybiera ilość pytań a aplikacja, bazując na jego wcześniejszych odpowiedziach, inteligentnie dobiera pytania na które ma odpowiedzieć.  Sesja Szybkiej nauki trwa dopóki użytkownik nie odpowie poprawnie na wszystkie pytania. Jednocześnie podczas trwania Szybkiej nauki liczony jest czas trwania sesji oraz ilość poprawnych, błędnych i wszystkich odpowiedzi.</string>
     <string name="readAloudDescription">Czytanie na głos umożliwia odczytanie zestawu wybranego przez użytkownika.\n\nFunkcja działa w tle, dzięki czemu zestawów można słuchać np. w drodze do szkoły. Czytanie na głos może być też wykorzystane do nauczenia się poprawnej wymowy słów z języka obcego.</string>
+    <string name="increaseLearningEfficiency">Zwiększ wydajność nauki</string>
+    <string name="turnOnNotifi">Włącz powiadomienia</string>
+    <string name="skip">Pomiń</string>
+    <string name="ready">Gotowe</string>
+    <string name="continueToSeeFeatures">Przejdź dalej aby poznać funkcje aplikacji</string>
+    <string name="sendTestNotifi">Wyślij testowe powiadomienie</string>
+    <string name="newFastLearning">Nowa Szybka nauka</string>
+    <string name="selectAtLeastOneQuestion">Musisz wybrać co najmniej jedno pytanie</string>
 </resources>

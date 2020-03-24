@@ -97,7 +97,7 @@ public class Share {
         ArrayList<String> questions = new ArrayList<>();
         ArrayList<String> answers = new ArrayList<>();
 
-        for(int i = 0; i<singleSet.size(); i++) {
+        for (int i = 0; i < singleSet.size(); i++) {
             questions.add(singleSet.get(i).getQuestion());
             answers.add(singleSet.get(i).getAnswer());
         }
@@ -124,24 +124,24 @@ public class Share {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(context, R.string.successShare, Toast.LENGTH_SHORT).show();
-                            Task<ShortDynamicLink> shortDynamicLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                                    .setLink(Uri.parse("https://kubas20020.wixsite.com/repeatsc/" + "shareset/" + documentReference.getId()))
-                                    .setDomainUriPrefix("https://repeats.page.link")
-                                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
-                                    .buildShortDynamicLink()
-                                    .addOnCompleteListener(activity, new OnCompleteListener<ShortDynamicLink>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<ShortDynamicLink> task) {
-                                            String dynamicLink = task.getResult().getShortLink().toString();
+                        Task<ShortDynamicLink> shortDynamicLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                                .setLink(Uri.parse("https://kubas20020.wixsite.com/repeatsc/" + "shareset/" + documentReference.getId()))
+                                .setDomainUriPrefix("https://repeats.page.link")
+                                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                                .buildShortDynamicLink()
+                                .addOnCompleteListener(activity, new OnCompleteListener<ShortDynamicLink>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                                        String dynamicLink = task.getResult().getShortLink().toString();
 
-                                            Intent shareLink = new Intent(Intent.ACTION_SEND);
-                                            shareLink.setType("text/plain");
-                                            shareLink.putExtra(Intent.EXTRA_SUBJECT, "something");
-                                            shareLink.putExtra(Intent.EXTRA_TEXT, dynamicLink);
-                                            activity.startActivity(Intent.createChooser(shareLink, context.getString(R.string.share)));
-                                            activity.finish();
-                                        }
-                                    });
+                                        Intent shareLink = new Intent(Intent.ACTION_SEND);
+                                        shareLink.setType("text/plain");
+                                        shareLink.putExtra(Intent.EXTRA_SUBJECT, "something");
+                                        shareLink.putExtra(Intent.EXTRA_TEXT, dynamicLink);
+                                        activity.startActivity(Intent.createChooser(shareLink, context.getString(R.string.share)));
+                                        activity.finish();
+                                    }
+                                });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

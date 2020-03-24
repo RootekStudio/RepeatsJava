@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.rootekstudio.repeatsandroid.fastlearning.FastLearningSetsListItem;
 import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
+import com.rootekstudio.repeatsandroid.fastlearning.FastLearningSetsListItem;
 import com.rootekstudio.repeatsandroid.statistics.SetStats;
 
 import java.util.ArrayList;
@@ -52,59 +52,69 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion == 1) {
-            String command = "ALTER TABLE TitleTable ADD COLUMN IgnoreChars TEXT";
-            String command2 = "UPDATE TitleTable SET IgnoreChars='false'";
-            db.execSQL(command);
-            db.execSQL(command2);
+            upgradeTo2(db);
+            upgradeTo3(db);
+            upgradeTo4(db);
+        } else if (oldVersion == 2) {
+            upgradeTo3(db);
+            upgradeTo4(db);
+        } else if (oldVersion == 3) {
+            upgradeTo4(db);
+        }
+    }
+
+    private void upgradeTo2(SQLiteDatabase db) {
+        String command = "ALTER TABLE TitleTable ADD COLUMN IgnoreChars TEXT";
+        String command2 = "UPDATE TitleTable SET IgnoreChars='false'";
+        db.execSQL(command);
+        db.execSQL(command2);
+    }
+
+    private void upgradeTo3(SQLiteDatabase db) {
+        String command = "ALTER TABLE TitleTable ADD COLUMN firstLanguage TEXT";
+        String command1 = "ALTER TABLE TitleTable ADD COLUMN secondLanguage TEXT";
+        String command2 = "";
+        String command3 = "";
+        if (Locale.getDefault().toString().equals("pl_PL")) {
+            command2 = "UPDATE TitleTable SET firstLanguage='pl_PL'";
+            command3 = "UPDATE TitleTable SET secondLanguage='en_GB'";
+        } else {
+            command2 = "UPDATE TitleTable SET firstLanguage='en_US'";
+            command3 = "UPDATE TitleTable SET secondLanguage='es_ES'";
         }
 
-        if(oldVersion == 2) {
-            String command = "ALTER TABLE TitleTable ADD COLUMN firstLanguage TEXT";
-            String command1 = "ALTER TABLE TitleTable ADD COLUMN secondLanguage TEXT";
-            String command2 = "";
-            String command3 = "";
-            if(Locale.getDefault().toString().equals("pl_PL")) {
-                command2 = "UPDATE TitleTable SET firstLanguage='pl_PL'";
-                command3 = "UPDATE TitleTable SET secondLanguage='en_GB'";
-            }
-            else {
-                command2 = "UPDATE TitleTable SET firstLanguage='en_US'";
-                command3 = "UPDATE TitleTable SET secondLanguage='es_ES'";
-            }
+        db.execSQL(command);
+        db.execSQL(command1);
+        db.execSQL(command2);
+        db.execSQL(command3);
+    }
 
-            db.execSQL(command);
-            db.execSQL(command1);
-            db.execSQL(command2);
-            db.execSQL(command3);
+    private void upgradeTo4(SQLiteDatabase db) {
+        String command = "ALTER TABLE TitleTable ADD COLUMN goodAnswers INTEGER DEFAULT 0";
+        String command1 = "ALTER TABLE TitleTable ADD COLUMN wrongAnswers INTEGER DEFAULT 0";
+        String command2 = "ALTER TABLE TitleTable ADD COLUMN allAnswers INTEGER DEFAULT 0";
+
+        db.execSQL(command);
+        db.execSQL(command1);
+        db.execSQL(command2);
+
+        String query = "SELECT TableName FROM TitleTable";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String id = cursor.getString(0);
+                String singleSetCommand = "ALTER TABLE " + id + " ADD COLUMN goodAnswers INTEGER DEFAULT 0";
+                String singleSetCommand1 = "ALTER TABLE " + id + " ADD COLUMN wrongAnswers INTEGER DEFAULT 0";
+                String singleSetCommand2 = "ALTER TABLE " + id + " ADD COLUMN allAnswers INTEGER DEFAULT 0";
+
+                db.execSQL(singleSetCommand);
+                db.execSQL(singleSetCommand1);
+                db.execSQL(singleSetCommand2);
+            }
+            while (cursor.moveToNext());
         }
-
-        if(oldVersion == 3) {
-            String command = "ALTER TABLE TitleTable ADD COLUMN goodAnswers INTEGER DEFAULT 0";
-            String command1 = "ALTER TABLE TitleTable ADD COLUMN wrongAnswers INTEGER DEFAULT 0";
-            String command2 = "ALTER TABLE TitleTable ADD COLUMN allAnswers INTEGER DEFAULT 0";
-
-            db.execSQL(command);
-            db.execSQL(command1);
-            db.execSQL(command2);
-
-            String query = "SELECT TableName FROM TitleTable";
-            Cursor cursor = db.rawQuery(query, null);
-
-            if (cursor.moveToFirst()) {
-                do {
-                    String id = cursor.getString(0);
-                    String singleSetCommand = "ALTER TABLE " + id + " ADD COLUMN goodAnswers INTEGER DEFAULT 0";
-                    String singleSetCommand1 = "ALTER TABLE " + id + " ADD COLUMN wrongAnswers INTEGER DEFAULT 0";
-                    String singleSetCommand2 = "ALTER TABLE " + id + " ADD COLUMN allAnswers INTEGER DEFAULT 0";
-
-                    db.execSQL(singleSetCommand);
-                    db.execSQL(singleSetCommand1);
-                    db.execSQL(singleSetCommand2);
-                }
-                while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
+        cursor.close();
     }
 
     public RepeatsSetInfo getSingleItemLIST(String setID) {
@@ -137,16 +147,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<RepeatsSetInfo> AllItemsLIST(int orderOption) {
         String order = "";
 
-        if(orderOption == ORDER_BY_GOOD_ANSWERS_RATIO) {
+        if (orderOption == ORDER_BY_GOOD_ANSWERS_RATIO) {
             order = "ORDER BY CAST(goodAnswers AS FLOAT)/allAnswers DESC";
-        }
-        else if(orderOption == ORDER_BY_WRONG_ANSWERS_RATIO) {
+        } else if (orderOption == ORDER_BY_WRONG_ANSWERS_RATIO) {
             order = "ORDER BY CAST(wrongAnswers AS FLOAT)/allAnswers DESC";
-        }
-        else if(orderOption == ORDER_BY_ID_ASC) {
+        } else if (orderOption == ORDER_BY_ID_ASC) {
             order = "ORDER BY id ASC";
-        }
-        else if(orderOption == ORDER_BY_ID_DESC) {
+        } else if (orderOption == ORDER_BY_ID_DESC) {
             order = "ORDER BY id DESC";
         }
 
@@ -274,7 +281,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("title", name);
 
-        db.update("TitleTable", values, "TableName=?",new String[]{SetID});
+        db.update("TitleTable", values, "TableName=?", new String[]{SetID});
         db.close();
     }
 
@@ -375,25 +382,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<RepeatsSingleItem> AllItemsSET(String setID, int orderOption) {
         String order = "";
-        if(orderOption == ORDER_BY_GOOD_ANSWERS_DESC) {
+        if (orderOption == ORDER_BY_GOOD_ANSWERS_DESC) {
             order = " ORDER BY goodAnswers DESC";
-        }
-        else if(orderOption == ORDER_BY_WRONG_ANSWERS_DESC) {
+        } else if (orderOption == ORDER_BY_WRONG_ANSWERS_DESC) {
             order = " ORDER BY wrongAnswers DESC";
-        }
-        else if(orderOption == ORDER_BY_ID_ASC) {
+        } else if (orderOption == ORDER_BY_ID_ASC) {
             order = " ORDER BY id ASC";
-        }
-        else if(orderOption == ORDER_BY_ID_DESC) {
+        } else if (orderOption == ORDER_BY_ID_DESC) {
             order = " ORDER BY id DESC";
         }
         List<RepeatsSingleItem> ALL = new LinkedList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + setID + order;
-        String query1 = "SELECT title FROM TitleTable WHERE TableName = '" +  setID + "'";
+        String query1 = "SELECT title FROM TitleTable WHERE TableName = '" + setID + "'";
         String setName = "";
         Cursor cursor = db.rawQuery(query1, null);
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             setName = cursor.getString(0);
         }
 
@@ -457,8 +461,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void insertSetToDatabase(String setID, ArrayList<String> questions, ArrayList<String> answers, ArrayList<String> images) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        if(images == null) {
-            for(int i = 0; i < questions.size(); i++) {
+        if (images == null) {
+            for (int i = 0; i < questions.size(); i++) {
                 ContentValues values = new ContentValues();
 
                 values.put("question", questions.get(i));
@@ -467,9 +471,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 db.insert(setID, null, values);
             }
-        }
-        else {
-            for(int i = 0; i < questions.size(); i++) {
+        } else {
+            for (int i = 0; i < questions.size(); i++) {
                 ContentValues values = new ContentValues();
 
                 values.put("question", questions.get(i));
@@ -486,16 +489,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<SetStats> selectSetsStatsInfo(int orderOption) {
         String order = "";
 
-        if(orderOption == ORDER_BY_GOOD_ANSWERS_RATIO) {
+        if (orderOption == ORDER_BY_GOOD_ANSWERS_RATIO) {
             order = "ORDER BY CAST(goodAnswers AS FLOAT)/allAnswers DESC";
-        }
-        else if(orderOption == ORDER_BY_WRONG_ANSWERS_RATIO) {
+        } else if (orderOption == ORDER_BY_WRONG_ANSWERS_RATIO) {
             order = "ORDER BY CAST(wrongAnswers AS FLOAT)/allAnswers DESC";
-        }
-        else if(orderOption == ORDER_BY_ID_ASC) {
+        } else if (orderOption == ORDER_BY_ID_ASC) {
             order = "ORDER BY id ASC";
-        }
-        else if(orderOption == ORDER_BY_ID_DESC) {
+        } else if (orderOption == ORDER_BY_ID_DESC) {
             order = "ORDER BY id DESC";
         }
 
@@ -504,7 +504,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 SetStats stats = new SetStats();
                 stats.setName(cursor.getString(0));
@@ -513,7 +513,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 stats.setWrongAnswers(cursor.getInt(3));
                 stats.setAllAnswers(cursor.getInt(4));
                 setStats.add(stats);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         db.close();
@@ -527,7 +527,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "SELECT SUM(" + column + ") FROM " + table;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             sum = cursor.getInt(0);
         }
 
@@ -550,11 +550,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         FastLearningSetsListItem listItem;
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 listItem = new FastLearningSetsListItem(cursor.getString(1), cursor.getString(0), cursor.getInt(2));
                 setIdAndName.add(listItem);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         db.close();
@@ -567,7 +567,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "SELECT title, allAnswers FROM TitleTable WHERE TableName='" + setID + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             item = new FastLearningSetsListItem(setID, cursor.getString(0), cursor.getInt(1));
         }
 
@@ -581,12 +581,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<RepeatsSingleItem> singleItems = new ArrayList<>();
 
         SQLiteDatabase db = this.getWritableDatabase();
-        for(int i = 0; i < setsList.size(); i++) {
+        for (int i = 0; i < setsList.size(); i++) {
             String query = "SELECT title FROM TitleTable WHERE TableName = '" + setsList.get(i).getSetID() + "'";
             Cursor cursor = db.rawQuery(query, null);
             String setName = "";
 
-            if(cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 setName = cursor.getString(0);
             }
 
@@ -598,7 +598,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String query1 = "SELECT question, answer, image, goodAnswers, wrongAnswers, allAnswers FROM " + setsList.get(i).getSetID();
             cursor = db.rawQuery(query1, null);
 
-            if(cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 do {
                     RepeatsSingleItem fastLearningSingleItem = new RepeatsSingleItem();
                     fastLearningSingleItem.setSetID(setsList.get(i).getSetID());
@@ -610,7 +610,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     fastLearningSingleItem.setWrongAnswers(cursor.getInt(4));
                     fastLearningSingleItem.setAllAnswers(cursor.getInt(5));
                     singleItems.add(fastLearningSingleItem);
-                }while(cursor.moveToNext());
+                } while (cursor.moveToNext());
             }
             cursor.close();
         }

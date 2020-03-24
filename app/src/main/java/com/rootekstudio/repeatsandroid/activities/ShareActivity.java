@@ -22,6 +22,7 @@ public class ShareActivity extends AppCompatActivity {
     String setId;
     ArrayList<String> tagsArray;
     EditText editText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,14 +47,14 @@ public class ShareActivity extends AppCompatActivity {
     }
 
     public void selectHowShare(View view) {
-        if(view.getId()==R.id.communityRadio) {
-;           findViewById(R.id.publicRadio).setEnabled(true);
+        if (view.getId() == R.id.communityRadio) {
+            ;
+            findViewById(R.id.publicRadio).setEnabled(true);
             findViewById(R.id.privateRadio).setEnabled(true);
             findViewById(R.id.imageSharingInfo).setVisibility(View.VISIBLE);
             findViewById(R.id.tagsLinear).setVisibility(View.VISIBLE);
             shareToRC = true;
-        }
-        else if(view.getId() == R.id.JSONradio) {
+        } else if (view.getId() == R.id.JSONradio) {
             findViewById(R.id.publicRadio).setEnabled(false);
             findViewById(R.id.privateRadio).setEnabled(false);
             findViewById(R.id.imageSharingInfo).setVisibility(View.GONE);
@@ -64,10 +65,9 @@ public class ShareActivity extends AppCompatActivity {
     }
 
     public void selectShareCommunity(View view) {
-        if(view.getId() == R.id.publicRadio) {
+        if (view.getId() == R.id.publicRadio) {
             howShareRC = "PUBLIC";
-        }
-        else if(view.getId() == R.id.privateRadio) {
+        } else if (view.getId() == R.id.privateRadio) {
             howShareRC = "PRIVATE";
         }
     }
@@ -78,39 +78,37 @@ public class ShareActivity extends AppCompatActivity {
 
         String tags = editText.getText().toString();
 
-        if(!tags.endsWith(";")) {
+        if (!tags.endsWith(";")) {
             tags = tags + ";";
         }
 
         tagsArray = new ArrayList<>();
 
         outerloop:
-        while(tags.contains(";")) {
+        while (tags.contains(";")) {
             String tag = tags.substring(0, tags.indexOf(";"));
             while (tag.equals("")) {
                 tags = tags.replaceFirst(";", "");
-                if(tags.length()==0) {
+                if (tags.length() == 0) {
                     break outerloop;
                 }
                 tag = tags.substring(0, tags.indexOf(";"));
             }
             tags = tags.replace(tag + ";", "");
 
-            String upper = tag.substring(0,1).toUpperCase() + tag.substring(1);
+            String upper = tag.substring(0, 1).toUpperCase() + tag.substring(1);
             tagsArray.add(upper);
-            String lower = tag.substring(0,1).toLowerCase() + tag.substring(1);
+            String lower = tag.substring(0, 1).toLowerCase() + tag.substring(1);
             tagsArray.add(lower);
         }
 
-        if(shareToRC) {
-            if(howShareRC.equals("PUBLIC")) {
-                Share.shareToCommunity(this, setId, name,"PUBLIC", tagsArray, this);
+        if (shareToRC) {
+            if (howShareRC.equals("PUBLIC")) {
+                Share.shareToCommunity(this, setId, name, "PUBLIC", tagsArray, this);
+            } else if (howShareRC.equals("PRIVATE")) {
+                Share.shareToCommunity(this, setId, name, "PRIVATE", tagsArray, this);
             }
-            else if(howShareRC.equals("PRIVATE")) {
-                Share.shareToCommunity(this, setId, name,"PRIVATE", tagsArray,this);
-            }
-        }
-        else {
+        } else {
             Share.ShareClick(this, name, setId, this);
             finish();
         }

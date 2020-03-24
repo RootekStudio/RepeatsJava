@@ -28,14 +28,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.rootekstudio.repeatsandroid.mainfragments.PreferenceFragment;
-import com.rootekstudio.repeatsandroid.mainfragments.StatsFragment;
+import com.rootekstudio.repeatsandroid.mainpage.PreferenceFragment;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 
 import java.io.File;
@@ -46,7 +44,7 @@ public class RepeatsHelper {
     public static final int staticFrequencyCode = 10000;
     public static ArrayList<String> setItems;
     public static String setName;
-    public static String version = "2.5";
+    public static String version = "2.6";
 
     private static AlertDialog dialog = null;
 
@@ -54,6 +52,13 @@ public class RepeatsHelper {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("frequency", frequency);
+        editor.apply();
+    }
+
+    public static void saveVersion(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("version", RepeatsHelper.version);
         editor.apply();
     }
 

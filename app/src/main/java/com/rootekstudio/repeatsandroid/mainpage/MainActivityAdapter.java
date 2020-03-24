@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,17 +23,15 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.rootekstudio.repeatsandroid.JsonFile;
+import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
-import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.activities.SetSettingsActivity;
 import com.rootekstudio.repeatsandroid.activities.ShareActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
-import com.rootekstudio.repeatsandroid.fastlearning.FastLearningConfigActivity;
-import com.rootekstudio.repeatsandroid.mainfragments.PreferenceFragment;
-import com.rootekstudio.repeatsandroid.mainfragments.SetsFragment;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
-import com.rootekstudio.repeatsandroid.readaloud.ReadAloudActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -161,7 +159,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
                                         Iterator<String> iterator = advancedFile.keys();
 
-                                        while(iterator.hasNext()) {
+                                        while (iterator.hasNext()) {
                                             String key = iterator.next();
                                             NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(key));
                                         }
@@ -186,10 +184,9 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
                     } else if (itemId == R.id.shareSetOption) {
                         String name = selectedSetName;
                         name = name.trim();
-                        if(name.equals("") || name.equals("text") || name.equals("Text") || name.equals("text text") || name.equals("text text text")) {
+                        if (name.equals("") || name.equals("text") || name.equals("Text") || name.equals("text text") || name.equals("text text text")) {
                             Toast.makeText(context, R.string.cantShareSet, Toast.LENGTH_LONG).show();
-                        }
-                        else {
+                        } else {
                             Intent intentShare = new Intent(context, ShareActivity.class);
                             intentShare.putExtra("name", name);
                             intentShare.putExtra("id", selectedSetID);

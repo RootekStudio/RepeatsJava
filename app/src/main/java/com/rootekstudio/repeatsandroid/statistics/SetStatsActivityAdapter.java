@@ -17,6 +17,7 @@ public class SetStatsActivityAdapter extends RecyclerView.Adapter<SetStatsActivi
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout relativeLayout;
+
         MainViewHolder(RelativeLayout rl) {
             super(rl);
             relativeLayout = rl;
@@ -47,14 +48,13 @@ public class SetStatsActivityAdapter extends RecyclerView.Adapter<SetStatsActivi
         TextView wrongAnswers = view.findViewById(R.id.wrongAnswersSingleStats);
         TextView allAnswers = view.findViewById(R.id.allAnswersSingleStats);
 
-        if(position == 0) {
+        if (position == 0) {
             question.setText(view.getContext().getString(R.string.Question));
             answer.setText(view.getContext().getString(R.string.Answer));
             goodAnswers.setText("+");
             wrongAnswers.setText("-");
             allAnswers.setText("=");
-        }
-        else {
+        } else {
             question.setText(item.getQuestion());
             answer.setText(item.getAnswer());
             goodAnswers.setText(String.valueOf(item.getGoodAnswers()));

@@ -2,7 +2,6 @@ package com.rootekstudio.repeatsandroid.community;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,10 +22,8 @@ import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
-import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
-import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
-import com.rootekstudio.repeatsandroid.notifications.RegisterNotifications;
+import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,7 +46,7 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         databaseSetID = intent.getStringExtra("databaseSetID");
-        if(databaseSetID != null) {
+        if (databaseSetID != null) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("sets").document(databaseSetID)
                     .get()
@@ -58,7 +54,7 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
-                                if(task.getResult().exists()) {
+                                if (task.getResult().exists()) {
                                     ArrayList<?> questions = (ArrayList<?>) task.getResult().get("questions");
                                     ArrayList<?> answers = (ArrayList<?>) task.getResult().get("answers");
 
@@ -67,7 +63,7 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
                                     setItems.add(getString(R.string.questions));
                                     setItems.add(getString(R.string.answers));
 
-                                    for(int i = 0; i < questions.size(); i++) {
+                                    for (int i = 0; i < questions.size(); i++) {
                                         setItems.add(questions.get(i).toString());
                                         setItems.add(answers.get(i).toString());
                                     }
@@ -87,8 +83,7 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
                             }
                         }
                     });
-        }
-        else {
+        } else {
             setItems = RepeatsHelper.setItems;
             setName = RepeatsHelper.setName;
 
@@ -120,19 +115,18 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
         ArrayList<String> questions = new ArrayList<>();
         ArrayList<String> answers = new ArrayList<>();
 
-        for(int i = 2; i< set.size(); i += 2) {
+        for (int i = 2; i < set.size(); i += 2) {
             questions.add(set.get(i));
         }
 
-        for(int i = 3; i < set.size(); i += 2) {
+        for (int i = 3; i < set.size(); i += 2) {
             answers.add(set.get(i));
         }
 
         RepeatsSetInfo list;
-        if(Locale.getDefault().toString().equals("pl_PL")) {
+        if (Locale.getDefault().toString().equals("pl_PL")) {
             list = new RepeatsSetInfo(setName, id, createDate, "true", "", "false", "pl_PL", "en_GB");
-        }
-        else {
+        } else {
             list = new RepeatsSetInfo(setName, id, createDate, "true", "", "false", "en_US", "es_ES");
         }
 
@@ -144,11 +138,10 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
 
         Toast.makeText(this, R.string.successDownload, Toast.LENGTH_SHORT).show();
 
-        if(databaseSetID != null) {
+        if (databaseSetID != null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-        }
-        else {
+        } else {
             finish();
         }
     }

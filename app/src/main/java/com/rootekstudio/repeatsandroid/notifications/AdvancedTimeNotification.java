@@ -64,7 +64,7 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
                             }
 
                             if (!iterator.hasNext()) {
-                                if(arrayDays.size() > 1){
+                                if (arrayDays.size() > 1) {
                                     arrayDays.remove(String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)));
                                     dayToNotifi = NotificationHelper.checkDays(arrayDays);
                                 }
@@ -127,8 +127,7 @@ public class AdvancedTimeNotification extends BroadcastReceiver {
             } else {
                 RepeatsNotificationTemplate.NotifiTemplate(context, true, jsonIndex);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

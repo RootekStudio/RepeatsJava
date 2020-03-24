@@ -19,7 +19,8 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".readaloud.ReadAloudConfigActivity"
             android:label="@string/readAloud"/>
-        <activity android:name=".fastlearning.FastLearningActivity" />
+        <activity android:name=".fastlearning.FastLearningActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".statistics.SetStatsActivity"
             android:label="@string/setStats" />
@@ -38,7 +39,8 @@
             android:theme="@style/FirstRunTheme"/>
         <activity
             android:name=".community.RepeatsCommunityStartActivity"
-            android:label="@string/repeatsCommunity" />
+            android:label="@string/repeatsCommunity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".community.MySetsActivity"
             android:label="@string/mySets" />
@@ -82,7 +84,7 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".mainpage.MainActivity" />
 
         <receiver
             android:name=".notifications.RepeatsQuestionSend"
@@ -100,7 +102,7 @@
         <activity
             android:name=".activities.AnswerActivity"
             android:label=""
-            android:theme="@style/transculentTheme" />
+            android:theme="@style/translucentTheme" />
         <activity
             android:name=".activities.SettingsActivity"
             android:exported="false"
@@ -115,7 +117,8 @@
             android:label="@string/Search" />
         <activity
             android:name=".activities.AddEditSetActivity"
-            android:label="@string/Set" />
+            android:label="@string/Set"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".activities.SplashScreenActivity"
             android:noHistory="true"

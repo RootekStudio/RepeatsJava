@@ -16,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rootekstudio.repeatsandroid.CheckAnswer;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.GetQuestion;
 
@@ -30,8 +31,8 @@ public class AnswerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        RepeatsHelper.DarkTheme(this, false);
         super.onCreate(savedInstanceState);
-
         getQuestion = new GetQuestion();
         Intent intent = getIntent();
 
@@ -163,10 +164,9 @@ public class AnswerActivity extends AppCompatActivity {
                             getQuestion = new GetQuestion(AnswerActivity.this);
                         }
                         dialogInterface.dismiss();
-                        if(getQuestion.getQuestion() == null) {
+                        if (getQuestion.getQuestion() == null) {
                             createAlertDialogWithError();
-                        }
-                        else {
+                        } else {
                             createAlertDialogWithQuestion();
                         }
                     }

@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid.mainfragments;
+package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -18,9 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.rootekstudio.repeatsandroid.MainActivityAdapter;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
@@ -45,7 +43,7 @@ public class SetsFragment extends Fragment {
 
         View view = LayoutInflater.from(context).inflate(R.layout.mainfragment_sets, null);
 
-        if(repeatsList.size() == 0) {
+        if (repeatsList.size() == 0) {
             RelativeLayout emptyInfo = view.findViewById(R.id.EmptyHereText);
             emptyInfo.setVisibility(View.VISIBLE);
         }
@@ -97,9 +95,11 @@ public class SetsFragment extends Fragment {
                     Intent zipPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
                     zipPickerIntent.setType("application/*");
                     try {
-                        startActivityForResult(zipPickerIntent, RequestCodes.READ_SHARED);
+                        getActivity().startActivityForResult(zipPickerIntent, RequestCodes.READ_SHARED);
                     } catch (ActivityNotFoundException e) {
                         Toast.makeText(getContext(), R.string.explorerNotFound, Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     alert.dismiss();
                 }

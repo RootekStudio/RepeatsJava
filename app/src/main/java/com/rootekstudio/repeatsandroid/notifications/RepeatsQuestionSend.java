@@ -30,10 +30,9 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
         boolean silenceHours = sharedPreferences.getBoolean("silenceHoursSwitch", true);
         boolean canSend = true;
 
-        if(isNext) {
+        if (isNext) {
             RepeatsNotificationTemplate.NotifiTemplate(context, true, null);
-        }
-        else if(notifiMode.equals("1")) {
+        } else if (notifiMode.equals("1")) {
             if (silenceHours) {
                 JSONObject rootObject = null;
                 try {
@@ -60,7 +59,7 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
                         toMinute = Integer.parseInt(to.substring(3, 5));
 
                         canSend = NotificationHelper.checkHours(fromHour, toHour, fromMinute, toMinute);
-                        if(!canSend) {
+                        if (!canSend) {
                             break;
                         }
 
@@ -69,18 +68,15 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
                     }
                 }
 
-                if(canSend) {
+                if (canSend) {
                     RepeatsNotificationTemplate.NotifiTemplate(context, false, null);
-                }
-                else {
+                } else {
                     ConstNotifiSetup.silentRegisterInFuture(toHour, toMinute, context, 12345);
                 }
-            }
-            else {
+            } else {
                 RepeatsNotificationTemplate.NotifiTemplate(context, false, null);
             }
-        }
-        else {
+        } else {
             RepeatsNotificationTemplate.NotifiTemplate(context, false, null);
         }
 

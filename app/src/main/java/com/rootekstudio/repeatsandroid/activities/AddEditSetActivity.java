@@ -1,7 +1,6 @@
 package com.rootekstudio.repeatsandroid.activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -24,11 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
@@ -37,12 +33,6 @@ import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
-import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
-import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
-import com.rootekstudio.repeatsandroid.notifications.RegisterNotifications;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,9 +41,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
@@ -117,10 +105,9 @@ public class AddEditSetActivity extends AppCompatActivity {
             String createDate = createD.format(new Date());
 
             RepeatsSetInfo list;
-            if(Locale.getDefault().toString().equals("pl_PL")) {
+            if (Locale.getDefault().toString().equals("pl_PL")) {
                 list = new RepeatsSetInfo("", id, createDate, "true", "", "false", "pl_PL", "en_GB");
-            }
-            else {
+            } else {
                 list = new RepeatsSetInfo("", id, createDate, "true", "", "false", "en_US", "es_ES");
             }
 

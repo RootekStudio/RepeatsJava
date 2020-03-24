@@ -30,7 +30,7 @@ public class SaveSharedLegacy {
 
         String name = "";
 
-        try{
+        try {
             FileInputStream questionStream = new FileInputStream(questions);
             FileInputStream answerStream = new FileInputStream(answers);
             BufferedReader Qreader = new BufferedReader(new InputStreamReader(questionStream));
@@ -48,17 +48,16 @@ public class SaveSharedLegacy {
             SaveShared.ID = id;
 
             RepeatsSetInfo list;
-            if(Locale.getDefault().toString().equals("pl_PL")) {
+            if (Locale.getDefault().toString().equals("pl_PL")) {
                 list = new RepeatsSetInfo(name, id, createDate, "true", "", "false", "pl_PL", "en_GB");
-            }
-            else {
+            } else {
                 list = new RepeatsSetInfo(name, id, createDate, "true", "", "false", "en_US", "es_ES");
             }
 
             DB.CreateSet(id);
             DB.AddName(list);
 
-            while (lineQ != null){
+            while (lineQ != null) {
 
                 final File image = new File(dir, "S" + i + ".png");
                 if (image.exists()) {
@@ -75,8 +74,7 @@ public class SaveSharedLegacy {
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
                     DB.AddItemWithValues(id, lineQ, lineA, imageID);
-                }
-                else {
+                } else {
                     DB.AddItemWithValues(id, lineQ, lineA, "");
                 }
 
@@ -86,7 +84,7 @@ public class SaveSharedLegacy {
 
                 itemIndex++;
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

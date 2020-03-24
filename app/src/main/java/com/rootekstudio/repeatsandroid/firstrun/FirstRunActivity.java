@@ -1,14 +1,10 @@
 package com.rootekstudio.repeatsandroid.firstrun;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowInsets;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,8 +18,8 @@ import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
-import com.rootekstudio.repeatsandroid.activities.MainActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -64,20 +60,17 @@ public class FirstRunActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                if(position == 0) {
+                if (position == 0) {
                     previous.setVisibility(View.INVISIBLE);
                     skipFirstRun.setVisibility(View.VISIBLE);
                     ready.setVisibility(View.INVISIBLE);
-                }
-                else if(position == 1) {
+                } else if (position == 1) {
                     previous.setVisibility(View.VISIBLE);
                     skipFirstRun.setVisibility(View.INVISIBLE);
-                }
-                else if(position == 2) {
+                } else if (position == 2) {
                     next.setVisibility(View.VISIBLE);
                     ready.setVisibility(View.INVISIBLE);
-                }
-                else if(position == 3) {
+                } else if (position == 3) {
                     next.setVisibility(View.INVISIBLE);
                     ready.setVisibility(View.VISIBLE);
                 }
@@ -86,7 +79,8 @@ public class FirstRunActivity extends AppCompatActivity {
 
         new TabLayoutMediator(tabLayout, viewPager,
                 new TabLayoutMediator.TabConfigurationStrategy() {
-                    @Override public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                         tab.view.setEnabled(false);
                     }
                 }).attach();
@@ -99,14 +93,14 @@ public class FirstRunActivity extends AppCompatActivity {
     }
 
     public void backClick(View view) {
-        if(viewPager.getCurrentItem() != 0) {
-            viewPager.setCurrentItem(viewPager.getCurrentItem()-1);
+        if (viewPager.getCurrentItem() != 0) {
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         }
     }
 
     public void nextClick(View view) {
-        if(viewPager.getCurrentItem() != 3) {
-            viewPager.setCurrentItem(viewPager.getCurrentItem()+1);
+        if (viewPager.getCurrentItem() != 3) {
+            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
         }
     }
 
@@ -122,7 +116,7 @@ public class FirstRunActivity extends AppCompatActivity {
         ArrayList<String> answers = new ArrayList<>();
 
         RepeatsSetInfo list;
-        if(Locale.getDefault().toString().equals("pl_PL")) {
+        if (Locale.getDefault().toString().equals("pl_PL")) {
             list = new RepeatsSetInfo("Angielski kolory", id, createDate, "true", "", "false", "pl_PL", "en_GB");
 
             questions.add("Czerwony");
@@ -146,8 +140,7 @@ public class FirstRunActivity extends AppCompatActivity {
             answers.add("Orange");
             answers.add("Violet");
             answers.add("Brown");
-        }
-        else {
+        } else {
             list = new RepeatsSetInfo("Spanish colors", id, createDate, "true", "", "false", "en_US", "es_ES");
 
             questions.add("Red");

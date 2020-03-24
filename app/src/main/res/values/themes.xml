@@ -57,7 +57,7 @@
         <item name="android:foregroundTint">#000000</item>
     </style>
 
-    <style name="transculentTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="translucentTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorSecondary">@color/colorPrimary</item>
         <item name="customItemColor">@color/lightMainItem</item>
