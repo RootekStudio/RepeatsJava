@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -17,10 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".readaloud.ReadAloudConfigActivity"
-            android:label="@string/readAloud"/>
-        <activity android:name=".fastlearning.FastLearningActivity"
-            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".activities.CameraActivity"></activity>
+        <activity
+            android:name=".readaloud.ReadAloudConfigActivity"
+            android:label="@string/readAloud" />
+        <activity
+            android:name=".fastlearning.FastLearningActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".statistics.SetStatsActivity"
             android:label="@string/setStats" />
@@ -35,12 +39,13 @@
             android:name=".readaloud.ReadAloudActivity"
             android:label="@string/readAloud"
             android:screenOrientation="portrait" />
-        <activity android:name=".firstrun.FirstRunActivity"
-            android:theme="@style/FirstRunTheme"/>
+        <activity
+            android:name=".firstrun.FirstRunActivity"
+            android:theme="@style/FirstRunTheme" />
         <activity
             android:name=".community.RepeatsCommunityStartActivity"
             android:label="@string/repeatsCommunity"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".community.MySetsActivity"
             android:label="@string/mySets" />
@@ -118,7 +123,7 @@
         <activity
             android:name=".activities.AddEditSetActivity"
             android:label="@string/Set"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.SplashScreenActivity"
             android:noHistory="true"
