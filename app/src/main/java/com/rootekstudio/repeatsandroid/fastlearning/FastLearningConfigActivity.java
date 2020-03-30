@@ -67,11 +67,11 @@ public class FastLearningConfigActivity extends AppCompatActivity {
             navigateToFragment1();
             configStage++;
         } else if (configStage == 1) {
-            if (FastLearningInfo.questionsCount == 0) {
-                Toast.makeText(this, R.string.selectAtLeastOneQuestion, Toast.LENGTH_SHORT).show();
-                return;
-            }
             if (FastLearningInfo.randomQuestions) {
+                if(FastLearningInfo.questionsCount == 0) {
+                    Toast.makeText(this, R.string.selectAtLeastOneQuestion, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 FastLearningInfo.selectedQuestions = chooseQuestions();
                 navigateToFastLearning();
             } else {
