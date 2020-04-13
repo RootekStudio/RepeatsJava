@@ -31,10 +31,10 @@ public class ReadAloudConfigActivity extends AppCompatActivity {
 
         for (int i = 0; i < setsInfo.size(); i++) {
             RepeatsSetInfo setInfo = setsInfo.get(i);
-            View view = LayoutInflater.from(this).inflate(R.layout.readaloud_setslist_singleitem, null);
+            View view = LayoutInflater.from(this).inflate(R.layout.single_textview, null);
             view.setTag(setInfo.getTableName());
 
-            TextView textView = view.findViewById(R.id.setNameReadAloudSetsList);
+            TextView textView = view.findViewById(R.id.singleTextView);
             textView.setText(setInfo.getitle());
 
             view.setOnClickListener(new View.OnClickListener() {

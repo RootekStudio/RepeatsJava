@@ -18,7 +18,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.CameraActivity"></activity>
+        <activity android:name=".textrecognition.TextRecognitionActivity"
+            android:label="@string/setFromImage"/>
+
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="ocr" />
+
+        <activity
+            android:name=".activities.CameraActivity"
+            android:theme="@style/CameraTheme" />
         <activity
             android:name=".readaloud.ReadAloudConfigActivity"
             android:label="@string/readAloud" />

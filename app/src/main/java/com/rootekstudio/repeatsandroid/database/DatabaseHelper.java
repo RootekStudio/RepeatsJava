@@ -627,4 +627,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(Command);
         db.close();
     }
+
+    public void copyQuestionsAndAnswersToAnotherTable(String copySetID, String pasteSetID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "INSERT INTO " + pasteSetID + " (question, answer, image) SELECT question, answer, image FROM " + copySetID + " WHERE question != '' OR answer != '';";
+        db.execSQL(query);
+        db.close();
+    }
+
+    public List<String> getSingleQuestionAndAnswer(String SetID, int index) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<String> questionAndAnswer = null;
+
+        String query = "SELECT question, answer FROM " + SetID +" WHERE id=" + index + ";";
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()) {
+            questionAndAnswer = new ArrayList<>();
+            do {
+                questionAndAnswer.add(cursor.getString(0));
+                questionAndAnswer.add(cursor.getString(1));
+            } while(cursor.moveToNext());
+        }
+
+        return questionAndAnswer;
+    }
 }

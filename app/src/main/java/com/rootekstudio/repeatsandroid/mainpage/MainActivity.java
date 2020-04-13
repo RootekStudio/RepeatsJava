@@ -18,7 +18,15 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
@@ -32,13 +40,16 @@ import com.rootekstudio.repeatsandroid.database.SaveShared;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     boolean darkTheme;
     StartFragment startFragment;
     SetsFragment setsFragment;
-    String currectFragment = "";
+    String currentFragment = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         getSupportActionBar().setCustomView(R.layout.logo);
         if (!darkTheme) {
+            bottomNavigationView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
             bottomNavigationView.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.white));
 
             ImageView logo = findViewById(R.id.logoMain);
@@ -66,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayoutMain, startFragment);
         fragmentTransaction.commit();
-        currectFragment = "start";
+        currentFragment = "start";
 
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
     }
@@ -79,25 +91,25 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayoutMain, startFragment);
                 fragmentTransaction.commit();
-                currectFragment = "start";
+                currentFragment = "start";
             } else if (item.getItemId() == R.id.setsButtonMain) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayoutMain, setsFragment);
                 fragmentTransaction.commit();
-                currectFragment = "sets";
+                currentFragment = "sets";
             } else if (item.getItemId() == R.id.stats_button) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayoutMain, new StatsFragment());
                 fragmentTransaction.commit();
-                currectFragment = "stats";
+                currentFragment = "stats";
             } else if (item.getItemId() == R.id.app_bar_settings) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayoutMain, new PreferenceFragment());
                 fragmentTransaction.commit();
-                currectFragment = "preferences";
+                currentFragment = "preferences";
             }
             return true;
         }
@@ -107,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        if (currectFragment.equals("sets")) {
+        if (currentFragment.equals("sets")) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment(this, this));

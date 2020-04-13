@@ -391,7 +391,6 @@ public class AddEditSetActivity extends AppCompatActivity {
             if (hasFocus) {
                 editText.setTag(answer);
             } else {
-
                 answer = RepeatsHelper.removeSpaces(editText.getText().toString());
                 ViewGroup RelativeAddItem = (ViewGroup) view.getParent().getParent().getParent();
 

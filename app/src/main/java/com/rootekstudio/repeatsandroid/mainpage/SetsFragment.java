@@ -65,54 +65,8 @@ public class SetsFragment extends Fragment {
     private View.OnClickListener fabClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            final MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(getContext());
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            final View view1 = layoutInflater.inflate(R.layout.addnew_item, null);
-            ALERTbuilder.setView(view1);
-            ALERTbuilder.setTitle(R.string.AddSet);
-            ALERTbuilder.setBackground(getContext().getDrawable(R.drawable.dialog_shape));
-            final AlertDialog alert = ALERTbuilder.show();
-
-            RelativeLayout relA = view1.findViewById(R.id.relAdd);
-            RelativeLayout relR = view1.findViewById(R.id.relRead);
-            RelativeLayout relRC = view1.findViewById(R.id.relRC);
-
-            relA.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent addEditActivityIntent = new Intent(getContext(), AddEditSetActivity.class);
-                    addEditActivityIntent.putExtra("ISEDIT", "FALSE");
-                    addEditActivityIntent.putExtra("IGNORE_CHARS", "false");
-                    alert.dismiss();
-
-                    startActivity(addEditActivityIntent);
-                }
-            });
-
-            relR.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent zipPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                    zipPickerIntent.setType("application/*");
-                    try {
-                        getActivity().startActivityForResult(zipPickerIntent, RequestCodes.READ_SHARED);
-                    } catch (ActivityNotFoundException e) {
-                        Toast.makeText(getContext(), R.string.explorerNotFound, Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    alert.dismiss();
-                }
-            });
-
-            relRC.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intentRC = new Intent(getContext(), RepeatsCommunityStartActivity.class);
-                    alert.dismiss();
-                    startActivity(intentRC);
-                }
-            });
+             AddSetNavFragment addSetNavFragment = AddSetNavFragment.newInstance();
+             addSetNavFragment.show(getActivity().getSupportFragmentManager(), "setNav");
         }
     };
 }

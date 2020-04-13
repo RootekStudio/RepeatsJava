@@ -123,10 +123,7 @@ public class StartFragment extends Fragment {
         repeatsCommunityRecommendation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), RepeatsCommunityStartActivity.class);
-//                startActivity(intent);
-
-                Intent intent = new Intent(getContext(), CameraActivity.class);
+                Intent intent = new Intent(getContext(), RepeatsCommunityStartActivity.class);
                 startActivity(intent);
             }
         });
@@ -172,11 +169,6 @@ public class StartFragment extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.CAMERA}, 0);
         }
 
         return view;

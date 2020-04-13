@@ -10,5 +10,6 @@ public class RequestCodes {
     public static int SELECT_FILE_TO_RESTORE = 7;
     public static int RC_SIGN_IN = 8;
     public static int READ_ALOUD_NOTIFICATION_ID = 9;
+    public static int PICK_IMAGE_FOR_RECOGNITION = 10;
 
 }

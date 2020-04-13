@@ -46,7 +46,7 @@
     <string name="SetName">Name of the set</string>
     <string name="IgnoreChars">Ignore special characters</string>
     <string name="CreateNew">Create new set</string>
-    <string name="LoadSet">Load already created set</string>
+    <string name="LoadSet">Load already created set from archive</string>
     <string name="AddSet">Add set</string>
     <string name="share">Share</string>
     <string name="notifiFromSets">Notifications from sets</string>
@@ -240,5 +240,15 @@
     <string name="sendTestNotifi">Send test notification</string>
     <string name="newFastLearning">New Fast learning</string>
     <string name="selectAtLeastOneQuestion">You must select at least one question</string>
+    <string name="getSetFromCamera">Take photo and recognize text (soon)</string>
+    <string name="getSetFromGallery">Select image from gallery and recognize text</string>
+    <string name="textDetectionInProgress">Text detection in progress...</string>
+    <string name="whereSaveSet">Where to save the set?</string>
+    <string name="noTextDetected">No text detected</string>
+    <string name="chooseDifferentPicture">Choose a different picture</string>
+    <string name="addAnotherAnswer">Add another answer</string>
+    <string name="setFromImage">Set from image</string>
+    <string name="setFromImageChooseFromGallery">Set from image (choose from gallery)</string>
+    <string name="setFromImageTakePhoto">Set from image (take photo)</string>
 
 </resources>

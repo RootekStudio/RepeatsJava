@@ -44,7 +44,7 @@
     <string name="SetName">Nazwa zestawu</string>
     <string name="IgnoreChars">Ignoruj znaki specjalne</string>
     <string name="CreateNew">Utwórz nowy zestaw</string>
-    <string name="LoadSet">Wczytaj zestaw</string>
+    <string name="LoadSet">Wczytaj zestaw z archiwum</string>
     <string name="AddSet">Dodawanie zestawu</string>
     <string name="share">Udostępnij</string>
     <string name="notifiFromSets">Powiadomienia z zestawów</string>
@@ -236,4 +236,14 @@
     <string name="sendTestNotifi">Wyślij testowe powiadomienie</string>
     <string name="newFastLearning">Nowa Szybka nauka</string>
     <string name="selectAtLeastOneQuestion">Musisz wybrać co najmniej jedno pytanie</string>
+    <string name="getSetFromCamera">Zrób zdjęcie i wykryj tekst (wkrótce)</string>
+    <string name="getSetFromGallery">Wybierz zdjęcie z galerii i wykryj tekst</string>
+    <string name="textDetectionInProgress">Trwa wykrywanie tekstu...</string>
+    <string name="whereSaveSet">Gdzie zapisać zestaw?</string>
+    <string name="noTextDetected">Nie wykryto żadnego tekstu</string>
+    <string name="chooseDifferentPicture">Wybierz inne zdjęcie</string>
+    <string name="addAnotherAnswer">Dodaj kolejną odpowiedź</string>
+    <string name="setFromImage">Zestaw ze zdjęcia</string>
+    <string name="setFromImageChooseFromGallery">Zestaw ze zdjęcia (wybierz z galerii)</string>
+    <string name="setFromImageTakePhoto">Zestaw ze zdjęcia (zrób zdjęcie) (wkrótce)</string>
 </resources>
