@@ -117,7 +117,6 @@ public class StatsFragment extends Fragment {
         assert windowmanager != null;
         windowmanager.getDefaultDisplay().getMetrics(displayMetrics);
 
-
         float density = displayMetrics.density;
         float widthDp = displayMetrics.widthPixels / density;
         float relativeWidthDp = widthDp - 50;

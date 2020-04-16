@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +75,18 @@ public class RepeatsHelper {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayoutMain, new PreferenceFragment());
         fragmentTransaction.commit();
+    }
+
+    public static int getUsableHeight(Context context) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager windowmanager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        assert windowmanager != null;
+        windowmanager.getDefaultDisplay().getMetrics(displayMetrics);
+
+        float density = displayMetrics.density;
+        float heightDp = displayMetrics.heightPixels / density;
+        float relativeHeightDp = heightDp - 50;
+        return Math.round(relativeHeightDp * density);
     }
 
     public static void AskAboutTime(final Context context, final AppCompatActivity activity) {

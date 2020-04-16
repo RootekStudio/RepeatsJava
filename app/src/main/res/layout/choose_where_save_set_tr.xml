@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="15dp"
-            android:text="Zapisz jako nowy zestaw" />
+            android:text="@string/saveAsNewSet" />
     </LinearLayout>
 
     <LinearLayout
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="15dp"
-            android:text="Zapisz do istniejącego zestawu" />
+            android:text="@string/saveToExistingSet" />
     </LinearLayout>
 
 </LinearLayout>

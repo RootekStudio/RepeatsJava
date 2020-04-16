@@ -243,12 +243,14 @@
     <string name="getSetFromCamera">Take photo and recognize text (soon)</string>
     <string name="getSetFromGallery">Select image from gallery and recognize text</string>
     <string name="textDetectionInProgress">Text detection in progress...</string>
-    <string name="whereSaveSet">Where to save the set?</string>
+    <string name="howSaveSet">How to save the set?</string>
     <string name="noTextDetected">No text detected</string>
     <string name="chooseDifferentPicture">Choose a different picture</string>
     <string name="addAnotherAnswer">Add another answer</string>
     <string name="setFromImage">Set from image</string>
     <string name="setFromImageChooseFromGallery">Set from image (choose from gallery)</string>
     <string name="setFromImageTakePhoto">Set from image (take photo)</string>
+    <string name="saveAsNewSet">Save as a new set</string>
+    <string name="saveToExistingSet">Save to existing set</string>
 
 </resources>

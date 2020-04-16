@@ -239,11 +239,13 @@
     <string name="getSetFromCamera">Zrób zdjęcie i wykryj tekst (wkrótce)</string>
     <string name="getSetFromGallery">Wybierz zdjęcie z galerii i wykryj tekst</string>
     <string name="textDetectionInProgress">Trwa wykrywanie tekstu...</string>
-    <string name="whereSaveSet">Gdzie zapisać zestaw?</string>
+    <string name="howSaveSet">Jak zapisać zestaw?</string>
     <string name="noTextDetected">Nie wykryto żadnego tekstu</string>
     <string name="chooseDifferentPicture">Wybierz inne zdjęcie</string>
     <string name="addAnotherAnswer">Dodaj kolejną odpowiedź</string>
     <string name="setFromImage">Zestaw ze zdjęcia</string>
     <string name="setFromImageChooseFromGallery">Zestaw ze zdjęcia (wybierz z galerii)</string>
     <string name="setFromImageTakePhoto">Zestaw ze zdjęcia (zrób zdjęcie) (wkrótce)</string>
+    <string name="saveAsNewSet">Zapisz jako nowy zestaw</string>
+    <string name="saveToExistingSet">Zapisz do istniejącego zestawu</string>
 </resources>
