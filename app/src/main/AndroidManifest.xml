@@ -127,7 +127,7 @@
                 android:resource="@xml/filepaths" />
         </activity>
         <activity
-            android:name=".activities.SearchActivity"
+            android:name=".search.SearchActivity"
             android:label="@string/Search" />
         <activity
             android:name=".activities.AddEditSetActivity"
@@ -139,9 +139,10 @@
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".activities.EnableSetsListActivity"

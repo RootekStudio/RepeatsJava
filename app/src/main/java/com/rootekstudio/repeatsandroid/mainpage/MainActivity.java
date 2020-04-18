@@ -18,32 +18,21 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.firebase.ml.vision.FirebaseVision;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.text.FirebaseVisionText;
-import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.ZipSet;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
-import com.rootekstudio.repeatsandroid.activities.SearchActivity;
+import com.rootekstudio.repeatsandroid.search.SearchActivity;
 import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     boolean darkTheme;

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_search"
+        android:shortcutId="search"
+        android:shortcutShortLabel="@string/Search">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.rootekstudio.repeatsandroid.search.SearchActivity"
+            android:targetPackage="com.rootekstudio.repeatsandroid" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_readaloud"
+        android:shortcutId="readAloud"
+        android:shortcutShortLabel="@string/readAloud">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.rootekstudio.repeatsandroid.readaloud.ReadAloudConfigActivity"
+            android:targetPackage="com.rootekstudio.repeatsandroid" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_checktest"
+        android:shortcutId="fastLearning"
+        android:shortcutShortLabel="@string/FastLearning">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.rootekstudio.repeatsandroid.fastlearning.FastLearningConfigActivity"
+            android:targetPackage="com.rootekstudio.repeatsandroid" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>

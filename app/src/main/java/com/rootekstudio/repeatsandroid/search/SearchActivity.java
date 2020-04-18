@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid.activities;
+package com.rootekstudio.repeatsandroid.search;
 
 import android.os.Bundle;
 import android.view.MenuItem;
