@@ -1,49 +1,56 @@
 package com.rootekstudio.repeatsandroid.community;
 
 import android.content.Context;
-import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class PreviewAdapter extends BaseAdapter {
-    Context context;
-    ArrayList<String> setsItems;
+import com.rootekstudio.repeatsandroid.R;
 
-    public PreviewAdapter(Context cnt, ArrayList<String> set) {
-        context = cnt;
-        setsItems = set;
+import java.util.HashMap;
+import java.util.Objects;
+
+public class PreviewAdapter extends RecyclerView.Adapter<PreviewAdapter.ListHolder> {
+    HashMap<Integer, String[]> questionsAndAnswersList;
+
+    public PreviewAdapter(HashMap<Integer, String[]> questionsAndAnswersList) {
+        this.questionsAndAnswersList = questionsAndAnswersList;
     }
 
-    @Override
-    public int getCount() {
-        return setsItems.size();
-    }
+    static class ListHolder extends RecyclerView.ViewHolder {
+        LinearLayout linearLayout;
 
-    @Override
-    public Object getItem(int i) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        TextView textView;
-        if (view == null) {
-            textView = new TextView(context);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 7);
-        } else {
-            textView = (TextView) view;
+        ListHolder(View view) {
+            super(view);
+            linearLayout = view.findViewById(R.id.linearQuestionAndAnswer);
         }
+    }
 
-        textView.setText(setsItems.get(i));
-        return textView;
+    @NonNull
+    @Override
+    public ListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.question_and_answer, parent, false);
+        return new ListHolder(linearLayout);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ListHolder holder, int position) {
+        LinearLayout linearLayout = holder.linearLayout;
+
+        TextView question = linearLayout.findViewById(R.id.questionTextView);
+        TextView answer = linearLayout.findViewById(R.id.answerTextView);
+
+        question.setText(Objects.requireNonNull(questionsAndAnswersList.get(position))[0]);
+        answer.setText(Objects.requireNonNull(questionsAndAnswersList.get(position))[1]);
+    }
+
+    @Override
+    public int getItemCount() {
+        return questionsAndAnswersList.size();
     }
 }

@@ -14,8 +14,6 @@
         android:layout_height="wrap_content"
         app:menu="@menu/bottomappbarmain"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/transparent"
-        app:backgroundTint="?attr/colorSurface"
         app:itemTextColor="?android:attr/textColorPrimary" />
 </RelativeLayout>
 

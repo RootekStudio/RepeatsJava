@@ -39,12 +39,14 @@ import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RepeatsHelper {
     public static final String breakLine = "\r\n";
     public static final int staticFrequencyCode = 10000;
-    public static ArrayList<String> setItems;
+    public static HashMap<Integer, String[]> setItems;
     public static String setName;
+    public static String setCreationDate;
     public static String version = "2.6";
 
     private static AlertDialog dialog = null;

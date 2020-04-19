@@ -3,14 +3,19 @@ package com.rootekstudio.repeatsandroid.mainpage;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getTheme();
+        theme.resolveAttribute(R.attr.colorSurface, typedValue, true);
+        @ColorInt int color = typedValue.data;
+
+        bottomNavigationView.setBackground(new ColorDrawable(color));
         getSupportActionBar().setCustomView(R.layout.logo);
         if (!darkTheme) {
             bottomNavigationView.setBackgroundColor(getResources().getColor(android.R.color.transparent));

@@ -27,6 +27,7 @@ import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MySetsActivity extends AppCompatActivity {
 
@@ -86,18 +87,15 @@ public class MySetsActivity extends AppCompatActivity {
 
     public void previewSetMySets(View view) {
         int id = (Integer) view.findViewById(R.id.setNameMySetsList).getTag();
-        ArrayList<String> setItems = new ArrayList<>();
+        HashMap<Integer, String[]> setItems = new HashMap<>();
         QueryDocumentSnapshot doc = documents.get(id);
         ArrayList<?> questions = (ArrayList<?>) doc.get("questions");
         ArrayList<?> answers = (ArrayList<?>) doc.get("answers");
         RepeatsHelper.setName = doc.get("displayName").toString();
-
-        setItems.add(getString(R.string.questions));
-        setItems.add(getString(R.string.answers));
+        RepeatsHelper.setCreationDate = doc.get("creationDate").toString();
 
         for (int i = 0; i < questions.size(); i++) {
-            setItems.add(questions.get(i).toString());
-            setItems.add(answers.get(i).toString());
+            setItems.put(i, new String[] {questions.get(i).toString(), answers.get(i).toString()});
         }
 
         RepeatsHelper.setItems = setItems;
@@ -123,7 +121,7 @@ public class MySetsActivity extends AppCompatActivity {
 
                         Intent shareLink = new Intent(Intent.ACTION_SEND);
                         shareLink.setType("text/plain");
-                        shareLink.putExtra(Intent.EXTRA_SUBJECT, "something");
+                        shareLink.putExtra(Intent.EXTRA_SUBJECT, "");
                         shareLink.putExtra(Intent.EXTRA_TEXT, dynamicLink);
                         startActivity(Intent.createChooser(shareLink, getString(R.string.share)));
 

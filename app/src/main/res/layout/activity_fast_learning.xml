@@ -61,7 +61,9 @@
             android:layout_marginEnd="10dp"
             android:orientation="vertical"
             android:background="@drawable/layout_mainshape"
-            android:elevation="5dp">
+            android:elevation="5dp"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -109,7 +111,7 @@
                 android:textSize="12pt"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginStart="10dp"/>
+                android:layout_marginStart="10dp" />
 
             <LinearLayout
                 android:id="@+id/linearGoodAnswer"
@@ -179,7 +181,8 @@
         android:layout_marginBottom="25dp"
         android:src="@drawable/ic_check"
         app:backgroundTint="@color/greenRepeats"
-        android:onClick="fabClick"/>
+        android:onClick="fabClick"
+        android:id="@+id/fabFL"/>
 
     <RelativeLayout
         android:id="@+id/relativeBottomInfo"

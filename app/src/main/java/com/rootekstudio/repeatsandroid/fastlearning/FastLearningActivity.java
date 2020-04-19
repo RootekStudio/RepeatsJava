@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class FastLearningActivity extends AppCompatActivity {
     TextView setNameTxtView;
@@ -48,6 +50,8 @@ public class FastLearningActivity extends AppCompatActivity {
     TextView countTimeTxtView;
     ImageView imageView;
     ScrollView scrollView;
+    RelativeLayout relativeBottomInfo;
+    FloatingActionButton fab;
 
     int goodAnswersCount;
     int wrongAnswersCount;
@@ -75,21 +79,23 @@ public class FastLearningActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fast_learning);
         getSupportActionBar().hide();
 
-        setNameTxtView = findViewById(R.id.setNameFastLearning);
-        question = findViewById(R.id.questionTextViewFL);
-        userAnswer = findViewById(R.id.userAnswerTextViewFL);
-        correctAnswer = findViewById(R.id.correctAnswerTextViewFL);
-        otherCorrectAnswers = findViewById(R.id.otherCorrectAnswersTextViewFL);
-        correctAnswerLinear = findViewById(R.id.linearGoodAnswer);
-        otherCorrectLinear = findViewById(R.id.linearOtherAnswers);
-        progressBar = findViewById(R.id.progressBarFastLearning);
-        goodAnswersCountTxtView = findViewById(R.id.goodAnswersCountFL);
-        wrongAnswersCountTxtView = findViewById(R.id.wrongAnswersCountFL);
-        allAnswersCountTxtView = findViewById(R.id.allAnswersCountFL);
-        percentTxtView = findViewById(R.id.percentFastLearning);
-        countTimeTxtView = findViewById(R.id.fastLearningTime);
-        imageView = findViewById(R.id.imageViewFastLearning);
-        scrollView = findViewById(R.id.scrollViewFastLearning);
+        setNameTxtView =            findViewById(R.id.setNameFastLearning);
+        question =                  findViewById(R.id.questionTextViewFL);
+        userAnswer =                findViewById(R.id.userAnswerTextViewFL);
+        correctAnswer =             findViewById(R.id.correctAnswerTextViewFL);
+        otherCorrectAnswers =       findViewById(R.id.otherCorrectAnswersTextViewFL);
+        correctAnswerLinear =       findViewById(R.id.linearGoodAnswer);
+        otherCorrectLinear =        findViewById(R.id.linearOtherAnswers);
+        progressBar =               findViewById(R.id.progressBarFastLearning);
+        goodAnswersCountTxtView =   findViewById(R.id.goodAnswersCountFL);
+        wrongAnswersCountTxtView =  findViewById(R.id.wrongAnswersCountFL);
+        allAnswersCountTxtView =    findViewById(R.id.allAnswersCountFL);
+        percentTxtView =            findViewById(R.id.percentFastLearning);
+        countTimeTxtView =          findViewById(R.id.fastLearningTime);
+        imageView =                 findViewById(R.id.imageViewFastLearning);
+        scrollView =                findViewById(R.id.scrollViewFastLearning);
+        relativeBottomInfo =        findViewById(R.id.relativeBottomInfo);
+        fab =                       findViewById(R.id.fabFL);
 
         DB = new DatabaseHelper(this);
 
@@ -108,6 +114,41 @@ public class FastLearningActivity extends AppCompatActivity {
         allAnswersCountTxtView.setText("=\n0");
 
         oldTextColor = userAnswer.getTextColors();
+
+        userAnswer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean isFocus) {
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) fab.getLayoutParams();
+                if(isFocus) {
+                    relativeBottomInfo.setVisibility(View.GONE);
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    fab.setLayoutParams(layoutParams);
+                }
+                else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(110);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    relativeBottomInfo.setVisibility(View.VISIBLE);
+                                    layoutParams.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                                    layoutParams.addRule(RelativeLayout.ABOVE, R.id.relativeBottomInfo);
+                                    fab.setLayoutParams(layoutParams);
+                                }
+                            });
+                        }
+                    }).start();
+
+                }
+
+            }
+        });
 
         loadQuestion();
         setTimer();
@@ -196,12 +237,12 @@ public class FastLearningActivity extends AppCompatActivity {
                     otherCorrectLinear.setVisibility(View.VISIBLE);
                 }
 
-                scrollView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        scrollView.scrollTo(0, scrollView.getBottom());
-                    }
-                });
+//                scrollView.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        scrollView.scrollTo(0, scrollView.getBottom());
+//                    }
+//                });
 
                 if (userAnswer.getText().toString().equals("")) {
                     userAnswer.setText(getString(R.string.noAnswer));
@@ -279,6 +320,7 @@ public class FastLearningActivity extends AppCompatActivity {
             fab.setImageDrawable(getDrawable(R.drawable.ic_check));
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.greenRepeats)));
         }
+        userAnswer.clearFocus();
     }
 
     public void exitClick(View view) {

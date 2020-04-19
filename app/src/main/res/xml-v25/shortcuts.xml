@@ -2,12 +2,12 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_search"
-        android:shortcutId="search"
-        android:shortcutShortLabel="@string/Search">
+        android:icon="@drawable/ic_shortcut_checktest"
+        android:shortcutId="fastLearning"
+        android:shortcutShortLabel="@string/FastLearning">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.rootekstudio.repeatsandroid.search.SearchActivity"
+            android:targetClass="com.rootekstudio.repeatsandroid.fastlearning.FastLearningConfigActivity"
             android:targetPackage="com.rootekstudio.repeatsandroid" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
@@ -24,12 +24,12 @@
     </shortcut>
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_checktest"
-        android:shortcutId="fastLearning"
-        android:shortcutShortLabel="@string/FastLearning">
+        android:icon="@drawable/ic_shortcut_search"
+        android:shortcutId="search"
+        android:shortcutShortLabel="@string/Search">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.rootekstudio.repeatsandroid.fastlearning.FastLearningConfigActivity"
+            android:targetClass="com.rootekstudio.repeatsandroid.search.SearchActivity"
             android:targetPackage="com.rootekstudio.repeatsandroid" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>

@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,10 +31,12 @@ import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 public class PreviewAndDownloadSetActivity extends AppCompatActivity {
-    ArrayList<String> setItems;
+    HashMap<Integer, String[]> setItems;
     String setName;
     Context context;
     String databaseSetID;
@@ -43,6 +48,16 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preview_and_download_set);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context = this;
+
+        TextView elementsCountTextView = findViewById(R.id.textViewElementsCountRC);
+        TextView shareDateTextView = findViewById(R.id.textViewShareDateRC);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewDownloadSet);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL));
 
         Intent intent = getIntent();
         databaseSetID = intent.getStringExtra("databaseSetID");
@@ -58,25 +73,26 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
                                     ArrayList<?> questions = (ArrayList<?>) task.getResult().get("questions");
                                     ArrayList<?> answers = (ArrayList<?>) task.getResult().get("answers");
 
-                                    setItems = new ArrayList<>();
-
-                                    setItems.add(getString(R.string.questions));
-                                    setItems.add(getString(R.string.answers));
+                                    setItems = new HashMap<>();
 
                                     for (int i = 0; i < questions.size(); i++) {
-                                        setItems.add(questions.get(i).toString());
-                                        setItems.add(answers.get(i).toString());
+                                        setItems.put(i, new String[] {questions.get(i).toString(), answers.get(i).toString()});
                                     }
 
                                     setName = task.getResult().get("displayName").toString();
 
-                                    GridView gridView = findViewById(R.id.gridSetItemsList);
-                                    gridView.setAdapter(new PreviewAdapter(context, setItems));
-
+                                    recyclerView.setAdapter(new PreviewAdapter(setItems));
                                     findViewById(R.id.downloadSetButton).setEnabled(true);
 
                                     TextView textView = findViewById(R.id.setNamePreview);
                                     textView.setText(setName);
+
+                                    String elementsString = setItems.size() + " " + getText(R.string.items).toString();
+                                    elementsCountTextView.setText(elementsString);
+
+                                    String shareDateString = getText(R.string.shareDate) + " " + task.getResult().get("creationDate").toString();
+                                    shareDateTextView.setText(shareDateString);
+
                                 }
                             } else {
                                 Log.d("tag", "Error getting documents: ", task.getException());
@@ -87,11 +103,16 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
             setItems = RepeatsHelper.setItems;
             setName = RepeatsHelper.setName;
 
-            GridView gridView = findViewById(R.id.gridSetItemsList);
-            gridView.setAdapter(new PreviewAdapter(this, setItems));
+            recyclerView.setAdapter(new PreviewAdapter(setItems));
 
             TextView textView = findViewById(R.id.setNamePreview);
             textView.setText(setName);
+
+            String elementsString = setItems.size() + " " + getText(R.string.items).toString();
+            elementsCountTextView.setText(elementsString);
+
+            String shareDateString = getText(R.string.shareDate) + " " + RepeatsHelper.setCreationDate;
+            shareDateTextView.setText(shareDateString);
 
             findViewById(R.id.downloadSetButton).setEnabled(true);
         }
@@ -99,7 +120,6 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
 
     public void downloadSet(View view) {
         MaterialButton button = (MaterialButton) view;
-        button.setText(R.string.downloading);
         button.setEnabled(false);
 
         DatabaseHelper DB = new DatabaseHelper(this);
@@ -111,16 +131,13 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
         SimpleDateFormat createD = new SimpleDateFormat("dd.MM.yyyy");
         String createDate = createD.format(new Date());
 
-        ArrayList<String> set = setItems;
+        HashMap<Integer, String[]> set = setItems;
         ArrayList<String> questions = new ArrayList<>();
         ArrayList<String> answers = new ArrayList<>();
 
-        for (int i = 2; i < set.size(); i += 2) {
-            questions.add(set.get(i));
-        }
-
-        for (int i = 3; i < set.size(); i += 2) {
-            answers.add(set.get(i));
+        for(int i = 1; i < set.size(); i++) {
+            questions.add(Objects.requireNonNull(set.get(i))[0]);
+            answers.add(Objects.requireNonNull(set.get(i))[1]);
         }
 
         RepeatsSetInfo list;

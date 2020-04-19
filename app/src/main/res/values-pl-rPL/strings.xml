@@ -248,4 +248,8 @@
     <string name="setFromImageTakePhoto">Zestaw ze zdjęcia (zrób zdjęcie) (wkrótce)</string>
     <string name="saveAsNewSet">Zapisz jako nowy zestaw</string>
     <string name="saveToExistingSet">Zapisz do istniejącego zestawu</string>
+    <string name="items">elementów</string>
+    <string name="shareDate">Data udostępnienia:</string>
+    <string name="setContent">Zawartość zestawu:</string>
+    <string name="download">Pobierz</string>
 </resources>

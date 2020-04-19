@@ -29,6 +29,7 @@ import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class RepeatsCommunityStartActivity extends AppCompatActivity {
@@ -165,18 +166,15 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
 
     public void searchResultClick(View view) {
         int tag = (Integer) view.findViewById(R.id.setNameListItemRC).getTag();
-        ArrayList<String> setItems = new ArrayList<>();
+        HashMap<Integer, String[]> setItems = new HashMap<>();
         QueryDocumentSnapshot doc = documents.get(tag);
         ArrayList<?> questions = (ArrayList<?>) doc.get("questions");
         ArrayList<?> answers = (ArrayList<?>) doc.get("answers");
         RepeatsHelper.setName = doc.get("displayName").toString();
-
-        setItems.add(getString(R.string.questions));
-        setItems.add(getString(R.string.answers));
+        RepeatsHelper.setCreationDate = doc.get("creationDate").toString();
 
         for (int i = 0; i < questions.size(); i++) {
-            setItems.add(questions.get(i).toString());
-            setItems.add(answers.get(i).toString());
+            setItems.put(i, new String[] {questions.get(i).toString(), answers.get(i).toString()});
         }
 
         RepeatsHelper.setItems = setItems;

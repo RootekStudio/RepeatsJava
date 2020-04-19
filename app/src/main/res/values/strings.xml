@@ -252,5 +252,9 @@
     <string name="setFromImageTakePhoto">Set from image (take photo)</string>
     <string name="saveAsNewSet">Save as a new set</string>
     <string name="saveToExistingSet">Save to existing set</string>
+    <string name="items">items</string>
+    <string name="shareDate">Share date:</string>
+    <string name="setContent">Set content:</string>
+    <string name="download">Download</string>
 
 </resources>
