@@ -4,9 +4,12 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -24,12 +27,18 @@ import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
 import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.textrecognition.TextRecognitionActivity;
 
 import java.util.List;
 
 public class SetsFragment extends Fragment {
     private Context context;
     private AppCompatActivity appCompatActivity;
+    private PopupWindow popupWindow;
+    private PopupWindow chooseHowTR;
+
+    int width;
+    int height;
 
     public SetsFragment(Context context, AppCompatActivity activity) {
         this.context = context;
@@ -65,8 +74,98 @@ public class SetsFragment extends Fragment {
     private View.OnClickListener fabClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-             AddSetNavFragment addSetNavFragment = AddSetNavFragment.newInstance();
-             addSetNavFragment.show(getActivity().getSupportFragmentManager(), "setNav");
+
+            width = LinearLayout.LayoutParams.MATCH_PARENT;
+            height = LinearLayout.LayoutParams.MATCH_PARENT;
+
+//             AddSetNavFragment addSetNavFragment = AddSetNavFragment.newInstance();
+//             addSetNavFragment.show(getActivity().getSupportFragmentManager(), "setNav");
+
+            View popupView = LayoutInflater.from(getContext()).inflate(R.layout.add_set_window, null);
+
+            popupView.findViewById(R.id.createNewSet).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent addEditActivityIntent = new Intent(getContext(), AddEditSetActivity.class);
+                    addEditActivityIntent.putExtra("ISEDIT", "FALSE");
+                    addEditActivityIntent.putExtra("IGNORE_CHARS", "false");
+                    startActivity(addEditActivityIntent);
+                    popupWindow.dismiss();
+                }
+            });
+
+            popupView.findViewById(R.id.getSetFromImage).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    popupWindow.dismiss();
+                    View chooseHowTextRecognition = LayoutInflater.from(getContext()).inflate(R.layout.choose_how_tr, null);
+                    chooseHowTextRecognition.findViewById(R.id.takePhoto).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), TextRecognitionActivity.class);
+                            intent.putExtra("takePhoto", true);
+                            startActivity(intent);
+                            chooseHowTR.dismiss();
+                        }
+                    });
+
+                    chooseHowTextRecognition.findViewById(R.id.chooseFromGallery).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), TextRecognitionActivity.class);
+                            intent.putExtra("takePhoto", false);
+                            startActivity(intent);
+                            chooseHowTR.dismiss();
+                        }
+                    });
+
+                    chooseHowTextRecognition.findViewById(R.id.closePopupAddSet).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            chooseHowTR.dismiss();
+                        }
+                    });
+
+                    chooseHowTR = new PopupWindow(chooseHowTextRecognition, width, height, true);
+                    chooseHowTR.setAnimationStyle(R.style.animation);
+                    chooseHowTR.showAtLocation(view, Gravity.CENTER, 0, 0);
+                }
+            });
+
+            popupView.findViewById(R.id.getSetFromZip).setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    Intent zipPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    zipPickerIntent.setType("application/*");
+                    try {
+                        getActivity().startActivityForResult(zipPickerIntent, RequestCodes.READ_SHARED);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(getContext(), R.string.explorerNotFound, Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    popupWindow.dismiss();
+                }
+            });
+
+            popupView.findViewById(R.id.getSetFromCommunity).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intentRC = new Intent(getContext(), RepeatsCommunityStartActivity.class);
+                    startActivity(intentRC);
+                    popupWindow.dismiss();
+                }
+            });
+
+            popupView.findViewById(R.id.closePopupAddSet).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    popupWindow.dismiss();
+                }
+            });
+
+            popupWindow = new PopupWindow(popupView, width, height, true);
+            popupWindow.setAnimationStyle(R.style.animation);
+            popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
         }
     };
 }

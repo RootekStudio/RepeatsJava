@@ -18,10 +18,12 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,6 +46,7 @@ import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,6 +79,9 @@ public class TextRecognitionActivity extends AppCompatActivity {
 
     AlertDialog selectWhereSave;
     AlertDialog selectSet;
+    AlertDialog loadingDialog;
+
+    Uri photoURI;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -89,6 +95,8 @@ public class TextRecognitionActivity extends AppCompatActivity {
         questionField = findViewById(R.id.questionInputTR);
         answerField = findViewById(R.id.answerInputTR);
         textFields = findViewById(R.id.linearTextRecognitionEditTexts);
+
+        createLoadingDialog();
 
         DB = new DatabaseHelper(this);
         usableHeight = RepeatsHelper.getUsableHeight(this);
@@ -105,8 +113,38 @@ public class TextRecognitionActivity extends AppCompatActivity {
 
         new ItemTouchHelper(itemTouchCallback).attachToRecyclerView(recyclerView);
 
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(photoPickerIntent, RequestCodes.PICK_IMAGE_FOR_RECOGNITION);
+        Intent thisIntent = getIntent();
+
+        if(thisIntent.getBooleanExtra("takePhoto", true)) {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                File photoFile = null;
+                try {
+                    SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmmss");
+                    String imageDate = simpleDate.format(new Date());
+                    String ImageName = imageDate + ".png";
+
+                    photoFile = new File(getFilesDir(), "/shared/" + ImageName);
+                    photoFile.createNewFile();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+
+                    photoURI = FileProvider.getUriForFile(this,
+                            "com.rootekstudio.repeatsandroid.fileprovider",
+                            photoFile);
+
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(takePictureIntent, RequestCodes.TAKE_IMAGE_FOR_RECOGNITION);
+                }
+            }
+        }
+        else {
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(photoPickerIntent, RequestCodes.PICK_IMAGE_FOR_RECOGNITION);
+        }
 
         questionField.setInputType(InputType.TYPE_NULL);
         answerField.setInputType(InputType.TYPE_NULL);
@@ -127,100 +165,130 @@ public class TextRecognitionActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RequestCodes.PICK_IMAGE_FOR_RECOGNITION) {
             if (resultCode == RESULT_OK) {
-                MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this);
-                dialogBuilder.setBackground(getDrawable(R.drawable.dialog_shape));
-                dialogBuilder.setView(LayoutInflater.from(this).inflate(R.layout.loading_tr, null));
-                dialogBuilder.setCancelable(false);
-                AlertDialog dialog = dialogBuilder.create();
-                dialog.show();
-
                 Uri selectedImage = data.getData();
                 FirebaseVisionImage image = null;
                 try {
                     image = FirebaseVisionImage.fromFilePath(this, selectedImage);
+                    recognizeText(image);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    finish();
+                }
+                catch (SecurityException e) {
+                    e.printStackTrace();
+
+                    Toast.makeText(this, R.string.imageError, Toast.LENGTH_LONG).show();
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(photoPickerIntent, RequestCodes.PICK_IMAGE_FOR_RECOGNITION);
                 }
 
-                FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
-                        .getOnDeviceTextRecognizer();
-
-                detector.processImage(image)
-                        .addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
-                            @Override
-                            public void onSuccess(FirebaseVisionText firebaseVisionText) {
-
-                                //get maximum count of lines from all text blocks
-                                int mostLines = -1;
-
-                                for (int i = 0; i < firebaseVisionText.getTextBlocks().size(); i++) {
-                                    FirebaseVisionText.TextBlock textBlock = firebaseVisionText.getTextBlocks().get(i);
-                                    if (i == 0) {
-                                        mostLines = textBlock.getLines().size();
-                                    } else {
-                                        if (textBlock.getLines().size() > mostLines) {
-                                            mostLines = textBlock.getLines().size();
-                                        }
-                                    }
-                                }
-
-                                //get single line from every text block
-                                for (int i = 0; i < mostLines; i++) {
-                                    for (int j = 0; j < firebaseVisionText.getTextBlocks().size(); j++) {
-                                        FirebaseVisionText.TextBlock textBlock = firebaseVisionText.getTextBlocks().get(j);
-                                        List<FirebaseVisionText.Line> lines = textBlock.getLines();
-                                        if (i < lines.size()) {
-                                            List<FirebaseVisionText.Element> elements = lines.get(i).getElements();
-                                            //get single element
-                                            for (FirebaseVisionText.Element element : elements) {
-                                                String text = element.getText();
-                                                for (char c : text.toCharArray()) {
-                                                    if (Character.isLetterOrDigit(c)) {
-                                                        recognizedStrings.add(text);
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                adapter = new RecognizedStringsAdapter(recognizedStrings);
-                                recyclerView.setAdapter(adapter);
-
-                                dialog.cancel();
-
-                                if (recognizedStrings.size() == 0) {
-                                    MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(TextRecognitionActivity.this);
-                                    dialogBuilder.setBackground(getDrawable(R.drawable.dialog_shape));
-                                    dialogBuilder.setView(LayoutInflater.from(TextRecognitionActivity.this).inflate(R.layout.not_recognize_text, null));
-                                    dialogBuilder.setCancelable(false);
-                                    dialogBuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.cancel();
-                                            finish();
-                                        }
-                                    });
-
-                                    dialogBuilder.show();
-                                } else {
-                                    createTempSet();
-                                    itemID = 1;
-                                }
-                            }
-                        })
-                        .addOnFailureListener(
-                                new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                });
             } else {
                 finish();
             }
         }
+        else if(requestCode == RequestCodes.TAKE_IMAGE_FOR_RECOGNITION) {
+            if(resultCode == RESULT_OK) {
+                FirebaseVisionImage image = null;
+                try {
+                    image = FirebaseVisionImage.fromFilePath(this, photoURI);
+                    recognizeText(image);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    finish();
+                }
+            }
+            else {
+                finish();
+            }
+        }
+    }
+
+    void createLoadingDialog() {
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this);
+        dialogBuilder.setBackground(getDrawable(R.drawable.dialog_shape));
+        dialogBuilder.setView(LayoutInflater.from(this).inflate(R.layout.loading_tr, null));
+        dialogBuilder.setCancelable(false);
+        loadingDialog = dialogBuilder.create();
+        loadingDialog.show();
+    }
+
+    void recognizeText(FirebaseVisionImage image) {
+        FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
+                .getOnDeviceTextRecognizer();
+
+        detector.processImage(image)
+                .addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+                    @Override
+                    public void onSuccess(FirebaseVisionText firebaseVisionText) {
+
+                        //get maximum count of lines from all text blocks
+                        int mostLines = -1;
+
+                        for (int i = 0; i < firebaseVisionText.getTextBlocks().size(); i++) {
+                            FirebaseVisionText.TextBlock textBlock = firebaseVisionText.getTextBlocks().get(i);
+                            if (i == 0) {
+                                mostLines = textBlock.getLines().size();
+                            } else {
+                                if (textBlock.getLines().size() > mostLines) {
+                                    mostLines = textBlock.getLines().size();
+                                }
+                            }
+                        }
+
+                        //get single line from every text block
+                        for (int i = 0; i < mostLines; i++) {
+                            for (int j = 0; j < firebaseVisionText.getTextBlocks().size(); j++) {
+                                FirebaseVisionText.TextBlock textBlock = firebaseVisionText.getTextBlocks().get(j);
+                                List<FirebaseVisionText.Line> lines = textBlock.getLines();
+                                if (i < lines.size()) {
+                                    List<FirebaseVisionText.Element> elements = lines.get(i).getElements();
+                                    //get single element
+                                    for (FirebaseVisionText.Element element : elements) {
+                                        String text = element.getText();
+                                        for (char c : text.toCharArray()) {
+                                            if (Character.isLetterOrDigit(c)) {
+                                                recognizedStrings.add(text);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        adapter = new RecognizedStringsAdapter(recognizedStrings);
+                        recyclerView.setAdapter(adapter);
+
+                        loadingDialog.cancel();
+
+                        if (recognizedStrings.size() == 0) {
+                            MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(TextRecognitionActivity.this);
+                            dialogBuilder.setBackground(getDrawable(R.drawable.dialog_shape));
+                            dialogBuilder.setView(LayoutInflater.from(TextRecognitionActivity.this).inflate(R.layout.not_recognize_text, null));
+                            dialogBuilder.setCancelable(false);
+                            dialogBuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                    finish();
+                                }
+                            });
+
+                            dialogBuilder.show();
+                        } else {
+                            createTempSet();
+                            itemID = 1;
+                        }
+                    }
+                })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
     }
 
     public void endTRClick(View view) {
@@ -417,19 +485,23 @@ public class TextRecognitionActivity extends AppCompatActivity {
     private void saveItems() {
         int allEditTexts = textFields.getChildCount();
         StringBuilder answerBuilder = new StringBuilder();
-        answerBuilder.append(answerField.getText().toString());
+        answerBuilder.append(answerField.getText().toString().trim());
 
         if (allEditTexts > 2) {
             for (int i = 2; i < allEditTexts; i++) {
                 TextInputEditText editText = textFields.getChildAt(i).findViewById(R.id.answerInputTR);
                 String singleAnswer = editText.getText().toString();
                 if (!singleAnswer.equals("")) {
+                    singleAnswer = singleAnswer.trim();
                     answerBuilder.append(RepeatsHelper.breakLine).append(singleAnswer);
                 }
             }
         }
 
+        String question = questionField.getText().toString();
         String answer = answerBuilder.toString();
+        answer = answer.trim();
+        question = question.trim();
 
         //remove all break lines on beginning of string
         if (answer.length() > 2) {
@@ -438,7 +510,7 @@ public class TextRecognitionActivity extends AppCompatActivity {
             }
         }
 
-        DB.InsertValueByID(setID, itemID, "question", questionField.getText().toString());
+        DB.InsertValueByID(setID, itemID, "question", question);
         DB.InsertValueByID(setID, itemID, "answer", answer);
     }
 

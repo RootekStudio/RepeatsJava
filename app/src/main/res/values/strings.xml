@@ -115,10 +115,10 @@
     <string name="checkSetSettings">Check your settings</string>
     <string name="specialThanksDawid">Special thanks to Dawid Poradziński for being a very good tester</string>
     <string name="welcome">Welcome to</string>
-    <string name="loadFromCommunity">Load sets from Repeats Community (Beta)</string>
+    <string name="loadFromCommunity">Load sets from Repeats Community</string>
     <string name="startQuestionRC">What do you want to learn today?</string>
-    <string name="repeatsCommunity">Repeats Community (Beta)</string>
-    <string name="share_to_community">Share to Repeats Community (Beta)</string>
+    <string name="repeatsCommunity">Repeats Community</string>
+    <string name="share_to_community">Share to Repeats Community</string>
     <string name="sharing">Sharing</string>
     <string name="share_to_file">Save to local file and share</string>
     <string name="string_public">Share publicly and generate a shareable link</string>
@@ -135,11 +135,11 @@
     <string name="mySets">My sets</string>
     <string name="yourSets">Your sets in Repeats Community</string>
     <string name="next">Next</string>
-    <string name="noMySets">You don\'t have any set in Repeats Community (Beta)</string>
+    <string name="noMySets">You don\'t have any set in Repeats Community</string>
     <string name="termsInfo">By using the Repeats app you agree to <a href="https://rootekstudio.wordpress.com/warunki-uzytkowania/">Terms of use</a> and <a href="https://rootekstudio.wordpress.com/polityka-prywatnosci/">Privacy policy</a></string>
     <string name="upTo5Words">You can only search up to 5 words</string>
     <string name="nothingFound">Nothing found</string>
-    <string name="imageSharingInfo">Image sharing to the Repeats Community (Beta) is currently unsupported</string>
+    <string name="imageSharingInfo">Image sharing to the Repeats Community is currently unsupported</string>
     <string name="tagsInfo">Add tags to better find the set in the Community (separated by semicolons):</string>
     <string name="termsOfUse">Terms of use</string>
     <string name="privacyPolicy">Privacy policy</string>
@@ -240,14 +240,14 @@
     <string name="sendTestNotifi">Send test notification</string>
     <string name="newFastLearning">New Fast learning</string>
     <string name="selectAtLeastOneQuestion">You must select at least one question</string>
-    <string name="getSetFromCamera">Take photo and recognize text (soon)</string>
-    <string name="getSetFromGallery">Select image from gallery and recognize text</string>
+    <string name="getSetFromCamera">Take photo</string>
+    <string name="getSetFromGallery">Choose from gallery</string>
     <string name="textDetectionInProgress">Text detection in progress...</string>
     <string name="howSaveSet">How to save the set?</string>
     <string name="noTextDetected">No text detected</string>
     <string name="chooseDifferentPicture">Choose a different picture</string>
     <string name="addAnotherAnswer">Add another answer</string>
-    <string name="setFromImage">Set from image</string>
+    <string name="setFromPhoto">Set from photo</string>
     <string name="setFromImageChooseFromGallery">Set from image (choose from gallery)</string>
     <string name="setFromImageTakePhoto">Set from image (take photo)</string>
     <string name="saveAsNewSet">Save as a new set</string>
@@ -256,5 +256,9 @@
     <string name="shareDate">Share date:</string>
     <string name="setContent">Set content:</string>
     <string name="download">Download</string>
+    <string name="createNew">Create new</string>
+    <string name="fromPhoto">From photo</string>
+    <string name="openArchive">Open archive</string>
+    <string name="close">Close</string>
 
 </resources>

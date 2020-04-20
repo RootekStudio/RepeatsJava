@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#B2000000">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/dialog_shape"
+        android:orientation="vertical"
+        android:layout_margin="40dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/AddSet"
+            android:textAlignment="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="20dp"
+            android:textSize="10pt"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/createNewSet"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_gradient_background"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_add"
+                    android:tint="#FFF"
+                    app:tint="#FFF"
+                    android:layout_marginStart="25dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/createNew"
+                    android:textAlignment="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="8pt"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/getSetFromImage"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_gradient_background"
+                    android:padding="5dp"
+                    android:src="@drawable/photo_camera_24px"
+                    android:tint="#FFF"
+                    app:tint="#FFF"
+                    android:layout_marginStart="25dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/fromPhoto"
+                    android:textAlignment="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="8pt"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/getSetFromZip"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_gradient_background"
+                    android:padding="5dp"
+                    android:src="@drawable/folder_open_24px"
+                    android:tint="#FFF"
+                    app:tint="#FFF"
+                    android:layout_marginStart="25dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/openArchive"
+                    android:textAlignment="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="8pt"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/getSetFromCommunity"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_gradient_background"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_group_24px"
+                    android:tint="#FFF"
+                    app:tint="#FFF"
+                    android:layout_marginStart="25dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/repeatsCommunity"
+                    android:textAlignment="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="8pt"/>
+            </LinearLayout>
+
+        </LinearLayout>
+<!--        <GridLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:columnCount="2"-->
+<!--            android:padding="10dp">-->
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_gravity="fill_horizontal"-->
+<!--                android:background="?android:attr/selectableItemBackground"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:padding="15dp">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="60dp"-->
+<!--                        android:layout_height="60dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_marginBottom="10dp"-->
+<!--                        android:background="@drawable/circle_gradient_background"-->
+<!--                        android:padding="15dp"-->
+<!--                        android:src="@drawable/ic_add"-->
+<!--                        android:tint="#FFF"-->
+<!--                        app:tint="#FFF" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:text="Utwórz nowy"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:gravity="center"/>-->
+<!--                </LinearLayout>-->
+
+<!--            </RelativeLayout>-->
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:gravity="center"-->
+<!--                android:background="?android:attr/selectableItemBackground"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:padding="15dp">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="60dp"-->
+<!--                        android:layout_height="60dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_marginBottom="10dp"-->
+<!--                        android:background="@drawable/circle_gradient_background"-->
+<!--                        android:padding="15dp"-->
+<!--                        android:src="@drawable/photo_camera_24px"-->
+<!--                        android:tint="#FFF"-->
+<!--                        app:tint="#FFF" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:text="Ze zdjęcia"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:gravity="center"/>-->
+<!--                </LinearLayout>-->
+
+<!--            </RelativeLayout>-->
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_gravity="fill_horizontal"-->
+<!--                android:background="?android:attr/selectableItemBackground"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:padding="15dp">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="60dp"-->
+<!--                        android:layout_height="60dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_marginBottom="10dp"-->
+<!--                        android:background="@drawable/circle_gradient_background"-->
+<!--                        android:padding="15dp"-->
+<!--                        android:src="@drawable/folder_open_24px"-->
+<!--                        android:tint="#FFF"-->
+<!--                        app:tint="#FFF" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:text="Otwórz archiwum"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:gravity="center"/>-->
+<!--                </LinearLayout>-->
+
+<!--            </RelativeLayout>-->
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_gravity="fill_horizontal"-->
+<!--                android:background="?android:attr/selectableItemBackground"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:padding="15dp">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="60dp"-->
+<!--                        android:layout_height="60dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_marginBottom="10dp"-->
+<!--                        android:background="@drawable/circle_gradient_background"-->
+<!--                        android:padding="15dp"-->
+<!--                        android:src="@drawable/ic_group_24px"-->
+<!--                        android:tint="#FFF"-->
+<!--                        app:tint="#FFF" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:text="Społeczność\nRepeats"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:gravity="center"/>-->
+<!--                </LinearLayout>-->
+<!--            </RelativeLayout>-->
+<!--        </GridLayout>-->
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/closePopupAddSet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/close"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+
+
+
+</RelativeLayout>

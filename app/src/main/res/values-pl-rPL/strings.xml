@@ -45,7 +45,7 @@
     <string name="IgnoreChars">Ignoruj znaki specjalne</string>
     <string name="CreateNew">Utwórz nowy zestaw</string>
     <string name="LoadSet">Wczytaj zestaw z archiwum</string>
-    <string name="AddSet">Dodawanie zestawu</string>
+    <string name="AddSet">Dodaj zestaw</string>
     <string name="share">Udostępnij</string>
     <string name="notifiFromSets">Powiadomienia z zestawów</string>
     <string name="loading">Wczytywanie...</string>
@@ -113,10 +113,10 @@
     <string name="cantLoadSet">Nie można załadować żadnego zestawu</string>
     <string name="specialThanksDawid">Specjalne podziękowania dla Dawida Poradzińskiego za gruntowne testowanie aplikacji</string>
     <string name="welcome">Witaj w</string>
-    <string name="loadFromCommunity">Pobierz zestawy ze Społeczności Repeats (Beta)</string>
+    <string name="loadFromCommunity">Pobierz zestawy ze Społeczności Repeats</string>
     <string name="startQuestionRC">Czego chcesz się dzisiaj nauczyć?</string>
-    <string name="repeatsCommunity">Społeczność Repeats (Beta)</string>
-    <string name="share_to_community">Udostępnij do Społeczności Repeats (Beta)</string>
+    <string name="repeatsCommunity">Społeczność Repeats</string>
+    <string name="share_to_community">Udostępnij do Społeczności Repeats</string>
     <string name="sharing">Udostępnianie</string>
     <string name="share_to_file">Zapisz do pliku i udostępnij</string>
     <string name="string_public">Udostępnij publicznie i wygeneruj link do udostępnienia</string>
@@ -133,11 +133,11 @@
     <string name="mySets">Moje zestawy</string>
     <string name="yourSets">Twoje zestawy w Społeczności Repeats</string>
     <string name="next">Dalej</string>
-    <string name="noMySets">Nie masz żadnych zestawów w Społeczności Repeats (Beta)</string>
+    <string name="noMySets">Nie masz żadnych zestawów w Społeczności Repeats</string>
     <string name="termsInfo">Korzystając z aplikacji Repeats wyrażasz zgodę na <a href="https://rootekstudio.wordpress.com/warunki-uzytkowania/">Warunki użytkowania</a> oraz <a href="https://rootekstudio.wordpress.com/polityka-prywatnosci/">Politykę prywatności</a></string>
     <string name="upTo5Words">Zapytanie może zawierać maksymalnie 5 słów</string>
     <string name="nothingFound">Nic nie znaleziono</string>
-    <string name="imageSharingInfo">Udostępnianie zdjęć do Społeczności Repeats (Beta) jest na chwilę obecną nieobsługiwane</string>
+    <string name="imageSharingInfo">Udostępnianie zdjęć do Społeczności Repeats jest na chwilę obecną nieobsługiwane</string>
     <string name="tagsInfo">Dopisz tagi, które pozwolą lepiej odnaleźć zestaw w Społeczności (oddzielone średnikami):</string>
     <string name="termsOfUse">Warunki użytkowania</string>
     <string name="privacyPolicy">Polityka prywatności</string>
@@ -236,20 +236,24 @@
     <string name="sendTestNotifi">Wyślij testowe powiadomienie</string>
     <string name="newFastLearning">Nowa Szybka nauka</string>
     <string name="selectAtLeastOneQuestion">Musisz wybrać co najmniej jedno pytanie</string>
-    <string name="getSetFromCamera">Zrób zdjęcie i wykryj tekst (wkrótce)</string>
-    <string name="getSetFromGallery">Wybierz zdjęcie z galerii i wykryj tekst</string>
+    <string name="getSetFromCamera">Zrób zdjęcie</string>
+    <string name="getSetFromGallery">Wybierz z galerii</string>
     <string name="textDetectionInProgress">Trwa wykrywanie tekstu...</string>
     <string name="howSaveSet">Jak zapisać zestaw?</string>
     <string name="noTextDetected">Nie wykryto żadnego tekstu</string>
     <string name="chooseDifferentPicture">Wybierz inne zdjęcie</string>
     <string name="addAnotherAnswer">Dodaj kolejną odpowiedź</string>
-    <string name="setFromImage">Zestaw ze zdjęcia</string>
+    <string name="setFromPhoto">Zestaw ze zdjęcia</string>
     <string name="setFromImageChooseFromGallery">Zestaw ze zdjęcia (wybierz z galerii)</string>
-    <string name="setFromImageTakePhoto">Zestaw ze zdjęcia (zrób zdjęcie) (wkrótce)</string>
+    <string name="setFromImageTakePhoto">Zestaw ze zdjęcia (zrób zdjęcie)</string>
     <string name="saveAsNewSet">Zapisz jako nowy zestaw</string>
     <string name="saveToExistingSet">Zapisz do istniejącego zestawu</string>
     <string name="items">elementów</string>
     <string name="shareDate">Data udostępnienia:</string>
     <string name="setContent">Zawartość zestawu:</string>
     <string name="download">Pobierz</string>
+    <string name="createNew">Utwórz nowy</string>
+    <string name="fromPhoto">Ze zdjęcia</string>
+    <string name="openArchive">Otwórz archiwum</string>
+    <string name="close">Zamknij</string>
 </resources>
