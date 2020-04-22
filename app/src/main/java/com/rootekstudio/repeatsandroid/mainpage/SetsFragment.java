@@ -1,7 +1,6 @@
 package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -13,13 +12,11 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
@@ -32,25 +29,21 @@ import com.rootekstudio.repeatsandroid.textrecognition.TextRecognitionActivity;
 import java.util.List;
 
 public class SetsFragment extends Fragment {
-    private Context context;
-    private AppCompatActivity appCompatActivity;
     private PopupWindow popupWindow;
     private PopupWindow chooseHowTR;
 
     int width;
     int height;
 
-    public SetsFragment(Context context, AppCompatActivity activity) {
-        this.context = context;
-        appCompatActivity = activity;
+    public SetsFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        DatabaseHelper DB = new DatabaseHelper(context);
+        DatabaseHelper DB = new DatabaseHelper(getContext());
         List<RepeatsSetInfo> repeatsList = DB.AllItemsLIST(DatabaseHelper.ORDER_BY_ID_DESC);
 
-        View view = LayoutInflater.from(context).inflate(R.layout.mainfragment_sets, null);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.mainfragment_sets, null);
 
         if (repeatsList.size() == 0) {
             RelativeLayout emptyInfo = view.findViewById(R.id.EmptyHereText);
@@ -58,7 +51,7 @@ public class SetsFragment extends Fragment {
         }
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_main);
-        RecyclerView.Adapter adapter = new MainActivityAdapter(repeatsList, context, appCompatActivity);
+        RecyclerView.Adapter adapter = new MainActivityAdapter(repeatsList, getContext(), (AppCompatActivity)getActivity());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         recyclerView.setHasFixedSize(true);

@@ -138,7 +138,7 @@ public class FirstRunActivity extends AppCompatActivity {
             answers.add("White");
             answers.add("Pink");
             answers.add("Orange");
-            answers.add("Violet");
+            answers.add("Violet\r\nPurple");
             answers.add("Brown");
         } else {
             list = new RepeatsSetInfo("Spanish colors", id, createDate, "true", "", "false", "en_US", "es_ES");

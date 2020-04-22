@@ -45,8 +45,6 @@
     <string name="About">About</string>
     <string name="SetName">Name of the set</string>
     <string name="IgnoreChars">Ignore special characters</string>
-    <string name="CreateNew">Create new set</string>
-    <string name="LoadSet">Load already created set from archive</string>
     <string name="AddSet">Add set</string>
     <string name="share">Share</string>
     <string name="notifiFromSets">Notifications from sets</string>
@@ -115,7 +113,6 @@
     <string name="checkSetSettings">Check your settings</string>
     <string name="specialThanksDawid">Special thanks to Dawid Poradziński for being a very good tester</string>
     <string name="welcome">Welcome to</string>
-    <string name="loadFromCommunity">Load sets from Repeats Community</string>
     <string name="startQuestionRC">What do you want to learn today?</string>
     <string name="repeatsCommunity">Repeats Community</string>
     <string name="share_to_community">Share to Repeats Community</string>
@@ -124,11 +121,7 @@
     <string name="string_public">Share publicly and generate a shareable link</string>
     <string name="string_private">Share with specific people via link</string>
     <string name="public_desc">Share to everyone in the Community. Everyone can find and download your set.</string>
-    <string name="downloadSet">Download set</string>
-    <string name="questions">Questions:</string>
-    <string name="answers">Answers:</string>
     <string name="setPreview">Preview</string>
-    <string name="downloading">Downloading...</string>
     <string name="successDownload">Download completed</string>
     <string name="successShare">Shared successfully</string>
     <string name="somethingWentWrong">Something Went Wrong</string>
@@ -154,7 +147,7 @@
     <string name="playing_set">Playing set:</string>
     <string name="click_here_read_notifi">Click here to go to the player</string>
     <string name="see_whats_now">See what\'s new</string>
-    <string name="welcome_to_update">Welcome to Repeats 2.6</string>
+    <string name="welcome_to_update">Welcome to Repeats 2.7</string>
     <string name="app_updated_info">App has been updated to the latest version</string>
     <string name="channelname4">Read Aloud notification</string>
     <string name="channeldesc4">This notification will show up when you are listening to the set</string>
@@ -162,22 +155,18 @@
     <string name="set_languages">Set languages</string>
     <string name="ignore_chars_info">When this feature is enabled, case sensitive characters, spaces, and diacritics will be ignored when checking the correctness of the answer. Note: This function does not work properly with Chinese script.</string>
     <string name="whatsNew">What\'s new</string>
-    <string name="homePageRedesign">New home page</string>
     <string name="otherCorrectAnswers">Other correct answers:</string>
     <string name="cannotLoadLangList">We could not load the list of languages</string>
     <string name="cannotLoadTTS">We were unable to load Text-to-Speech. Check if you have this app installed on your device.</string>
-    <string name="whatsNewDesc0">The new home page has been divided into 4 sections:
-\n\n- Start: Suggestions for features and sets will appear here
-\n\n- Sets: List of sets saved on the device
-\n\n- Statistics: Display the number of correct, incorrect and all responses by sets
-\n\n- Application settings</string>
-    <string name="whatsNewDesc1">Completely rebuilt Fast Learning now allows you to choose one or more learning sets, as well as lets you choose a specific number of questions.
-\n\nIn addition, the user can also choose the questions from which he wants to be asked.</string>
-    <string name="whatsNewDesc2">After the user provides the answer, information on whether the answer was correct or incorrect is saved in the database. Thanks to this, it is possible to intelligently select questions based on previous user responses.
-        The user can view statistics about the entire application as well as a single set.</string>
-    <string name="whatsNewDesc3">- Welcome screen rebuilt for new users
-\n\n- The appearance of the set editing page has been improved - the add button no longer covers the interface elements
-\n\n- Easy access to all application functions from the main page</string>
+    <string name="whatsNewDesc0">The new function allows you to create a set of text detected from a photo.\n\nAfter selecting and scanning the photo,
+        the user is presented with a list of detected words from which they can select questions and answers.
+        You can take a photo from the application, as well as select a previously taken photo from the gallery.</string>
+    <string name="whatsNewDesc1">For Android version 7.1 and newer you can now quick access the most important functions of the application
+     (Fast learning, Reading aloud, search) from the icon on the main page of the launcher. Just hold the Repeats application icon for longer.</string>
+    <string name="whatsNewDesc3">- The Fast Learning look has been improved, especially for devices with smaller screens
+\n\n- New appearance of the "Add set" window
+        \n\n-The Repeats Community appearance and the set preview page have been improved
+\n\n- Improved app stability</string>
     <string name="otherImprovements">Other improvements</string>
     <string name="browserNotFound">Browser not found</string>
     <string name="stats">Stats</string>
@@ -238,7 +227,6 @@
     <string name="ready">Ready</string>
     <string name="continueToSeeFeatures">Continue to see the features of the app</string>
     <string name="sendTestNotifi">Send test notification</string>
-    <string name="newFastLearning">New Fast learning</string>
     <string name="selectAtLeastOneQuestion">You must select at least one question</string>
     <string name="getSetFromCamera">Take photo</string>
     <string name="getSetFromGallery">Choose from gallery</string>
@@ -248,8 +236,6 @@
     <string name="chooseDifferentPicture">Choose a different picture</string>
     <string name="addAnotherAnswer">Add another answer</string>
     <string name="setFromPhoto">Set from photo</string>
-    <string name="setFromImageChooseFromGallery">Set from image (choose from gallery)</string>
-    <string name="setFromImageTakePhoto">Set from image (take photo)</string>
     <string name="saveAsNewSet">Save as a new set</string>
     <string name="saveToExistingSet">Save to existing set</string>
     <string name="items">items</string>
@@ -260,5 +246,17 @@
     <string name="fromPhoto">From photo</string>
     <string name="openArchive">Open archive</string>
     <string name="close">Close</string>
+    <string name="whatsNewTitle0">Set from photo</string>
+    <string name="whatsNewTitle1">Icon shortcuts</string>
+    <string name="openSourceLicences">Open source licences</string>
+    <string name="help">Help</string>
+    <string name="howToUseSetFromPhotoTitle">How to use the Set from photo function?</string>
+    <string name="howToUseSetFromPhotoDesc">1. Select the field (question or answer) in which you want to enter words. Then choose the items you want to add from the list.
+\n\n2. To edit the question or answer, double-click on the field.
+\n\n3. To add more than one answer, click \"Add another answer\".
+\n\n4. To remove unnecessary words from the list, move them left or right.
+\n\n5. Use the arrows to move between the elements of the set.
+\n\n6. After clicking \"Exit\" you can create a new set from selected elements or you can attach them to an existing set.</string>
+    <string name="cannotLaunchTR">The libraries required by this function could not be downloaded. Make sure you are connected to the Internet and have Google Play Services installed</string>
 
 </resources>

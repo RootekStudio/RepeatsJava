@@ -1,127 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/layout_mainshape"
-        android:elevation="5dp"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/chooseHowToGenerateQuestions"
-            android:textAlignment="center" />
-
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:checkedButton="@id/randomQuestionsButton">
-
-            <RadioButton
-                android:id="@+id/randomQuestionsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/autoSelectQuestions" />
-
-            <RadioButton
-                android:id="@+id/manuallySelectQuestions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/letMeChooseQuestions" />
-        </RadioGroup>
-    </LinearLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/relativeSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/layout_mainshape"
-        android:elevation="5dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/selectNumberOfQuestions" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/seekBarFastLearning"
-            android:layout_alignParentStart="true"
             android:layout_marginStart="20dp"
-            android:text="1" />
-
-        <TextView
-            android:id="@+id/maxQuestionsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/seekBarFastLearning"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"
-            android:text="100" />
-
-        <SeekBar
-            android:id="@+id/seekBarFastLearning"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/seekBarSelectedAnswers"
-            android:layout_margin="10dp"
-            android:min="1" />
-
-        <TextView
-            android:id="@+id/seekBarSelectedAnswers"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp" />
-    </RelativeLayout>
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/layout_mainshape"
+            android:elevation="5dp"
+            android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/layout_mainshape"
-        android:elevation="5dp">
-        <CheckBox
-            android:id="@+id/checkBoxIgnoreCharsFL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/IgnoreChars"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/chooseHowToGenerateQuestions"
+                android:textAlignment="center" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:checkedButton="@id/randomQuestionsButton">
+
+                <RadioButton
+                    android:id="@+id/randomQuestionsButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/autoSelectQuestions" />
+
+                <RadioButton
+                    android:id="@+id/manuallySelectQuestions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/letMeChooseQuestions" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/layout_mainshape"
+            android:elevation="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/selectNumberOfQuestions" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/seekBarFastLearning"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:text="1" />
+
+            <TextView
+                android:id="@+id/maxQuestionsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/seekBarFastLearning"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:text="100" />
+
+            <SeekBar
+                android:id="@+id/seekBarFastLearning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/seekBarSelectedAnswers"
+                android:layout_margin="10dp"
+                android:min="1" />
+
+            <TextView
+                android:id="@+id/seekBarSelectedAnswers"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/layout_mainshape"
+            android:elevation="5dp">
+
+            <CheckBox
+                android:id="@+id/checkBoxIgnoreCharsFL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:text="@string/IgnoreChars" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

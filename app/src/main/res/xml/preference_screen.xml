@@ -99,6 +99,10 @@
             app:title="@string/privacyPolicy"/>
         <Preference
             app:iconSpaceReserved="false"
+            app:key="libraries"
+            app:title="@string/openSourceLicences"/>
+        <Preference
+            app:iconSpaceReserved="false"
             app:key="about"/>
     </PreferenceCategory>
 </PreferenceScreen>

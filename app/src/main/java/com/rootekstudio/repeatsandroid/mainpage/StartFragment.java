@@ -31,6 +31,10 @@ public class StartFragment extends Fragment {
     private RepeatsSetInfo readAloudSetRecommendation = null;
     List<RepeatsSetInfo> setsInfo;
 
+    public StartFragment() {
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         generateData();
@@ -149,17 +153,11 @@ public class StartFragment extends Fragment {
 
         try {
             if (!sharedPreferences.contains("version")) {
-                if (sharedPreferences.getInt("firstRunTerms", 3) == 3) {
-                    view.findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putInt("firstRunTerms", 3);
-                    editor.apply();
-                } else {
-                    RepeatsHelper.saveVersion(getContext());
-                }
+                RepeatsHelper.saveVersion(getContext());
             } else {
                 if (!sharedPreferences.getString("version", "2.6").equals(RepeatsHelper.version)) {
                     view.findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
+                    RepeatsHelper.saveVersion(getContext());
                 }
             }
         } catch (Exception e) {

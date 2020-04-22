@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="45dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:onClick="previousItem"
                 android:padding="10dp"
@@ -32,7 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@id/buttonNextTR"
-                android:layout_toEndOf="@id/buttonBackTR">
+                android:layout_toEndOf="@id/buttonBackTR"
+                android:layout_marginTop="5dp">
 
                 <LinearLayout
                     android:id="@+id/linearTextRecognitionEditTexts"
@@ -87,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="45dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:onClick="nextItem"
                 android:padding="10dp"

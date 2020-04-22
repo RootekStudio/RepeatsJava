@@ -3,7 +3,6 @@ package com.rootekstudio.repeatsandroid.textrecognition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,9 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.statistics.SetStatsActivityAdapter;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.PopupMenu;
@@ -31,6 +31,15 @@ public class StatsFragment extends Fragment {
     private DatabaseHelper DB;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+    private AppCompatActivity activity;
+
+    public StatsFragment() {
+
+    }
+
+    public StatsFragment(AppCompatActivity activity) {
+        this.activity = activity;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,31 +55,18 @@ public class StatsFragment extends Fragment {
         final TextView goodAnswers = view.findViewById(R.id.goodAnswersCountStats);
         final TextView wrongAnswers = view.findViewById(R.id.wrongAnswersCountStats);
         final TextView allAnswers = view.findViewById(R.id.allAnswersCountStats);
-        final ProgressBar progressBar = view.findViewById(R.id.progressBarLoadingStats);
         LinearLayout linearSortBy = view.findViewById(R.id.linearSortByStats);
         linearSortBy.setOnClickListener(sortStatsClick);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final String goodAnswersString = String.valueOf(DB.columnSum("TitleTable", "goodAnswers"));
-                final String wrongAnswersString = String.valueOf(DB.columnSum("TitleTable", "wrongAnswers"));
-                final String allAnswersString = String.valueOf(DB.columnSum("TitleTable", "allAnswers"));
-                List<SetStats> setsStats = DB.selectSetsStatsInfo(DatabaseHelper.ORDER_BY_GOOD_ANSWERS_RATIO);
-                adapter = new StatsActivityAdapter(setsStats, usableWidth);
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        goodAnswers.setText(goodAnswersString);
-                        wrongAnswers.setText(wrongAnswersString);
-                        allAnswers.setText(allAnswersString);
-                        recyclerView.setAdapter(adapter);
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
-            }
-        }).start();
+        final String goodAnswersString = String.valueOf(DB.columnSum("TitleTable", "goodAnswers"));
+        final String wrongAnswersString = String.valueOf(DB.columnSum("TitleTable", "wrongAnswers"));
+        final String allAnswersString = String.valueOf(DB.columnSum("TitleTable", "allAnswers"));
+        List<SetStats> setsStats = DB.selectSetsStatsInfo(DatabaseHelper.ORDER_BY_GOOD_ANSWERS_RATIO);
+        adapter = new StatsActivityAdapter(setsStats, usableWidth);
+        goodAnswers.setText(goodAnswersString);
+        wrongAnswers.setText(wrongAnswersString);
+        allAnswers.setText(allAnswersString);
+        recyclerView.setAdapter(adapter);
 
         return view;
     }

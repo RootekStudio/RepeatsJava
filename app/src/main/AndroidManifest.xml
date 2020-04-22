@@ -21,6 +21,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".textrecognition.HelpTextRecActivity"
+            android:label="@string/help"/>
         <activity
             android:name=".textrecognition.TextRecognitionActivity"
             android:label="@string/setFromPhoto"
@@ -141,8 +143,10 @@
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />

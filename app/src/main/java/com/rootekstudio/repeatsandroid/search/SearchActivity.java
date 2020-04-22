@@ -12,8 +12,6 @@ import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
-import com.rootekstudio.repeatsandroid.search.SearchAdapter;
-import com.rootekstudio.repeatsandroid.search.SearchItem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -34,19 +34,19 @@
                     android:layout_marginEnd="10dp">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/home_24px"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/photo_camera_24px"
                         android:tint="#FFF"
-                        app:tint="#FFF" />
+                        app:tint="#FFF"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginEnd="10dp"
-                        android:text="@string/homePageRedesign"
+                        android:text="@string/whatsNewTitle0"
                         android:textColor="#FFF"
                         android:textSize="9pt" />
                 </LinearLayout>
@@ -82,20 +82,20 @@
                     android:layout_marginEnd="10dp">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_checktest"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/launch_24px"
                         android:tint="#FFF"
                         app:tint="#FFF"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginEnd="10dp"
-                        android:text="@string/newFastLearning"
+                        android:text="@string/whatsNewTitle1"
                         android:textColor="#FFF"
                         android:textSize="9pt" />
                 </LinearLayout>
@@ -108,6 +108,55 @@
                 android:textSize="8pt"
                 android:text="@string/whatsNewDesc1" /></LinearLayout>
 
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:background="@drawable/layout_buttonshape"-->
+<!--            android:elevation="5dp"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <FrameLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="80dp"-->
+<!--                android:background="@drawable/repeats_gradient">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:layout_marginEnd="10dp">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="40dp"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:src="@drawable/timeline_24px"-->
+<!--                        android:tint="#FFF"-->
+<!--                        app:tint="#FFF"-->
+<!--                        android:layout_gravity="center"/>-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_marginStart="10dp"-->
+<!--                        android:layout_marginEnd="10dp"-->
+<!--                        android:text="@string/stats"-->
+<!--                        android:textColor="#FFF"-->
+<!--                        android:textSize="9pt" />-->
+<!--                </LinearLayout>-->
+<!--            </FrameLayout>-->
+
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:padding="15dp"-->
+<!--                android:textSize="8pt"-->
+<!--                android:text="@string/whatsNewDesc2"/>-->
+<!--        </LinearLayout>-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,56 +179,8 @@
                     android:layout_marginEnd="10dp">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/timeline_24px"
-                        android:tint="#FFF"
-                        app:tint="#FFF"
-                        android:layout_gravity="center"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:text="@string/stats"
-                        android:textColor="#FFF"
-                        android:textSize="9pt" />
-                </LinearLayout>
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:textSize="8pt"
-                android:text="@string/whatsNewDesc2"/></LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/layout_buttonshape"
-            android:elevation="5dp"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@drawable/repeats_gradient">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:src="@drawable/build_24px"
                         android:tint="#FFF"
                         app:tint="#FFF"
@@ -189,7 +190,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginEnd="10dp"
                         android:text="@string/otherImprovements"
                         android:textColor="#FFF"

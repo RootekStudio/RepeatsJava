@@ -175,7 +175,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
                                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment(context, activity));
+                                fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
                                 fragmentTransaction.commit();
                             }
                         });

@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,10 +29,10 @@ import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.ZipSet;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
-import com.rootekstudio.repeatsandroid.search.SearchActivity;
 import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
 import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
+import com.rootekstudio.repeatsandroid.search.SearchActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,9 +40,7 @@ import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
     boolean darkTheme;
-    StartFragment startFragment;
-    SetsFragment setsFragment;
-    String currentFragment = "";
+    static String currentFragment = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = getTheme();
@@ -72,16 +70,18 @@ public class MainActivity extends AppCompatActivity {
             logo.setImageResource(R.drawable.repeats_for_light_bg);
         }
 
-        startFragment = new StartFragment();
-        setsFragment = new SetsFragment(this, this);
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayoutMain, startFragment);
-        fragmentTransaction.commit();
-        currentFragment = "start";
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        if(currentFragment.equals("") || currentFragment.equals("start")) {
+            bottomNavigationView.setSelectedItemId(R.id.startButtonMain);
+        }
+        else if(currentFragment.equals("sets")){
+            bottomNavigationView.setSelectedItemId(R.id.setsButtonMain);
+        }
+        else if(currentFragment.equals("stats")) {
+            bottomNavigationView.setSelectedItemId(R.id.stats_button);
+        }
+        else if(currentFragment.equals("preferences")) {
+            bottomNavigationView.setSelectedItemId(R.id.app_bar_settings);
+        }
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -90,19 +90,19 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.startButtonMain) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayoutMain, startFragment);
+                fragmentTransaction.replace(R.id.frameLayoutMain, new StartFragment());
                 fragmentTransaction.commit();
                 currentFragment = "start";
             } else if (item.getItemId() == R.id.setsButtonMain) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayoutMain, setsFragment);
+                fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
                 fragmentTransaction.commit();
                 currentFragment = "sets";
             } else if (item.getItemId() == R.id.stats_button) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayoutMain, new StatsFragment());
+                fragmentTransaction.replace(R.id.frameLayoutMain, new StatsFragment(MainActivity.this));
                 fragmentTransaction.commit();
                 currentFragment = "stats";
             } else if (item.getItemId() == R.id.app_bar_settings) {
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         if (currentFragment.equals("sets")) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment(this, this));
+            fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
             fragmentTransaction.commit();
         }
     }
@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         RepeatsHelper.saveVersion(this);
         Intent intent = new Intent(this, WhatsNewActivity.class);
         startActivity(intent);
+        view.setVisibility(View.GONE);
     }
 
     public void closeUpdateInfo(View view) {

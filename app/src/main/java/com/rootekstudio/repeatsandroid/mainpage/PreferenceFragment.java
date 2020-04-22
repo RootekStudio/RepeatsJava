@@ -25,6 +25,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
 
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
@@ -52,6 +53,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     private int cliked = 0;
     private AppCompatActivity activity;
     private SharedPreferences sharedPreferences;
+
+    public PreferenceFragment() {
+
+    }
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, String rootKey) {
@@ -388,6 +393,16 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     Toast.makeText(context, R.string.browserNotFound, Toast.LENGTH_LONG).show();
                 }
 
+                return true;
+            }
+        });
+
+        Preference libraries = findPreference("libraries");
+        libraries.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                OssLicensesMenuActivity.setActivityTitle(getString(R.string.openSourceLicences));
+                startActivity(new Intent(getContext(), OssLicensesMenuActivity.class));
                 return true;
             }
         });

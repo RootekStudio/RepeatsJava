@@ -38,7 +38,6 @@ import com.rootekstudio.repeatsandroid.mainpage.PreferenceFragment;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RepeatsHelper {
@@ -47,7 +46,7 @@ public class RepeatsHelper {
     public static HashMap<Integer, String[]> setItems;
     public static String setName;
     public static String setCreationDate;
-    public static String version = "2.6";
+    public static String version = "2.7";
 
     private static AlertDialog dialog = null;
 

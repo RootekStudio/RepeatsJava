@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.text.InputType;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -286,7 +287,9 @@ public class TextRecognitionActivity extends AppCompatActivity {
                         new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(TextRecognitionActivity.this, R.string.cannotLaunchTR, Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
+                                finish();
                             }
                         });
     }
@@ -370,7 +373,7 @@ public class TextRecognitionActivity extends AppCompatActivity {
     private void createTempSet() {
         SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
         String date = s.format(new Date());
-        setID = "R" + date;
+        setID = "temp" + date;
         DB.CreateSet(setID);
         DB.AddItem(setID);
     }
@@ -660,9 +663,18 @@ public class TextRecognitionActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.set_from_photo_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+        }
+        else if(item.getItemId() == R.id.helpTR) {
+            startActivity(new Intent(this, HelpTextRecActivity.class));
         }
         return true;
     }

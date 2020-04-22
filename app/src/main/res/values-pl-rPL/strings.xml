@@ -43,8 +43,6 @@
     <string name="About">O aplikacji</string>
     <string name="SetName">Nazwa zestawu</string>
     <string name="IgnoreChars">Ignoruj znaki specjalne</string>
-    <string name="CreateNew">Utwórz nowy zestaw</string>
-    <string name="LoadSet">Wczytaj zestaw z archiwum</string>
     <string name="AddSet">Dodaj zestaw</string>
     <string name="share">Udostępnij</string>
     <string name="notifiFromSets">Powiadomienia z zestawów</string>
@@ -113,7 +111,6 @@
     <string name="cantLoadSet">Nie można załadować żadnego zestawu</string>
     <string name="specialThanksDawid">Specjalne podziękowania dla Dawida Poradzińskiego za gruntowne testowanie aplikacji</string>
     <string name="welcome">Witaj w</string>
-    <string name="loadFromCommunity">Pobierz zestawy ze Społeczności Repeats</string>
     <string name="startQuestionRC">Czego chcesz się dzisiaj nauczyć?</string>
     <string name="repeatsCommunity">Społeczność Repeats</string>
     <string name="share_to_community">Udostępnij do Społeczności Repeats</string>
@@ -122,11 +119,7 @@
     <string name="string_public">Udostępnij publicznie i wygeneruj link do udostępnienia</string>
     <string name="string_private">Udostępnij dla konkretnych osób za pomocą linka</string>
     <string name="public_desc">Udostępnij dla każdego w Społeczności. Każdy będzie mógł znaleźć i pobrać Twój zestaw.</string>
-    <string name="downloadSet">Pobierz zestaw</string>
-    <string name="questions">Pytania:</string>
-    <string name="answers">Odpowiedzi:</string>
     <string name="setPreview">Podgląd</string>
-    <string name="downloading">Pobieranie...</string>
     <string name="successDownload">Pobieranie zakończone</string>
     <string name="successShare">Udostępniono pomyślnie</string>
     <string name="somethingWentWrong">Coś poszło nie tak</string>
@@ -152,7 +145,7 @@
     <string name="playing_set">Odtwarzanie zestawu:</string>
     <string name="click_here_read_notifi">Kliknij tutaj aby przejść do odtwarzacza</string>
     <string name="see_whats_now">Zobacz co nowego</string>
-    <string name="welcome_to_update">Witaj w Repeats 2.6</string>
+    <string name="welcome_to_update">Witaj w Repeats 2.7</string>
     <string name="app_updated_info">Zaktualizowano aplikację do najnowszej wersji</string>
     <string name="channelname4">Powiadomienie stałe funkcji Czytanie na głos</string>
     <string name="channeldesc4">Powiadomienie pokazujące się podczas odsłuchiwania zestawu za pomocą funkcji Czytanie na głos</string>
@@ -160,21 +153,17 @@
     <string name="set_languages">Języki zestawu</string>
     <string name="ignore_chars_info">Po włączeniu tej funkcji wielkość liter, spacje i znaki diakrytyczne będą igonorowane przy sprawdzaniu poprawności odpowiedzi. Uwaga: Funkcja nie działa poprawnie z pismem chińskim.</string>
     <string name="whatsNew">Co nowego</string>
-    <string name="homePageRedesign">Nowa strona główna</string>
     <string name="otherCorrectAnswers">Inne poprawne odpowiedzi:</string>
     <string name="cannotLoadLangList">Nie mogliśmy załadować listy języków</string>
     <string name="cannotLoadTTS">Nie mogliśmy załadować Zamiany tekstu na mowę Google. Sprawdź czy masz tę aplikację zainstalowaną na swoim urządzeniu.</string>
-    <string name="whatsNewDesc0">Nowa strona główna została podzielona na 4 sekcje:\n\n- Start: Tutaj będą pojawiać się propozycje dotyczące funkcji i zestawów
-    \n\n- Zestawy: Lista zestawów zapisanych na urządzeniu
-    \n\n- Statystyki: Wyświetlają liczbę prawidłowych, błędnych i wszystkich odpowiedzi z podziałem na zestawy
-    \n\n- Ustawienia aplikacji</string>
-    <string name="whatsNewDesc1">Całkowicie przebudowana Szybka nauka pozwala teraz na wybieranie jednego lub więcej zestawów do nauki, jak również pozwala wybrać użytkownikowi konkretną ilość pytań.
-    Oprócz tego użytkownik może również samodzielnie wybrać pytania z których chce być pytany.</string>
-    <string name="whatsNewDesc2">Po udzieleniu przez użytkownika odpowiedzi, w bazie danych zapisywana jest informacja czy odpowiedź była prawidłowa czy błędna. Dzięki temu możliwe jest inteligentne
-    dobieranie pytań na podstawie wcześniejszych odpowiedzi użytkownika. Użytkownik może przeglądać statystyki dotyczące całej aplikacji jak również pojedynczego zestawu.</string>
-    <string name="whatsNewDesc3">- Przebudowano ekran powitalny dla nowych uzytkowników
-        \n\n- Usprawniono wygląd strony edycji zestawu - plus nie zasłania już elementów interfejsu
-        \n\n- Łatwy dostęp do wszystkich funkcji aplikacji z poziomu strony głównej</string>
+    <string name="whatsNewDesc0">Nowa funkcja pozwala na utworzenie zestawu z tekstu wykrytego ze zdjęcia.\n\nPo wybraniu i przeskanowaniu zdjęcia, użytkownikowi wyświetla się lista wykrytch słów, z których może ułożyć pytania i odpowiedzi.
+        Istnieje możliwość zrobienia zdjęcia z poziomu aplikacji, jak również wybrania wcześniej zrobionego zdjęcia z galerii.</string>
+    <string name="whatsNewDesc1">Dla systemu Android w wersji 7.1 i nowszej pojawiła się możliwość szybkiego dostępu do najważniejszych funkcji aplikacji
+    (Szybka nauka, Czytanie na głos, wyszukiwarka) z poziomu ikony na stronie głównej aplikacji uruchamiającej. Wystarczy przytrzymać na dłużej ikonę aplikacji Repeats.</string>
+    <string name="whatsNewDesc3">- Usprawniono wygląd Szybkiej nauki, zwłaszcza dla urządzeń z mniejszymi ekranami
+        \n\n- Usprawniono wygląd Społeczności Repeats i strony podglądu zestawu
+        \n\n- Nowy wygląd okna "Dodaj zestaw"
+        \n\n- Poprawiono stabilność aplikacji</string>
     <string name="otherImprovements">Inne usprawnienia</string>
     <string name="browserNotFound">Nie znaleziono przeglądarki internetowej</string>
     <string name="stats">Statystyki</string>
@@ -234,7 +223,6 @@
     <string name="ready">Gotowe</string>
     <string name="continueToSeeFeatures">Przejdź dalej aby poznać funkcje aplikacji</string>
     <string name="sendTestNotifi">Wyślij testowe powiadomienie</string>
-    <string name="newFastLearning">Nowa Szybka nauka</string>
     <string name="selectAtLeastOneQuestion">Musisz wybrać co najmniej jedno pytanie</string>
     <string name="getSetFromCamera">Zrób zdjęcie</string>
     <string name="getSetFromGallery">Wybierz z galerii</string>
@@ -244,8 +232,6 @@
     <string name="chooseDifferentPicture">Wybierz inne zdjęcie</string>
     <string name="addAnotherAnswer">Dodaj kolejną odpowiedź</string>
     <string name="setFromPhoto">Zestaw ze zdjęcia</string>
-    <string name="setFromImageChooseFromGallery">Zestaw ze zdjęcia (wybierz z galerii)</string>
-    <string name="setFromImageTakePhoto">Zestaw ze zdjęcia (zrób zdjęcie)</string>
     <string name="saveAsNewSet">Zapisz jako nowy zestaw</string>
     <string name="saveToExistingSet">Zapisz do istniejącego zestawu</string>
     <string name="items">elementów</string>
@@ -256,4 +242,17 @@
     <string name="fromPhoto">Ze zdjęcia</string>
     <string name="openArchive">Otwórz archiwum</string>
     <string name="close">Zamknij</string>
+    <string name="whatsNewTitle0">Zestaw ze zdjęcia</string>
+    <string name="whatsNewTitle1">Skróty z ikony</string>
+    <string name="openSourceLicences">Licencje open source</string>
+    <string name="help">Pomoc</string>
+    <string name="howToUseSetFromPhotoTitle">Jak korzystać z funkcji Zestaw ze zdjęcia?</string>
+    <string name="howToUseSetFromPhotoDesc">
+        1. Wybierz pole (pytanie lub odpowiedź) do którego chcesz wprowadzać słowa. Następnie wybieraj z listy elementy które chcesz dodać.
+\n\n2. Aby edytować pytanie lub odpowiedź, kliknij 2 razy na pole.
+\n\n3. Aby dodać więcej niż jedną odpowiedź, kliknij \"Dodaj kolejną odpowiedź\".
+\n\n4. Aby usunąć niepotrzebne słowa z listy, przesuń je w lewo lub w prawo.
+\n\n5. Używaj strzałek aby przemieszać się między elementami zestawu.
+\n\n6. Po kliknięciu \"Zakończ\" masz możliwość utworzenia nowego zestawu z wybranych elementów lub możesz je dołączyć do już istniejącego zestawu.</string>
+    <string name="cannotLaunchTR">Nie udało się pobrać wymaganych bibliotek. Upewnij się, że masz połączenie z Internetem oraz masz zainstalowane Usługi Google Play</string>
 </resources>
