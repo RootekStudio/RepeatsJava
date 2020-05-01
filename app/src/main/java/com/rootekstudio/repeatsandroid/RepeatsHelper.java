@@ -311,7 +311,7 @@ public class RepeatsHelper {
     }
 
     static void shareSets(Context context, Activity activity) {
-        Uri uri = FileProvider.getUriForFile(context, "com.rootekstudio.repeatsandroid.activities.AddEditSetActivity", SetToFile.zipFile);
+        Uri uri = FileProvider.getUriForFile(context, "com.rootekstudio.repeatsandroid.fileprovider", SetToFile.zipFile);
         Intent share = new Intent();
 
         share.setAction(Intent.ACTION_SEND);

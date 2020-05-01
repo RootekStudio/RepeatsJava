@@ -21,8 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".textrecognition.HelpTextRecActivity"
-            android:label="@string/help"/>
+        <activity android:name=".activities.AppInfoActivity"
+            android:label="@string/About"/>
+        <activity
+            android:name=".textrecognition.HelpTextRecActivity"
+            android:label="@string/help" />
         <activity
             android:name=".textrecognition.TextRecognitionActivity"
             android:label="@string/setFromPhoto"

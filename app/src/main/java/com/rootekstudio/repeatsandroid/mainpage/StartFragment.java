@@ -3,6 +3,7 @@ package com.rootekstudio.repeatsandroid.mainpage;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.microsoft.appcenter.analytics.Analytics;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
@@ -24,6 +26,7 @@ import com.rootekstudio.repeatsandroid.readaloud.ReadAloudActivity;
 import com.rootekstudio.repeatsandroid.readaloud.ReadAloudConfigActivity;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class StartFragment extends Fragment {
@@ -122,6 +125,10 @@ public class StartFragment extends Fragment {
         repeatsCommunityRecommendation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                Log.i("TAG", String.valueOf(Analytics.isEnabled().get()));
+//                HashMap<String, String> properties = new HashMap<>();
+//                properties.put("test", "0");
+//                Analytics.trackEvent("RepeatsCommunityClick", properties);
                 Intent intent = new Intent(getContext(), RepeatsCommunityStartActivity.class);
                 startActivity(intent);
             }

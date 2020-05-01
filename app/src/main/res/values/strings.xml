@@ -258,5 +258,16 @@
 \n\n5. Use the arrows to move between the elements of the set.
 \n\n6. After clicking \"Exit\" you can create a new set from selected elements or you can attach them to an existing set.</string>
     <string name="cannotLaunchTR">The libraries required by this function could not be downloaded. Make sure you are connected to the Internet and have Google Play Services installed</string>
+    <string name="name">Name</string>
+    <string name="infoVersion">Version</string>
+    <string name="number">Number</string>
+    <string name="regulations">Regulations</string>
+    <string name="contact">Contact</string>
+    <string name="infoAuthors">Authors</string>
+    <string name="developer" translatable="false">Developer: Jakub Sieradzki</string>
+    <string name="tester" translatable="false">Tester: Dawid Poradziński</string>
+    <string name="specialThanks">Special thanks to Daniel, Marcin, Mikołaj and Piotr for feature suggestions</string>
+    <string name="firstRunPhotoCredits">Background image during the first start: Kevin Mueller\nSource: unsplash.com</string>
+    <string name="info">Information</string>
 
 </resources>

@@ -13,6 +13,10 @@ import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.util.UUID;
 
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
+
 public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,10 @@ public class SplashScreenActivity extends AppCompatActivity {
             editor.putString("userID", uniqueID);
             editor.apply();
         }
+//
+//        AppCenter.start(getApplication(), "347cfec3-4ebc-443c-a9d6-4fdd34df27dd",
+//                Analytics.class, Crashes.class);
+
         startActivity(intent);
         finish();
     }

@@ -76,33 +76,14 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:title="@string/About">
+        app:title="@string/info">
         <Preference
             app:iconSpaceReserved="false"
-            app:key="rate"
-            app:title="@string/rate"/>
-        <Preference
-            app:iconSpaceReserved="false"
-            app:key="feedback"
-            app:title="@string/SendFeedback"/>
+            app:key="about"
+            app:title="@string/About"/>
         <Preference
             app:iconSpaceReserved="false"
             app:key="whatsNew"
             app:title="@string/whatsNew"/>
-        <Preference
-            app:iconSpaceReserved="false"
-            app:key="terms"
-            app:title="@string/termsOfUse"/>
-        <Preference
-            app:iconSpaceReserved="false"
-            app:key="privacy"
-            app:title="@string/privacyPolicy"/>
-        <Preference
-            app:iconSpaceReserved="false"
-            app:key="libraries"
-            app:title="@string/openSourceLicences"/>
-        <Preference
-            app:iconSpaceReserved="false"
-            app:key="about"/>
     </PreferenceCategory>
 </PreferenceScreen>

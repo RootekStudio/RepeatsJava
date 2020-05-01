@@ -36,7 +36,7 @@
     <string name="channelname3">Powiadomienia funkcji Następne pytanie</string>
     <string name="channeldesc3">Ten kanał odpowiada za funkcję Następne pytanie</string>
     <string name="SendFeedback">Prześlij opinię</string>
-    <string name="FeedbackSubject">"Opinia o Repeats na Androida wersja "</string>
+    <string name="FeedbackSubject">Opinia o Repeats na Androida wersja</string>
     <string name="WantDelete">Czy na pewno chcesz usunąć cały zestaw?</string>
     <string name="Delete">Usuń</string>
     <string name="EmptyHere">\nTrochę tu pusto…\nAby dodać nowy zestaw kliknij na +</string>
@@ -255,4 +255,13 @@
 \n\n5. Używaj strzałek aby przemieszać się między elementami zestawu.
 \n\n6. Po kliknięciu \"Zakończ\" masz możliwość utworzenia nowego zestawu z wybranych elementów lub możesz je dołączyć do już istniejącego zestawu.</string>
     <string name="cannotLaunchTR">Nie udało się pobrać wymaganych bibliotek. Upewnij się, że masz połączenie z Internetem oraz masz zainstalowane Usługi Google Play</string>
+    <string name="name">Nazwa</string>
+    <string name="infoVersion">Informacje o wersji</string>
+    <string name="number">Numer</string>
+    <string name="regulations">Regulamin</string>
+    <string name="contact">Kontakt</string>
+    <string name="infoAuthors">Informacje o autorach</string>
+    <string name="specialThanks">Specjalne podziękowania dla Daniela, Marcina, Mikołaja i Piotra za propozycje funkcji</string>
+    <string name="firstRunPhotoCredits">Zdjęcie w tle podczas pierwszego uruchomienia: Kevin Mueller\nŹródło: unsplash.com</string>
+    <string name="info">Informacje</string>
 </resources>
