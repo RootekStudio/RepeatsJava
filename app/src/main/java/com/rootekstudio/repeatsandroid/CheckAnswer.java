@@ -6,11 +6,11 @@ import java.util.Scanner;
 
 public class CheckAnswer {
 
-    public static boolean isAnswerCorrect(String user, String correct, String ignore) {
+    public static boolean isAnswerCorrect(String user, String correct, boolean ignore) {
 
-        user = RepeatsHelper.removeSpaces(user);
+        user = user.trim();
 
-        if (ignore.equals("true")) {
+        if (ignore) {
             user = Normalizer.normalize(user, Normalizer.Form.NFD)
                     .replaceAll(" ", "")
                     .replaceAll("Ł", "l")
@@ -35,17 +35,11 @@ public class CheckAnswer {
             }
         } else {
             Scanner scanner = new Scanner(correct);
-            boolean foundedCorrect = false;
             while (scanner.hasNextLine()) {
                 String singleCorrect = scanner.nextLine();
                 if (singleCorrect.equals(user)) {
-                    foundedCorrect = true;
                     return true;
                 }
-            }
-
-            if (!foundedCorrect) {
-                return false;
             }
         }
 

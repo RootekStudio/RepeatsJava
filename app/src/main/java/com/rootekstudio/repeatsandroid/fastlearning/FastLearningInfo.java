@@ -1,6 +1,6 @@
 package com.rootekstudio.repeatsandroid.fastlearning;
 
-import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
+import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +8,8 @@ import java.util.List;
 
 class FastLearningInfo {
     static List<FastLearningSetsListItem> selectedSets;
-    static List<RepeatsSingleItem> selectedQuestions;
-    static HashMap<String, List<RepeatsSingleItem>> setsContent;
+    static List<SetSingleItem> selectedQuestions;
+    static HashMap<String, List<SetSingleItem>> setsContent;
     static boolean randomQuestions;
     static boolean ignoreChars;
     static int questionsCount;

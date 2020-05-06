@@ -15,10 +15,10 @@ import androidx.core.app.RemoteInput;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.UserReply;
-import com.rootekstudio.repeatsandroid.activities.AnswerActivity;
 import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
 import com.rootekstudio.repeatsandroid.database.GetQuestion;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.Values;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,14 +47,14 @@ public class RepeatsNotificationTemplate {
         String Answer = "";
         String tablename;
         String picturename = "";
-        String ignorechars = "";
+        int ignorechars = 0;
         String setID = "";
         int itemID = -1;
 
         if (item.getQuestion() != null) {
             Question = item.getQuestion();
             Answer = item.getAnswer();
-            tablename = item.getTitle();
+            tablename = item.getSetName();
             picturename = item.getPictureName();
             ignorechars = item.getIgnoreChars();
             setID = item.getSetID();
@@ -154,17 +154,13 @@ public class RepeatsNotificationTemplate {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                DatabaseHelper DB = new DatabaseHelper(context);
+                RepeatsDatabase DB = new RepeatsDatabase(context);
                 if (goodAnswer) {
-                    DB.increaseValueInSet(setID, itemID, "goodAnswers", 1);
-                    DB.increaseValueInSet(setID, itemID, "allAnswers", 1);
-                    DB.increaseValueInTitleTable(setID, "goodAnswers", 1);
-                    DB.increaseValueInTitleTable(setID, "allAnswers", 1);
+                    DB.increaseValueInSet(setID, itemID, Values.good_answers, 1);
+                    DB.increaseValueInSetsInfo(setID, Values.good_answers, 1);
                 } else {
-                    DB.increaseValueInSet(setID, itemID, "wrongAnswers", 1);
-                    DB.increaseValueInSet(setID, itemID, "allAnswers", 1);
-                    DB.increaseValueInTitleTable(setID, "wrongAnswers", 1);
-                    DB.increaseValueInTitleTable(setID, "allAnswers", 1);
+                    DB.increaseValueInSet(setID, itemID, Values.wrong_answers, 1);
+                    DB.increaseValueInSetsInfo(setID, Values.wrong_answers, 1);
                 }
             }
         }).start();

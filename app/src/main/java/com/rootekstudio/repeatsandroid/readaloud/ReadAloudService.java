@@ -12,8 +12,8 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
 import com.rootekstudio.repeatsandroid.RequestCodes;
+import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class ReadAloudService extends Service {
     private final IBinder binder = new ReadAloudBinder();
     private TextToSpeech textToSpeech;
     private TextToSpeech textToSpeech1;
-    private List<RepeatsSingleItem> singleSet;
+    private List<SetSingleItem> singleSet;
     private String locale0;
     private String locale1;
     private NotificationCompat.Builder builder;
@@ -217,14 +217,14 @@ public class ReadAloudService extends Service {
         if (ReadAloudConnector.isTTSStopped) {
             ReadAloudConnector.isTTSStopped = false;
         }
-        RepeatsSingleItem singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
+        SetSingleItem singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
         textToSpeech.speak(singleSetDB.getQuestion(), TextToSpeech.QUEUE_ADD, null, String.valueOf(ReadAloudConnector.speakItemIndex));
         ReadAloudConnector.speakItemIndex++;
     }
 
     public void speak1() {
         checkAndChangeLocale();
-        RepeatsSingleItem singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
+        SetSingleItem singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
         textToSpeech1.speak(singleSetDB.getAnswer(), TextToSpeech.QUEUE_ADD, null, String.valueOf(ReadAloudConnector.speakItemIndex));
         ReadAloudConnector.speakItemIndex++;
     }

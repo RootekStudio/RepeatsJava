@@ -23,7 +23,8 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
@@ -91,8 +92,8 @@ public class Share {
 
         // Create a new user with a first and last name
 
-        DatabaseHelper DB = new DatabaseHelper(context);
-        List<RepeatsSingleItem> singleSet = DB.AllItemsSET(setID, -1);
+        RepeatsDatabase DB = new RepeatsDatabase(context);
+        List<SetSingleItem> singleSet = DB.allItemsInSet(setID, -1);
 
         ArrayList<String> questions = new ArrayList<>();
         ArrayList<String> answers = new ArrayList<>();

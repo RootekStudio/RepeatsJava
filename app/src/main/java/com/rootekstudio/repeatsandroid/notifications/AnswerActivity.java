@@ -1,4 +1,4 @@
-package com.rootekstudio.repeatsandroid.activities;
+package com.rootekstudio.repeatsandroid.notifications;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,8 +17,10 @@ import com.rootekstudio.repeatsandroid.CheckAnswer;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
 import com.rootekstudio.repeatsandroid.database.GetQuestion;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.Values;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,11 +38,11 @@ public class AnswerActivity extends AppCompatActivity {
         getQuestion = new GetQuestion();
         Intent intent = getIntent();
 
-        getQuestion.setTitle(intent.getStringExtra("Title"));
+        getQuestion.setSetName(intent.getStringExtra("Title"));
         getQuestion.setQuestion(intent.getStringExtra("Question"));
         getQuestion.setPictureName(intent.getStringExtra("Image"));
         getQuestion.setAnswer(intent.getStringExtra("Correct"));
-        getQuestion.setIgnoreChars(intent.getStringExtra("IgnoreChars"));
+        getQuestion.setIgnoreChars(intent.getIntExtra("IgnoreChars", 0));
         getQuestion.setSetID(intent.getStringExtra("setID"));
         getQuestion.setItemID(intent.getIntExtra("itemID", -1));
         jsonIndex = intent.getStringExtra("jsonIndex");
@@ -49,7 +51,7 @@ public class AnswerActivity extends AppCompatActivity {
     }
 
     private void createAlertDialogWithQuestion() {
-        String title = getQuestion.getTitle();
+        String title = getQuestion.getSetName();
         String message = getQuestion.getQuestion();
         String image = getQuestion.getPictureName();
 
@@ -92,7 +94,12 @@ public class AnswerActivity extends AppCompatActivity {
                         String userAnswer = answerEditText.getText().toString();
                         String correctAnswer = getQuestion.getAnswer();
 
-                        if (CheckAnswer.isAnswerCorrect(userAnswer, correctAnswer, getQuestion.getIgnoreChars())) {
+                        boolean ignoreChars = false;
+                        if(getQuestion.getIgnoreChars() == 1) {
+                            ignoreChars = true;
+                        }
+
+                        if (CheckAnswer.isAnswerCorrect(userAnswer, correctAnswer, ignoreChars)) {
                             if (correctAnswer.contains("\n")) {
                                 correctAnswer = correctAnswer.replace("\r\n", ", ");
                                 dialogInterface.dismiss();
@@ -109,11 +116,9 @@ public class AnswerActivity extends AppCompatActivity {
                                     String setID = getQuestion.getSetID();
                                     int itemID = getQuestion.getItemID();
 
-                                    DatabaseHelper DB = new DatabaseHelper(AnswerActivity.this);
-                                    DB.increaseValueInSet(setID, itemID, "goodAnswers", 1);
-                                    DB.increaseValueInSet(setID, itemID, "allAnswers", 1);
-                                    DB.increaseValueInTitleTable(setID, "goodAnswers", 1);
-                                    DB.increaseValueInTitleTable(setID, "allAnswers", 1);
+                                    RepeatsDatabase DB = new RepeatsDatabase(AnswerActivity.this);
+                                    DB.increaseValueInSet(setID, itemID, Values.good_answers, 1);
+                                    DB.increaseValueInSetsInfo(setID, Values.good_answers, 1);
                                 }
                             }).start();
 
@@ -127,11 +132,9 @@ public class AnswerActivity extends AppCompatActivity {
                                     String setID = getQuestion.getSetID();
                                     int itemID = getQuestion.getItemID();
 
-                                    DatabaseHelper DB = new DatabaseHelper(AnswerActivity.this);
-                                    DB.increaseValueInSet(setID, itemID, "wrongAnswers", 1);
-                                    DB.increaseValueInSet(setID, itemID, "allAnswers", 1);
-                                    DB.increaseValueInTitleTable(setID, "wrongAnswers", 1);
-                                    DB.increaseValueInTitleTable(setID, "allAnswers", 1);
+                                    RepeatsDatabase DB = new RepeatsDatabase(AnswerActivity.this);
+                                    DB.increaseValueInSet(setID, itemID, Values.wrong_answers, 1);
+                                    DB.increaseValueInSetsInfo(setID, Values.wrong_answers, 1);
                                 }
                             }).start();
                         }

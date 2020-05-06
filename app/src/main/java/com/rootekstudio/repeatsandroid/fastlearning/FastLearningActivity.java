@@ -22,8 +22,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.CheckAnswer;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SetSingleItem;
+import com.rootekstudio.repeatsandroid.database.Values;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,10 +68,10 @@ public class FastLearningActivity extends AppCompatActivity {
     Timer timer;
 
     ColorStateList oldTextColor;
-    List<RepeatsSingleItem> fastLearningItemList;
-    RepeatsSingleItem singleItem;
+    List<SetSingleItem> fastLearningItemList;
+    SetSingleItem singleItem;
 
-    DatabaseHelper DB;
+    RepeatsDatabase DB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,7 @@ public class FastLearningActivity extends AppCompatActivity {
         relativeBottomInfo =        findViewById(R.id.relativeBottomInfo);
         fab =                       findViewById(R.id.fabFL);
 
-        DB = new DatabaseHelper(this);
+        DB = new RepeatsDatabase(this);
 
         itemCount = -1;
         goodAnswersCount = 0;
@@ -177,7 +178,7 @@ public class FastLearningActivity extends AppCompatActivity {
             correctAnswer.setText(goodAnswer);
         }
 
-        String imageName = singleItem.getImag();
+        String imageName = singleItem.getImage();
         if (!imageName.equals("")) {
             imageView.setVisibility(View.VISIBLE);
 
@@ -212,7 +213,7 @@ public class FastLearningActivity extends AppCompatActivity {
             userAnswer.setEnabled(false);
             allAnswersCount++;
 
-            if (CheckAnswer.isAnswerCorrect(uAnswer, goodAnswer, String.valueOf(FastLearningInfo.ignoreChars))) {
+            if (CheckAnswer.isAnswerCorrect(uAnswer, goodAnswer, FastLearningInfo.ignoreChars)) {
                 if (goodAnswer.contains("\n")) {
                     otherCorrectLinear.setVisibility(View.VISIBLE);
                 }
@@ -223,10 +224,8 @@ public class FastLearningActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        DB.increaseValueInSet(singleItem.getSetID(), singleItem.getItemID(), "goodAnswers", 1);
-                        DB.increaseValueInSet(singleItem.getSetID(), singleItem.getItemID(), "allAnswers", 1);
-                        DB.increaseValueInTitleTable(singleItem.getSetID(), "goodAnswers", 1);
-                        DB.increaseValueInTitleTable(singleItem.getSetID(), "allAnswers", 1);
+                        DB.increaseValueInSet(singleItem.getSetID(), singleItem.getItemID(), Values.good_answers, 1);
+                        DB.increaseValueInSetsInfo(singleItem.getSetID(), Values.good_answers, 1);
                     }
                 }).start();
 
@@ -260,10 +259,8 @@ public class FastLearningActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        DB.increaseValueInSet(singleItem.getSetID(), singleItem.getItemID(), "wrongAnswers", 1);
-                        DB.increaseValueInSet(singleItem.getSetID(), singleItem.getItemID(), "allAnswers", 1);
-                        DB.increaseValueInTitleTable(singleItem.getSetID(), "wrongAnswers", 1);
-                        DB.increaseValueInTitleTable(singleItem.getSetID(), "allAnswers", 1);
+                        DB.increaseValueInSet(singleItem.getSetID(), singleItem.getItemID(), Values.wrong_answers, 1);
+                        DB.increaseValueInSetsInfo(singleItem.getSetID(), Values.wrong_answers, 1);
                     }
                 }).start();
             }

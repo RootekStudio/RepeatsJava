@@ -11,8 +11,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +22,7 @@ import java.util.List;
 public class FastLearningConfigActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     int configStage;
-    DatabaseHelper DB;
+    RepeatsDatabase DB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +30,14 @@ public class FastLearningConfigActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fast_learning_config);
         getSupportActionBar().hide();
 
-        DB = new DatabaseHelper(this);
+        DB = new RepeatsDatabase(this);
         FastLearningInfo.reset();
         configStage = 0;
         fragmentManager = getSupportFragmentManager();
 
         String selectedSetID = getIntent().getStringExtra("setID");
         if (selectedSetID != null) {
-            List<RepeatsSingleItem> setItems = DB.AllItemsSET(selectedSetID, -1);
+            List<SetSingleItem> setItems = DB.allItemsInSet(selectedSetID, -1);
             FastLearningSetsListItem newItem = DB.singleSetIdNameAndStats(selectedSetID);
             FastLearningInfo.selectedSets.add(newItem);
             FastLearningInfo.setsContent.put(selectedSetID, setItems);
@@ -59,7 +59,7 @@ public class FastLearningConfigActivity extends AppCompatActivity {
             FastLearningInfo.questionsCount = 0;
             for (int i = 0; i < FastLearningInfo.selectedSets.size(); i++) {
                 FastLearningSetsListItem singleItem = FastLearningInfo.selectedSets.get(i);
-                List<RepeatsSingleItem> setItems = DB.AllItemsSET(singleItem.getSetID(), -1);
+                List<SetSingleItem> setItems = DB.allItemsInSet(singleItem.getSetID(), -1);
                 FastLearningInfo.setsContent.put(singleItem.getSetID(), setItems);
                 FastLearningInfo.allAvailableQuestionsCount += setItems.size();
                 FastLearningInfo.questionsCount += setItems.size();
@@ -108,18 +108,18 @@ public class FastLearningConfigActivity extends AppCompatActivity {
         finish();
     }
 
-    private ArrayList<RepeatsSingleItem> chooseQuestions() {
-        ArrayList<RepeatsSingleItem> selectedQuestions = new ArrayList<>();
+    private ArrayList<SetSingleItem> chooseQuestions() {
+        ArrayList<SetSingleItem> selectedQuestions = new ArrayList<>();
 
         //getting questions from sets with certain conditions
-        for (List<RepeatsSingleItem> singleItemList : FastLearningInfo.setsContent.values()) {
+        for (List<SetSingleItem> singleItemList : FastLearningInfo.setsContent.values()) {
             int addedQuestionsFromSingleSet = 0;
             for (int i = 0; i < singleItemList.size(); i++) {
                 if (addedQuestionsFromSingleSet >= FastLearningInfo.questionsCount / FastLearningInfo.setsContent.size()) {
                     break;
                 }
 
-                RepeatsSingleItem singleItem = singleItemList.get(i);
+                SetSingleItem singleItem = singleItemList.get(i);
                 float wrongAnswers = singleItem.getWrongAnswers();
                 float allAnswers = singleItem.getAllAnswers();
 
@@ -159,10 +159,10 @@ public class FastLearningConfigActivity extends AppCompatActivity {
 
                 //take one question from each set while availableSpace != 0
                 for (int i = 0; i < sortedSets.size(); i++) {
-                    List<RepeatsSingleItem> singleItemList = FastLearningInfo.setsContent.get(sortedSets.get(i).getSetID());
+                    List<SetSingleItem> singleItemList = FastLearningInfo.setsContent.get(sortedSets.get(i).getSetID());
                     Collections.shuffle(singleItemList);
                     for (int j = 0; j < singleItemList.size(); j++) {
-                        RepeatsSingleItem singleItem = singleItemList.get(j);
+                        SetSingleItem singleItem = singleItemList.get(j);
                         if (!selectedQuestions.contains(singleItem)) {
                             selectedQuestions.add(singleItem);
                             availableSpace--;
@@ -176,14 +176,14 @@ public class FastLearningConfigActivity extends AppCompatActivity {
                 }
                 //if there is more available place for questions than sets
             } else {
-                for (List<RepeatsSingleItem> singleItemList : FastLearningInfo.setsContent.values()) {
+                for (List<SetSingleItem> singleItemList : FastLearningInfo.setsContent.values()) {
                     addedExtraQuestionsFromSingleSet = 0;
                     Collections.shuffle(singleItemList);
                     for (int i = 0; i < singleItemList.size(); i++) {
                         if (addedExtraQuestionsFromSingleSet >= availableSpace / FastLearningInfo.setsContent.size()) {
                             break;
                         } else {
-                            RepeatsSingleItem singleItem = singleItemList.get(i);
+                            SetSingleItem singleItem = singleItemList.get(i);
 
                             if (!selectedQuestions.contains(singleItem)) {
                                 selectedQuestions.add(singleItem);

@@ -16,7 +16,8 @@ import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.TimeAdapter;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.Values;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -83,7 +84,7 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
             JSONObject rootObject = new JSONObject(JsonFile.readJson(this, "advancedDelivery.json"));
             Iterator<String> iterator = rootObject.keys();
 
-            DatabaseHelper DB = new DatabaseHelper(this);
+            RepeatsDatabase DB = new RepeatsDatabase(this);
 
             int allItemsCount = 1;
 
@@ -177,7 +178,7 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
                 int setsArrayLength = setsArray.length();
 
                 for (int i = 0; i < setsArrayLength; i++) {
-                    setsNames.append(DB.getValue("title", "TitleTable", "TableName='" + setsArray.getString(i) + "'"));
+                    setsNames.append(DB.getValueByCondition(Values.set_name, Values.sets_info, Values.set_id, setsArray.getString(i)));
 
                     if (i != setsArrayLength - 1) {
                         setsNames.append(", ");

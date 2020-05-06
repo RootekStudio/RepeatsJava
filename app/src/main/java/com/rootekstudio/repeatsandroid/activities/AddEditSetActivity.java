@@ -2,7 +2,6 @@ package com.rootekstudio.repeatsandroid.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -23,16 +22,14 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
-import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
 import com.rootekstudio.repeatsandroid.RequestCodes;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.SetsConfigHelper;
+import com.rootekstudio.repeatsandroid.database.SetSingleItem;
+import com.rootekstudio.repeatsandroid.database.Values;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,15 +40,12 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class AddEditSetActivity extends AppCompatActivity {
 
     //View that contains ImageView
     ViewParent imagePreview;
-    Context context = null;
-    DatabaseHelper DB;
     ViewGroup parent = null;
     boolean deleted = false;
 
@@ -61,21 +55,16 @@ public class AddEditSetActivity extends AppCompatActivity {
 
     //id of the table
     static String id;
+    SetsConfigHelper setsConfigHelper;
 
     //region onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         IsDark = RepeatsHelper.DarkTheme(this, false);
-
         setContentView(R.layout.activity_repeats_add_edit);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        context = this;
-
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        setsConfigHelper = new SetsConfigHelper(this);
 
         //Getting basic information about set (if new or  already existing, id, and ignore chars option)
         Intent intent = getIntent();
@@ -90,37 +79,15 @@ public class AddEditSetActivity extends AppCompatActivity {
             editName.setBackgroundResource(R.drawable.editname_light);
         }
 
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
 
-        DB = new DatabaseHelper(context);
 
         parent = findViewById(R.id.AddRepeatsLinear);
 
         //if this is a new set
         if (editing.equals("FALSE")) {
-            String date = s.format(new Date());
-            id = "R" + date;
-
-            SimpleDateFormat createD = new SimpleDateFormat("dd.MM.yyyy");
-            String createDate = createD.format(new Date());
-
-            RepeatsSetInfo list;
-            if (Locale.getDefault().toString().equals("pl_PL")) {
-                list = new RepeatsSetInfo("", id, createDate, "true", "", "false", "pl_PL", "en_GB");
-            } else {
-                list = new RepeatsSetInfo("", id, createDate, "true", "", "false", "en_US", "es_ES");
-            }
-
-            //Registering set in database
-            DB.CreateSet(id);
-            DB.AddName(list);
-
-            addView(parent, context);
-
+            addView(parent, this);
             //Adding single item (with question and answer) to database
-            DB.AddItem(id);
-
-            JsonFile.putSetToJSON(context, id);
+            id = setsConfigHelper.createNewSet(true, "");
 
         } else {
             id = editing;
@@ -131,8 +98,8 @@ public class AddEditSetActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addView(parent, context);
-                DB.AddItem(id);
+                addView(parent, AddEditSetActivity.this);
+                setsConfigHelper.getRepeatsDatabase().addEmptyItemToSet(id);
             }
         });
     }
@@ -147,15 +114,15 @@ public class AddEditSetActivity extends AppCompatActivity {
         Thread readFromDatabase = new Thread(new Runnable() {
             @Override
             public void run() {
-                List<RepeatsSingleItem> SET = DB.AllItemsSET(SetID, -1);
+                List<SetSingleItem> SET = setsConfigHelper.getRepeatsDatabase().allItemsInSet(SetID, -1);
                 int ItemsCount = SET.size();
 
                 for (int i = 0; i < ItemsCount; i++) {
-                    RepeatsSingleItem Single = SET.get(i);
+                    SetSingleItem Single = SET.get(i);
                     int ID = Single.getItemID();
                     String Question = Single.getQuestion();
                     String Answer = Single.getAnswer();
-                    String Image = Single.getImag();
+                    String Image = Single.getImage();
 
                     final View child = inflater.inflate(R.layout.addrepeatslistitem, parent, false);
 
@@ -286,12 +253,12 @@ public class AddEditSetActivity extends AppCompatActivity {
                 File file = new File(getFilesDir(), imageName);
                 boolean del = file.delete();
 
-                DB.deleteImage(id, imageName);
+                setsConfigHelper.getRepeatsDatabase().deleteImage(id, imageName);
             }
 
             if (rootView.getChildCount() != 1) {
                 rootView.removeView(parent);
-                DB.deleteItem(id, index);
+                setsConfigHelper.getRepeatsDatabase().deleteItemFromSet(id, index);
             }
         }
     };
@@ -322,7 +289,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                 public void run() {
                     File file = new File(getFilesDir(), imageName);
                     boolean del = file.delete();
-                    DB.deleteImage(id, imageName);
+                    setsConfigHelper.getRepeatsDatabase().deleteImage(id, imageName);
                 }
             });
             thread.start();
@@ -348,8 +315,8 @@ public class AddEditSetActivity extends AppCompatActivity {
         @Override
         public void onFocusChange(View view, boolean hasFocus) {
             if (!hasFocus) {
-                EditText projectname = (EditText) view;
-                DB.setTableName(projectname.getText().toString(), id);
+                EditText projectName = (EditText) view;
+                setsConfigHelper.getRepeatsDatabase().setSetName(projectName.getText().toString(), id);
             }
         }
     };
@@ -370,12 +337,12 @@ public class AddEditSetActivity extends AppCompatActivity {
                 int index = Integer.parseInt(RelativeAddItem.getTag().toString());
 
                 if (RelativeAddItem.findViewById(R.id.questionBox) == view) {
-                    column = "question";
+                    column = Values.question;
                 }
 
-                String question = RepeatsHelper.removeSpaces(editText.getText().toString());
+                String question = editText.getText().toString().trim();
 
-                DB.InsertValueByID(id, index, column, question);
+                setsConfigHelper.getRepeatsDatabase().insertValueToSetByID(id, index, column, question);
 
                 editText.setText(question);
             }
@@ -391,7 +358,7 @@ public class AddEditSetActivity extends AppCompatActivity {
             if (hasFocus) {
                 editText.setTag(answer);
             } else {
-                answer = RepeatsHelper.removeSpaces(editText.getText().toString());
+                answer = editText.getText().toString().trim();
                 ViewGroup RelativeAddItem = (ViewGroup) view.getParent().getParent().getParent();
 
                 if (RelativeAddItem.getTag() == null) {
@@ -400,7 +367,7 @@ public class AddEditSetActivity extends AppCompatActivity {
 
                 int index = Integer.parseInt(RelativeAddItem.getTag().toString());
 
-                String allAnswers = DB.getAnswers(id, index);
+                String allAnswers = setsConfigHelper.getRepeatsDatabase().getAnswer(id, index);
 
                 String newAnswer = "";
 
@@ -414,7 +381,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                     newAnswer = answer;
                 }
 
-                DB.InsertValueByID(id, index, "answer", newAnswer);
+                setsConfigHelper.getRepeatsDatabase().insertValueToSetByID(id, index, Values.answer, newAnswer);
 
                 editText.setText(answer);
             }
@@ -426,7 +393,7 @@ public class AddEditSetActivity extends AppCompatActivity {
     void addAnswer(View view, String text) {
         View pView = (View) view.getParent();
         final ViewGroup linearQA = pView.findViewById(R.id.LinearQA);
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(this);
 
         View answer = inflater.inflate(R.layout.answerbox, linearQA, false);
         EditText answerBoxPlus = answer.findViewById(R.id.answerBoxPlus);
@@ -449,16 +416,16 @@ public class AddEditSetActivity extends AppCompatActivity {
                 ViewGroup RelativeAddItem = (ViewGroup) linear.getParent();
                 int index = Integer.parseInt(RelativeAddItem.getTag().toString());
 
-                String allAnswers = DB.getAnswers(id, index);
+                String allAnswers = setsConfigHelper.getRepeatsDatabase().getAnswer(id, index);
 
                 if (!answer.isEmpty()) {
                     String delAnswer = allAnswers.replace(RepeatsHelper.breakLine + answer, "");
-                    DB.InsertValueByID(id, index, "answer", delAnswer);
+                    setsConfigHelper.getRepeatsDatabase().insertValueToSetByID(id, index, Values.answer, delAnswer);
                 }
 
                 if (allAnswers.contains(RepeatsHelper.breakLine + RepeatsHelper.breakLine)) {
                     String delAnswer = allAnswers.replace(RepeatsHelper.breakLine + RepeatsHelper.breakLine, RepeatsHelper.breakLine);
-                    DB.InsertValueByID(id, index, "answer", delAnswer);
+                    setsConfigHelper.getRepeatsDatabase().insertValueToSetByID(id, index, Values.answer, delAnswer);
                 }
                 linear.removeView(p);
             }
@@ -508,7 +475,7 @@ public class AddEditSetActivity extends AppCompatActivity {
 
                     //Saving image
                     try {
-                        File control = new File(context.getFilesDir(), ImageName);
+                        File control = new File(getFilesDir(), ImageName);
                         boolean bool = control.createNewFile();
 
                         FileOutputStream out = new FileOutputStream(control);
@@ -517,7 +484,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                         ViewGroup parent = (ViewGroup) rel.getParent();
                         int index = Integer.parseInt(rel.getTag().toString());
 
-                        DB.InsertValueByID(id, index, "image", ImageName);
+                        setsConfigHelper.getRepeatsDatabase().insertValueToSetByID(id, index, Values.image, ImageName);
 
                     } catch (IOException e) {
                         e.printStackTrace();

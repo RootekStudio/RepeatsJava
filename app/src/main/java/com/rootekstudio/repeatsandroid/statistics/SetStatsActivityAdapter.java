@@ -8,12 +8,12 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
+import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 
 import java.util.List;
 
 public class SetStatsActivityAdapter extends RecyclerView.Adapter<SetStatsActivityAdapter.MainViewHolder> {
-    private List<RepeatsSingleItem> setQuestionStats;
+    private List<SetSingleItem> setQuestionStats;
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout relativeLayout;
@@ -24,7 +24,7 @@ public class SetStatsActivityAdapter extends RecyclerView.Adapter<SetStatsActivi
         }
     }
 
-    public SetStatsActivityAdapter(List<RepeatsSingleItem> setsStats) {
+    public SetStatsActivityAdapter(List<SetSingleItem> setsStats) {
         this.setQuestionStats = setsStats;
     }
 
@@ -40,7 +40,7 @@ public class SetStatsActivityAdapter extends RecyclerView.Adapter<SetStatsActivi
     @Override
     public void onBindViewHolder(SetStatsActivityAdapter.MainViewHolder holder, int position) {
         RelativeLayout view = holder.relativeLayout;
-        RepeatsSingleItem item = setQuestionStats.get(position);
+        SetSingleItem item = setQuestionStats.get(position);
 
         TextView question = view.findViewById(R.id.questionTextViewStats);
         TextView answer = view.findViewById(R.id.answerTextViewStats);

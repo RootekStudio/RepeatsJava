@@ -1,56 +1,48 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.database;
 
-public class RepeatsSetInfo {
-    private String Title;
-    private String TableName;
+public class SingleSetInfo {
+    private String setID;
+    private String setName;
     private String CreateDate;
-    private String IsEnabled;
-    private String Avatar;
-    private String IgnoreChars;
+    private int IsEnabled;
+    private int IgnoreChars;
     private String firstLanguage;
     private String secondLanguage;
     private int goodAnswers;
     private int wrongAnswers;
-    private int allAnswers;
 
-    public RepeatsSetInfo() {
+    public SingleSetInfo() {
     }
 
-    public RepeatsSetInfo(String Title, String TableName, String CreateDate, String IsEnabled, String Avatar, String IgnoreChars, String firstLanguage, String secondLanguage) {
-        this.Title = Title;
-        this.TableName = TableName;
+    public SingleSetInfo(String setID, String setName, String CreateDate, int IsEnabled, int IgnoreChars, String firstLanguage, String secondLanguage) {
+        this.setID = setID;
+        this.setName = setName;
         this.CreateDate = CreateDate;
         this.IsEnabled = IsEnabled;
-        this.Avatar = Avatar;
         this.IgnoreChars = IgnoreChars;
         this.firstLanguage = firstLanguage;
         this.secondLanguage = secondLanguage;
         this.goodAnswers = 0;
         this.wrongAnswers = 0;
-        this.allAnswers = 0;
     }
 
-    public String getitle() {
-        return Title;
+    public String getSetID() {
+        return setID;
     }
 
-    public String getTableName() {
-        return TableName;
+    public String getSetName() {
+        return setName;
     }
 
     public String getCreateDate() {
         return CreateDate;
     }
 
-    public String getIsEnabled() {
+    public int getIsEnabled() {
         return IsEnabled;
     }
 
-    public String getAvatar() {
-        return Avatar;
-    }
-
-    public String getIgnoreChars() {
+    public int getIgnoreChars() {
         return IgnoreChars;
     }
 
@@ -70,31 +62,21 @@ public class RepeatsSetInfo {
         return wrongAnswers;
     }
 
-    public int getAllAnswers() {
-        return allAnswers;
+    public void setSetID(String Title) {
+        this.setID = Title;
     }
 
-    public void setTitle(String Title) {
-        this.Title = Title;
-    }
-
-    public void setTableName(String TableName) {
-        this.TableName = TableName;
+    public void setSetName(String TableName) {
+        this.setName = TableName;
     }
 
     public void setCreateDate(String CreateDate) {
         this.CreateDate = CreateDate;
     }
 
-    public void setIsEnabled(String IsEnabled) {
-        this.IsEnabled = IsEnabled;
-    }
+    public void setIsEnabled(int IsEnabled) { this.IsEnabled = IsEnabled; }
 
-    public void setAvatar(String Avatar) {
-        this.Avatar = Avatar;
-    }
-
-    public void setIgnoreChars(String IgnoreChars) {
+    public void setIgnoreChars(int IgnoreChars) {
         this.IgnoreChars = IgnoreChars;
     }
 
@@ -114,7 +96,4 @@ public class RepeatsSetInfo {
         this.wrongAnswers = wrongAnswers;
     }
 
-    public void setAllAnswers(int allAnswers) {
-        this.allAnswers = allAnswers;
-    }
 }

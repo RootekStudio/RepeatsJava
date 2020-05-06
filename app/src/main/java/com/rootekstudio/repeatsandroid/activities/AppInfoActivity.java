@@ -1,7 +1,5 @@
 package com.rootekstudio.repeatsandroid.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -14,12 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.firstrun.FirstRunActivity;
-
-import org.w3c.dom.Text;
 
 public class AppInfoActivity extends AppCompatActivity {
     int clicked = 0;

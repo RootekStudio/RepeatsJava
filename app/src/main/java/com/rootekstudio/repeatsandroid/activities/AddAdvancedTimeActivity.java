@@ -25,7 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.notifications.AdvancedTimeNotification;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 
@@ -202,9 +203,9 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
     }
 
     void loadSetsList(boolean defaultCheck) {
-        DatabaseHelper DB = new DatabaseHelper(this);
-        ArrayList<String> titles = DB.getSingleColumn("title");
-        ArrayList<String> TableNames = DB.getSingleColumn("TableName");
+        RepeatsDatabase DB = new RepeatsDatabase(this);
+        ArrayList<String> titles = DB.getSingleColumnFromSetInfo(Values.set_name);
+        ArrayList<String> TableNames = DB.getSingleColumnFromSetInfo(Values.set_id);
         for (int i = 0; i < TableNames.size(); i++) {
 
             final View singleCheckSet = LayoutInflater.from(context).inflate(R.layout.checkbox_layout, setsLinear, false);

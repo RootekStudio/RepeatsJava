@@ -12,8 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
+import com.rootekstudio.repeatsandroid.database.Values;
 
 import java.util.List;
 
@@ -25,16 +26,16 @@ public class EnableSetsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_enable_sets_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final DatabaseHelper DB = new DatabaseHelper(this);
-        List<RepeatsSetInfo> AllSets = DB.AllItemsLIST(-1);
+        final RepeatsDatabase DB = new RepeatsDatabase(this);
+        List<SingleSetInfo> AllSets = DB.allSetsInfo(-1);
         int count = AllSets.size();
         LinearLayout linear = findViewById(R.id.EnableSetsLinear);
 
         for (int i = 0; i < count; i++) {
-            RepeatsSetInfo item = AllSets.get(i);
-            String name = item.getTableName();
-            String isenabled = item.getIsEnabled();
-            String title = item.getitle();
+            SingleSetInfo item = AllSets.get(i);
+            String name = item.getSetName();
+            int isEnabled = item.getIsEnabled();
+            String title = item.getSetName();
 
             final View view1 = getLayoutInflater().inflate(R.layout.enablesetslistitem, null);
             TextView txtview = view1.findViewById(R.id.SingleSetName);
@@ -46,16 +47,16 @@ public class EnableSetsListActivity extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         String NAME = buttonView.getTag().toString();
-                        DB.UpdateTable("TitleTable", "IsEnabled='true'", "TableName='" + NAME + "'");
+                        DB.updateTable(Values.sets_info, Values.enabled + "=1", Values.set_id + "='" + NAME + "'");
                     } else {
                         String NAME = buttonView.getTag().toString();
-                        DB.UpdateTable("TitleTable", "IsEnabled='false'", "TableName='" + NAME + "'");
+                        DB.updateTable(Values.sets_info, Values.enabled + "=0", Values.set_id + "='" + NAME + "'");
                     }
                 }
             });
 
             txtview.setText(title);
-            if (isenabled.equals("true")) {
+            if (isEnabled == 1) {
                 SWITCH.setChecked(true);
             } else {
                 SWITCH.setChecked(false);

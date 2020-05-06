@@ -4,9 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
+import com.rootekstudio.repeatsandroid.SetsConfigHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,21 +14,17 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.Locale;
 
 public class SaveShared {
     public static String ID;
     public static String name;
 
-    public static void SaveSetsToDB(Context context, DatabaseHelper DB) {
+    public static void SaveSetsToDB(Context context, RepeatsDatabase DB) {
 
         File dir = new File(context.getFilesDir(), "shared");
 
@@ -40,13 +35,6 @@ public class SaveShared {
         }
 
         File jsonFile = new File(dir, "sets.json");
-
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-        String date = s.format(new Date());
-
-        SimpleDateFormat simpleDate = new SimpleDateFormat("dd.MM.yyyy");
-        String createDate = simpleDate.format(new Date());
-
         try {
 
             FileInputStream jsonStream = new FileInputStream(jsonFile);
@@ -71,25 +59,9 @@ public class SaveShared {
             } while (iterator.hasNext());
 
             do {
-                String id = "R" + date + setIndex;
-                ID = id;
-
                 JSONObject singleSet = rootObject.getJSONObject(keys.get(setIndex));
-
                 name = keys.get(setIndex);
-
-                RepeatsSetInfo list;
-                if (Locale.getDefault().toString().equals("pl_PL")) {
-                    list = new RepeatsSetInfo(name, id, createDate, "true", "", "false", "pl_PL", "en_GB");
-                } else {
-                    list = new RepeatsSetInfo(name, id, createDate, "true", "", "false", "en_US", "es_ES");
-                }
-
-                DB.CreateSet(id);
-                DB.AddName(list);
-
-                JsonFile.putSetToJSON(context, id);
-
+                String id = new SetsConfigHelper(context).createNewSet(false, name);
                 do {
                     JSONObject singleItem = singleSet.getJSONObject(String.valueOf(itemIndex));
                     String question = singleItem.getString("question");
@@ -116,7 +88,7 @@ public class SaveShared {
 
                         File imageDir = new File(dir, image);
 
-                        String imageID = id.replace("R", "I");
+                        String imageID = "I" + id;
                         imageID = imageID + itemIndex + ".png";
 
                         FileInputStream inputStream = new FileInputStream(imageDir);
@@ -128,9 +100,9 @@ public class SaveShared {
                         FileOutputStream out = new FileOutputStream(control);
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
-                        DB.AddItemWithValues(id, question, answer, imageID);
+                        DB.addItemToSetWithValues(id, question, answer, imageID);
                     } else {
-                        DB.AddItemWithValues(id, question, answer, "");
+                        DB.addItemToSetWithValues(id, question, answer, "");
                     }
 
                     itemIndex++;
@@ -147,11 +119,7 @@ public class SaveShared {
 
             } while (!rootObject.isNull(keys.get(setIndex)));
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
     }

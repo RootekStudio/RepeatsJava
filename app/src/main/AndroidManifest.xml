@@ -14,15 +14,17 @@
         android:required="false" />
 
     <application
-        android:allowBackup="true"
+        android:name=".RepeatsApp"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.AppInfoActivity"
-            android:label="@string/About"/>
+        <activity
+            android:name=".activities.AppInfoActivity"
+            android:label="@string/About" />
         <activity
             android:name=".textrecognition.HelpTextRecActivity"
             android:label="@string/help" />
@@ -121,7 +123,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".activities.AnswerActivity"
+            android:name=".notifications.AnswerActivity"
             android:label=""
             android:theme="@style/translucentTheme" />
         <activity

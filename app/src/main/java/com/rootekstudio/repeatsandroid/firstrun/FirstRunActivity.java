@@ -14,11 +14,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.SetsConfigHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
+import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import org.json.JSONArray;
@@ -26,9 +27,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 
 public class FirstRunActivity extends AppCompatActivity {
@@ -105,19 +104,17 @@ public class FirstRunActivity extends AppCompatActivity {
     }
 
     void createSets() {
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-        String date = s.format(new Date());
-        String id = "R" + date + "0";
+        String id = new SetsConfigHelper(this).createNewSet(false, "");
+        RepeatsDatabase DB = new RepeatsDatabase(this);
 
-        SimpleDateFormat createD = new SimpleDateFormat("dd.MM.yyyy");
-        String createDate = createD.format(new Date());
+
 
         ArrayList<String> questions = new ArrayList<>();
         ArrayList<String> answers = new ArrayList<>();
 
-        RepeatsSetInfo list;
+        SingleSetInfo list;
         if (Locale.getDefault().toString().equals("pl_PL")) {
-            list = new RepeatsSetInfo("Angielski kolory", id, createDate, "true", "", "false", "pl_PL", "en_GB");
+            DB.setSetName("Angielski kolory", id);
 
             questions.add("Czerwony");
             questions.add("Zielony");
@@ -141,7 +138,7 @@ public class FirstRunActivity extends AppCompatActivity {
             answers.add("Violet\r\nPurple");
             answers.add("Brown");
         } else {
-            list = new RepeatsSetInfo("Spanish colors", id, createDate, "true", "", "false", "en_US", "es_ES");
+            DB.setSetName("Spanish colors", id);
 
             questions.add("Red");
             questions.add("Green");
@@ -166,11 +163,7 @@ public class FirstRunActivity extends AppCompatActivity {
             answers.add("Marrón");
         }
 
-        DatabaseHelper DB = new DatabaseHelper(this);
-        DB.CreateSet(id);
-        DB.AddName(list);
         DB.insertSetToDatabase(id, questions, answers, null);
-        JsonFile.putSetToJSON(this, id);
     }
 
     void defaultSettings() {
@@ -240,8 +233,7 @@ public class FirstRunActivity extends AppCompatActivity {
 
                 //sets
                 JSONArray sets = new JSONArray();
-                DatabaseHelper DB = new DatabaseHelper(this);
-                ArrayList<String> nameList = DB.getSingleColumn("TableName");
+                ArrayList<String> nameList = new RepeatsDatabase(this).getSingleColumnFromSetInfo(Values.set_id);
                 int setsCount = nameList.size();
 
                 for (int i = 0; i < setsCount; i++) {

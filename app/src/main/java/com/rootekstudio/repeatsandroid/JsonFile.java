@@ -2,7 +2,8 @@ package com.rootekstudio.repeatsandroid;
 
 import android.content.Context;
 
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.Values;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,8 +69,8 @@ public class JsonFile {
                     if (singleSet.equals(setIDToRemove)) {
                         sets.remove(i);
                         if (sets.length() == 0) {
-                            DatabaseHelper DB = new DatabaseHelper(context);
-                            ArrayList<String> setsID = DB.getSingleColumn("TableName");
+
+                            ArrayList<String> setsID = new RepeatsDatabase(context).getSingleColumnFromSetInfo(Values.set_id);
                             if (setsID.size() > 0) {
                                 sets.put(setsID.get(0));
                             }

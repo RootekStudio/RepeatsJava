@@ -14,8 +14,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.documentfile.provider.DocumentFile;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
+import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,7 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Backup {
+    private static RepeatsDatabase DB;
+
     public static void createBackup(final Context context, final Activity activity) {
+        DB = new RepeatsDatabase(context);
         final MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         final View view1 = layoutInflater.inflate(R.layout.where_backup, null);
@@ -36,8 +40,6 @@ public class Backup {
 
         RelativeLayout relCloud = view1.findViewById(R.id.relCloud);
         RelativeLayout relLocal = view1.findViewById(R.id.relLocal);
-
-        final DatabaseHelper DB = new DatabaseHelper(context);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             relLocal.setOnClickListener(new View.OnClickListener() {
@@ -57,14 +59,14 @@ public class Backup {
             @Override
             public void onClick(View view) {
                 alert.dismiss();
-                List<RepeatsSetInfo> list = DB.AllItemsLIST(-1);
+                List<SingleSetInfo> list = DB.allSetsInfo(-1);
                 final ArrayList<String> names = new ArrayList<>();
                 final ArrayList<String> setsID = new ArrayList<>();
 
                 for (int i = 0; i < list.size(); i++) {
-                    RepeatsSetInfo item = list.get(i);
-                    names.add(item.getitle());
-                    setsID.add(item.getTableName());
+                    SingleSetInfo item = list.get(i);
+                    names.add(item.getSetName());
+                    setsID.add(item.getSetID());
                 }
 
                 final AlertDialog dialog = RepeatsHelper.showLoadingDialog(context);
@@ -105,22 +107,20 @@ public class Backup {
         final DocumentFile pickedDir = DocumentFile.fromTreeUri(context, selectedUri);
         String fileName = SetToFile.fileName;
 
-        final DatabaseHelper DB = new DatabaseHelper(context);
-
         final AlertDialog dialog = RepeatsHelper.showLoadingDialog(context);
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
 
-                List<RepeatsSetInfo> list = DB.AllItemsLIST(-1);
+                List<SingleSetInfo> list = DB.allSetsInfo(-1);
                 ArrayList<String> names = new ArrayList<>();
                 ArrayList<String> setsID = new ArrayList<>();
 
                 for (int i = 0; i < list.size(); i++) {
-                    RepeatsSetInfo item = list.get(i);
-                    names.add(item.getitle());
-                    setsID.add(item.getTableName());
+                    SingleSetInfo item = list.get(i);
+                    names.add(item.getSetName());
+                    setsID.add(item.getSetID());
                 }
 
                 SetToFile.saveSetsToFile(context, setsID, names);
@@ -163,7 +163,7 @@ public class Backup {
                 @Override
                 public void run() {
                     ZipSet.UnZip(inputStream, new File(context.getFilesDir(), "shared"));
-                    SaveShared.SaveSetsToDB(context, new DatabaseHelper(context));
+                    SaveShared.SaveSetsToDB(context, new RepeatsDatabase(context));
 
                     activity.runOnUiThread(new Runnable() {
                         @Override

@@ -13,10 +13,6 @@ import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.util.UUID;
 
-import com.microsoft.appcenter.AppCenter;
-import com.microsoft.appcenter.analytics.Analytics;
-import com.microsoft.appcenter.crashes.Crashes;
-
 public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

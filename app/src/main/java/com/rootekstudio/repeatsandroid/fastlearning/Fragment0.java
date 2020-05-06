@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class Fragment0 extends Fragment {
             getActivity().findViewById(R.id.nextConfigFL).setEnabled(false);
         }
 
-        DatabaseHelper DB = new DatabaseHelper(getContext());
+        RepeatsDatabase DB = new RepeatsDatabase(getContext());
         LinearLayout linearLayout = view.findViewById(R.id.linearSetsListFL);
         List<FastLearningSetsListItem> setsList = DB.setsIdAndNameList();
 

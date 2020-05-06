@@ -3,7 +3,6 @@ package com.rootekstudio.repeatsandroid.mainpage;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,30 +18,20 @@ import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
+import com.rootekstudio.repeatsandroid.SetsConfigHelper;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
 import com.rootekstudio.repeatsandroid.activities.SetSettingsActivity;
 import com.rootekstudio.repeatsandroid.activities.ShareActivity;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
-import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
-import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
+import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.MainViewHolder> {
-    private List<RepeatsSetInfo> repeatsList;
+    private List<SingleSetInfo> repeatsList;
     private Context context;
     private AppCompatActivity activity;
 
@@ -55,7 +44,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         }
     }
 
-    public MainActivityAdapter(List<RepeatsSetInfo> repeatsSetInfo, Context context, AppCompatActivity activity) {
+    public MainActivityAdapter(List<SingleSetInfo> repeatsSetInfo, Context context, AppCompatActivity activity) {
         repeatsList = repeatsSetInfo;
         this.context = context;
         this.activity = activity;
@@ -71,28 +60,28 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
     @Override
     public void onBindViewHolder(MainViewHolder holder, int position) {
         RelativeLayout view = holder.relativeLayout;
-        RepeatsSetInfo Item = repeatsList.get(position);
+        SingleSetInfo Item = repeatsList.get(position);
 
         RelativeLayout but = view.findViewById(R.id.RelativeMAIN);
         ImageButton options = view.findViewById(R.id.optionsMainItem);
 
-        String tablename = Item.getTableName();
-        String title = Item.getitle();
-        String IgnoreChars = Item.getIgnoreChars();
+        String setID = Item.getSetID();
+        String setName = Item.getSetName();
+        int IgnoreChars = Item.getIgnoreChars();
 
-        but.setTag(R.string.Tag_id_0, tablename);
-        but.setTag(R.string.Tag_id_1, title);
+        but.setTag(R.string.Tag_id_0, setID);
+        but.setTag(R.string.Tag_id_1, setName);
         but.setTag(R.string.Tag_id_2, IgnoreChars);
         but.setOnClickListener(setClick);
 
-        options.setTag(R.string.Tag_id_0, tablename);
-        options.setTag(R.string.Tag_id_1, title);
+        options.setTag(R.string.Tag_id_0, setID);
+        options.setTag(R.string.Tag_id_1, setName);
         options.setOnClickListener(moreOptionsClick);
 
         TextView Name = view.findViewById(R.id.NameTextView);
         TextView Date = view.findViewById(R.id.DateTextView);
 
-        Name.setText(Item.getitle());
+        Name.setText(Item.getSetName());
         Date.setText(Item.getCreateDate());
     }
 
@@ -133,7 +122,6 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
                     int itemId = item.getItemId();
 
                     if (itemId == R.id.deleteSetOption) {
-                        final DatabaseHelper DB = new DatabaseHelper(context);
                         MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
                         ALERTbuilder.setBackground(context.getDrawable(R.drawable.dialog_shape));
 
@@ -144,34 +132,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                DeleteSet(selectedSetID);
-                                JsonFile.removeSetFromJSON(context, selectedSetID);
-
-                                List<RepeatsSetInfo> a = DB.AllItemsLIST(DatabaseHelper.ORDER_BY_ID_DESC);
-                                int size = a.size();
-
-                                //if there is no set left in database, turn off notifications
-                                if (size == 0) {
-                                    ConstNotifiSetup.CancelNotifications(context);
-
-                                    try {
-                                        JSONObject advancedFile = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
-
-                                        Iterator<String> iterator = advancedFile.keys();
-
-                                        while (iterator.hasNext()) {
-                                            String key = iterator.next();
-                                            NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(key));
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putString("ListNotifi", "0");
-                                    editor.apply();
-                                }
+                                new SetsConfigHelper(context).deleteSet(selectedSetID);
 
                                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -203,24 +164,4 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
             });
         }
     };
-
-    private void DeleteSet(String x) {
-        DatabaseHelper DB = new DatabaseHelper(context);
-        ArrayList<String> allImages = new ArrayList<>();
-        if (!x.equals("FALSE")) {
-            allImages = DB.getAllImages(x);
-            DB.deleteOneFromList(x);
-            DB.DeleteSet(x);
-        }
-
-        int count = allImages.size();
-
-        if (count != 0) {
-            for (int j = 0; j < count; j++) {
-                String imgName = allImages.get(j);
-                File file = new File(context.getFilesDir(), imgName);
-                boolean bool = file.delete();
-            }
-        }
-    }
 }

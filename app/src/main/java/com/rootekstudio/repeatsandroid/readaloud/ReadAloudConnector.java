@@ -1,6 +1,6 @@
 package com.rootekstudio.repeatsandroid.readaloud;
 
-import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
+import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class ReadAloudConnector {
     public static String locale1;
     static boolean isActivityAlive = false;
     public static boolean isTTSStopped = true;
-    static List<RepeatsSingleItem> singleSet;
+    static List<SetSingleItem> singleSet;
     static String setName;
     public static String setID;
     static float speechRate = 0.5f;

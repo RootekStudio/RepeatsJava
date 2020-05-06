@@ -25,14 +25,14 @@ import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.activities.AppInfoActivity;
 import com.rootekstudio.repeatsandroid.activities.ChangeDeliveryListActivity;
 import com.rootekstudio.repeatsandroid.activities.EnableSetsListActivity;
 import com.rootekstudio.repeatsandroid.activities.SilenceHoursActivity;
 import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 import com.rootekstudio.repeatsandroid.notifications.RegisterNotifications;
@@ -41,7 +41,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
-import java.util.List;
 
 public class PreferenceFragment extends PreferenceFragmentCompat {
     private SharedPreferences sharedPreferences;
@@ -70,8 +69,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 edit.apply();
             }
         }
-        DatabaseHelper DB = new DatabaseHelper(getContext());
-        List<RepeatsSetInfo> all = DB.AllItemsLIST(-1);
 
         final int freq = sharedPreferences.getInt("frequency", 0);
 
@@ -318,7 +315,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
 
         //Load settings
-        if (all.size() == 0) {
+
+        if (new RepeatsDatabase(getContext()).itemsInSetCount(Values.sets_info) == 0) {
             createBackup.setVisible(false);
             noSetsInDatabaseInfo.setVisible(true);
             findPreference("notificationsGroup").setEnabled(false);

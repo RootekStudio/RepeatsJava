@@ -20,18 +20,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.SetsConfigHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Objects;
 
 public class PreviewAndDownloadSetActivity extends AppCompatActivity {
@@ -121,14 +117,7 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
         MaterialButton button = (MaterialButton) view;
         button.setEnabled(false);
 
-        DatabaseHelper DB = new DatabaseHelper(this);
-
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-        String date = s.format(new Date());
-        String id = "R" + date;
-
-        SimpleDateFormat createD = new SimpleDateFormat("dd.MM.yyyy");
-        String createDate = createD.format(new Date());
+        String id = new SetsConfigHelper(this).createNewSet(false, "");
 
         HashMap<Integer, String[]> set = setItems;
         ArrayList<String> questions = new ArrayList<>();
@@ -139,18 +128,7 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
             answers.add(Objects.requireNonNull(set.get(i))[1]);
         }
 
-        RepeatsSetInfo list;
-        if (Locale.getDefault().toString().equals("pl_PL")) {
-            list = new RepeatsSetInfo(setName, id, createDate, "true", "", "false", "pl_PL", "en_GB");
-        } else {
-            list = new RepeatsSetInfo(setName, id, createDate, "true", "", "false", "en_US", "es_ES");
-        }
-
-        //Registering set in database
-        DB.CreateSet(id);
-        DB.AddName(list);
-        DB.insertSetToDatabase(id, questions, answers, null);
-        JsonFile.putSetToJSON(context, id);
+        new RepeatsDatabase(this).insertSetToDatabase(id, questions, answers, null);
 
         Toast.makeText(this, R.string.successDownload, Toast.LENGTH_SHORT).show();
 

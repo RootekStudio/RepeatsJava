@@ -23,7 +23,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.microsoft.appcenter.analytics.Analytics;
 import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
@@ -31,7 +30,7 @@ import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.ZipSet;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
 import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
 import com.rootekstudio.repeatsandroid.search.SearchActivity;
 
@@ -173,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             InputStream inputStream = getContentResolver().openInputStream(selectedZip);
                             ZipSet.UnZip(inputStream, new File(getFilesDir(), "shared"));
-                            SaveShared.SaveSetsToDB(context, new DatabaseHelper(context));
+                            SaveShared.SaveSetsToDB(context, new RepeatsDatabase(context));
 
                             final Intent intent = new Intent(context, AddEditSetActivity.class);
                             intent.putExtra("ISEDIT", SaveShared.ID);

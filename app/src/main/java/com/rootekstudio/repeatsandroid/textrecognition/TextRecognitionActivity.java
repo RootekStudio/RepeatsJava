@@ -38,14 +38,14 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
-import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
-import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
 import com.rootekstudio.repeatsandroid.RequestCodes;
+import com.rootekstudio.repeatsandroid.SetsConfigHelper;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
+import com.rootekstudio.repeatsandroid.database.Values;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,7 +53,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class TextRecognitionActivity extends AppCompatActivity {
@@ -72,7 +71,7 @@ public class TextRecognitionActivity extends AppCompatActivity {
     int heightScroll190;
     int heightScroll220;
 
-    DatabaseHelper DB;
+    RepeatsDatabase DB;
     GestureDetector gd;
 
     RecognizedStringsAdapter adapter;
@@ -84,12 +83,15 @@ public class TextRecognitionActivity extends AppCompatActivity {
 
     Uri photoURI;
 
+    SetsConfigHelper setsConfigHelper;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text_recognition);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setsConfigHelper = new SetsConfigHelper(this);
 
         fieldsScrollView = findViewById(R.id.scrollViewFieldsTR);
         recyclerView = findViewById(R.id.recyclerViewTextRecognition);
@@ -99,7 +101,7 @@ public class TextRecognitionActivity extends AppCompatActivity {
 
         createLoadingDialog();
 
-        DB = new DatabaseHelper(this);
+        DB = new RepeatsDatabase(this);
         usableHeight = RepeatsHelper.getUsableHeight(this);
         defaultHeightScroll = dpToPx(130, this);
         heightScroll190 = dpToPx(190, this);
@@ -278,7 +280,7 @@ public class TextRecognitionActivity extends AppCompatActivity {
 
                             dialogBuilder.show();
                         } else {
-                            createTempSet();
+                            setID = setsConfigHelper.createTempSet();
                             itemID = 1;
                         }
                     }
@@ -327,16 +329,16 @@ public class TextRecognitionActivity extends AppCompatActivity {
 
                 View mainView = LayoutInflater.from(TextRecognitionActivity.this).inflate(R.layout.linear_select_set_tr, null);
                 LinearLayout linearLayout = mainView.findViewById(R.id.linearLayoutSelectSetTR);
-                List<RepeatsSetInfo> setsInfo = DB.AllItemsLIST(-1);
+                List<SingleSetInfo> setsInfo = DB.allSetsInfo(-1);
 
                 for (int i = 0; i < setsInfo.size(); i++) {
-                    RepeatsSetInfo setInfo = setsInfo.get(i);
+                    SingleSetInfo setInfo = setsInfo.get(i);
                     View singleView = LayoutInflater.from(TextRecognitionActivity.this).inflate(R.layout.single_textview, null);
-                    singleView.setTag(R.string.Tag_id_0, setInfo.getTableName());
-                    singleView.setTag(R.string.Tag_id_1, setInfo.getitle());
+                    singleView.setTag(R.string.Tag_id_0, setInfo.getSetID());
+                    singleView.setTag(R.string.Tag_id_1, setInfo.getSetName());
 
                     TextView textView = singleView.findViewById(R.id.singleTextView);
-                    textView.setText(setInfo.getitle());
+                    textView.setText(setInfo.getSetName());
 
                     singleView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -370,39 +372,15 @@ public class TextRecognitionActivity extends AppCompatActivity {
         selectWhereSave.show();
     }
 
-    private void createTempSet() {
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-        String date = s.format(new Date());
-        setID = "temp" + date;
-        DB.CreateSet(setID);
-        DB.AddItem(setID);
-    }
-
     private String createNewSet() {
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-        String date = s.format(new Date());
-        String newSetID = "R" + date;
 
-        SimpleDateFormat createD = new SimpleDateFormat("dd.MM.yyyy");
-        String createDate = createD.format(new Date());
+        String newSetID = setsConfigHelper.createNewSet(false, "");
 
-        RepeatsSetInfo list;
-        if (Locale.getDefault().toString().equals("pl_PL")) {
-            list = new RepeatsSetInfo("", newSetID, createDate, "true", "", "false", "pl_PL", "en_GB");
-        } else {
-            list = new RepeatsSetInfo("", newSetID, createDate, "true", "", "false", "en_US", "es_ES");
-        }
-
-        DB.CreateSet(newSetID);
-        DB.AddName(list);
         DB.copyQuestionsAndAnswersToAnotherTable(setID, newSetID);
 
-        List<RepeatsSingleItem> set = DB.AllItemsSET(newSetID, -1);
-        if (set.size() == 0) {
-            DB.AddItem(newSetID);
+        if (DB.itemsInSetCount(newSetID) == 0) {
+            DB.addEmptyItemToSet(newSetID);
         }
-
-        JsonFile.putSetToJSON(TextRecognitionActivity.this, newSetID);
 
         return newSetID;
     }
@@ -441,7 +419,7 @@ public class TextRecognitionActivity extends AppCompatActivity {
 
         List<String> questionAndAnswer = DB.getSingleQuestionAndAnswer(setID, itemID);
         if (questionAndAnswer == null) {
-            DB.AddItem(setID);
+            DB.addEmptyItemToSet(setID);
         } else {
             questionField.setText(questionAndAnswer.get(0));
             String fullAnswer = questionAndAnswer.get(1);
@@ -513,8 +491,8 @@ public class TextRecognitionActivity extends AppCompatActivity {
             }
         }
 
-        DB.InsertValueByID(setID, itemID, "question", question);
-        DB.InsertValueByID(setID, itemID, "answer", answer);
+        DB.insertValueToSetByID(setID, itemID, Values.question, question);
+        DB.insertValueToSetByID(setID, itemID, Values.answer, answer);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -657,7 +635,8 @@ public class TextRecognitionActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         if (setID != null) {
-            DB.DeleteSet(setID);
+            //Delete temporary set on exit
+            DB.deleteSet(setID);
         }
         super.onDestroy();
     }

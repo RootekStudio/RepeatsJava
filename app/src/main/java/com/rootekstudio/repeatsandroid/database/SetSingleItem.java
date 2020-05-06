@@ -1,30 +1,30 @@
-package com.rootekstudio.repeatsandroid;
+package com.rootekstudio.repeatsandroid.database;
 
-public class RepeatsSingleItem {
+public class SetSingleItem {
     private int itemID;
     private String setID;
     private String setName;
     private String Question;
     private String Answer;
-    private String Imag;
+    private String Image;
     private int goodAnswers;
     private int wrongAnswers;
     private int allAnswers;
 
-    public RepeatsSingleItem() {
+    public SetSingleItem() {
     }
 
-    public RepeatsSingleItem(int itemID, String Question, String Answer, String Imag, int goodAnswers, int wrongAnswers, int allAnswers) {
+    public SetSingleItem(int itemID, String Question, String Answer, String Imag, int goodAnswers, int wrongAnswers, int allAnswers) {
         this.itemID = itemID;
         this.Question = Question;
         this.Answer = Answer;
-        this.Imag = Imag;
+        this.Image = Imag;
         this.goodAnswers = goodAnswers;
         this.wrongAnswers = wrongAnswers;
         this.allAnswers = allAnswers;
     }
 
-    public RepeatsSingleItem(String question) {
+    public SetSingleItem(String question) {
         setID = "new_set";
         this.Question = question;
     }
@@ -41,8 +41,8 @@ public class RepeatsSingleItem {
         return Answer;
     }
 
-    public String getImag() {
-        return Imag;
+    public String getImage() {
+        return Image;
     }
 
     public int getGoodAnswers() {
@@ -77,8 +77,8 @@ public class RepeatsSingleItem {
         this.Answer = Answer;
     }
 
-    public void setImag(String Imag) {
-        this.Imag = Imag;
+    public void setImage(String Image) {
+        this.Image = Image;
     }
 
     public void setGoodAnswers(int goodAnswers) {

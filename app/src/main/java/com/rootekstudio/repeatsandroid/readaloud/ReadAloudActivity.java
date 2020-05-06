@@ -23,10 +23,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
-import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
 import com.rootekstudio.repeatsandroid.activities.SetSettingsActivity;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SetSingleItem;
+import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
 import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import java.util.Locale;
 import static com.rootekstudio.repeatsandroid.readaloud.ReadAloudConnector.readAloudService;
 
 public class ReadAloudActivity extends AppCompatActivity {
-    RepeatsSetInfo setInfo;
+    SingleSetInfo setInfo;
     TextView setName;
     ScrollView scrollView;
     LinearLayout linearButtons;
@@ -44,7 +44,7 @@ public class ReadAloudActivity extends AppCompatActivity {
     Locale firstLocale;
     Locale secondLocale;
 
-    List<RepeatsSingleItem> singleSet;
+    List<SetSingleItem> singleSet;
     int allItems;
 
     boolean readAloudBound = false;
@@ -78,18 +78,18 @@ public class ReadAloudActivity extends AppCompatActivity {
             reset();
 
             ReadAloudConnector.setID = intent.getStringExtra("setID");
-            DatabaseHelper DB = new DatabaseHelper(this);
-            setInfo = DB.getSingleItemLIST(ReadAloudConnector.setID);
-            singleSet = DB.AllItemsSET(ReadAloudConnector.setID, -1);
+            RepeatsDatabase DB = new RepeatsDatabase(this);
+            setInfo = DB.singleSetInfo(ReadAloudConnector.setID);
+            singleSet = DB.allItemsInSet(ReadAloudConnector.setID, -1);
 
-            setName.setText(setInfo.getitle());
+            setName.setText(setInfo.getSetName());
             locale0 = setInfo.getFirstLanguage();
             locale1 = setInfo.getSecondLanguage();
 
             ReadAloudConnector.locale0 = locale0;
             ReadAloudConnector.locale1 = locale1;
             ReadAloudConnector.singleSet = singleSet;
-            ReadAloudConnector.setName = setInfo.getitle();
+            ReadAloudConnector.setName = setInfo.getSetName();
 
             firstLocale = new Locale(locale0.substring(0, locale0.indexOf("_")), locale0.substring(locale0.indexOf("_") + 1));
             secondLocale = new Locale(locale1.substring(0, locale1.indexOf("_")), locale1.substring(locale1.indexOf("_") + 1));
@@ -225,7 +225,7 @@ public class ReadAloudActivity extends AppCompatActivity {
             readAloudService.stopForegroundServ();
             return;
         }
-        RepeatsSingleItem singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
+        SetSingleItem singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
         String counter = ReadAloudConnector.speakItemSetIndex + 1 + "/" + ReadAloudConnector.singleSet.size();
 
         ArrayList<String> info = new ArrayList<>();
@@ -260,7 +260,7 @@ public class ReadAloudActivity extends AppCompatActivity {
             readAloudService.stopForegroundServ();
             return;
         }
-        RepeatsSingleItem singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
+        SetSingleItem singleSetDB = singleSet.get(ReadAloudConnector.speakItemSetIndex);
         String counter = ReadAloudConnector.speakItemSetIndex + 1 + "/" + ReadAloudConnector.singleSet.size();
 
         ArrayList<String> info = new ArrayList<>();

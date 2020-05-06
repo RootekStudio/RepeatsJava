@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
+import com.rootekstudio.repeatsandroid.SetsConfigHelper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,21 +12,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class SaveSharedLegacy {
-    static void saveSharedLegacy(Context context, DatabaseHelper DB) {
+    static void saveSharedLegacy(Context context, RepeatsDatabase DB) {
         final File dir = new File(context.getFilesDir(), "shared");
         File questions = new File(dir, "Questions.txt");
         File answers = new File(dir, "Answers.txt");
-
-        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-        String date = s.format(new Date());
-
-        SimpleDateFormat simpleDate = new SimpleDateFormat("dd.MM.yyyy");
-        String createDate = simpleDate.format(new Date());
 
         String name = "";
 
@@ -44,24 +35,13 @@ public class SaveSharedLegacy {
             int i = 0;
             int itemIndex = 0;
 
-            String id = "R" + date;
-            SaveShared.ID = id;
-
-            RepeatsSetInfo list;
-            if (Locale.getDefault().toString().equals("pl_PL")) {
-                list = new RepeatsSetInfo(name, id, createDate, "true", "", "false", "pl_PL", "en_GB");
-            } else {
-                list = new RepeatsSetInfo(name, id, createDate, "true", "", "false", "en_US", "es_ES");
-            }
-
-            DB.CreateSet(id);
-            DB.AddName(list);
+            String id = new SetsConfigHelper(context).createNewSet(false, name);
 
             while (lineQ != null) {
 
                 final File image = new File(dir, "S" + i + ".png");
                 if (image.exists()) {
-                    String imageID = id.replace("R", "I");
+                    String imageID = "I" + id;
                     imageID = imageID + itemIndex + ".png";
 
                     FileInputStream inputStream = new FileInputStream(image);
@@ -73,9 +53,9 @@ public class SaveSharedLegacy {
                     FileOutputStream out = new FileOutputStream(control);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
-                    DB.AddItemWithValues(id, lineQ, lineA, imageID);
+                    DB.addItemToSetWithValues(id, lineQ, lineA, imageID);
                 } else {
-                    DB.AddItemWithValues(id, lineQ, lineA, "");
+                    DB.addItemToSetWithValues(id, lineQ, lineA, "");
                 }
 
                 lineQ = Qreader.readLine();
@@ -87,7 +67,5 @@ public class SaveSharedLegacy {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 }

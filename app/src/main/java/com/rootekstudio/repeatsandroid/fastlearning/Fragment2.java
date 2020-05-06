@@ -13,11 +13,10 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsSingleItem;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Fragment2 extends Fragment {
     private LinearLayout linearList;
@@ -37,12 +36,12 @@ public class Fragment2 extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                DatabaseHelper DB = new DatabaseHelper(getContext());
-                final List<RepeatsSingleItem> questionsList = DB.getItemsForFastLearning(FastLearningInfo.selectedSets);
+                RepeatsDatabase DB = new RepeatsDatabase(getContext());
+                final List<SetSingleItem> questionsList = DB.getItemsForFastLearning(FastLearningInfo.selectedSets);
                 LayoutInflater inflater = LayoutInflater.from(getContext());
 
                 for (int i = 0; i < questionsList.size(); i++) {
-                    final RepeatsSingleItem singleItem = questionsList.get(i);
+                    final SetSingleItem singleItem = questionsList.get(i);
                     final View view = inflater.inflate(R.layout.fastlearning_list_singleitem, linearList, false);
                     final TextView textCount = getActivity().findViewById(R.id.questionsCountTextView);
                     TextView textView = view.findViewById(R.id.setNameListViewItemFL);
@@ -97,7 +96,7 @@ public class Fragment2 extends Fragment {
                         });
                     }
 
-                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                    requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             linearList.addView(view);

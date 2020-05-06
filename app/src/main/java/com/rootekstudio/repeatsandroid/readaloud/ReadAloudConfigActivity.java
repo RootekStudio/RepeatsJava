@@ -11,8 +11,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
 
 import java.util.List;
 
@@ -24,18 +24,18 @@ public class ReadAloudConfigActivity extends AppCompatActivity {
         setContentView(R.layout.activity_read_aloud_config);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        DatabaseHelper DB = new DatabaseHelper(this);
-        List<RepeatsSetInfo> setsInfo = DB.AllItemsLIST(-1);
+        RepeatsDatabase DB = new RepeatsDatabase(this);
+        List<SingleSetInfo> setsInfo = DB.allSetsInfo(-1);
 
         LinearLayout linearLayout = findViewById(R.id.linearSetsListReadAloud);
 
         for (int i = 0; i < setsInfo.size(); i++) {
-            RepeatsSetInfo setInfo = setsInfo.get(i);
+            SingleSetInfo setInfo = setsInfo.get(i);
             View view = LayoutInflater.from(this).inflate(R.layout.single_textview, null);
-            view.setTag(setInfo.getTableName());
+            view.setTag(setInfo.getSetName());
 
             TextView textView = view.findViewById(R.id.singleTextView);
-            textView.setText(setInfo.getitle());
+            textView.setText(setInfo.getSetName());
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -19,11 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
 import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
+import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.textrecognition.TextRecognitionActivity;
 
 import java.util.List;
@@ -31,17 +32,19 @@ import java.util.List;
 public class SetsFragment extends Fragment {
     private PopupWindow popupWindow;
     private PopupWindow chooseHowTR;
+    private RepeatsDatabase DB;
 
     int width;
     int height;
 
     public SetsFragment() {
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        DatabaseHelper DB = new DatabaseHelper(getContext());
-        List<RepeatsSetInfo> repeatsList = DB.AllItemsLIST(DatabaseHelper.ORDER_BY_ID_DESC);
+        DB = new RepeatsDatabase(getContext());
+        List<SingleSetInfo> repeatsList = DB.allSetsInfo(Values.ORDER_BY_ID_DESC);
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.mainfragment_sets, null);
 

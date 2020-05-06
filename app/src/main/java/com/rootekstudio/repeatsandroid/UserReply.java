@@ -19,9 +19,13 @@ public class UserReply extends BroadcastReceiver {
         String Correct = intent.getStringExtra("Correct");
 
         String ReallyCorrect = Correct;
-        String IgnoreChars = intent.getStringExtra("IgnoreChars");
+        int IgnoreChars = intent.getIntExtra("IgnoreChars", 0);
+        boolean ignoreChars = false;
+        if(IgnoreChars == 1) {
+            ignoreChars = true;
+        }
 
-        boolean check = CheckAnswer.isAnswerCorrect(UserAnswer, Correct, IgnoreChars);
+        boolean check = CheckAnswer.isAnswerCorrect(UserAnswer, Correct, ignoreChars);
 
         if (check) {
             if (ReallyCorrect.contains("\n")) {

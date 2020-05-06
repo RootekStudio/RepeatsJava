@@ -20,7 +20,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.RepeatsApp;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.statistics.SetStats;
 import com.rootekstudio.repeatsandroid.statistics.StatsActivityAdapter;
 
@@ -28,10 +30,10 @@ import java.util.List;
 
 public class StatsFragment extends Fragment {
     private int usableWidth;
-    private DatabaseHelper DB;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private AppCompatActivity activity;
+    private RepeatsDatabase DB;
 
     public StatsFragment() {
 
@@ -44,28 +46,29 @@ public class StatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.mainfragment_stats, container, false);
+        DB = new RepeatsDatabase(getContext());
 
-        DB = new DatabaseHelper(getContext());
         usableWidth = getUsableWidth();
         recyclerView = view.findViewById(R.id.recyclerViewStats);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        final TextView goodAnswers = view.findViewById(R.id.goodAnswersCountStats);
-        final TextView wrongAnswers = view.findViewById(R.id.wrongAnswersCountStats);
-        final TextView allAnswers = view.findViewById(R.id.allAnswersCountStats);
+        final TextView goodAnswersTextView = view.findViewById(R.id.goodAnswersCountStats);
+        final TextView wrongAnswersTextView = view.findViewById(R.id.wrongAnswersCountStats);
+        final TextView allAnswersTextView = view.findViewById(R.id.allAnswersCountStats);
         LinearLayout linearSortBy = view.findViewById(R.id.linearSortByStats);
         linearSortBy.setOnClickListener(sortStatsClick);
 
-        final String goodAnswersString = String.valueOf(DB.columnSum("TitleTable", "goodAnswers"));
-        final String wrongAnswersString = String.valueOf(DB.columnSum("TitleTable", "wrongAnswers"));
-        final String allAnswersString = String.valueOf(DB.columnSum("TitleTable", "allAnswers"));
-        List<SetStats> setsStats = DB.selectSetsStatsInfo(DatabaseHelper.ORDER_BY_GOOD_ANSWERS_RATIO);
+        int goodAnswers = DB.columnSum(Values.sets_info, Values.good_answers);
+        int wrongAnswers = DB.columnSum(Values.sets_info, Values.wrong_answers);
+        int allAnswers = goodAnswers + wrongAnswers;
+
+        List<SetStats> setsStats = DB.selectSetsStatsInfo(Values.ORDER_BY_GOOD_ANSWERS_RATIO);
         adapter = new StatsActivityAdapter(setsStats, usableWidth);
-        goodAnswers.setText(goodAnswersString);
-        wrongAnswers.setText(wrongAnswersString);
-        allAnswers.setText(allAnswersString);
+        goodAnswersTextView.setText(String.valueOf(goodAnswers));
+        wrongAnswersTextView.setText(String.valueOf(wrongAnswers));
+        allAnswersTextView.setText(String.valueOf(allAnswers));
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -84,20 +87,20 @@ public class StatsFragment extends Fragment {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     if (item.getItemId() == R.id.sortGoodAnswers) {
-                        List<SetStats> setsStats = DB.selectSetsStatsInfo(DatabaseHelper.ORDER_BY_GOOD_ANSWERS_RATIO);
+                        List<SetStats> setsStats = DB.selectSetsStatsInfo(Values.ORDER_BY_GOOD_ANSWERS_RATIO);
                         adapter = new StatsActivityAdapter(setsStats, usableWidth);
                         recyclerView.setAdapter(adapter);
                     } else if (item.getItemId() == R.id.sortWrongAnswers) {
-                        List<SetStats> setsStats = DB.selectSetsStatsInfo(DatabaseHelper.ORDER_BY_WRONG_ANSWERS_RATIO);
+                        List<SetStats> setsStats = DB.selectSetsStatsInfo(Values.ORDER_BY_WRONG_ANSWERS_RATIO);
                         adapter = new StatsActivityAdapter(setsStats, usableWidth);
                         recyclerView.setAdapter(adapter);
                     } else if (item.getItemId() == R.id.sortCreationDateAscending) {
-                        List<SetStats> setsStats = DB.selectSetsStatsInfo(DatabaseHelper.ORDER_BY_ID_ASC);
+                        List<SetStats> setsStats = DB.selectSetsStatsInfo(Values.ORDER_BY_ID_ASC);
                         adapter = new StatsActivityAdapter(setsStats, usableWidth);
                         recyclerView.setAdapter(adapter);
 
                     } else if (item.getItemId() == R.id.sortCreationDateDescending) {
-                        List<SetStats> setsStats = DB.selectSetsStatsInfo(DatabaseHelper.ORDER_BY_ID_DESC);
+                        List<SetStats> setsStats = DB.selectSetsStatsInfo(Values.ORDER_BY_ID_DESC);
                         adapter = new StatsActivityAdapter(setsStats, usableWidth);
                         recyclerView.setAdapter(adapter);
                     }

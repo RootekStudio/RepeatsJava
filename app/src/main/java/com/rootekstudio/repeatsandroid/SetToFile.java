@@ -2,7 +2,8 @@ package com.rootekstudio.repeatsandroid;
 
 import android.content.Context;
 
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,18 +39,18 @@ class SetToFile {
 
         try {
             JSONObject singleSet;
-            DatabaseHelper DB = new DatabaseHelper(context);
+            RepeatsDatabase DB = new RepeatsDatabase(context);
 
             for (int set = 0; set < setsID.size(); set++) {
                 singleSet = new JSONObject();
-                List<RepeatsSingleItem> list = DB.AllItemsSET(setsID.get(set), -1);
+                List<SetSingleItem> list = DB.allItemsInSet(setsID.get(set), -1);
                 int count = list.size();
 
                 for (int i = 0; i < count; i++) {
-                    RepeatsSingleItem single = list.get(i);
+                    SetSingleItem single = list.get(i);
                     String question = single.getQuestion();
                     String answer = single.getAnswer();
-                    String image = single.getImag();
+                    String image = single.getImage();
 
                     JSONObject singleItemJSON = new JSONObject();
                     singleItemJSON.put("question", question);

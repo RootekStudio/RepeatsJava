@@ -19,8 +19,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
+import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.readaloud.ReadAloudActivity;
 import com.rootekstudio.repeatsandroid.readaloud.ReadAloudConnector;
 
@@ -34,10 +35,10 @@ public class SetSettingsActivity extends AppCompatActivity {
     TextToSpeech textToSpeech;
     AutoCompleteTextView autoCompleteTextView;
     AutoCompleteTextView autoCompleteTextView1;
-    DatabaseHelper DB;
+    RepeatsDatabase DB;
     String setID;
     boolean fromReadAloud;
-    RepeatsSetInfo singleSetInfo;
+    SingleSetInfo singleSetInfo;
     CheckBox ignoreCheckBox;
 
     @Override
@@ -48,10 +49,10 @@ public class SetSettingsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         setID = intent.getStringExtra("setID");
         fromReadAloud = intent.getBooleanExtra("fromReadAloud", false);
-        DB = new DatabaseHelper(this);
-        singleSetInfo = DB.getSingleItemLIST(setID);
+        DB = new RepeatsDatabase(this);
+        singleSetInfo = DB.singleSetInfo(setID);
         ignoreCheckBox = findViewById(R.id.ignoreCheckBox);
-        if (singleSetInfo.getIgnoreChars().equals("true")) {
+        if (singleSetInfo.getIgnoreChars() == 1) {
             ignoreCheckBox.setChecked(true);
         } else {
             ignoreCheckBox.setChecked(false);
@@ -65,9 +66,9 @@ public class SetSettingsActivity extends AppCompatActivity {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
             if (checked) {
-                DB.ignoreChars(setID, "true");
+                DB.updateIgnoreChars(setID, 1);
             } else {
-                DB.ignoreChars(setID, "false");
+                DB.updateIgnoreChars(setID, 0);
             }
         }
     };
@@ -106,8 +107,8 @@ public class SetSettingsActivity extends AppCompatActivity {
 
         Collections.sort(displayedlocaleList);
 
-        String localeString = DB.getValue("firstLanguage", "TitleTable", "TableName='" + setID + "'");
-        String localeString1 = DB.getValue("secondLanguage", "TitleTable", "TableName='" + setID + "'");
+        String localeString = DB.getValueByCondition(Values.first_lang, Values.sets_info, Values.set_id, setID);
+        String localeString1 = DB.getValueByCondition(Values.second_lang, Values.sets_info, Values.set_id, setID);
 
         final Locale locale = new Locale(localeString.substring(0, localeString.indexOf("_")), localeString.substring(localeString.indexOf("_") + 1));
         final Locale locale1 = new Locale(localeString1.substring(0, localeString1.indexOf("_")), localeString1.substring(localeString1.indexOf("_") + 1));
@@ -131,7 +132,7 @@ public class SetSettingsActivity extends AppCompatActivity {
                         TextView autoCompleteTextView = (TextView) view;
                         String localeString = detailLocaleList.get(autoCompleteTextView.getText().toString());
                         if (localeString != null) {
-                            DB.UpdateTable("TitleTable", "firstLanguage='" + localeString + "'", "TableName='" + setID + "'");
+                            DB.updateTable(Values.sets_info, Values.first_lang + "='" + localeString + "'", Values.set_id + "='" + setID + "'");
                             String defaults = getString(R.string.question_lang) + ": " + autoCompleteTextView.getText().toString() + "\n"
                                     + getString(R.string.answer_lang) + ": " + locale1.getDisplayName();
 
@@ -148,7 +149,7 @@ public class SetSettingsActivity extends AppCompatActivity {
                         TextView autoCompleteTextView = (TextView) view;
                         String localeString = detailLocaleList.get(autoCompleteTextView.getText().toString());
                         if (localeString != null) {
-                            DB.UpdateTable("TitleTable", "secondLanguage='" + localeString + "'", "TableName='" + setID + "'");
+                            DB.updateTable(Values.sets_info, Values.second_lang + "='" + localeString + "'", Values.set_id + "='" + setID + "'");
                             String defaults = getString(R.string.question_lang) + ": " + locale.getDisplayName() + "\n"
                                     + getString(R.string.answer_lang) + ": " + autoCompleteTextView.getText().toString();
 

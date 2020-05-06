@@ -3,7 +3,6 @@ package com.rootekstudio.repeatsandroid.mainpage;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,24 +14,23 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.microsoft.appcenter.analytics.Analytics;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.RepeatsSetInfo;
 import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
-import com.rootekstudio.repeatsandroid.database.DatabaseHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
+import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.fastlearning.FastLearningConfigActivity;
 import com.rootekstudio.repeatsandroid.readaloud.ReadAloudActivity;
 import com.rootekstudio.repeatsandroid.readaloud.ReadAloudConfigActivity;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class StartFragment extends Fragment {
-    private RepeatsSetInfo fastLearningSetRecommendation = null;
-    private RepeatsSetInfo readAloudSetRecommendation = null;
-    List<RepeatsSetInfo> setsInfo;
+    private SingleSetInfo fastLearningSetRecommendation = null;
+    private SingleSetInfo readAloudSetRecommendation = null;
+    List<SingleSetInfo> setsInfo;
 
     public StartFragment() {
 
@@ -80,8 +78,8 @@ public class StartFragment extends Fragment {
 
         if (fastLearningSetRecommendation != null || readAloudSetRecommendation != null) {
             TextView setNameFL = fastLearningRecommendation.findViewById(R.id.text1FirstRecommendation);
-            setNameFL.setText(fastLearningSetRecommendation.getitle());
-            fastLearningRecommendation.setTag(fastLearningSetRecommendation.getTableName());
+            setNameFL.setText(fastLearningSetRecommendation.getSetName());
+            fastLearningRecommendation.setTag(fastLearningSetRecommendation.getSetName());
             fastLearningRecommendation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -93,8 +91,8 @@ public class StartFragment extends Fragment {
             });
 
             TextView setNameRA = readAloudRecommendation.findViewById(R.id.text1SecRecommendation);
-            setNameRA.setText(readAloudSetRecommendation.getitle());
-            readAloudRecommendation.setTag(readAloudSetRecommendation.getTableName());
+            setNameRA.setText(readAloudSetRecommendation.getSetName());
+            readAloudRecommendation.setTag(readAloudSetRecommendation.getSetName());
             readAloudRecommendation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -175,8 +173,7 @@ public class StartFragment extends Fragment {
     }
 
     private void generateData() {
-        DatabaseHelper DB = new DatabaseHelper(getContext());
-        setsInfo = DB.AllItemsLIST(DatabaseHelper.ORDER_BY_WRONG_ANSWERS_RATIO);
+        setsInfo = new RepeatsDatabase(getContext()).allSetsInfo(Values.ORDER_BY_WRONG_ANSWERS_RATIO);
         Collections.shuffle(setsInfo);
     }
 }
