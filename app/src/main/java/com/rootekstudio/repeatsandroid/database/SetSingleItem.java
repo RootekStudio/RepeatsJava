@@ -9,19 +9,17 @@ public class SetSingleItem {
     private String Image;
     private int goodAnswers;
     private int wrongAnswers;
-    private int allAnswers;
 
     public SetSingleItem() {
     }
 
-    public SetSingleItem(int itemID, String Question, String Answer, String Imag, int goodAnswers, int wrongAnswers, int allAnswers) {
+    public SetSingleItem(int itemID, String Question, String Answer, String Imag, int goodAnswers, int wrongAnswers) {
         this.itemID = itemID;
         this.Question = Question;
         this.Answer = Answer;
         this.Image = Imag;
         this.goodAnswers = goodAnswers;
         this.wrongAnswers = wrongAnswers;
-        this.allAnswers = allAnswers;
     }
 
     public SetSingleItem(String question) {
@@ -54,7 +52,7 @@ public class SetSingleItem {
     }
 
     public int getAllAnswers() {
-        return allAnswers;
+        return goodAnswers + wrongAnswers;
     }
 
     public String getSetID() {
@@ -87,10 +85,6 @@ public class SetSingleItem {
 
     public void setWrongAnswers(int wrongAnswers) {
         this.wrongAnswers = wrongAnswers;
-    }
-
-    public void setAllAnswers(int allAnswers) {
-        this.allAnswers = allAnswers;
     }
 
     public void setSetID(String setID) {

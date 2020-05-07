@@ -32,7 +32,7 @@ public class ReadAloudConfigActivity extends AppCompatActivity {
         for (int i = 0; i < setsInfo.size(); i++) {
             SingleSetInfo setInfo = setsInfo.get(i);
             View view = LayoutInflater.from(this).inflate(R.layout.single_textview, null);
-            view.setTag(setInfo.getSetName());
+            view.setTag(setInfo.getSetID());
 
             TextView textView = view.findViewById(R.id.singleTextView);
             textView.setText(setInfo.getSetName());

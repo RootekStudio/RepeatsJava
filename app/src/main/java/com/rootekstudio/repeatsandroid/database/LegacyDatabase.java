@@ -123,7 +123,14 @@ public class LegacyDatabase extends SQLiteOpenHelper {
                     singleSetInfo.setSetID(cursor.getString(0));
                     singleSetInfo.setSetName(cursor.getString(1));
                     singleSetInfo.setCreateDate(cursor.getString(2));
-                    singleSetInfo.setIsEnabled(Boolean.getBoolean(cursor.getString(3)) ? 1 : 0);
+
+                    if(Boolean.getBoolean(cursor.getString(3))) {
+                        singleSetInfo.setIsEnabled(1);
+                    }
+                    else {
+                        singleSetInfo.setIsEnabled(0);
+                    }
+
                     singleSetInfo.setIgnoreChars(0);
                     singleSetInfo.setFirstLanguage(firstLanguage);
                     singleSetInfo.setSecondLanguage(secondLanguage);

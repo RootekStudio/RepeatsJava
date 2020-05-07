@@ -51,6 +51,6 @@ public class SetStats {
     }
 
     public int getAllAnswers() {
-        return allAnswers;
+        return goodAnswers + wrongAnswers;
     }
 }

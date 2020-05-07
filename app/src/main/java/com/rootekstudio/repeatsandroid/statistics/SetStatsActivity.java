@@ -70,9 +70,9 @@ public class SetStatsActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        goodAnswersTextView.setText(goodAnswers);
-                        wrongAnswersTextView.setText(wrongAnswers);
-                        allAnswersTextView.setText(allAnswers);
+                        goodAnswersTextView.setText(String.valueOf(goodAnswers));
+                        wrongAnswersTextView.setText(String.valueOf(wrongAnswers));
+                        allAnswersTextView.setText(String.valueOf(allAnswers));
                         recyclerView.setAdapter(adapter);
                         progressBar.setVisibility(View.GONE);
                     }

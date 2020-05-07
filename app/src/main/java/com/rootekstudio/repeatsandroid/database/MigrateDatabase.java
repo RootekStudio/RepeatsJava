@@ -78,7 +78,7 @@ public class MigrateDatabase {
             calendar.setTime(date);
 
             int yearInt = calendar.get(Calendar.YEAR);
-            int monthInt = calendar.get(Calendar.MONTH);
+            int monthInt = calendar.get(Calendar.MONTH) + 1;
             int dayInt = calendar.get(Calendar.DAY_OF_MONTH);
 
             String month;
