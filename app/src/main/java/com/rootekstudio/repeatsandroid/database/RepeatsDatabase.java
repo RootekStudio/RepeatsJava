@@ -42,7 +42,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
 
     public void createSet(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String CREATE_SET = "CREATE TABLE IF NOT EXISTS " + name + " " + "( " +
+        String CREATE_SET = "CREATE TABLE IF NOT EXISTS " + name + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 Values.question + " TEXT, " +
                 Values.answer + " TEXT, " +

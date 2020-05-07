@@ -39,14 +39,14 @@ public class SetsConfigHelper {
 
     @SuppressLint("SimpleDateFormat")
     public String createNewSet(boolean addEmptyItem, String setName) {
-        String id = idFormat.format(new Date());
+        String id = "R" + idFormat.format(new Date());
         String creationDate = creationDateFormat.format(new Date());
 
         SingleSetInfo list;
         if (Locale.getDefault().toString().equals("pl_PL")) {
-            list = new SingleSetInfo(id, "", creationDate, 1, 0, "pl_PL", "en_GB");
+            list = new SingleSetInfo(id, setName, creationDate, 1, 0, "pl_PL", "en_GB");
         } else {
-            list = new SingleSetInfo(id, "", creationDate, 1, 0, "en_US", "es_ES");
+            list = new SingleSetInfo(id, setName, creationDate, 1, 0, "en_US", "es_ES");
         }
 
         //Registering set in database

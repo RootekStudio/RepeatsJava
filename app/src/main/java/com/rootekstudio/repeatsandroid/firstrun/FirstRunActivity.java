@@ -104,17 +104,14 @@ public class FirstRunActivity extends AppCompatActivity {
     }
 
     void createSets() {
-        String id = new SetsConfigHelper(this).createNewSet(false, "");
+        String id;
         RepeatsDatabase DB = new RepeatsDatabase(this);
-
-
 
         ArrayList<String> questions = new ArrayList<>();
         ArrayList<String> answers = new ArrayList<>();
 
-        SingleSetInfo list;
         if (Locale.getDefault().toString().equals("pl_PL")) {
-            DB.setSetName("Angielski kolory", id);
+            id = new SetsConfigHelper(this).createNewSet(false, "Angielski kolory");
 
             questions.add("Czerwony");
             questions.add("Zielony");
@@ -138,7 +135,7 @@ public class FirstRunActivity extends AppCompatActivity {
             answers.add("Violet\r\nPurple");
             answers.add("Brown");
         } else {
-            DB.setSetName("Spanish colors", id);
+            id = new SetsConfigHelper(this).createNewSet(false, "Spanish colors");
 
             questions.add("Red");
             questions.add("Green");

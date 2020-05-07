@@ -117,7 +117,7 @@ public class PreviewAndDownloadSetActivity extends AppCompatActivity {
         MaterialButton button = (MaterialButton) view;
         button.setEnabled(false);
 
-        String id = new SetsConfigHelper(this).createNewSet(false, "");
+        String id = new SetsConfigHelper(this).createNewSet(false, setName);
 
         HashMap<Integer, String[]> set = setItems;
         ArrayList<String> questions = new ArrayList<>();

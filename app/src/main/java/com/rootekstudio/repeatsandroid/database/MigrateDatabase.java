@@ -42,7 +42,7 @@ public class MigrateDatabase {
 
             writableNewDB.insert(Values.sets_info, null, contentValues);
 
-            String CREATE_SET = "CREATE TABLE IF NOT EXISTS " + setID + " " + "( " +
+            String CREATE_SET = "CREATE TABLE IF NOT EXISTS " + setID + " (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     Values.question + " TEXT, " +
                     Values.answer + " TEXT, " +
@@ -76,7 +76,30 @@ public class MigrateDatabase {
             Calendar calendar = Calendar.getInstance();
             assert date != null;
             calendar.setTime(date);
-            newDate = calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + " 00:00:00";
+
+            int yearInt = calendar.get(Calendar.YEAR);
+            int monthInt = calendar.get(Calendar.MONTH);
+            int dayInt = calendar.get(Calendar.DAY_OF_MONTH);
+
+            String month;
+            String day;
+
+            if(monthInt < 10) {
+                month = "0" + monthInt;
+            }
+            else {
+                month = String.valueOf(monthInt);
+            }
+
+            if(dayInt < 10) {
+                day = "0" + dayInt;
+            }
+            else {
+                day = String.valueOf(dayInt);
+            }
+
+            newDate = yearInt + "-" + month  + "-" + day + " 00:00:00";
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
