@@ -13,6 +13,7 @@ import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.PowerManager;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -275,6 +277,26 @@ public class RepeatsHelper {
         }
 
         return inSampleSize;
+    }
+
+    public static Boolean oldDBExists() {
+        File file = Environment.getDataDirectory();
+        String path = "/data/com.rootekstudio.repeatsandroid/databases/repeats";
+        File oldDB = new File(file, path);
+        return oldDB.exists();
+    }
+
+    public static AlertDialog loadingMigrationDialog(Context context) {
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
+        dialogBuilder.setBackground(context.getDrawable(R.drawable.dialog_shape));
+
+        View view = LayoutInflater.from(context).inflate(R.layout.loading, null);
+        TextView textView = view.findViewById(R.id.loadingText);
+        textView.setText(R.string.dataMigrate);
+
+        dialogBuilder.setView(view);
+        dialogBuilder.setCancelable(false);
+        return dialogBuilder.create();
     }
 
     public static void CheckDir(Context cnt) {

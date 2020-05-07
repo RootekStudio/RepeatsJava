@@ -30,13 +30,14 @@ public class SaveShared {
 
         File legacyFile = new File(dir, "Answers.txt");
         if (legacyFile.exists()) {
-            SaveSharedLegacy.saveSharedLegacy(context, DB);
+            SaveSharedLegacy saveSharedLegacy = new SaveSharedLegacy(context, DB);
+            ID = saveSharedLegacy.ID;
+            name = saveSharedLegacy.setName;
             return;
         }
 
         File jsonFile = new File(dir, "sets.json");
         try {
-
             FileInputStream jsonStream = new FileInputStream(jsonFile);
             BufferedReader jReader = new BufferedReader(new InputStreamReader(jsonStream));
             StringBuilder sb = new StringBuilder();
@@ -61,7 +62,7 @@ public class SaveShared {
             do {
                 JSONObject singleSet = rootObject.getJSONObject(keys.get(setIndex));
                 name = keys.get(setIndex);
-                String id = new SetsConfigHelper(context).createNewSet(false, name);
+                ID = new SetsConfigHelper(context).createNewSet(false, name);
                 do {
                     JSONObject singleItem = singleSet.getJSONObject(String.valueOf(itemIndex));
                     String question = singleItem.getString("question");
@@ -88,7 +89,7 @@ public class SaveShared {
 
                         File imageDir = new File(dir, image);
 
-                        String imageID = "I" + id;
+                        String imageID = "I" + ID;
                         imageID = imageID + itemIndex + ".png";
 
                         FileInputStream inputStream = new FileInputStream(imageDir);
@@ -100,9 +101,9 @@ public class SaveShared {
                         FileOutputStream out = new FileOutputStream(control);
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
-                        DB.addItemToSetWithValues(id, question, answer, imageID);
+                        DB.addItemToSetWithValues(ID, question, answer, imageID);
                     } else {
-                        DB.addItemToSetWithValues(id, question, answer, "");
+                        DB.addItemToSetWithValues(ID, question, answer, "");
                     }
 
                     itemIndex++;

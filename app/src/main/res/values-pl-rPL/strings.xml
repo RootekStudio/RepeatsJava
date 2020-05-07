@@ -264,4 +264,5 @@
     <string name="specialThanks">Specjalne podziękowania dla Daniela, Marcina, Mikołaja i Piotra za propozycje funkcji</string>
     <string name="firstRunPhotoCredits">Zdjęcie w tle podczas pierwszego uruchomienia: Kevin Mueller\nŹródło: unsplash.com</string>
     <string name="info">Informacje</string>
+    <string name="dataMigrate">Trwa migracja danych...\nProszę czekać</string>
 </resources>

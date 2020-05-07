@@ -8,11 +8,15 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.database.MigrateDatabase;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
+import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.util.List;
 
@@ -21,6 +25,25 @@ public class ReadAloudConfigActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(RepeatsHelper.oldDBExists()) {
+            AlertDialog dialog = RepeatsHelper.loadingMigrationDialog(this);
+            dialog.show();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    new MigrateDatabase(ReadAloudConfigActivity.this).migrateToNewDatabase();
+                    deleteDatabase("repeats");
+                    dialog.cancel();
+                    startActivity(new Intent(ReadAloudConfigActivity.this, ReadAloudConfigActivity.class));
+                    finish();
+                }
+            }).start();
+
+            return;
+        }
+
         setContentView(R.layout.activity_read_aloud_config);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

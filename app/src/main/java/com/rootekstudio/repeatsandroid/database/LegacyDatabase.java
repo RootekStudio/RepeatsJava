@@ -17,9 +17,6 @@ public class LegacyDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-//        String CREATE_TITLETABLE = "CREATE TABLE IF NOT EXISTS TitleTable (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, TableName TEXT, CreateDate TEXT, IsEnabled TEXT, " +
-//                "Avatar TEXT, IgnoreChars TEXT, firstLanguage TEXT, secondLanguage TEXT, goodAnswers INTEGER DEFAULT 0, wrongAnswers INTEGER DEFAULT 0, allAnswers INTEGER DEFAULT 0)";
-//        db.execSQL(CREATE_TITLETABLE);
     }
 
     @Override

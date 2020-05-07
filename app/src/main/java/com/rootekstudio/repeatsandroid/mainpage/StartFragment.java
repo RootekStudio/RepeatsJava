@@ -79,7 +79,7 @@ public class StartFragment extends Fragment {
         if (fastLearningSetRecommendation != null || readAloudSetRecommendation != null) {
             TextView setNameFL = fastLearningRecommendation.findViewById(R.id.text1FirstRecommendation);
             setNameFL.setText(fastLearningSetRecommendation.getSetName());
-            fastLearningRecommendation.setTag(fastLearningSetRecommendation.getSetName());
+            fastLearningRecommendation.setTag(fastLearningSetRecommendation.getSetID());
             fastLearningRecommendation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -92,7 +92,7 @@ public class StartFragment extends Fragment {
 
             TextView setNameRA = readAloudRecommendation.findViewById(R.id.text1SecRecommendation);
             setNameRA.setText(readAloudSetRecommendation.getSetName());
-            readAloudRecommendation.setTag(readAloudSetRecommendation.getSetName());
+            readAloudRecommendation.setTag(readAloudSetRecommendation.getSetID());
             readAloudRecommendation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

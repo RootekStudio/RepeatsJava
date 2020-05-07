@@ -14,7 +14,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class SaveSharedLegacy {
-    static void saveSharedLegacy(Context context, RepeatsDatabase DB) {
+    Context context;
+    RepeatsDatabase DB;
+
+    public String ID;
+    public String setName;
+
+    public SaveSharedLegacy(Context context, RepeatsDatabase DB) {
+        this.context = context;
+        this.DB = DB;
+
+        saveSharedLegacy();
+    }
+    private void saveSharedLegacy() {
         final File dir = new File(context.getFilesDir(), "shared");
         File questions = new File(dir, "Questions.txt");
         File answers = new File(dir, "Answers.txt");
@@ -28,20 +40,20 @@ public class SaveSharedLegacy {
             BufferedReader Areader = new BufferedReader(new InputStreamReader(answerStream));
             String lineQ = Qreader.readLine();
             name = lineQ;
-            SaveShared.name = name;
+            setName = name;
             String lineA = Areader.readLine();
             lineQ = Qreader.readLine();
             lineA = Areader.readLine();
             int i = 0;
             int itemIndex = 0;
 
-            String id = new SetsConfigHelper(context).createNewSet(false, name);
+            ID = new SetsConfigHelper(context).createNewSet(false, name);
 
             while (lineQ != null) {
 
                 final File image = new File(dir, "S" + i + ".png");
                 if (image.exists()) {
-                    String imageID = "I" + id;
+                    String imageID = "I" + ID;
                     imageID = imageID + itemIndex + ".png";
 
                     FileInputStream inputStream = new FileInputStream(image);
@@ -53,9 +65,9 @@ public class SaveSharedLegacy {
                     FileOutputStream out = new FileOutputStream(control);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
-                    DB.addItemToSetWithValues(id, lineQ, lineA, imageID);
+                    DB.addItemToSetWithValues(ID, lineQ, lineA, imageID);
                 } else {
-                    DB.addItemToSetWithValues(id, lineQ, lineA, "");
+                    DB.addItemToSetWithValues(ID, lineQ, lineA, "");
                 }
 
                 lineQ = Qreader.readLine();

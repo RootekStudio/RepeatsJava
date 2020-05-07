@@ -269,5 +269,6 @@
     <string name="specialThanks">Special thanks to Daniel, Marcin, Mikołaj and Piotr for feature suggestions</string>
     <string name="firstRunPhotoCredits">Background image during the first start: Kevin Mueller\nSource: unsplash.com</string>
     <string name="info">Information</string>
+    <string name="dataMigrate">Data migration in progres...\nPlease wait</string>
 
 </resources>

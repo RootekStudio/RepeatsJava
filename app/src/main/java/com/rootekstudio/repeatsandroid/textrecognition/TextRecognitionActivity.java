@@ -210,7 +210,7 @@ public class TextRecognitionActivity extends AppCompatActivity {
     void createLoadingDialog() {
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this);
         dialogBuilder.setBackground(getDrawable(R.drawable.dialog_shape));
-        dialogBuilder.setView(LayoutInflater.from(this).inflate(R.layout.loading_tr, null));
+        dialogBuilder.setView(LayoutInflater.from(this).inflate(R.layout.loading, null));
         dialogBuilder.setCancelable(false);
         loadingDialog = dialogBuilder.create();
         loadingDialog.show();

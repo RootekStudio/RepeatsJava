@@ -7,12 +7,15 @@ import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -23,6 +26,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
@@ -30,6 +34,7 @@ import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.ZipSet;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
 import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
+import com.rootekstudio.repeatsandroid.database.MigrateDatabase;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
 import com.rootekstudio.repeatsandroid.search.SearchActivity;
@@ -45,8 +50,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RepeatsHelper.createNotificationChannel(this);
 
+        if(RepeatsHelper.oldDBExists()) {
+            AlertDialog dialog = RepeatsHelper.loadingMigrationDialog(this);
+            dialog.show();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    new MigrateDatabase(MainActivity.this).migrateToNewDatabase();
+                    deleteDatabase("repeats");
+                    dialog.cancel();
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                    finish();
+                }
+            }).start();
+
+            return;
+        }
+
+        RepeatsHelper.createNotificationChannel(this);
         darkTheme = RepeatsHelper.DarkTheme(this, false);
         RepeatsHelper.CheckDir(this);
         setContentView(R.layout.activity_main);
