@@ -51,13 +51,20 @@ public class LegacyDatabase extends SQLiteOpenHelper {
                     singleSetInfo.setSetID(cursor.getString(0));
                     singleSetInfo.setSetName(cursor.getString(1));
                     singleSetInfo.setCreateDate(cursor.getString(2));
-                    if(Boolean.getBoolean(cursor.getString(3))) {
+
+                    if(cursor.getString(3).equals("true")) {
                         singleSetInfo.setIsEnabled(1);
                     }
                     else {
                         singleSetInfo.setIsEnabled(0);
                     }
-                    singleSetInfo.setIgnoreChars(Boolean.getBoolean(cursor.getString(4)) ? 1 : 0);
+
+                    if(cursor.getString(4).equals("true")) {
+                        singleSetInfo.setIgnoreChars(1);
+                    }
+                    else {
+                        singleSetInfo.setIgnoreChars(0);
+                    }
                     singleSetInfo.setFirstLanguage(cursor.getString(5));
                     singleSetInfo.setSecondLanguage(cursor.getString(6));
                     singleSetInfo.setGoodAnswers(cursor.getInt(7));
@@ -79,13 +86,21 @@ public class LegacyDatabase extends SQLiteOpenHelper {
                     singleSetInfo.setSetID(cursor.getString(0));
                     singleSetInfo.setSetName(cursor.getString(1));
                     singleSetInfo.setCreateDate(cursor.getString(2));
-                    if(Boolean.getBoolean(cursor.getString(3))) {
+
+                    if(cursor.getString(3).equals("true")) {
                         singleSetInfo.setIsEnabled(1);
                     }
                     else {
                         singleSetInfo.setIsEnabled(0);
                     }
-                    singleSetInfo.setIgnoreChars(Boolean.getBoolean(cursor.getString(4)) ? 1 : 0);
+
+                    if(cursor.getString(4).equals("true")) {
+                        singleSetInfo.setIgnoreChars(1);
+                    }
+                    else {
+                        singleSetInfo.setIgnoreChars(0);
+                    }
+
                     singleSetInfo.setFirstLanguage(cursor.getString(5));
                     singleSetInfo.setSecondLanguage(cursor.getString(6));
                     singleSetInfo.setGoodAnswers(0);
@@ -109,13 +124,21 @@ public class LegacyDatabase extends SQLiteOpenHelper {
                     singleSetInfo.setSetID(cursor.getString(0));
                     singleSetInfo.setSetName(cursor.getString(1));
                     singleSetInfo.setCreateDate(cursor.getString(2));
-                    if(Boolean.getBoolean(cursor.getString(3))) {
+
+                    if(cursor.getString(3).equals("true")) {
                         singleSetInfo.setIsEnabled(1);
                     }
                     else {
                         singleSetInfo.setIsEnabled(0);
                     }
-                    singleSetInfo.setIgnoreChars(Boolean.getBoolean(cursor.getString(4)) ? 1 : 0);
+
+                    if(cursor.getString(4).equals("true")) {
+                        singleSetInfo.setIgnoreChars(1);
+                    }
+                    else {
+                        singleSetInfo.setIgnoreChars(0);
+                    }
+
                     singleSetInfo.setFirstLanguage(firstLanguage);
                     singleSetInfo.setSecondLanguage(secondLanguage);
                     singleSetInfo.setGoodAnswers(0);
@@ -139,7 +162,7 @@ public class LegacyDatabase extends SQLiteOpenHelper {
                     singleSetInfo.setSetName(cursor.getString(1));
                     singleSetInfo.setCreateDate(cursor.getString(2));
 
-                    if(Boolean.getBoolean(cursor.getString(3))) {
+                    if(cursor.getString(3).equals("true")) {
                         singleSetInfo.setIsEnabled(1);
                     }
                     else {
