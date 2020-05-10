@@ -12,6 +12,7 @@ import androidx.preference.PreferenceManager;
 
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.firstrun.FirstRunActivity;
 import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
@@ -24,24 +25,15 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
         Intent intent;
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sharedPreferences.contains("firstRunTerms")) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("firstRunTerms", 2);
-            editor.apply();
-
+        if (sharedPreferencesManager.getFirstRunTerms() != 2) {
             intent = new Intent(this, FirstRunActivity.class);
         } else {
             intent = new Intent(this, MainActivity.class);
         }
 
-        if (!sharedPreferences.contains("userID")) {
-            String uniqueID = UUID.randomUUID().toString();
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("userID", uniqueID);
-            editor.apply();
-        }
+        sharedPreferencesManager.getUserID();
 //
 //        AppCenter.start(getApplication(), "347cfec3-4ebc-443c-a9d6-4fdd34df27dd",
 //                Analytics.class, Crashes.class);

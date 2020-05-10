@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
 
 import java.util.ArrayList;
 
@@ -50,8 +51,7 @@ public class MySetsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         textView = findViewById(R.id.emptyMySetsText);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String userID = sharedPreferences.getString("userID", "");
+        String userID = SharedPreferencesManager.getInstance(this).getUserID();
 
         resultNames = new ArrayList<>();
         db.collection("sets")

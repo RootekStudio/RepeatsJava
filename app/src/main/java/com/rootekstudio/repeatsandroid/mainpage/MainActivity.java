@@ -26,6 +26,7 @@ import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
+import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.ZipSet;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
@@ -137,14 +138,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void whatsNewClickMain(View view) {
-        RepeatsHelper.saveVersion(this);
+        SharedPreferencesManager.getInstance(this).setVersion(RepeatsHelper.version);
         Intent intent = new Intent(this, WhatsNewActivity.class);
         startActivity(intent);
         view.setVisibility(View.GONE);
     }
 
     public void closeUpdateInfo(View view) {
-        RepeatsHelper.saveVersion(this);
+        SharedPreferencesManager.getInstance(this).setVersion(RepeatsHelper.version);
         LinearLayout linearLayout = findViewById(R.id.linearStart);
         linearLayout.removeView(findViewById(R.id.infoLayout));
     }

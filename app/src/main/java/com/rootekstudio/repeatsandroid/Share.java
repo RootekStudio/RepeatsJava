@@ -106,8 +106,7 @@ public class Share {
         SimpleDateFormat simpleDate = new SimpleDateFormat("dd.MM.yyyy");
         String createDate = simpleDate.format(new Date());
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String userID = sharedPreferences.getString("userID", "");
+        String userID = SharedPreferencesManager.getInstance(context).getUserID();
 
         final Map<String, Object> set = new HashMap<>();
         set.put("availability", availability);

@@ -2,7 +2,6 @@ package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -29,7 +28,6 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -39,6 +37,8 @@ import com.rootekstudio.repeatsandroid.OnSystemBoot;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
+import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
+import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.activities.AppInfoActivity;
 import com.rootekstudio.repeatsandroid.activities.ChangeDeliveryListActivity;
 import com.rootekstudio.repeatsandroid.activities.EnableSetsListActivity;
@@ -56,18 +56,16 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 public class PreferenceFragment extends PreferenceFragmentCompat {
+    private SharedPreferencesManager sharedPreferencesManager;
     private SharedPreferences sharedPreferences;
 
-    public PreferenceFragment() {
-
-    }
+    public PreferenceFragment() {}
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preference_screen, rootKey);
-
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-
+        sharedPreferencesManager = SharedPreferencesManager.getInstance(requireContext());
+        sharedPreferences = sharedPreferencesManager.getSharedPreferences();
         askAboutBattery();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -176,7 +174,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
 
             editText.setOnKeyListener((view, keyCode, keyEvent) -> {
-
                 if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                     EditText time = (EditText) view;
                     String timeText = time.getText().toString();
@@ -184,7 +181,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         saveTime(timeText);
                     }
                 }
-                return true;
+                return false;
             });
 
             dialogBuilder.setView(view1);
@@ -373,7 +370,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void askAboutBattery() {
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         if (!sharedPreferences.contains("batteryOptimization")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 final String packageName = requireContext().getPackageName();
@@ -384,15 +380,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     dialog.setBackground(requireContext().getDrawable(R.drawable.dialog_shape));
                     dialog.setTitle(R.string.batteryAskTitle);
                     dialog.setMessage(R.string.batteryAskMessage);
-                    dialog.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(requireContext(), R.string.CancelOffBattery, Toast.LENGTH_LONG).show();
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putBoolean("batteryOptimization", false);
-                            editor.apply();
+                    dialog.setNegativeButton(R.string.Cancel, (dialog12, which) -> {
+                        Toast.makeText(requireContext(), R.string.CancelOffBattery, Toast.LENGTH_LONG).show();
+                        sharedPreferencesManager.setBatteryOptimization(false);
 
-                        }
                     });
 
                     dialog.setPositiveButton(R.string.Continue, (dialog1, which) -> {
@@ -403,9 +394,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         intent.setData(Uri.parse("package:" + packageName));
                         requireActivity().startActivity(intent);
 
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putBoolean("batteryOptimization", true);
-                        editor.apply();
+                        sharedPreferencesManager.setBatteryOptimization(true);
 
                     });
 
@@ -418,7 +407,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     private void saveTime(String text) {
         int frequency = Integer.parseInt(text);
 
-        ConstNotifiSetup.SaveFrequency(requireContext(), frequency);
+        sharedPreferencesManager.setFrequency(frequency);
         ConstNotifiSetup.CancelNotifications(requireContext());
         ConstNotifiSetup.RegisterNotifications(requireContext(), null, RepeatsHelper.staticFrequencyCode);
 
@@ -433,27 +422,20 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String packageName = getContext().getPackageName();
             PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
-            SharedPreferences.Editor edit = sharedPreferences.edit();
             if (requestCode == 123) {
                 if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                    edit.putBoolean("batteryOptimization", false);
-                    edit.apply();
+                    sharedPreferencesManager.setBatteryOptimization(false);
                 } else {
-                    edit.putBoolean("batteryOptimization", true);
-                    edit.apply();
+                    sharedPreferencesManager.setBatteryOptimization(true);
                 }
 
-                requireActivity().finish();
-                requireActivity().overridePendingTransition(0, 0);
-                requireContext().startActivity(requireActivity().getIntent());
-                requireActivity().overridePendingTransition(0, 0);
+                UIHelper.restartActivity(requireActivity());
+
             } else if (requestCode == 124) {
                 if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                    edit.putBoolean("batteryOptimization", false);
-                    edit.apply();
+                    sharedPreferencesManager.setBatteryOptimization(false);
                 } else {
-                    edit.putBoolean("batteryOptimization", true);
-                    edit.apply();
+                    sharedPreferencesManager.setBatteryOptimization(true);
                 }
             }
         }

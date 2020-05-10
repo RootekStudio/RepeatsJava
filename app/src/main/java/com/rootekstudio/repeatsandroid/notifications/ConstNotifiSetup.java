@@ -13,13 +13,15 @@ import androidx.preference.PreferenceManager;
 
 import com.rootekstudio.repeatsandroid.OnSystemBoot;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
 
 import java.util.Calendar;
 
 public class ConstNotifiSetup {
     public static void RegisterNotifications(Context cnt, Calendar calendar, int code) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
-        int time = sharedPreferences.getInt("frequency", 0);
+
+        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(cnt);
+        int time = sharedPreferencesManager.getFrequency();
 
         if (time != 0) {
             long triggerAtMillis;
@@ -52,9 +54,7 @@ public class ConstNotifiSetup {
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP);
 
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("ListNotifi", "1");
-            editor.apply();
+            sharedPreferencesManager.setListNotifi("1");
         }
     }
 
@@ -88,12 +88,5 @@ public class ConstNotifiSetup {
 
         ConstNotifiSetup.CancelNotifications(context);
         ConstNotifiSetup.RegisterNotifications(context, calendarAlarm, id);
-    }
-
-    public static void SaveFrequency(Context cnt, int frequency) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("frequency", frequency);
-        editor.apply();
     }
 }

@@ -23,4 +23,11 @@ public class UIHelper {
         dialogBuilder.setCancelable(false);
         return dialogBuilder.show();
     }
+
+    public static void restartActivity(Activity activity) {
+        activity.finish();
+        activity.overridePendingTransition(0, 0);
+        activity.startActivity(activity.getIntent());
+        activity.overridePendingTransition(0, 0);
+    }
 }

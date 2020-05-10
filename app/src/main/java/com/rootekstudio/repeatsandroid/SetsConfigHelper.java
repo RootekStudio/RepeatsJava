@@ -100,10 +100,8 @@ public class SetsConfigHelper {
                 e.printStackTrace();
             }
 
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("ListNotifi", "0");
-            editor.apply();
+
+            SharedPreferencesManager.getInstance(context).setListNotifi("0");
         }
     }
 }

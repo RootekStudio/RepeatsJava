@@ -13,8 +13,7 @@ import com.rootekstudio.repeatsandroid.notifications.RegisterNotifications;
 public class OnSystemBoot extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String notifi = sharedPreferences.getString("ListNotifi", "1");
+        String notifi = SharedPreferencesManager.getInstance(context).getListNotifi();
 
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             if (notifi.equals("1")) {

@@ -5,14 +5,12 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.SystemClock;
 
-import androidx.preference.PreferenceManager;
-
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,9 +23,10 @@ public class RepeatsQuestionSend extends BroadcastReceiver {
         boolean isNext = intent.getBooleanExtra("IsNext", false);
         int time = intent.getIntExtra("time", 42);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String notifiMode = sharedPreferences.getString("ListNotifi", "1");
-        boolean silenceHours = sharedPreferences.getBoolean("silenceHoursSwitch", true);
+        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(context);
+
+        String notifiMode = sharedPreferencesManager.getListNotifi();
+        boolean silenceHours = sharedPreferencesManager.getSilenceHours();
         boolean canSend = true;
 
         if (isNext) {

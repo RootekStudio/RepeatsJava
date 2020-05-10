@@ -20,21 +20,8 @@ public class RepeatsHelper {
     public static final int staticFrequencyCode = 10000;
     public static String version = "2.7";
 
-    public static void saveVersion(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("version", RepeatsHelper.version);
-        editor.apply();
-    }
-
     public static Boolean DarkTheme(Context context, Boolean onlyCheck) {
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String theme = "";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            theme = sharedPreferences.getString("theme", "2");
-        } else {
-            theme = sharedPreferences.getString("theme", "1");
-        }
+        String theme = SharedPreferencesManager.getInstance(context).getTheme();
 
         if (theme.equals("0")) {
             if (!onlyCheck) {

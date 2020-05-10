@@ -1,7 +1,6 @@
 package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +10,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
@@ -31,6 +30,7 @@ public class StartFragment extends Fragment {
     private SingleSetInfo fastLearningSetRecommendation = null;
     private SingleSetInfo readAloudSetRecommendation = null;
     private List<SingleSetInfo> setsInfo;
+    private SharedPreferencesManager sharedPreferencesManager;
 
     public StartFragment() {
 
@@ -51,8 +51,9 @@ public class StartFragment extends Fragment {
         RelativeLayout readAloudRelative = view.findViewById(R.id.featureReadAloudMain);
         RelativeLayout notificationsRelative = view.findViewById(R.id.featureNotificationsMain);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        String notifiMode = sharedPreferences.getString("ListNotifi", "0");
+        sharedPreferencesManager = SharedPreferencesManager.getInstance(requireContext());
+
+        String notifiMode = sharedPreferencesManager.getListNotifi();
 
         if (notifiMode.equals("0") && setsInfo.size() != 0) {
             turnOnNotificationsRecommendation.setVisibility(View.VISIBLE);
@@ -132,14 +133,11 @@ public class StartFragment extends Fragment {
         });
 
         try {
-            if (!sharedPreferences.contains("version")) {
-                RepeatsHelper.saveVersion(requireContext());
-            } else {
-                if (!sharedPreferences.getString("version", "2.6").equals(RepeatsHelper.version)) {
-                    view.findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
-                    RepeatsHelper.saveVersion(requireContext());
-                }
+            if (!sharedPreferencesManager.getVersion().equals(RepeatsHelper.version)) {
+                view.findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
+                sharedPreferencesManager.setVersion(RepeatsHelper.version);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -17,6 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.SetsConfigHelper;
+import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
 import com.rootekstudio.repeatsandroid.database.Values;
@@ -158,18 +159,9 @@ public class FirstRunActivity extends AppCompatActivity {
     }
 
     void defaultSettings() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sharedPreferences.contains("silenceHoursSwitch")) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("silenceHoursSwitch", false);
-            editor.apply();
-        }
-
-        if (!sharedPreferences.contains("frequency")) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("frequency", 30);
-            editor.apply();
-        }
+        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
+        sharedPreferencesManager.getSilenceHours();
+        sharedPreferencesManager.getFrequency();
 
         File jsonFile = new File(getFilesDir(), "silenceHours.json");
         if (!jsonFile.exists()) {
