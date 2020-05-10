@@ -70,7 +70,7 @@ public class JsonFile {
                         sets.remove(i);
                         if (sets.length() == 0) {
 
-                            ArrayList<String> setsID = new RepeatsDatabase(context).getSingleColumnFromSetInfo(Values.set_id);
+                            ArrayList<String> setsID = RepeatsDatabase.getInstance(context).getSingleColumnFromSetInfo(Values.set_id);
                             if (setsID.size() > 0) {
                                 sets.put(setsID.get(0));
                             }

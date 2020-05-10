@@ -97,7 +97,7 @@ public class FastLearningActivity extends AppCompatActivity {
         relativeBottomInfo =        findViewById(R.id.relativeBottomInfo);
         fab =                       findViewById(R.id.fabFL);
 
-        DB = new RepeatsDatabase(this);
+        DB = RepeatsDatabase.getInstance(this);
 
         itemCount = -1;
         goodAnswersCount = 0;
@@ -115,39 +115,30 @@ public class FastLearningActivity extends AppCompatActivity {
 
         oldTextColor = userAnswer.getTextColors();
 
-        userAnswer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean isFocus) {
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) fab.getLayoutParams();
-                if(isFocus) {
-                    relativeBottomInfo.setVisibility(View.GONE);
-                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                    fab.setLayoutParams(layoutParams);
-                }
-                else {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(110);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    relativeBottomInfo.setVisibility(View.VISIBLE);
-                                    layoutParams.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                                    layoutParams.addRule(RelativeLayout.ABOVE, R.id.relativeBottomInfo);
-                                    fab.setLayoutParams(layoutParams);
-                                }
-                            });
-                        }
-                    }).start();
-
-                }
+        userAnswer.setOnFocusChangeListener((view, isFocus) -> {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) fab.getLayoutParams();
+            if(isFocus) {
+                relativeBottomInfo.setVisibility(View.GONE);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                fab.setLayoutParams(layoutParams);
+            }
+            else {
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(110);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    runOnUiThread(() -> {
+                        relativeBottomInfo.setVisibility(View.VISIBLE);
+                        layoutParams.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                        layoutParams.addRule(RelativeLayout.ABOVE, R.id.relativeBottomInfo);
+                        fab.setLayoutParams(layoutParams);
+                    });
+                }).start();
 
             }
+
         });
 
         loadQuestion();
@@ -221,12 +212,9 @@ public class FastLearningActivity extends AppCompatActivity {
                 userAnswer.setTextColor(getResources().getColor(R.color.greenRepeats));
                 goodAnswersCount++;
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DB.increaseValueInSet(singleItem.getSetID(), singleItem.getItemID(), Values.good_answers, 1);
-                        DB.increaseValueInSetsInfo(singleItem.getSetID(), Values.good_answers, 1);
-                    }
+                new Thread(() -> {
+                    DB.increaseValueInSet(singleItem.getSetID(), singleItem.getItemID(), Values.good_answers, 1);
+                    DB.increaseValueInSetsInfo(singleItem.getSetID(), Values.good_answers, 1);
                 }).start();
 
             } else {
@@ -234,13 +222,6 @@ public class FastLearningActivity extends AppCompatActivity {
                 if (goodAnswer.contains("\n")) {
                     otherCorrectLinear.setVisibility(View.VISIBLE);
                 }
-
-//                scrollView.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        scrollView.scrollTo(0, scrollView.getBottom());
-//                    }
-//                });
 
                 if (userAnswer.getText().toString().equals("")) {
                     userAnswer.setText(getString(R.string.noAnswer));
@@ -256,12 +237,9 @@ public class FastLearningActivity extends AppCompatActivity {
                     fastLearningItemList.add(singleItem);
                 }
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DB.increaseValueInSet(singleItem.getSetID(), singleItem.getItemID(), Values.wrong_answers, 1);
-                        DB.increaseValueInSetsInfo(singleItem.getSetID(), Values.wrong_answers, 1);
-                    }
+                new Thread(() -> {
+                    DB.increaseValueInSet(singleItem.getSetID(), singleItem.getItemID(), Values.wrong_answers, 1);
+                    DB.increaseValueInSetsInfo(singleItem.getSetID(), Values.wrong_answers, 1);
                 }).start();
             }
 
@@ -290,20 +268,12 @@ public class FastLearningActivity extends AppCompatActivity {
                         .setTitle(R.string.FLendText)
                         .setMessage(message)
                         .setCancelable(false)
-                        .setNegativeButton(R.string.OnceAgain, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(getApplicationContext(), FastLearningActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
+                        .setNegativeButton(R.string.OnceAgain, (dialogInterface, i) -> {
+                            Intent intent = new Intent(getApplicationContext(), FastLearningActivity.class);
+                            startActivity(intent);
+                            finish();
                         })
-                        .setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                finish();
-                            }
-                        });
+                        .setPositiveButton(R.string.exit, (dialogInterface, i) -> finish());
 
                 AlertDialog dialog = alertDialog.create();
                 dialog.show();
@@ -334,12 +304,11 @@ public class FastLearningActivity extends AppCompatActivity {
                 .setTitle(R.string.finishFastLearning)
                 .setMessage(R.string.finishFastLearningQuestion)
                 .setNegativeButton(R.string.Cancel, null)
-                .setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                });
+                .setPositiveButton(R.string.exit, (dialogInterface, i) -> {
+                            FastLearningInfo.reset();
+                            finish();
+                        });
+
 
         AlertDialog dialog = alertDialog.create();
         dialog.show();
@@ -373,12 +342,9 @@ public class FastLearningActivity extends AppCompatActivity {
                     }
                 }
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String timeString = time + ": " + minutesString + ":" + secondsString;
-                        countTimeTxtView.setText(timeString);
-                    }
+                runOnUiThread(() -> {
+                    String timeString = time + ": " + minutesString + ":" + secondsString;
+                    countTimeTxtView.setText(timeString);
                 });
             }
         }, 0, 1000);

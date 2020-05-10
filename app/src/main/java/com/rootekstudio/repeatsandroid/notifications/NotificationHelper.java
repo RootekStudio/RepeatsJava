@@ -132,7 +132,7 @@ public class NotificationHelper {
             calendarAlarm.set(Calendar.SECOND, 0);
         } else {
             calendarAlarm.setTimeInMillis(System.currentTimeMillis());
-            int setsDayOfWeek = Integer.valueOf(day);
+            int setsDayOfWeek = Integer.parseInt(day);
             int realDayOfWeek = calendarAlarm.get(Calendar.DAY_OF_WEEK);
 
             if (setsDayOfWeek < realDayOfWeek) {

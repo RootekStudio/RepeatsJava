@@ -30,7 +30,7 @@ import java.util.List;
 public class StartFragment extends Fragment {
     private SingleSetInfo fastLearningSetRecommendation = null;
     private SingleSetInfo readAloudSetRecommendation = null;
-    List<SingleSetInfo> setsInfo;
+    private List<SingleSetInfo> setsInfo;
 
     public StartFragment() {
 
@@ -51,7 +51,7 @@ public class StartFragment extends Fragment {
         RelativeLayout readAloudRelative = view.findViewById(R.id.featureReadAloudMain);
         RelativeLayout notificationsRelative = view.findViewById(R.id.featureNotificationsMain);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         String notifiMode = sharedPreferences.getString("ListNotifi", "0");
 
         if (notifiMode.equals("0") && setsInfo.size() != 0) {
@@ -80,28 +80,22 @@ public class StartFragment extends Fragment {
             TextView setNameFL = fastLearningRecommendation.findViewById(R.id.text1FirstRecommendation);
             setNameFL.setText(fastLearningSetRecommendation.getSetName());
             fastLearningRecommendation.setTag(fastLearningSetRecommendation.getSetID());
-            fastLearningRecommendation.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String setID = view.getTag().toString();
-                    Intent intent = new Intent(getContext(), FastLearningConfigActivity.class);
-                    intent.putExtra("setID", setID);
-                    startActivity(intent);
-                }
+            fastLearningRecommendation.setOnClickListener(view14 -> {
+                String setID = view14.getTag().toString();
+                Intent intent = new Intent(requireContext(), FastLearningConfigActivity.class);
+                intent.putExtra("setID", setID);
+                startActivity(intent);
             });
 
             TextView setNameRA = readAloudRecommendation.findViewById(R.id.text1SecRecommendation);
             setNameRA.setText(readAloudSetRecommendation.getSetName());
             readAloudRecommendation.setTag(readAloudSetRecommendation.getSetID());
-            readAloudRecommendation.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String setID = view.getTag().toString();
-                    Intent intent = new Intent(getContext(), ReadAloudActivity.class);
-                    intent.putExtra("setID", setID);
-                    intent.putExtra("newReadAloud", true);
-                    startActivity(intent);
-                }
+            readAloudRecommendation.setOnClickListener(view15 -> {
+                String setID = view15.getTag().toString();
+                Intent intent = new Intent(requireContext(), ReadAloudActivity.class);
+                intent.putExtra("setID", setID);
+                intent.putExtra("newReadAloud", true);
+                startActivity(intent);
             });
         } else {
             try {
@@ -112,57 +106,38 @@ public class StartFragment extends Fragment {
             }
         }
 
-        turnOnNotificationsRecommendation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
-                bottomNavigationView.setSelectedItemId(R.id.app_bar_settings);
-            }
+        turnOnNotificationsRecommendation.setOnClickListener(view16 -> {
+            BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+            bottomNavigationView.setSelectedItemId(R.id.app_bar_settings);
         });
 
-        repeatsCommunityRecommendation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Log.i("TAG", String.valueOf(Analytics.isEnabled().get()));
-//                HashMap<String, String> properties = new HashMap<>();
-//                properties.put("test", "0");
-//                Analytics.trackEvent("RepeatsCommunityClick", properties);
-                Intent intent = new Intent(getContext(), RepeatsCommunityStartActivity.class);
-                startActivity(intent);
-            }
+        repeatsCommunityRecommendation.setOnClickListener(view17 -> {
+            Intent intent = new Intent(requireContext(), RepeatsCommunityStartActivity.class);
+            startActivity(intent);
         });
 
-        fastLearningRelative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), FastLearningConfigActivity.class);
-                startActivity(intent);
-            }
+        fastLearningRelative.setOnClickListener(view13 -> {
+            Intent intent = new Intent(requireContext(), FastLearningConfigActivity.class);
+            startActivity(intent);
         });
 
-        readAloudRelative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ReadAloudConfigActivity.class);
-                startActivity(intent);
-            }
+        readAloudRelative.setOnClickListener(view12 -> {
+            Intent intent = new Intent(requireContext(), ReadAloudConfigActivity.class);
+            startActivity(intent);
         });
 
-        notificationsRelative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
-                bottomNavigationView.setSelectedItemId(R.id.app_bar_settings);
-            }
+        notificationsRelative.setOnClickListener(view1 -> {
+            BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+            bottomNavigationView.setSelectedItemId(R.id.app_bar_settings);
         });
 
         try {
             if (!sharedPreferences.contains("version")) {
-                RepeatsHelper.saveVersion(getContext());
+                RepeatsHelper.saveVersion(requireContext());
             } else {
                 if (!sharedPreferences.getString("version", "2.6").equals(RepeatsHelper.version)) {
                     view.findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
-                    RepeatsHelper.saveVersion(getContext());
+                    RepeatsHelper.saveVersion(requireContext());
                 }
             }
         } catch (Exception e) {
@@ -173,7 +148,7 @@ public class StartFragment extends Fragment {
     }
 
     private void generateData() {
-        setsInfo = new RepeatsDatabase(getContext()).allSetsInfo(Values.ORDER_BY_WRONG_ANSWERS_RATIO);
+        setsInfo = RepeatsDatabase.getInstance(requireContext()).allSetsInfo(Values.ORDER_BY_WRONG_ANSWERS_RATIO);
         Collections.shuffle(setsInfo);
     }
 }

@@ -54,14 +54,11 @@ public class StatsActivityAdapter extends RecyclerView.Adapter<StatsActivityAdap
         RelativeLayout relativeGraphSetStats = view.findViewById(R.id.relativeGraphSetStats);
         TextView clickToSeeDetailsTextView = view.findViewById(R.id.clickToSeeDetailsTextView);
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), SetStatsActivity.class);
-                intent.putExtra("setID", item.getSetID());
-                intent.putExtra("setName", item.getName());
-                view.getContext().startActivity(intent);
-            }
+        view.setOnClickListener(view1 -> {
+            Intent intent = new Intent(view1.getContext(), SetStatsActivity.class);
+            intent.putExtra("setID", item.getSetID());
+            intent.putExtra("setName", item.getName());
+            view1.getContext().startActivity(intent);
         });
 
         setName.setText(item.getName());

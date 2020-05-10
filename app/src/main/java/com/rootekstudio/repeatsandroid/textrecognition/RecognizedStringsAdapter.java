@@ -16,13 +16,13 @@ import com.rootekstudio.repeatsandroid.R;
 import java.util.List;
 
 public class RecognizedStringsAdapter extends RecyclerView.Adapter<RecognizedStringsAdapter.MainViewHolder> {
-    List<String> recognizedStrings;
+    private List<String> recognizedStrings;
 
     RecognizedStringsAdapter (List<String> recognizedStrings) {
         this.recognizedStrings = recognizedStrings;
     }
 
-    public List<String> getRecognizedStrings() {
+    List<String> getRecognizedStrings() {
         return recognizedStrings;
     }
 
@@ -35,13 +35,13 @@ public class RecognizedStringsAdapter extends RecyclerView.Adapter<RecognizedStr
         }
     }
 
+    @NonNull
     @Override
     public RecognizedStringsAdapter.MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.single_textview, parent, false);
 
-        RecognizedStringsAdapter.MainViewHolder mainViewHolder = new RecognizedStringsAdapter.MainViewHolder(linearLayout);
-        return mainViewHolder;
+        return new MainViewHolder(linearLayout);
     }
 
     @Override
@@ -51,63 +51,60 @@ public class RecognizedStringsAdapter extends RecyclerView.Adapter<RecognizedStr
         String string = recognizedStrings.get(position);
         textView.setText(string);
 
-        linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(holder.getLayoutPosition() != -1) {
-                    TextView selectedText = view.findViewById(R.id.singleTextView);
-                    RelativeLayout parent = (RelativeLayout) view.getParent().getParent().getParent().getParent();
+        linearLayout.setOnClickListener(view -> {
+            if(holder.getLayoutPosition() != -1) {
+                TextView selectedText = view.findViewById(R.id.singleTextView);
+                RelativeLayout parent = (RelativeLayout) view.getParent().getParent().getParent().getParent();
 
-                    if(TextRecognitionActivity.selected.equals("0")) {
-                        TextInputEditText editText = parent.findViewById(R.id.questionInputTR);
-                        String all;
-                        String textInEditText = editText.getText().toString();
+                if(TextRecognitionActivity.selected.equals("0")) {
+                    TextInputEditText editText = parent.findViewById(R.id.questionInputTR);
+                    String all;
+                    String textInEditText = editText.getText().toString();
 
-                        if(!textInEditText.equals("")) {
-                            all = textInEditText + " " + selectedText.getText().toString();
-                        }
-                        else {
-                            all = selectedText.getText().toString();
-                        }
-
-                        editText.setText(all);
-
-                        recognizedStrings.remove(holder.getLayoutPosition());
-                        notifyItemRemoved(holder.getLayoutPosition());
+                    if(!textInEditText.equals("")) {
+                        all = textInEditText + " " + selectedText.getText().toString();
                     }
-                    else if(TextRecognitionActivity.selected.equals("1")) {
-                        TextInputEditText editText = parent.findViewById(R.id.answerInputTR);
-                        String all;
-                        String textInEditText = editText.getText().toString();
-
-                        if(!textInEditText.equals("")) {
-                            all = textInEditText + " " + selectedText.getText().toString();
-                        }
-                        else {
-                            all = selectedText.getText().toString();
-                        }
-
-                        editText.setText(all);
-                        recognizedStrings.remove(holder.getLayoutPosition());
-                        notifyItemRemoved(holder.getLayoutPosition());
+                    else {
+                        all = selectedText.getText().toString();
                     }
-                    else  {
-                        LinearLayout textFields = parent.findViewById(R.id.linearTextRecognitionEditTexts);
-                        TextInputEditText editText = textFields.getChildAt(Integer.parseInt(TextRecognitionActivity.selected)).findViewById(R.id.answerInputTR);
-                        String all;
-                        String textInEditText = editText.getText().toString();
 
-                        if(!textInEditText.equals("")) {
-                            all = textInEditText + " " + selectedText.getText().toString();
-                        }
-                        else {
-                            all = selectedText.getText().toString();
-                        }
+                    editText.setText(all);
 
-                        editText.setText(all);
-                        recognizedStrings.remove(holder.getLayoutPosition());
-                        notifyItemRemoved(holder.getLayoutPosition());
+                    recognizedStrings.remove(holder.getLayoutPosition());
+                    notifyItemRemoved(holder.getLayoutPosition());
+                }
+                else if(TextRecognitionActivity.selected.equals("1")) {
+                    TextInputEditText editText = parent.findViewById(R.id.answerInputTR);
+                    String all;
+                    String textInEditText = editText.getText().toString();
+
+                    if(!textInEditText.equals("")) {
+                        all = textInEditText + " " + selectedText.getText().toString();
                     }
+                    else {
+                        all = selectedText.getText().toString();
+                    }
+
+                    editText.setText(all);
+                    recognizedStrings.remove(holder.getLayoutPosition());
+                    notifyItemRemoved(holder.getLayoutPosition());
+                }
+                else  {
+                    LinearLayout textFields = parent.findViewById(R.id.linearTextRecognitionEditTexts);
+                    TextInputEditText editText = textFields.getChildAt(Integer.parseInt(TextRecognitionActivity.selected)).findViewById(R.id.answerInputTR);
+                    String all;
+                    String textInEditText = editText.getText().toString();
+
+                    if(!textInEditText.equals("")) {
+                        all = textInEditText + " " + selectedText.getText().toString();
+                    }
+                    else {
+                        all = selectedText.getText().toString();
+                    }
+
+                    editText.setText(all);
+                    recognizedStrings.remove(holder.getLayoutPosition());
+                    notifyItemRemoved(holder.getLayoutPosition());
                 }
             }
         });

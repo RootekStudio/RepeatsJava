@@ -43,7 +43,7 @@ public class SetsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        DB = new RepeatsDatabase(getContext());
+        DB = RepeatsDatabase.getInstance(requireContext());
         List<SingleSetInfo> repeatsList = DB.allSetsInfo(Values.ORDER_BY_ID_DESC);
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.mainfragment_sets, null);
@@ -54,7 +54,7 @@ public class SetsFragment extends Fragment {
         }
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_main);
-        RecyclerView.Adapter adapter = new MainActivityAdapter(repeatsList, getContext(), (AppCompatActivity)getActivity());
+        RecyclerView.Adapter adapter = new MainActivityAdapter(repeatsList, getContext(), (AppCompatActivity) getActivity());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         recyclerView.setHasFixedSize(true);
@@ -73,9 +73,6 @@ public class SetsFragment extends Fragment {
 
             width = LinearLayout.LayoutParams.MATCH_PARENT;
             height = LinearLayout.LayoutParams.MATCH_PARENT;
-
-//             AddSetNavFragment addSetNavFragment = AddSetNavFragment.newInstance();
-//             addSetNavFragment.show(getActivity().getSupportFragmentManager(), "setNav");
 
             View popupView = LayoutInflater.from(getContext()).inflate(R.layout.add_set_window, null);
 

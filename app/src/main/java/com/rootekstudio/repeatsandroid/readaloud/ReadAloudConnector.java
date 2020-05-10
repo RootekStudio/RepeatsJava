@@ -14,7 +14,22 @@ public class ReadAloudConnector {
     public static boolean isTTSStopped = true;
     static List<SetSingleItem> singleSet;
     static String setName;
-    public static String setID;
+    static String setID;
     static float speechRate = 0.5f;
     public static boolean returnFromSettings = false;
+
+    static void reset() {
+        readAloudService = null;
+        ReadAloudConnector.isTTSStopped = false;
+        ReadAloudConnector.speakItemIndex = 0;
+        ReadAloudConnector.speechRate = 0.5f;
+        ReadAloudConnector.isActivityAlive = true;
+        ReadAloudConnector.singleSet = null;
+        ReadAloudConnector.speakItemSetIndex = 0;
+        ReadAloudConnector.locale0 = null;
+        ReadAloudConnector.locale1 = null;
+        ReadAloudConnector.setID = null;
+        ReadAloudConnector.setName = null;
+        ReadAloudConnector.returnFromSettings = false;
+    }
 }

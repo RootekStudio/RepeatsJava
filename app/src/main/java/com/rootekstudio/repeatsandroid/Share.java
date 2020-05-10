@@ -92,7 +92,7 @@ public class Share {
 
         // Create a new user with a first and last name
 
-        RepeatsDatabase DB = new RepeatsDatabase(context);
+        RepeatsDatabase DB = RepeatsDatabase.getInstance(context);
         List<SetSingleItem> singleSet = DB.allItemsInSet(setID, -1);
 
         ArrayList<String> questions = new ArrayList<>();

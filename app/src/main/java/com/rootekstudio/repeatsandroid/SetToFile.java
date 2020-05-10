@@ -39,7 +39,7 @@ class SetToFile {
 
         try {
             JSONObject singleSet;
-            RepeatsDatabase DB = new RepeatsDatabase(context);
+            RepeatsDatabase DB = RepeatsDatabase.getInstance(context);
 
             for (int set = 0; set < setsID.size(); set++) {
                 singleSet = new JSONObject();

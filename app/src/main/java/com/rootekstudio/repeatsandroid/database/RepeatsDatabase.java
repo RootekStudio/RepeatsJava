@@ -15,8 +15,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class RepeatsDatabase extends SQLiteOpenHelper {
-    public RepeatsDatabase(Context context) {
+    private static RepeatsDatabase single_instance = null;
+
+    private RepeatsDatabase(Context context) {
         super(context, "repeats_database", null, 1);
+    }
+
+    public static synchronized RepeatsDatabase getInstance(Context context) {
+        if(single_instance == null) {
+            single_instance = new RepeatsDatabase(context.getApplicationContext());
+        }
+        return single_instance;
     }
 
     @Override
@@ -272,16 +281,16 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteSetFromSetInfo(String Title) {
+    public void deleteSetFromSetInfo(String setID) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String DELETE_NAME = "DELETE FROM " + Values.sets_info + " WHERE " + Values.set_id + " =" + "'" + Title + "';";
+        String DELETE_NAME = "DELETE FROM " + Values.sets_info + " WHERE " + Values.set_id + " =" + "'" + setID + "';";
         db.execSQL(DELETE_NAME);
         db.close();
     }
 
-    public void deleteSet(String SETNAME) {
+    public void deleteSet(String setID) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String DELETE_SET = "DROP TABLE " + SETNAME + ";";
+        String DELETE_SET = "DROP TABLE " + setID + ";";
         db.execSQL(DELETE_SET);
         db.close();
     }
@@ -445,9 +454,9 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         } else if (orderOption == Values.ORDER_BY_WRONG_ANSWERS_RATIO) {
             order = "ORDER BY CAST(" + Values.wrong_answers + " AS FLOAT)/(" + Values.good_answers + "+" + Values.wrong_answers + ") DESC";
         } else if (orderOption == Values.ORDER_BY_ID_ASC) {
-            order = "ORDER BY id ASC";
+            order = "ORDER BY " + Values.set_id + " ASC";
         } else if (orderOption == Values.ORDER_BY_ID_DESC) {
-            order = "ORDER BY id DESC";
+            order = "ORDER BY " + Values.set_id + " DESC";
         }
 
         List<SetStats> setStats = new LinkedList<>();
@@ -476,9 +485,9 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         return setStats;
     }
 
-    public int columnSum(String table, String column) {
+    public int columnSum(String setID, String column) {
         int sum = -1;
-        String query = "SELECT SUM(" + column + ") FROM " + table + ";";
+        String query = "SELECT SUM(" + column + ") FROM " + setID + ";";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
@@ -545,9 +554,6 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 setName = cursor.getString(0);
             }
-
-            SetSingleItem item = new SetSingleItem(setName);
-            singleItems.add(item);
 
             cursor.close();
 

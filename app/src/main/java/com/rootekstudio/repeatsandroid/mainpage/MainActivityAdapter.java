@@ -1,10 +1,8 @@
 package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -116,51 +114,45 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
             menuPopupHelper.setForceShowIcon(true);
             menuPopupHelper.show();
 
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    int itemId = item.getItemId();
+            popupMenu.setOnMenuItemClickListener(item -> {
+                int itemId = item.getItemId();
 
-                    if (itemId == R.id.deleteSetOption) {
-                        MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
-                        ALERTbuilder.setBackground(context.getDrawable(R.drawable.dialog_shape));
+                if (itemId == R.id.deleteSetOption) {
+                    MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
+                    ALERTbuilder.setBackground(context.getDrawable(R.drawable.dialog_shape));
 
-                        ALERTbuilder.setTitle(R.string.WantDelete);
-                        ALERTbuilder.setNegativeButton(R.string.Cancel, null);
+                    ALERTbuilder.setTitle(R.string.WantDelete);
+                    ALERTbuilder.setNegativeButton(R.string.Cancel, null);
 
-                        ALERTbuilder.setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                    ALERTbuilder.setPositiveButton(R.string.Delete, (dialog, which) -> {
 
-                                new SetsConfigHelper(context).deleteSet(selectedSetID);
+                        new SetsConfigHelper(context).deleteSet(selectedSetID);
 
-                                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
-                                fragmentTransaction.commit();
-                            }
-                        });
-                        ALERTbuilder.show();
+                        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
+                        fragmentTransaction.commit();
+                    });
+                    ALERTbuilder.show();
 
-                    } else if (itemId == R.id.shareSetOption) {
-                        String name = selectedSetName;
-                        name = name.trim();
-                        if (name.equals("") || name.equals("text") || name.equals("Text") || name.equals("text text") || name.equals("text text text")) {
-                            Toast.makeText(context, R.string.cantShareSet, Toast.LENGTH_LONG).show();
-                        } else {
-                            Intent intentShare = new Intent(context, ShareActivity.class);
-                            intentShare.putExtra("name", name);
-                            intentShare.putExtra("id", selectedSetID);
-                            context.startActivity(intentShare);
-                        }
-
-                    } else if (itemId == R.id.manageSetSettingsOption) {
-                        Intent intent = new Intent(context, SetSettingsActivity.class);
-                        intent.putExtra("setID", selectedSetID);
-                        context.startActivity(intent);
+                } else if (itemId == R.id.shareSetOption) {
+                    String name = selectedSetName;
+                    name = name.trim();
+                    if (name.equals("") || name.equals("text") || name.equals("Text") || name.equals("text text") || name.equals("text text text")) {
+                        Toast.makeText(context, R.string.cantShareSet, Toast.LENGTH_LONG).show();
+                    } else {
+                        Intent intentShare = new Intent(context, ShareActivity.class);
+                        intentShare.putExtra("name", name);
+                        intentShare.putExtra("id", selectedSetID);
+                        context.startActivity(intentShare);
                     }
-                    return true;
+
+                } else if (itemId == R.id.manageSetSettingsOption) {
+                    Intent intent = new Intent(context, SetSettingsActivity.class);
+                    intent.putExtra("setID", selectedSetID);
+                    context.startActivity(intent);
                 }
+                return true;
             });
         }
     };

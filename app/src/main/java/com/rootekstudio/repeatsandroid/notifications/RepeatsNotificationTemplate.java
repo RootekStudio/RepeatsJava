@@ -14,7 +14,6 @@ import androidx.core.app.RemoteInput;
 
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.UserReply;
 import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
 import com.rootekstudio.repeatsandroid.database.GetQuestion;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
@@ -151,17 +150,14 @@ public class RepeatsNotificationTemplate {
     }
 
     public static void AnswerNotifi(final Context context, String Title, String Text, final boolean goodAnswer, final String setID, final int itemID) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                RepeatsDatabase DB = new RepeatsDatabase(context);
-                if (goodAnswer) {
-                    DB.increaseValueInSet(setID, itemID, Values.good_answers, 1);
-                    DB.increaseValueInSetsInfo(setID, Values.good_answers, 1);
-                } else {
-                    DB.increaseValueInSet(setID, itemID, Values.wrong_answers, 1);
-                    DB.increaseValueInSetsInfo(setID, Values.wrong_answers, 1);
-                }
+        new Thread(() -> {
+            RepeatsDatabase DB = RepeatsDatabase.getInstance(context);
+            if (goodAnswer) {
+                DB.increaseValueInSet(setID, itemID, Values.good_answers, 1);
+                DB.increaseValueInSetsInfo(setID, Values.good_answers, 1);
+            } else {
+                DB.increaseValueInSet(setID, itemID, Values.wrong_answers, 1);
+                DB.increaseValueInSetsInfo(setID, Values.wrong_answers, 1);
             }
         }).start();
 

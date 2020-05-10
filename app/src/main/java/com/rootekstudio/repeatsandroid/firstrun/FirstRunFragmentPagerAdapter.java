@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class FirstRunFragmentPagerAdapter extends FragmentStateAdapter {
 
-    public FirstRunFragmentPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    FirstRunFragmentPagerAdapter(FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 

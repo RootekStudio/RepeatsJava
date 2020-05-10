@@ -14,11 +14,6 @@ import com.rootekstudio.repeatsandroid.R;
 import java.util.ArrayList;
 
 public class ReadAloudItemFragment extends Fragment {
-    TextView firstLanguage;
-    public TextView firstWord;
-    TextView secondLanguage;
-    public TextView secondWord;
-    TextView wordCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -26,11 +21,11 @@ public class ReadAloudItemFragment extends Fragment {
         int speakItemIndex = getArguments().getInt("speakItemIndex");
 
         View view = inflater.inflate(R.layout.read_aloud_single_item, container, false);
-        firstLanguage = view.findViewById(R.id.firstLanguageRead);
-        firstWord = view.findViewById(R.id.firstWordRead);
-        secondLanguage = view.findViewById(R.id.secondLanguageRead);
-        secondWord = view.findViewById(R.id.secondWordRead);
-        wordCount = view.findViewById(R.id.wordCountRead);
+        TextView firstLanguage = view.findViewById(R.id.firstLanguageRead);
+        TextView firstWord = view.findViewById(R.id.firstWordRead);
+        TextView secondLanguage = view.findViewById(R.id.secondLanguageRead);
+        TextView secondWord = view.findViewById(R.id.secondWordRead);
+        TextView wordCount = view.findViewById(R.id.wordCountRead);
 
         firstLanguage.setText(info.get(0));
         firstWord.setText(info.get(1));

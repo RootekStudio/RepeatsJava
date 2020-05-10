@@ -22,11 +22,6 @@ public class SetSingleItem {
         this.wrongAnswers = wrongAnswers;
     }
 
-    public SetSingleItem(String question) {
-        setID = "new_set";
-        this.Question = question;
-    }
-
     public int getItemID() {
         return itemID;
     }

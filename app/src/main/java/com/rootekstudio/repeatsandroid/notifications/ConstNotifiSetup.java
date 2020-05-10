@@ -89,4 +89,11 @@ public class ConstNotifiSetup {
         ConstNotifiSetup.CancelNotifications(context);
         ConstNotifiSetup.RegisterNotifications(context, calendarAlarm, id);
     }
+
+    public static void SaveFrequency(Context cnt, int frequency) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(cnt);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("frequency", frequency);
+        editor.apply();
+    }
 }

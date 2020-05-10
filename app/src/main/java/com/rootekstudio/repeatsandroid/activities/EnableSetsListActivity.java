@@ -26,7 +26,7 @@ public class EnableSetsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_enable_sets_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final RepeatsDatabase DB = new RepeatsDatabase(this);
+        final RepeatsDatabase DB = RepeatsDatabase.getInstance(this);
         List<SingleSetInfo> AllSets = DB.allSetsInfo(-1);
         int count = AllSets.size();
         LinearLayout linear = findViewById(R.id.EnableSetsLinear);

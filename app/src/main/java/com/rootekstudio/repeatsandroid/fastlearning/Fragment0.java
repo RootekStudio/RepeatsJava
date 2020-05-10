@@ -26,7 +26,7 @@ public class Fragment0 extends Fragment {
             getActivity().findViewById(R.id.nextConfigFL).setEnabled(false);
         }
 
-        RepeatsDatabase DB = new RepeatsDatabase(getContext());
+        RepeatsDatabase DB = RepeatsDatabase.getInstance(requireContext());
         LinearLayout linearLayout = view.findViewById(R.id.linearSetsListFL);
         List<FastLearningSetsListItem> setsList = DB.setsIdAndNameList();
 
@@ -42,38 +42,32 @@ public class Fragment0 extends Fragment {
                 }
             }
 
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                    if (checked) {
-                        FastLearningInfo.selectedSets.add(singleItem);
-                        if (FastLearningInfo.selectedSets.size() == 1) {
-                            getActivity().findViewById(R.id.nextConfigFL).setEnabled(true);
+            checkBox.setOnCheckedChangeListener((compoundButton, checked) -> {
+                if (checked) {
+                    FastLearningInfo.selectedSets.add(singleItem);
+                    if (FastLearningInfo.selectedSets.size() == 1) {
+                        getActivity().findViewById(R.id.nextConfigFL).setEnabled(true);
+                    }
+                } else {
+                    for (int j = 0; j < FastLearningInfo.selectedSets.size(); j++) {
+                        FastLearningSetsListItem item = FastLearningInfo.selectedSets.get(j);
+                        if (item.getSetID().equals(singleItem.getSetID())) {
+                            FastLearningInfo.selectedSets.remove(j);
+                            break;
                         }
-                    } else {
-                        for (int j = 0; j < FastLearningInfo.selectedSets.size(); j++) {
-                            FastLearningSetsListItem item = FastLearningInfo.selectedSets.get(j);
-                            if (item.getSetID().equals(singleItem.getSetID())) {
-                                FastLearningInfo.selectedSets.remove(j);
-                                break;
-                            }
-                        }
+                    }
 
-                        if (FastLearningInfo.selectedSets.size() == 0) {
-                            getActivity().findViewById(R.id.nextConfigFL).setEnabled(false);
-                        }
+                    if (FastLearningInfo.selectedSets.size() == 0) {
+                        getActivity().findViewById(R.id.nextConfigFL).setEnabled(false);
                     }
                 }
             });
 
-            singleView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (checkBox.isChecked()) {
-                        checkBox.setChecked(false);
-                    } else {
-                        checkBox.setChecked(true);
-                    }
+            singleView.setOnClickListener(view1 -> {
+                if (checkBox.isChecked()) {
+                    checkBox.setChecked(false);
+                } else {
+                    checkBox.setChecked(true);
                 }
             });
 

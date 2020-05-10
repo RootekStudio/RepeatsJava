@@ -30,7 +30,7 @@ public class SetsConfigHelper {
 
     public SetsConfigHelper(Context context) {
         this.context = context;
-        DB = new RepeatsDatabase(context);
+        DB = RepeatsDatabase.getInstance(context);
     }
 
     public RepeatsDatabase getRepeatsDatabase() {

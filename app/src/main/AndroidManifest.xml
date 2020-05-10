@@ -118,7 +118,7 @@
             android:enabled="true"
             android:exported="true" />
         <receiver
-            android:name=".UserReply"
+            android:name=".notifications.UserReply"
             android:enabled="true"
             android:exported="true" />
 

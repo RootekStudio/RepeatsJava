@@ -44,7 +44,6 @@ public class FirstRunActivity extends AppCompatActivity {
         setContentView(R.layout.activity_first_run);
         defaultSettings();
         createSets();
-        RepeatsHelper.createNotificationChannel(this);
 
         tabLayout = findViewById(R.id.tabsLayoutFirstRun);
         viewPager = findViewById(R.id.viewPagerFirstRun);
@@ -77,12 +76,7 @@ public class FirstRunActivity extends AppCompatActivity {
         });
 
         new TabLayoutMediator(tabLayout, viewPager,
-                new TabLayoutMediator.TabConfigurationStrategy() {
-                    @Override
-                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                        tab.view.setEnabled(false);
-                    }
-                }).attach();
+                (tab, position) -> tab.view.setEnabled(false)).attach();
     }
 
     public void mainActivityClick(View view) {
@@ -105,7 +99,7 @@ public class FirstRunActivity extends AppCompatActivity {
 
     void createSets() {
         String id;
-        RepeatsDatabase DB = new RepeatsDatabase(this);
+        RepeatsDatabase DB = RepeatsDatabase.getInstance(this);
 
         ArrayList<String> questions = new ArrayList<>();
         ArrayList<String> answers = new ArrayList<>();
@@ -230,7 +224,7 @@ public class FirstRunActivity extends AppCompatActivity {
 
                 //sets
                 JSONArray sets = new JSONArray();
-                ArrayList<String> nameList = new RepeatsDatabase(this).getSingleColumnFromSetInfo(Values.set_id);
+                ArrayList<String> nameList = RepeatsDatabase.getInstance(this).getSingleColumnFromSetInfo(Values.set_id);
                 int setsCount = nameList.size();
 
                 for (int i = 0; i < setsCount; i++) {

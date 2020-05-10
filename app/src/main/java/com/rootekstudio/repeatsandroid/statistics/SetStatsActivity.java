@@ -36,7 +36,7 @@ public class SetStatsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_set_stats);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        DB = new RepeatsDatabase(this);
+        DB = RepeatsDatabase.getInstance(this);
         Intent intent = getIntent();
         setID = intent.getStringExtra("setID");
         setName = intent.getStringExtra("setName");
@@ -57,27 +57,21 @@ public class SetStatsActivity extends AppCompatActivity {
                 DividerItemDecoration.VERTICAL));
 
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final int goodAnswers = DB.columnSum(setID, Values.good_answers);
-                final int wrongAnswers = DB.columnSum(setID, Values.wrong_answers);
-                final int allAnswers = goodAnswers + wrongAnswers;
-                List<SetSingleItem> setsStats = DB.allItemsInSet(setID, Values.ORDER_BY_GOOD_ANSWERS_DESC);
-                setsStats.add(0, new SetSingleItem());
-                adapter = new SetStatsActivityAdapter(setsStats);
+        new Thread(() -> {
+            final int goodAnswers = DB.columnSum(setID, Values.good_answers);
+            final int wrongAnswers = DB.columnSum(setID, Values.wrong_answers);
+            final int allAnswers = goodAnswers + wrongAnswers;
+            List<SetSingleItem> setsStats = DB.allItemsInSet(setID, Values.ORDER_BY_GOOD_ANSWERS_DESC);
+            setsStats.add(0, new SetSingleItem());
+            adapter = new SetStatsActivityAdapter(setsStats);
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        goodAnswersTextView.setText(String.valueOf(goodAnswers));
-                        wrongAnswersTextView.setText(String.valueOf(wrongAnswers));
-                        allAnswersTextView.setText(String.valueOf(allAnswers));
-                        recyclerView.setAdapter(adapter);
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
-            }
+            runOnUiThread(() -> {
+                goodAnswersTextView.setText(String.valueOf(goodAnswers));
+                wrongAnswersTextView.setText(String.valueOf(wrongAnswers));
+                allAnswersTextView.setText(String.valueOf(allAnswers));
+                recyclerView.setAdapter(adapter);
+                progressBar.setVisibility(View.GONE);
+            });
         }).start();
 
 
@@ -90,32 +84,29 @@ public class SetStatsActivity extends AppCompatActivity {
         menuPopupHelper.setForceShowIcon(true);
         menuPopupHelper.show();
 
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.sortGoodAnswers) {
-                    List<SetSingleItem> setsStats = DB.allItemsInSet(setID, Values.ORDER_BY_GOOD_ANSWERS_DESC);
-                    setsStats.add(0, new SetSingleItem());
-                    adapter = new SetStatsActivityAdapter(setsStats);
-                    recyclerView.setAdapter(adapter);
-                } else if (item.getItemId() == R.id.sortWrongAnswers) {
-                    List<SetSingleItem> setsStats = DB.allItemsInSet(setID, Values.ORDER_BY_WRONG_ANSWERS_DESC);
-                    setsStats.add(0, new SetSingleItem());
-                    adapter = new SetStatsActivityAdapter(setsStats);
-                    recyclerView.setAdapter(adapter);
-                } else if (item.getItemId() == R.id.sortCreationDateAscending) {
-                    List<SetSingleItem> setsStats = DB.allItemsInSet(setID, Values.ORDER_BY_ID_ASC);
-                    setsStats.add(0, new SetSingleItem());
-                    adapter = new SetStatsActivityAdapter(setsStats);
-                    recyclerView.setAdapter(adapter);
-                } else if (item.getItemId() == R.id.sortCreationDateDescending) {
-                    List<SetSingleItem> setsStats = DB.allItemsInSet(setID, Values.ORDER_BY_ID_DESC);
-                    setsStats.add(0, new SetSingleItem());
-                    adapter = new SetStatsActivityAdapter(setsStats);
-                    recyclerView.setAdapter(adapter);
-                }
-                return true;
+        popupMenu.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.sortGoodAnswers) {
+                List<SetSingleItem> setsStats = DB.allItemsInSet(setID, Values.ORDER_BY_GOOD_ANSWERS_DESC);
+                setsStats.add(0, new SetSingleItem());
+                adapter = new SetStatsActivityAdapter(setsStats);
+                recyclerView.setAdapter(adapter);
+            } else if (item.getItemId() == R.id.sortWrongAnswers) {
+                List<SetSingleItem> setsStats = DB.allItemsInSet(setID, Values.ORDER_BY_WRONG_ANSWERS_DESC);
+                setsStats.add(0, new SetSingleItem());
+                adapter = new SetStatsActivityAdapter(setsStats);
+                recyclerView.setAdapter(adapter);
+            } else if (item.getItemId() == R.id.sortCreationDateAscending) {
+                List<SetSingleItem> setsStats = DB.allItemsInSet(setID, Values.ORDER_BY_ID_ASC);
+                setsStats.add(0, new SetSingleItem());
+                adapter = new SetStatsActivityAdapter(setsStats);
+                recyclerView.setAdapter(adapter);
+            } else if (item.getItemId() == R.id.sortCreationDateDescending) {
+                List<SetSingleItem> setsStats = DB.allItemsInSet(setID, Values.ORDER_BY_ID_DESC);
+                setsStats.add(0, new SetSingleItem());
+                adapter = new SetStatsActivityAdapter(setsStats);
+                recyclerView.setAdapter(adapter);
             }
+            return true;
         });
     }
 

@@ -4,15 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 public class DynamicLinks extends AppCompatActivity {
     Context context;
@@ -23,31 +18,25 @@ public class DynamicLinks extends AppCompatActivity {
         context = this;
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
-                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
-                    @Override
-                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                        // Get deep link from result (may be null if no link is found)
-                        Uri deepLink = null;
-                        if (pendingDynamicLinkData != null) {
-                            deepLink = pendingDynamicLinkData.getLink();
+                .addOnSuccessListener(this, pendingDynamicLinkData -> {
+                    // Get deep link from result (may be null if no link is found)
+                    Uri deepLink = null;
+                    if (pendingDynamicLinkData != null) {
+                        deepLink = pendingDynamicLinkData.getLink();
 
-                            String path = deepLink.getPath();
-                            if (path.startsWith("/repeatsc/shareset/")) {
-                                Intent intent = new Intent(context, PreviewAndDownloadSetActivity.class);
-                                intent.putExtra("databaseSetID", path.substring(19));
-                                startActivity(intent);
+                        String path = deepLink.getPath();
+                        if (path.startsWith("/repeatsc/shareset/")) {
+                            Intent intent = new Intent(context, PreviewAndDownloadSetActivity.class);
+                            intent.putExtra("databaseSetID", path.substring(19));
+                            startActivity(intent);
 
-                            }
                         }
-                        finish();
                     }
+                    finish();
                 })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("tag", "getDynamicLink:onFailure", e);
-                        finish();
-                    }
+                .addOnFailureListener(this, e -> {
+                    e.printStackTrace();
+                    finish();
                 });
     }
 }

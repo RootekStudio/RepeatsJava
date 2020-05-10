@@ -3,7 +3,9 @@ package com.rootekstudio.repeatsandroid.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,14 +13,21 @@ import java.util.Date;
 import java.util.List;
 
 public class MigrateDatabase {
-    Context context;
+    private Context context;
 
     public MigrateDatabase(Context context) {
         this.context = context;
     }
 
+    public static Boolean oldDBExists() {
+        File file = Environment.getDataDirectory();
+        String path = "/data/com.rootekstudio.repeatsandroid/databases/repeats";
+        File oldDB = new File(file, path);
+        return oldDB.exists();
+    }
+
     public void migrateToNewDatabase() {
-        RepeatsDatabase newDB = new RepeatsDatabase(context);
+        RepeatsDatabase newDB = RepeatsDatabase.getInstance(context);
         LegacyDatabase oldDB = new LegacyDatabase(context);
 
         List<SingleSetInfo> setsInfo = oldDB.allSetsInfo();
@@ -65,6 +74,8 @@ public class MigrateDatabase {
                 writableNewDB.insert(setID, null, contentValuesSet);
             }
         }
+
+        context.deleteDatabase("repeats");
     }
 
     private String getCreationDateInNewFormat(String creationDate) {

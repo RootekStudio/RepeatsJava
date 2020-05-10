@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,88 +20,82 @@ import java.util.List;
 public class Fragment2 extends Fragment {
     private LinearLayout linearList;
     private MaterialButton button;
+    private TextView textCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fastlearning_fragment2, container, false);
         linearList = view.findViewById(R.id.linearLayoutQuestionsListFL);
-        button = getActivity().findViewById(R.id.nextConfigFL);
+        button = view.findViewById(R.id.nextConfigFL);
         button.setEnabled(false);
+
+        textCount = view.findViewById(R.id.questionsCountTextView);
+        String textQuestionsCount = getString(R.string.selected) + ": " + FastLearningInfo.selectedQuestions.size() + " " + getString(R.string.questions2);
+        textCount.setText(textQuestionsCount);
+
         generateList();
         return view;
     }
 
     private void generateList() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                RepeatsDatabase DB = new RepeatsDatabase(getContext());
-                final List<SetSingleItem> questionsList = DB.getItemsForFastLearning(FastLearningInfo.selectedSets);
-                LayoutInflater inflater = LayoutInflater.from(getContext());
+        new Thread(() -> {
+            RepeatsDatabase DB = RepeatsDatabase.getInstance(requireContext());
+            final List<SetSingleItem> questionsList = DB.getItemsForFastLearning(FastLearningInfo.selectedSets);
+            LayoutInflater inflater = LayoutInflater.from(requireContext());
 
-                for (int i = 0; i < questionsList.size(); i++) {
-                    final SetSingleItem singleItem = questionsList.get(i);
-                    final View view = inflater.inflate(R.layout.fastlearning_list_singleitem, linearList, false);
-                    final TextView textCount = getActivity().findViewById(R.id.questionsCountTextView);
+            String setID = "";
+            for (int i = 0; i < questionsList.size(); i++) {
+                SetSingleItem singleItem = questionsList.get(i);
+
+                //add view with set name
+                if (!singleItem.getSetID().equals(setID)) {
+                    setID = singleItem.getSetID();
+                    View view = inflater.inflate(R.layout.fastlearning_list_singleitem, linearList, false);
                     TextView textView = view.findViewById(R.id.setNameListViewItemFL);
-                    final CheckBox checkBox = view.findViewById(R.id.checkBoxListViewFL);
+                    CheckBox checkBox = view.findViewById(R.id.checkBoxListViewFL);
 
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String textQuestionsCount = getString(R.string.selected) + ": " + FastLearningInfo.selectedQuestions.size() + " " + getString(R.string.questions2);
-                            textCount.setText(textQuestionsCount);
+                    checkBox.setVisibility(View.GONE);
+                    String text = getString(R.string.Set) + ": " + singleItem.getSetName();
+                    textView.setText(text);
+                    view.setEnabled(false);
+
+                    requireActivity().runOnUiThread(() -> linearList.addView(view));
+                }
+
+                //add view with question and checkbox
+                View view = inflater.inflate(R.layout.fastlearning_list_singleitem, linearList, false);
+                TextView textView = view.findViewById(R.id.setNameListViewItemFL);
+                CheckBox checkBox = view.findViewById(R.id.checkBoxListViewFL);
+
+                textView.setText(singleItem.getQuestion());
+                checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
+                    if (b) {
+                        FastLearningInfo.selectedQuestions.add(singleItem);
+                        FastLearningInfo.questionsCount++;
+                        if (FastLearningInfo.questionsCount == 1) {
+                            button.setEnabled(true);
                         }
-                    });
-
-                    if (singleItem.getSetID().equals("new_set")) {
-                        checkBox.setVisibility(View.GONE);
-                        String text = getString(R.string.Set) + ": " + singleItem.getQuestion();
-                        textView.setText(text);
-                        view.setEnabled(false);
                     } else {
-                        textView.setText(singleItem.getQuestion());
-                        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                if (b) {
-                                    FastLearningInfo.selectedQuestions.add(singleItem);
-                                    FastLearningInfo.questionsCount++;
-                                    if (FastLearningInfo.questionsCount == 1) {
-                                        button.setEnabled(true);
-                                    }
-                                } else {
-                                    FastLearningInfo.selectedQuestions.remove(singleItem);
-                                    FastLearningInfo.questionsCount--;
-                                    if (FastLearningInfo.questionsCount == 0) {
-                                        button.setEnabled(false);
-                                    }
-                                }
-
-                                String text = getString(R.string.selected) + ": " + FastLearningInfo.selectedQuestions.size() + " " + getString(R.string.questions2);
-                                textCount.setText(text);
-                            }
-                        });
-
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (checkBox.isChecked()) {
-                                    checkBox.setChecked(false);
-                                } else {
-                                    checkBox.setChecked(true);
-                                }
-                            }
-                        });
+                        FastLearningInfo.selectedQuestions.remove(singleItem);
+                        FastLearningInfo.questionsCount--;
+                        if (FastLearningInfo.questionsCount == 0) {
+                            button.setEnabled(false);
+                        }
                     }
 
-                    requireActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            linearList.addView(view);
-                        }
-                    });
-                }
+                    String text = getString(R.string.selected) + ": " + FastLearningInfo.selectedQuestions.size() + " " + getString(R.string.questions2);
+                    textCount.setText(text);
+                });
+
+                view.setOnClickListener(view1 -> {
+                    if (checkBox.isChecked()) {
+                        checkBox.setChecked(false);
+                    } else {
+                        checkBox.setChecked(true);
+                    }
+                });
+
+                requireActivity().runOnUiThread(() -> linearList.addView(view));
             }
         }).start();
 

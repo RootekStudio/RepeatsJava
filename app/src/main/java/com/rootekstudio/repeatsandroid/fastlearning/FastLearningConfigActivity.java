@@ -13,10 +13,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.database.MigrateDatabase;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SetSingleItem;
-import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,19 +32,15 @@ public class FastLearningConfigActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(RepeatsHelper.oldDBExists()) {
-            AlertDialog dialog = RepeatsHelper.loadingMigrationDialog(this);
+        if(MigrateDatabase.oldDBExists()) {
+            AlertDialog dialog = UIHelper.loadingDialog(getString(R.string.dataMigrate), this);
             dialog.show();
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    new MigrateDatabase(FastLearningConfigActivity.this).migrateToNewDatabase();
-                    deleteDatabase("repeats");
-                    dialog.cancel();
-                    startActivity(new Intent(FastLearningConfigActivity.this, FastLearningConfigActivity.class));
-                    finish();
-                }
+            new Thread(() -> {
+                new MigrateDatabase(FastLearningConfigActivity.this).migrateToNewDatabase();
+                dialog.cancel();
+                startActivity(new Intent(FastLearningConfigActivity.this, FastLearningConfigActivity.class));
+                finish();
             }).start();
 
             return;
@@ -53,7 +49,7 @@ public class FastLearningConfigActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fast_learning_config);
         getSupportActionBar().hide();
 
-        DB = new RepeatsDatabase(this);
+        DB = RepeatsDatabase.getInstance(this);
         FastLearningInfo.reset();
         configStage = 0;
         fragmentManager = getSupportFragmentManager();

@@ -12,11 +12,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.database.MigrateDatabase;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
-import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.util.List;
 
@@ -26,19 +25,15 @@ public class ReadAloudConfigActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(RepeatsHelper.oldDBExists()) {
-            AlertDialog dialog = RepeatsHelper.loadingMigrationDialog(this);
+        if (MigrateDatabase.oldDBExists()) {
+            AlertDialog dialog = UIHelper.loadingDialog(getString(R.string.dataMigrate), this);
             dialog.show();
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    new MigrateDatabase(ReadAloudConfigActivity.this).migrateToNewDatabase();
-                    deleteDatabase("repeats");
-                    dialog.cancel();
-                    startActivity(new Intent(ReadAloudConfigActivity.this, ReadAloudConfigActivity.class));
-                    finish();
-                }
+            new Thread(() -> {
+                new MigrateDatabase(ReadAloudConfigActivity.this).migrateToNewDatabase();
+                dialog.cancel();
+                startActivity(new Intent(ReadAloudConfigActivity.this, ReadAloudConfigActivity.class));
+                finish();
             }).start();
 
             return;
@@ -47,7 +42,7 @@ public class ReadAloudConfigActivity extends AppCompatActivity {
         setContentView(R.layout.activity_read_aloud_config);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RepeatsDatabase DB = new RepeatsDatabase(this);
+        RepeatsDatabase DB = RepeatsDatabase.getInstance(this);
         List<SingleSetInfo> setsInfo = DB.allSetsInfo(-1);
 
         LinearLayout linearLayout = findViewById(R.id.linearSetsListReadAloud);
@@ -60,15 +55,12 @@ public class ReadAloudConfigActivity extends AppCompatActivity {
             TextView textView = view.findViewById(R.id.singleTextView);
             textView.setText(setInfo.getSetName());
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String setID = view.getTag().toString();
-                    Intent intent = new Intent(ReadAloudConfigActivity.this, ReadAloudActivity.class);
-                    intent.putExtra("setID", setID);
-                    intent.putExtra("newReadAloud", true);
-                    startActivity(intent);
-                }
+            view.setOnClickListener(view1 -> {
+                String setID = view1.getTag().toString();
+                Intent intent = new Intent(ReadAloudConfigActivity.this, ReadAloudActivity.class);
+                intent.putExtra("setID", setID);
+                intent.putExtra("newReadAloud", true);
+                startActivity(intent);
             });
             linearLayout.addView(view);
         }

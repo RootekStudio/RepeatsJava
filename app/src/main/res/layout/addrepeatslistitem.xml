@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/layout_mainshape"
-    android:layout_margin="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="10dp"
     android:id="@+id/RelativeAddItem"
     android:elevation="5dp"
     tools:targetApi="lollipop">
@@ -17,7 +19,6 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:visibility="gone"
-        android:layout_alignParentLeft="true"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:tint="@android:color/transparent"
@@ -25,7 +26,6 @@
 
     <ImageButton
         android:id="@+id/deleteImage"
-        android:layout_toRightOf="@id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/imageView"
@@ -37,48 +37,50 @@
         android:id="@+id/deleteItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:src="@drawable/ic_delete"
-        android:layout_below="@id/imageView"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp"
+        android:background="@drawable/circle_button_background"
+        android:padding="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="10dp"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"/>
 
     <ImageButton
         android:id="@+id/addImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_below="@id/deleteItem"
         android:src="@drawable/ic_photo"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/circle_button_background"
+        android:padding="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="5dp"/>
 
     <ImageButton
         android:id="@+id/addAnswerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_below="@id/addImage"
         android:src="@drawable/ic_playlist_add"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="10dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/circle_button_background"
+        android:padding="10dp" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/LinearQA"
-        android:layout_toLeftOf="@id/addImage"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_toStartOf="@id/addImage"
         android:layout_below="@id/imageView"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:layout_marginStart="5dp">
 
         <EditText
             android:id="@+id/questionBox"

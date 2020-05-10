@@ -28,7 +28,7 @@ public class ReadAloudService extends Service {
     private String locale1;
     private NotificationCompat.Builder builder;
 
-    public class ReadAloudBinder extends Binder {
+    class ReadAloudBinder extends Binder {
         ReadAloudService getService() {
             return ReadAloudService.this;
         }
@@ -84,34 +84,28 @@ public class ReadAloudService extends Service {
     }
 
     private void initTTS() {
-        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                if (i == TextToSpeech.SUCCESS) {
-                    textToSpeech.setLanguage(new Locale(locale0));
-                    textToSpeech.setOnUtteranceProgressListener(utteranceProgressListener);
-                    textToSpeech.setSpeechRate(ReadAloudConnector.speechRate);
+        textToSpeech = new TextToSpeech(this, i -> {
+            if (i == TextToSpeech.SUCCESS) {
+                textToSpeech.setLanguage(new Locale(locale0));
+                textToSpeech.setOnUtteranceProgressListener(utteranceProgressListener);
+                textToSpeech.setSpeechRate(ReadAloudConnector.speechRate);
 
-                    textToSpeech1 = new TextToSpeech(ReadAloudService.this, new TextToSpeech.OnInitListener() {
-                        @Override
-                        public void onInit(int i) {
-                            if (i == TextToSpeech.SUCCESS) {
-                                textToSpeech1.setLanguage(new Locale(locale1));
-                                textToSpeech1.setOnUtteranceProgressListener(utteranceProgressListener1);
-                                textToSpeech1.setSpeechRate(ReadAloudConnector.speechRate);
+                textToSpeech1 = new TextToSpeech(ReadAloudService.this, i1 -> {
+                    if (i1 == TextToSpeech.SUCCESS) {
+                        textToSpeech1.setLanguage(new Locale(locale1));
+                        textToSpeech1.setOnUtteranceProgressListener(utteranceProgressListener1);
+                        textToSpeech1.setSpeechRate(ReadAloudConnector.speechRate);
 
-                                textToSpeech.speak(" ", TextToSpeech.QUEUE_ADD, null, "starting");
-                                textToSpeech1.speak(" ", TextToSpeech.QUEUE_ADD, null, "starting");
-                            }
-                        }
-                    });
-                } else {
-                    Toast.makeText(ReadAloudService.this, getString(R.string.cannotLoadTTS), Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(ReadAloudService.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    stopSelf();
-                }
+                        textToSpeech.speak(" ", TextToSpeech.QUEUE_ADD, null, "starting");
+                        textToSpeech1.speak(" ", TextToSpeech.QUEUE_ADD, null, "starting");
+                    }
+                });
+            } else {
+                Toast.makeText(ReadAloudService.this, getString(R.string.cannotLoadTTS), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(ReadAloudService.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                stopSelf();
             }
         });
     }

@@ -7,18 +7,14 @@ import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -26,11 +22,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
+import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.ZipSet;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
 import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
@@ -51,25 +47,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(RepeatsHelper.oldDBExists()) {
-            AlertDialog dialog = RepeatsHelper.loadingMigrationDialog(this);
+        if (MigrateDatabase.oldDBExists()) {
+            AlertDialog dialog = UIHelper.loadingDialog(getString(R.string.dataMigrate), this);
             dialog.show();
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    new MigrateDatabase(MainActivity.this).migrateToNewDatabase();
-                    deleteDatabase("repeats");
-                    dialog.cancel();
-                    startActivity(new Intent(MainActivity.this, MainActivity.class));
-                    finish();
-                }
+            new Thread(() -> {
+                new MigrateDatabase(MainActivity.this).migrateToNewDatabase();
+                dialog.cancel();
+                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                finish();
             }).start();
 
             return;
         }
 
-        RepeatsHelper.createNotificationChannel(this);
         darkTheme = RepeatsHelper.DarkTheme(this, false);
         RepeatsHelper.CheckDir(this);
         setContentView(R.layout.activity_main);
@@ -93,50 +84,44 @@ public class MainActivity extends AppCompatActivity {
             logo.setImageResource(R.drawable.repeats_for_light_bg);
         }
 
-        if(currentFragment.equals("") || currentFragment.equals("start")) {
+        if (currentFragment.equals("") || currentFragment.equals("start")) {
             bottomNavigationView.setSelectedItemId(R.id.startButtonMain);
-        }
-        else if(currentFragment.equals("sets")){
+        } else if (currentFragment.equals("sets")) {
             bottomNavigationView.setSelectedItemId(R.id.setsButtonMain);
-        }
-        else if(currentFragment.equals("stats")) {
+        } else if (currentFragment.equals("stats")) {
             bottomNavigationView.setSelectedItemId(R.id.stats_button);
-        }
-        else if(currentFragment.equals("preferences")) {
+        } else if (currentFragment.equals("preferences")) {
             bottomNavigationView.setSelectedItemId(R.id.app_bar_settings);
         }
     }
 
-    BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            if (item.getItemId() == R.id.startButtonMain) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayoutMain, new StartFragment());
-                fragmentTransaction.commit();
-                currentFragment = "start";
-            } else if (item.getItemId() == R.id.setsButtonMain) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
-                fragmentTransaction.commit();
-                currentFragment = "sets";
-            } else if (item.getItemId() == R.id.stats_button) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayoutMain, new StatsFragment(MainActivity.this));
-                fragmentTransaction.commit();
-                currentFragment = "stats";
-            } else if (item.getItemId() == R.id.app_bar_settings) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayoutMain, new PreferenceFragment());
-                fragmentTransaction.commit();
-                currentFragment = "preferences";
-            }
-            return true;
+    BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = item -> {
+        if (item.getItemId() == R.id.startButtonMain) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayoutMain, new StartFragment());
+            fragmentTransaction.commit();
+            currentFragment = "start";
+        } else if (item.getItemId() == R.id.setsButtonMain) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
+            fragmentTransaction.commit();
+            currentFragment = "sets";
+        } else if (item.getItemId() == R.id.stats_button) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayoutMain, new StatsFragment());
+            fragmentTransaction.commit();
+            currentFragment = "stats";
+        } else if (item.getItemId() == R.id.app_bar_settings) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayoutMain, new PreferenceFragment());
+            fragmentTransaction.commit();
+            currentFragment = "preferences";
         }
+        return true;
     };
 
     @Override
@@ -186,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 final Context context = this;
 
-                final AlertDialog dialog = RepeatsHelper.showLoadingDialog(context);
+                final AlertDialog dialog = UIHelper.loadingDialog(getString(R.string.loading), this);
 
                 Thread thread = new Thread(new Runnable() {
                     @Override
@@ -195,18 +180,13 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             InputStream inputStream = getContentResolver().openInputStream(selectedZip);
                             ZipSet.UnZip(inputStream, new File(getFilesDir(), "shared"));
-                            SaveShared.SaveSetsToDB(context, new RepeatsDatabase(context));
+                            SaveShared.SaveSetsToDB(context, RepeatsDatabase.getInstance(context));
 
                             final Intent intent = new Intent(context, AddEditSetActivity.class);
                             intent.putExtra("ISEDIT", SaveShared.ID);
                             intent.putExtra("NAME", SaveShared.name);
                             intent.putExtra("IGNORE_CHARS", "false");
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    dialog.dismiss();
-                                }
-                            });
+                            runOnUiThread(dialog::dismiss);
 
                             startActivity(intent);
 

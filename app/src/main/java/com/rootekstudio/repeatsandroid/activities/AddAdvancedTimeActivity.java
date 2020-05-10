@@ -203,7 +203,7 @@ public class AddAdvancedTimeActivity extends AppCompatActivity {
     }
 
     void loadSetsList(boolean defaultCheck) {
-        RepeatsDatabase DB = new RepeatsDatabase(this);
+        RepeatsDatabase DB = RepeatsDatabase.getInstance(context);
         ArrayList<String> titles = DB.getSingleColumnFromSetInfo(Values.set_name);
         ArrayList<String> TableNames = DB.getSingleColumnFromSetInfo(Values.set_id);
         for (int i = 0; i < TableNames.size(); i++) {

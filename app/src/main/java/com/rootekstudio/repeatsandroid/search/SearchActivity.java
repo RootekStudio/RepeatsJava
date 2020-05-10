@@ -11,11 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.database.MigrateDatabase;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
-import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +28,14 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         super.onCreate(savedInstanceState);
 
 
-        if(RepeatsHelper.oldDBExists()) {
-            AlertDialog dialog = RepeatsHelper.loadingMigrationDialog(this);
+        if(MigrateDatabase.oldDBExists()) {
+            AlertDialog dialog = UIHelper.loadingDialog(getString(R.string.dataMigrate), this);
             dialog.show();
 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     new MigrateDatabase(SearchActivity.this).migrateToNewDatabase();
-                    deleteDatabase("repeats");
                     dialog.cancel();
                     startActivity(new Intent(SearchActivity.this, SearchActivity.class));
                     finish();
@@ -51,7 +50,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         setContentView(R.layout.activity_search);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RepeatsDatabase DB = new RepeatsDatabase(this);
+        RepeatsDatabase DB = RepeatsDatabase.getInstance(this);
         List<SearchItem> sItem = new ArrayList<>();
 
         List<SingleSetInfo> list = DB.allSetsInfo(-1);

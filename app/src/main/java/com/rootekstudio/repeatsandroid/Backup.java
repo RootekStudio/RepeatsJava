@@ -26,10 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Backup {
-    private static RepeatsDatabase DB;
 
     public static void createBackup(final Context context, final Activity activity) {
-        DB = new RepeatsDatabase(context);
+        RepeatsDatabase DB = RepeatsDatabase.getInstance(context);
         final MaterialAlertDialogBuilder ALERTbuilder = new MaterialAlertDialogBuilder(context);
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         final View view1 = layoutInflater.inflate(R.layout.where_backup, null);
@@ -69,7 +68,7 @@ public class Backup {
                     setsID.add(item.getSetID());
                 }
 
-                final AlertDialog dialog = RepeatsHelper.showLoadingDialog(context);
+                final AlertDialog dialog = UIHelper.loadingDialog(context.getString(R.string.loading), activity);
 
                 Thread thread = new Thread(new Runnable() {
                     @Override
@@ -107,13 +106,13 @@ public class Backup {
         final DocumentFile pickedDir = DocumentFile.fromTreeUri(context, selectedUri);
         String fileName = SetToFile.fileName;
 
-        final AlertDialog dialog = RepeatsHelper.showLoadingDialog(context);
+        final AlertDialog dialog = UIHelper.loadingDialog(context.getString(R.string.loading), activity);
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
 
-                List<SingleSetInfo> list = DB.allSetsInfo(-1);
+                List<SingleSetInfo> list = RepeatsDatabase.getInstance(context).allSetsInfo(-1);
                 ArrayList<String> names = new ArrayList<>();
                 ArrayList<String> setsID = new ArrayList<>();
 
@@ -154,7 +153,7 @@ public class Backup {
 
     public static void restoreBackup(final Context context, Intent data, final Activity activity) {
         Uri selectedZip = data.getData();
-        final AlertDialog dialog = RepeatsHelper.showLoadingDialog(context);
+        final AlertDialog dialog = UIHelper.loadingDialog(context.getString(R.string.loading), activity);
 
         try {
             final InputStream inputStream = context.getContentResolver().openInputStream(selectedZip);
@@ -163,7 +162,7 @@ public class Backup {
                 @Override
                 public void run() {
                     ZipSet.UnZip(inputStream, new File(context.getFilesDir(), "shared"));
-                    SaveShared.SaveSetsToDB(context, new RepeatsDatabase(context));
+                    SaveShared.SaveSetsToDB(context, RepeatsDatabase.getInstance(context));
 
                     activity.runOnUiThread(new Runnable() {
                         @Override

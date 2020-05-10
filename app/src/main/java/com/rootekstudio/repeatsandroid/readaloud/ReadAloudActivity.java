@@ -75,10 +75,13 @@ public class ReadAloudActivity extends AppCompatActivity {
         String locale1;
 
         if (intent.getBooleanExtra("newReadAloud", false)) {
-            reset();
+            ReadAloudConnector.reset();
+            if (serviceIntent != null) {
+                stopSpeakService();
+            }
 
             ReadAloudConnector.setID = intent.getStringExtra("setID");
-            RepeatsDatabase DB = new RepeatsDatabase(this);
+            RepeatsDatabase DB = RepeatsDatabase.getInstance(this);
             setInfo = DB.singleSetInfo(ReadAloudConnector.setID);
             singleSet = DB.allItemsInSet(ReadAloudConnector.setID, -1);
 
@@ -101,24 +104,6 @@ public class ReadAloudActivity extends AppCompatActivity {
 
             firstLocale = new Locale(locale0.substring(0, locale0.indexOf("_")), locale0.substring(locale0.indexOf("_") + 1));
             secondLocale = new Locale(locale1.substring(0, locale1.indexOf("_")), locale1.substring(locale1.indexOf("_") + 1));
-        }
-    }
-
-    private void reset() {
-        readAloudService = null;
-        ReadAloudConnector.isTTSStopped = false;
-        ReadAloudConnector.speakItemIndex = 0;
-        ReadAloudConnector.speechRate = 0.5f;
-        ReadAloudConnector.isActivityAlive = true;
-        ReadAloudConnector.singleSet = null;
-        ReadAloudConnector.speakItemSetIndex = 0;
-        ReadAloudConnector.locale0 = null;
-        ReadAloudConnector.locale1 = null;
-        ReadAloudConnector.setID = null;
-        ReadAloudConnector.setName = null;
-        ReadAloudConnector.returnFromSettings = false;
-        if (serviceIntent != null) {
-            stopSpeakService();
         }
     }
 
@@ -158,13 +143,6 @@ public class ReadAloudActivity extends AppCompatActivity {
             }
         }
         bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
-    }
-
-    private void stopAndUnbindService() {
-        stopService(serviceIntent);
-        unbindService(connection);
-        ReadAloudConnector.isTTSStopped = true;
-        serviceIntent = null;
     }
 
     private void stopSpeakService() {
@@ -217,7 +195,7 @@ public class ReadAloudActivity extends AppCompatActivity {
         }
     };
 
-    public void updateLayout0() {
+    private void updateLayout0() {
         if (ReadAloudConnector.speakItemSetIndex == singleSet.size()) {
             ImageView playPause = findViewById(R.id.playPauseImageView);
             playPause.setImageResource(R.drawable.replay_24px);
@@ -252,7 +230,7 @@ public class ReadAloudActivity extends AppCompatActivity {
 
     }
 
-    public void updateLayout1() {
+    private void updateLayout1() {
         if (ReadAloudConnector.speakItemSetIndex == singleSet.size()) {
             ImageView playPause = findViewById(R.id.playPauseImageView);
             playPause.setImageResource(R.drawable.replay_24px);
@@ -392,7 +370,7 @@ public class ReadAloudActivity extends AppCompatActivity {
         return true;
     }
 
-    public void startPlayingShowButtons() {
+    private void startPlayingShowButtons() {
         scrollView.removeAllViews();
         linearButtons.setVisibility(View.VISIBLE);
         linearReadingSpeed.setVisibility(View.VISIBLE);

@@ -49,7 +49,7 @@ public class SetSettingsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         setID = intent.getStringExtra("setID");
         fromReadAloud = intent.getBooleanExtra("fromReadAloud", false);
-        DB = new RepeatsDatabase(this);
+        DB = RepeatsDatabase.getInstance(this);
         singleSetInfo = DB.singleSetInfo(setID);
         ignoreCheckBox = findViewById(R.id.ignoreCheckBox);
         if (singleSetInfo.getIgnoreChars() == 1) {

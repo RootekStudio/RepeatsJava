@@ -55,7 +55,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:clickable="true"
                 android:focusable="true">
 
@@ -65,7 +65,7 @@
                     android:layout_marginStart="75dp"
                     android:gravity="center"
                     android:text="@string/name"
-                    android:textSize="7pt"/>
+                    android:textSize="7.5pt"/>
 
                 <TextView
                     android:id="@+id/versionNameTextView"
@@ -73,7 +73,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:gravity="center"
-                    android:textSize="7pt"
+                    android:textSize="7.5pt"
                     android:layout_marginEnd="20dp"/>
             </RelativeLayout>
 
@@ -91,7 +91,7 @@
                     android:layout_marginStart="75dp"
                     android:gravity="center"
                     android:text="@string/number"
-                    android:textSize="7pt" />
+                    android:textSize="7.5pt"/>
 
                 <TextView
                     android:id="@+id/versionNumberTextView"
@@ -99,7 +99,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:gravity="center"
-                    android:textSize="7pt"
+                    android:textSize="7.5pt"
                     android:layout_marginEnd="20dp"/>
             </RelativeLayout>
         </LinearLayout>
@@ -137,7 +137,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?android:attr/selectableItemBackground"
@@ -149,7 +149,7 @@
                     android:layout_marginStart="75dp"
                     android:gravity="center"
                     android:text="@string/termsOfUse"
-                    android:textSize="7pt"/>
+                    android:textSize="7.5pt"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -166,7 +166,7 @@
                     android:layout_marginStart="75dp"
                     android:gravity="center"
                     android:text="@string/privacyPolicy"
-                    android:textSize="7pt"/>
+                    android:textSize="7.5pt"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -203,7 +203,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?android:attr/selectableItemBackground"
@@ -215,7 +215,7 @@
                     android:layout_marginStart="75dp"
                     android:gravity="center"
                     android:text="@string/SendFeedback"
-                    android:textSize="7pt"/>
+                    android:textSize="7.5pt"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -232,7 +232,7 @@
                     android:layout_marginStart="75dp"
                     android:gravity="center"
                     android:text="@string/rate"
-                    android:textSize="7pt"/>
+                    android:textSize="7.5pt"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -269,7 +269,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -278,7 +278,7 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center"
                     android:text="@string/developer"
-                    android:textSize="7pt"/>
+                    android:textSize="7.5pt"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -292,7 +292,7 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center"
                     android:text="@string/tester"
-                    android:textSize="7pt"/>
+                    android:textSize="7.5pt"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -305,7 +305,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="75dp"
                     android:layout_marginEnd="20dp"
-                    android:textSize="7pt"
+                    android:textSize="7.5pt"
                     android:text="@string/specialThanks" />
             </RelativeLayout>
 
@@ -319,7 +319,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="75dp"
                     android:layout_marginEnd="20dp"
-                    android:textSize="7pt"
+                    android:textSize="7.5pt"
                     android:text="@string/firstRunPhotoCredits" />
             </RelativeLayout>
 
@@ -338,7 +338,7 @@
                     android:layout_marginStart="75dp"
                     android:layout_marginEnd="20dp"
                     android:gravity="center"
-                    android:textSize="7pt"
+                    android:textSize="7.5pt"
                     android:text="@string/openSourceLicences" />
             </RelativeLayout>
         </LinearLayout>

@@ -8,12 +8,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
+import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -42,6 +44,7 @@ import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.SetsConfigHelper;
+import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
@@ -66,7 +69,6 @@ public class TextRecognitionActivity extends AppCompatActivity {
     static String selected = "0";
     String setID;
     int itemID;
-    int usableHeight;
     int defaultHeightScroll;
     int heightScroll190;
     int heightScroll220;
@@ -99,10 +101,9 @@ public class TextRecognitionActivity extends AppCompatActivity {
         answerField = findViewById(R.id.answerInputTR);
         textFields = findViewById(R.id.linearTextRecognitionEditTexts);
 
-        createLoadingDialog();
+        loadingDialog = UIHelper.loadingDialog(getString(R.string.textDetectionInProgress), this);
 
-        DB = new RepeatsDatabase(this);
-        usableHeight = RepeatsHelper.getUsableHeight(this);
+        DB = RepeatsDatabase.getInstance(this);
         defaultHeightScroll = dpToPx(130, this);
         heightScroll190 = dpToPx(190, this);
         heightScroll220 = dpToPx(220, this);
@@ -162,7 +163,6 @@ public class TextRecognitionActivity extends AppCompatActivity {
 
         questionField.requestFocus();
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -205,15 +205,6 @@ public class TextRecognitionActivity extends AppCompatActivity {
                 finish();
             }
         }
-    }
-
-    void createLoadingDialog() {
-        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this);
-        dialogBuilder.setBackground(getDrawable(R.drawable.dialog_shape));
-        dialogBuilder.setView(LayoutInflater.from(this).inflate(R.layout.loading, null));
-        dialogBuilder.setCancelable(false);
-        loadingDialog = dialogBuilder.create();
-        loadingDialog.show();
     }
 
     void recognizeText(FirebaseVisionImage image) {

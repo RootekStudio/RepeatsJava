@@ -28,8 +28,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class AnswerActivity extends AppCompatActivity {
-    GetQuestion getQuestion;
-    String jsonIndex;
+    private GetQuestion getQuestion;
+    private String jsonIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +95,7 @@ public class AnswerActivity extends AppCompatActivity {
                         String correctAnswer = getQuestion.getAnswer();
 
                         boolean ignoreChars = false;
-                        if(getQuestion.getIgnoreChars() == 1) {
+                        if (getQuestion.getIgnoreChars() == 1) {
                             ignoreChars = true;
                         }
 
@@ -116,7 +116,7 @@ public class AnswerActivity extends AppCompatActivity {
                                     String setID = getQuestion.getSetID();
                                     int itemID = getQuestion.getItemID();
 
-                                    RepeatsDatabase DB = new RepeatsDatabase(AnswerActivity.this);
+                                    RepeatsDatabase DB = RepeatsDatabase.getInstance(AnswerActivity.this);
                                     DB.increaseValueInSet(setID, itemID, Values.good_answers, 1);
                                     DB.increaseValueInSetsInfo(setID, Values.good_answers, 1);
                                 }
@@ -132,7 +132,7 @@ public class AnswerActivity extends AppCompatActivity {
                                     String setID = getQuestion.getSetID();
                                     int itemID = getQuestion.getItemID();
 
-                                    RepeatsDatabase DB = new RepeatsDatabase(AnswerActivity.this);
+                                    RepeatsDatabase DB = RepeatsDatabase.getInstance(AnswerActivity.this);
                                     DB.increaseValueInSet(setID, itemID, Values.wrong_answers, 1);
                                     DB.increaseValueInSetsInfo(setID, Values.wrong_answers, 1);
                                 }

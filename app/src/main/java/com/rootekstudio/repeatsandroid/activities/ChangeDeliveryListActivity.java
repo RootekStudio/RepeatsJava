@@ -84,7 +84,7 @@ public class ChangeDeliveryListActivity extends AppCompatActivity {
             JSONObject rootObject = new JSONObject(JsonFile.readJson(this, "advancedDelivery.json"));
             Iterator<String> iterator = rootObject.keys();
 
-            RepeatsDatabase DB = new RepeatsDatabase(this);
+            RepeatsDatabase DB = RepeatsDatabase.getInstance(this);
 
             int allItemsCount = 1;
 
