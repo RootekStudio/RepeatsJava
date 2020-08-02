@@ -14,10 +14,10 @@ import androidx.core.app.RemoteInput;
 
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
 import com.rootekstudio.repeatsandroid.database.GetQuestion;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.Values;
+import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -100,7 +100,7 @@ public class RepeatsNotificationTemplate {
         if (!error) {
             mBuilder.setContentIntent(pendingIntent);
         } else {
-            Intent enableSets = new Intent(context, SettingsActivity.class);
+            Intent enableSets = new Intent(context, MainActivity.class);
             PendingIntent settings = PendingIntent.getActivity(context, rnd, enableSets, 0);
             mBuilder.setContentIntent(settings);
         }

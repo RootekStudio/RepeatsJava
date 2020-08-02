@@ -2,7 +2,7 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_checktest"
+        android:icon="@drawable/ic_shortcut_fast_learning"
         android:shortcutId="fastLearning"
         android:shortcutShortLabel="@string/FastLearning">
         <intent
@@ -13,7 +13,7 @@
     </shortcut>
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_readaloud"
+        android:icon="@drawable/ic_shortcut_read_aloud"
         android:shortcutId="readAloud"
         android:shortcutShortLabel="@string/readAloud">
         <intent

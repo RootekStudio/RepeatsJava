@@ -22,6 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".backup.CreateBackupActivity"
+            android:label="@string/createBackup"/>
         <activity
             android:name=".activities.AppInfoActivity"
             android:label="@string/About" />
@@ -50,7 +52,7 @@
             android:name=".activities.WhatsNewActivity"
             android:label="@string/whatsNew" />
         <activity
-            android:name=".activities.SetSettingsActivity"
+            android:name=".settings.SetSettingsActivity"
             android:label="@string/setSettings"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -127,15 +129,6 @@
             android:label=""
             android:theme="@style/translucentTheme" />
         <activity
-            android:name=".activities.SettingsActivity"
-            android:exported="false"
-            android:grantUriPermissions="true"
-            android:label="@string/Settings">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
-        </activity>
-        <activity
             android:name=".search.SearchActivity"
             android:label="@string/Search" />
         <activity
@@ -157,19 +150,19 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name=".activities.EnableSetsListActivity"
+            android:name=".settings.EnableSetsListActivity"
             android:label="@string/notifiFromSets" />
         <activity
             android:name=".fastlearning.FastLearningConfigActivity"
             android:label="@string/FastLearning" />
         <activity
-            android:name=".activities.SilenceHoursActivity"
+            android:name=".settings.SilenceHoursActivity"
             android:label="@string/silenceHours" />
         <activity
-            android:name=".activities.ChangeDeliveryListActivity"
+            android:name=".settings.AdvancedDeliveryListActivity"
             android:label="@string/deliverySettings" />
         <activity
-            android:name=".activities.AddAdvancedTimeActivity"
+            android:name=".settings.AdvancedDeliveryEditActivity"
             android:label="@string/editRule"
             android:windowSoftInputMode="stateHidden" />
 

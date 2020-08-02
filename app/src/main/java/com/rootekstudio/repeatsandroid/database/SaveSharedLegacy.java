@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class SaveSharedLegacy {
-    Context context;
-    RepeatsDatabase DB;
+    private Context context;
+    private RepeatsDatabase DB;
 
-    public String ID;
+    String ID;
     public String setName;
 
-    public SaveSharedLegacy(Context context, RepeatsDatabase DB) {
+    SaveSharedLegacy(Context context, RepeatsDatabase DB) {
         this.context = context;
         this.DB = DB;
 

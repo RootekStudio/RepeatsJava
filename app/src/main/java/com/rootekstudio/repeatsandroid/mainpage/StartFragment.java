@@ -12,9 +12,10 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
@@ -32,12 +33,19 @@ public class StartFragment extends Fragment {
     private List<SingleSetInfo> setsInfo;
     private SharedPreferencesManager sharedPreferencesManager;
 
-    public StartFragment() {
+    public StartFragment() {}
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setEnterTransition(new MaterialFadeThrough());
+        setExitTransition(new MaterialFadeThrough());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setExitTransition(new MaterialFadeThrough());
         generateData();
         View view = inflater.inflate(R.layout.mainfragment_start, container, false);
         RelativeLayout fastLearningRecommendation = view.findViewById(R.id.fastLearningRecommendation);

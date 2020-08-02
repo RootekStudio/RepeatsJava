@@ -1,6 +1,7 @@
 package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.app.ActionBar;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -11,6 +12,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -22,11 +24,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
-import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.ZipSet;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        darkTheme = RepeatsHelper.DarkTheme(this, false);
+        darkTheme = UIHelper.DarkTheme(this, false);
         RepeatsHelper.CheckDir(this);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -89,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.startButtonMain);
         } else if (currentFragment.equals("sets")) {
             bottomNavigationView.setSelectedItemId(R.id.setsButtonMain);
+        } else if(currentFragment.equals("calendar")) {
+            bottomNavigationView.setSelectedItemId(R.id.calendarButtonMain);
         } else if (currentFragment.equals("stats")) {
             bottomNavigationView.setSelectedItemId(R.id.stats_button);
         } else if (currentFragment.equals("preferences")) {
@@ -109,6 +114,12 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
             fragmentTransaction.commit();
             currentFragment = "sets";
+        } else if (item.getItemId() == R.id.calendarButtonMain) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayoutMain, new CalendarFragment());
+            fragmentTransaction.commit();
+            currentFragment = "calendar";
         } else if (item.getItemId() == R.id.stats_button) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -129,12 +140,12 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        if (currentFragment.equals("sets")) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
-            fragmentTransaction.commit();
-        }
+//        if (currentFragment.equals("sets")) {
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//            fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
+//            fragmentTransaction.commit();
+//        }
     }
 
     public void whatsNewClickMain(View view) {

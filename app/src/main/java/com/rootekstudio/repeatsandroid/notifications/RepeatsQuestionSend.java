@@ -10,7 +10,7 @@ import android.os.SystemClock;
 
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;

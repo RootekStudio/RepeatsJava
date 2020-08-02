@@ -1,25 +1,20 @@
 package com.rootekstudio.repeatsandroid.firstrun;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.SetsConfigHelper;
-import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
-import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
 import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
@@ -162,6 +157,7 @@ public class FirstRunActivity extends AppCompatActivity {
         SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
         sharedPreferencesManager.getSilenceHours();
         sharedPreferencesManager.getFrequency();
+
 
         File jsonFile = new File(getFilesDir(), "silenceHours.json");
         if (!jsonFile.exists()) {

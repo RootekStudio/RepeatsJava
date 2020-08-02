@@ -1,6 +1,5 @@
 package com.rootekstudio.repeatsandroid.fastlearning;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -279,11 +278,11 @@ public class FastLearningActivity extends AppCompatActivity {
                 dialog.show();
             }
 
-            fab.setImageDrawable(getDrawable(R.drawable.ic_navigate_next));
+            fab.setImageDrawable(getDrawable(R.drawable.chevron_right));
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
         } else {
             loadQuestion();
-            fab.setImageDrawable(getDrawable(R.drawable.ic_check));
+            fab.setImageDrawable(getDrawable(R.drawable.check));
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.greenRepeats)));
         }
         userAnswer.clearFocus();

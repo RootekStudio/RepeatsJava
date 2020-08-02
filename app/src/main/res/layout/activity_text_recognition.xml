@@ -24,7 +24,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:onClick="previousItem"
                 android:padding="10dp"
-                android:src="@drawable/navigate_before_24px"
+                android:src="@drawable/chevron_left"
                 android:visibility="invisible" />
 
             <ScrollView
@@ -92,7 +92,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:onClick="nextItem"
                 android:padding="10dp"
-                android:src="@drawable/ic_navigate_next" />
+                android:src="@drawable/chevron_right" />
         </RelativeLayout>
 
         <LinearLayout
@@ -111,7 +111,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_add" />
+                android:src="@drawable/add" />
 
             <TextView
                 android:layout_width="wrap_content"

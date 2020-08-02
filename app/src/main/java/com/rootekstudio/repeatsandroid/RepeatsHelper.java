@@ -3,52 +3,20 @@ package com.rootekstudio.repeatsandroid;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Build;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
-import androidx.preference.PreferenceManager;
+
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import java.io.File;
-import java.util.HashMap;
 
 public class RepeatsHelper {
     public static final String breakLine = "\r\n";
     public static final int staticFrequencyCode = 10000;
     public static String version = "2.7";
-
-    public static Boolean DarkTheme(Context context, Boolean onlyCheck) {
-        String theme = SharedPreferencesManager.getInstance(context).getTheme();
-
-        if (theme.equals("0")) {
-            if (!onlyCheck) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-            return false;
-        } else if (theme.equals("1")) {
-            if (!onlyCheck) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
-            return true;
-        } else {
-            Configuration config = context.getApplicationContext().getResources().getConfiguration();
-            int currentNightMode = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
-                if (!onlyCheck) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                }
-                return true;
-            } else {
-                if (!onlyCheck) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }
-                return false;
-            }
-        }
-    }
 
     public static void CheckDir(Context cnt) {
         File file = new File(cnt.getFilesDir(), "shared");

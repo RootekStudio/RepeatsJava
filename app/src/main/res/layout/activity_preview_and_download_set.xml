@@ -56,7 +56,7 @@
             android:onClick="downloadSet"
             android:text="@string/download"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            app:icon="@drawable/ic_save_alt_24px"
+            app:icon="@drawable/download"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"/>
     </RelativeLayout>

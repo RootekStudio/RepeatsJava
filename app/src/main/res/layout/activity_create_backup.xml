@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".backup.CreateBackupActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:background="@drawable/layout_mainshape">
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:checkedButton="@id/backupAllRadio">
+                <RadioButton
+                    android:id="@+id/backupAllRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kopia zapasowa wszystkich danych aplikacji"
+                    android:layout_marginBottom="5dp" />
+                <RadioButton
+                    android:id="@+id/backupSelectedRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pozwól mi wybrać elementy które mają się znaleźć w kopii zapasowej"/>
+            </RadioGroup>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp">
+                <CheckBox
+                    android:id="@+id/setsCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Zestawy"
+                    android:checked="true" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/selectSets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wybierz zestawy"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_marginStart="32dp"
+                    android:onClick="selectSetsClick"/>
+                <TextView
+                    android:id="@+id/selectedSetsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wybrano wszystkie zestawy"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginBottom="10dp"/>
+                <CheckBox
+                    android:id="@+id/statsCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Statystyki zestawów"
+                    android:checked="true"/>
+                <CheckBox
+                    android:id="@+id/setSettingsCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ustawienia zestawów"
+                    android:checked="true"/>
+                <CheckBox
+                    android:id="@+id/deliveryRulesCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reguły dostarczania powiadomień"
+                    android:checked="true"/>
+                <CheckBox
+                    android:id="@+id/communityIdCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Identyfikator użytkownika w Społeczności Repeats"
+                    android:checked="true"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Utwórz kopię zapasową"
+            app:icon="@drawable/download"
+            app:iconPadding="15dp"
+            android:layout_gravity="center"
+            android:onClick="createBackupClick"/>
+    </LinearLayout>
+
+</ScrollView>

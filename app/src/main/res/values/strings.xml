@@ -270,5 +270,11 @@
     <string name="firstRunPhotoCredits">Background image during the first start: Kevin Mueller\nSource: unsplash.com</string>
     <string name="info">Information</string>
     <string name="dataMigrate">Data migration in progres...\nPlease wait</string>
+    <string name="calendar">Calendar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="correct">correct</string>
+    <string name="wrong">wrong</string>
+    <string name="all">all</string>
+    <string name="correctAnswers">correct\nanswers</string>
 
 </resources>

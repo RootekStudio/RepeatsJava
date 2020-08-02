@@ -3,36 +3,195 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.AddEditSetActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/projectname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/SetName"
-            android:singleLine="true"
-            android:imeOptions="actionNext"
-            android:inputType="textCapSentences"
-            android:background="@drawable/ask_edittext_dark"
-            android:padding="10dp" />
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/projectname"
             android:paddingBottom="100dp"
             android:clipToPadding="false">
-
             <LinearLayout
-                android:id="@+id/AddRepeatsLinear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/setInfoRelative">
+                    <EditText
+                        android:id="@+id/projectname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/SetName"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapSentences"
+                        android:layout_margin="10dp"
+                        android:textAlignment="center"
+                        android:textSize="12pt"
+                        android:background="@android:color/transparent"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_below="@id/projectname"
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/infoLinear">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Data utworzenia: 01.01.1999"
+                            android:textColor="#5C5C5C"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="50 elementów"
+                            android:layout_gravity="center"
+                            android:textColor="#5C5C5C"/>
+                    </LinearLayout>
+
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="2"
+                        android:layout_margin="10dp"
+                        android:layout_below="@id/infoLinear"
+                        android:id="@+id/setButtons">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Settings"
+                            app:icon="@drawable/settings"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                            android:layout_gravity="fill"
+                            android:layout_columnWeight="1"
+                            android:layout_marginEnd="10dp"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:text="@string/share"
+                            app:icon="@drawable/share"
+                            style="@style/Widget.MaterialComponents.Button"
+                            android:layout_gravity="fill"
+                            android:layout_columnWeight="1"/>
+                    </GridLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_below="@id/setButtons"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/layout_mainshape"
+                        android:id="@+id/setNotifiAddEditLayout">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/bell"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="16dp"
+                            android:id="@+id/img0"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/img0"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Powiadomienia z zestawu"
+                                android:layout_marginStart="16dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="WŁĄCZONE"
+                                android:textColor="@color/greenRepeats"
+                                android:layout_marginStart="16dp"/>
+
+                        </LinearLayout>
+
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/pencil"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_below="@id/setNotifiAddEditLayout"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/layout_mainshape">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/calendar"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="16dp"
+                            android:id="@+id/img1"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/img1"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Przypomnienie o sprawdzianie"
+                                android:layout_marginStart="16dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="NIEUSTAWIONE"
+                                android:textColor="@color/redRepeats"
+                                android:layout_marginStart="16dp"/>
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/pencil"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"/>
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/AddRepeatsLinear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </LinearLayout>
         </ScrollView>
 
     </RelativeLayout>
@@ -41,7 +200,7 @@
         android:id="@+id/AddQuestionFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_add"
+        android:src="@drawable/add"
         android:tint="#FFFFFF"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"

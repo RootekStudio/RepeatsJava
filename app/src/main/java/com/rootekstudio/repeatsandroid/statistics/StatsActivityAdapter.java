@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,12 +47,17 @@ public class StatsActivityAdapter extends RecyclerView.Adapter<StatsActivityAdap
         final SetStats item = setsStats.get(position);
 
         TextView setName = view.findViewById(R.id.setNameStatsItem);
-        TextView goodPercentTextView = view.findViewById(R.id.goodPercentTextViewItem);
-        TextView wrongPercentTextView = view.findViewById(R.id.wrongPercentTextViewItem);
-        View goodPercentView = view.findViewById(R.id.goodProgress);
-        View wrongPercentView = view.findViewById(R.id.wrongProgress);
-        RelativeLayout relativeGraphSetStats = view.findViewById(R.id.relativeGraphSetStats);
+        TextView percentTextView = view.findViewById(R.id.percentTextSetStats);
+        TextView correctTextView = view.findViewById(R.id.correctCountSetStats);
+        TextView wrongTextView = view.findViewById(R.id.wrongCountSetStats);
+        TextView allTextView = view.findViewById(R.id.allCountSetStats);
+//        TextView goodPercentTextView = view.findViewById(R.id.goodPercentTextViewItem);
+//        TextView wrongPercentTextView = view.findViewById(R.id.wrongPercentTextViewItem);
+//        View goodPercentView = view.findViewById(R.id.goodProgress);
+//        View wrongPercentView = view.findViewById(R.id.wrongProgress);
+//        RelativeLayout relativeGraphSetStats = view.findViewById(R.id.relativeGraphSetStats);
         TextView clickToSeeDetailsTextView = view.findViewById(R.id.clickToSeeDetailsTextView);
+        ProgressBar progressBar = view.findViewById(R.id.progressBarSetStats);
 
         view.setOnClickListener(view1 -> {
             Intent intent = new Intent(view1.getContext(), SetStatsActivity.class);
@@ -64,29 +69,20 @@ public class StatsActivityAdapter extends RecyclerView.Adapter<StatsActivityAdap
         setName.setText(item.getName());
 
         if (item.getAllAnswers() != 0) {
-            float goodPercentInt = (float) (item.getGoodAnswers() * 100) / item.getAllAnswers();
-            String goodPercent = Math.round(goodPercentInt) + "%";
-            goodPercentTextView.setText(goodPercent);
+            float goodPercentFloat = (float) (item.getGoodAnswers() * 100) / item.getAllAnswers();
+            int goodPercentInt = Math.round(goodPercentFloat);
+            String goodPercent = goodPercentInt + "%";
+            percentTextView.setText(goodPercent);
+            progressBar.setProgress(goodPercentInt);
 
-            float wrongPercentInt = (float) (item.getWrongAnswers() * 100) / item.getAllAnswers();
-            String wrongPercent = Math.round(wrongPercentInt) + "%";
-            wrongPercentTextView.setText(wrongPercent);
+            correctTextView.setText(String.valueOf(item.getGoodAnswers()));
+            wrongTextView.setText(String.valueOf(item.getWrongAnswers()));
+            allTextView.setText(String.valueOf(item.getAllAnswers()));
 
-            float goodWidth = (goodPercentInt / 100) * dp;
-            float wrongWidth = (wrongPercentInt / 100) * dp;
-
-            RelativeLayout.LayoutParams goodLayoutParams = new RelativeLayout.LayoutParams(Math.round(goodWidth), 10);
-            goodLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
-            goodLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            RelativeLayout.LayoutParams wrongLayoutParams = new RelativeLayout.LayoutParams(Math.round(wrongWidth), 10);
-
-            wrongLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
-            wrongLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-
-            goodPercentView.setLayoutParams(goodLayoutParams);
-            wrongPercentView.setLayoutParams(wrongLayoutParams);
         } else {
-            relativeGraphSetStats.setVisibility(View.GONE);
+            progressBar.setBackground(view.getContext().getDrawable(R.drawable.progress_bar_empty_shape));
+            view.findViewById(R.id.setStatsTextLinear).setVisibility(View.GONE);
+            view.findViewById(R.id.noDataTextView).setVisibility(View.VISIBLE);
             clickToSeeDetailsTextView.setVisibility(View.GONE);
         }
     }

@@ -14,20 +14,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.transition.platform.MaterialContainerTransform;
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.SetsConfigHelper;
+import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 import com.rootekstudio.repeatsandroid.database.Values;
 
@@ -61,7 +67,7 @@ public class AddEditSetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        IsDark = RepeatsHelper.DarkTheme(this, false);
+        IsDark = UIHelper.DarkTheme(this, false);
         setContentView(R.layout.activity_repeats_add_edit);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setsConfigHelper = new SetsConfigHelper(this);
@@ -76,10 +82,8 @@ public class AddEditSetActivity extends AppCompatActivity {
         editName.setOnFocusChangeListener(newName);
 
         if (!IsDark) {
-            editName.setBackgroundResource(R.drawable.editname_light);
+            //editName.setBackgroundResource(R.drawable.editname_light);
         }
-
-
 
         parent = findViewById(R.id.AddRepeatsLinear);
 

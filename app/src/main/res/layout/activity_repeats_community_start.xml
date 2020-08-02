@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/searchRC"
-        android:drawableStart="@drawable/ic_search"
+        android:drawableStart="@drawable/search"
         android:drawablePadding="10dp"
         android:background="@drawable/edittext_shape"
         android:layout_below="@id/textViewRC"

@@ -1,5 +1,7 @@
 package com.rootekstudio.repeatsandroid.mainpage;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -22,7 +24,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.SetsConfigHelper;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
-import com.rootekstudio.repeatsandroid.activities.SetSettingsActivity;
+import com.rootekstudio.repeatsandroid.settings.SetSettingsActivity;
 import com.rootekstudio.repeatsandroid.activities.ShareActivity;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
 
@@ -98,6 +100,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
             addEditActivityIntent.putExtra("ISEDIT", TITLE);
             addEditActivityIntent.putExtra("NAME", TABLE_NAME);
             addEditActivityIntent.putExtra("IGNORE_CHARS", IGNORE_CHARS);
+
             context.startActivity(addEditActivityIntent);
         }
     };

@@ -265,4 +265,9 @@
     <string name="firstRunPhotoCredits">Zdjęcie w tle podczas pierwszego uruchomienia: Kevin Mueller\nŹródło: unsplash.com</string>
     <string name="info">Informacje</string>
     <string name="dataMigrate">Trwa migracja danych...\nProszę czekać</string>
+    <string name="calendar">Kalendarz</string>
+    <string name="correct">poprawnych</string>
+    <string name="wrong">błędnych</string>
+    <string name="all">wszystkich</string>
+    <string name="correctAnswers">poprawnych\nodpowiedzi</string>
 </resources>

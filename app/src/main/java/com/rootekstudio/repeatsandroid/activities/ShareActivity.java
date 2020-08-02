@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.Share;
+import com.rootekstudio.repeatsandroid.UIHelper;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ public class ShareActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RepeatsHelper.DarkTheme(this, false);
+        UIHelper.DarkTheme(this, false);
 
         setContentView(R.layout.activity_share);
         editText = findViewById(R.id.editTextTags);

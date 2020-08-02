@@ -39,7 +39,7 @@
                     android:layout_height="35dp"
                     android:background="@drawable/circle_gradient_background"
                     android:padding="6dp"
-                    android:src="@drawable/ic_info_outline"
+                    android:src="@drawable/info_circle"
                     android:tint="#FFF"
                     app:tint="#FFF" />
 
@@ -121,7 +121,7 @@
                     android:layout_height="35dp"
                     android:background="@drawable/circle_gradient_background"
                     android:padding="6dp"
-                    android:src="@drawable/file_24px"
+                    android:src="@drawable/file"
                     android:tint="#FFF"
                     app:tint="#FFF" />
 
@@ -187,7 +187,7 @@
                     android:layout_height="35dp"
                     android:background="@drawable/circle_gradient_background"
                     android:padding="6dp"
-                    android:src="@drawable/rate_review_24px"
+                    android:src="@drawable/star"
                     android:tint="#FFF"
                     app:tint="#FFF" />
 
@@ -253,7 +253,7 @@
                     android:layout_height="35dp"
                     android:background="@drawable/circle_gradient_background"
                     android:padding="6dp"
-                    android:src="@drawable/face_24px"
+                    android:src="@drawable/user"
                     android:tint="#FFF"
                     app:tint="#FFF" />
 

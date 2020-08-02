@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -17,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.transition.Hold;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.Values;
@@ -36,6 +39,13 @@ public class StatsFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setEnterTransition(new MaterialFadeThrough());
+        setExitTransition(new MaterialFadeThrough());
+    }
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.mainfragment_stats, container, false);
         DB = RepeatsDatabase.getInstance(requireContext());
@@ -46,9 +56,12 @@ public class StatsFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        final TextView goodAnswersTextView = view.findViewById(R.id.goodAnswersCountStats);
-        final TextView wrongAnswersTextView = view.findViewById(R.id.wrongAnswersCountStats);
-        final TextView allAnswersTextView = view.findViewById(R.id.allAnswersCountStats);
+        ProgressBar progressBar = view.findViewById(R.id.progressBarAppStats);
+        TextView percentGoodAppTextView = view.findViewById(R.id.goodPercentAppStats);
+        TextView goodCountAppStats = view.findViewById(R.id.goodAnswersCountAppStats);
+        TextView wrongCountAppStats = view.findViewById(R.id.wrongAnswersCountAppStats);
+        TextView allCountAppStats = view.findViewById(R.id.allAnswersCountAppStats);
+
         LinearLayout linearSortBy = view.findViewById(R.id.linearSortByStats);
         linearSortBy.setOnClickListener(sortStatsClick);
 
@@ -56,11 +69,28 @@ public class StatsFragment extends Fragment {
         int wrongAnswers = DB.columnSum(Values.sets_info, Values.wrong_answers);
         int allAnswers = goodAnswers + wrongAnswers;
 
+        if(allAnswers == 0) {
+            view.findViewById(R.id.textAppStats).setVisibility(View.GONE);
+            view.findViewById(R.id.noDataAppStatsTextView).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.textCorrectAnswersInProgressBar).setVisibility(View.GONE);
+            progressBar.setBackground(view.getContext().getDrawable(R.drawable.progress_bar_empty_shape));
+        }
+        else {
+            float goodPercentFloat = (float) (goodAnswers * 100) / allAnswers;
+            int goodPercentInt = Math.round(goodPercentFloat);
+            String goodPercent = goodPercentInt + "%";
+
+            progressBar.setProgress(goodPercentInt);
+            percentGoodAppTextView.setText(goodPercent);
+            goodCountAppStats.setText(String.valueOf(goodAnswers));
+            wrongCountAppStats.setText(String.valueOf(wrongAnswers));
+            allCountAppStats.setText(String.valueOf(allAnswers));
+        }
+
+
+
         List<SetStats> setsStats = DB.selectSetsStatsInfo(Values.ORDER_BY_GOOD_ANSWERS_RATIO);
         adapter = new StatsActivityAdapter(setsStats, usableWidth);
-        goodAnswersTextView.setText(String.valueOf(goodAnswers));
-        wrongAnswersTextView.setText(String.valueOf(wrongAnswers));
-        allAnswersTextView.setText(String.valueOf(allAnswers));
         recyclerView.setAdapter(adapter);
 
         return view;

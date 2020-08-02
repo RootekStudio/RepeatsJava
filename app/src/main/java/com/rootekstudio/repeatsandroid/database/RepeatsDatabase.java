@@ -6,10 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.rootekstudio.repeatsandroid.backup.SetItemContent;
+import com.rootekstudio.repeatsandroid.backup.SetFullInfo;
 import com.rootekstudio.repeatsandroid.fastlearning.FastLearningSetsListItem;
 import com.rootekstudio.repeatsandroid.statistics.SetStats;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,6 +61,60 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
                 Values.wrong_answers + " INTEGER DEFAULT 0);";
         db.execSQL(CREATE_SET);
         db.close();
+    }
+
+    public List<SetItemContent> getFullSetContent(String setID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<SetItemContent> setItemContents = new ArrayList<>();
+        String query = "SELECT * FROM " + setID + ";";
+        Cursor cursor = db.rawQuery(query, null);
+        SetItemContent setItemContent;
+        if(cursor.moveToFirst()) {
+            do {
+                setItemContent = new SetItemContent();
+                setItemContent.setId(cursor.getInt(0));
+                setItemContent.setQuestion(cursor.getString(1));
+                setItemContent.setAnswer(cursor.getString(2));
+                setItemContent.setImage(cursor.getString(3));
+                setItemContent.setGoodAnswers(cursor.getInt(4));
+                setItemContent.setWrongAnswers(cursor.getInt(5));
+
+                setItemContents.add(setItemContent);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return setItemContents;
+    }
+
+    public List<SetFullInfo> getAllSetsFullInfo() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<SetFullInfo> setFullInfoList = new ArrayList<>();
+        String query = "SELECT * FROM " + Values.sets_info + ";";
+        Cursor cursor = db.rawQuery(query, null);
+        SetFullInfo setFullInfo;
+
+        if(cursor.moveToFirst()) {
+            do {
+                setFullInfo = new SetFullInfo();
+                setFullInfo.setSet_id(cursor.getString(0));
+                setFullInfo.setSet_name(cursor.getString(1));
+                setFullInfo.setCreation_date(cursor.getString(2));
+                setFullInfo.setEnabled(cursor.getInt(3));
+                setFullInfo.setIgnore_chars(cursor.getInt(4));
+                setFullInfo.setFirst_lang(cursor.getString(5));
+                setFullInfo.setSecond_lang(cursor.getString(6));
+                setFullInfo.setGood_answers(cursor.getInt(7));
+                setFullInfo.setWrong_answers(cursor.getInt(8));
+
+                setFullInfoList.add(setFullInfo);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return setFullInfoList;
     }
 
     public void addSetToSetsInfo(SingleSetInfo List) {

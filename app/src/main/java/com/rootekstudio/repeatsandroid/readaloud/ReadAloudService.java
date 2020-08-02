@@ -58,7 +58,7 @@ public class ReadAloudService extends Service {
                 .setContentTitle(getString(R.string.playing_set) + " " + ReadAloudConnector.setName)
                 .setContentText(getString(R.string.click_here_read_notifi))
                 .setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.hearing_24px);
+                .setSmallIcon(R.drawable.ear);
 
         startForeground(RequestCodes.READ_ALOUD_NOTIFICATION_ID, builder.build());
 

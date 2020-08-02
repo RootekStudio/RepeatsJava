@@ -2,21 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/startButtonMain"
-        android:icon="@drawable/dashboard_24px"
+        android:icon="@drawable/home"
         android:title="@string/start" />
 
     <item
         android:id="@+id/setsButtonMain"
-        android:icon="@drawable/bookmarks_24px"
+        android:icon="@drawable/sets"
         android:title="@string/sets" />
 
     <item
+        android:id="@+id/calendarButtonMain"
+        android:icon="@drawable/calendar"
+        android:title="@string/calendar" />
+
+    <item
         android:id="@+id/stats_button"
-        android:icon="@drawable/timeline_24px"
+        android:icon="@drawable/stats"
         android:title="@string/stats" />
 
     <item
         android:id="@+id/app_bar_settings"
-        android:icon="@drawable/settings_24px"
+        android:icon="@drawable/settings"
         android:title="@string/Settings" />
 </menu>

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,6 +23,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SetSingleItem;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import java.io.FileNotFoundException;
 import java.io.OutputStream;

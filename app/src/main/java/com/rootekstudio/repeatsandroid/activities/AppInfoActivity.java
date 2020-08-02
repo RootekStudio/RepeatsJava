@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.firstrun.FirstRunActivity;
 
 public class AppInfoActivity extends AppCompatActivity {
@@ -37,7 +38,7 @@ public class AppInfoActivity extends AppCompatActivity {
         
         versionNameTextView.setText(versionName);
         versionNumberTextView.setText(versionNumber);
-        if(!RepeatsHelper.DarkTheme(this, true)) {
+        if(!UIHelper.DarkTheme(this, true)) {
             logo.setImageDrawable(getDrawable(R.drawable.repeats_for_light_bg));
         }
     }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.UIHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class SearchAdapter extends BaseAdapter {
         this.items = items;
         this.arrayItems = new ArrayList<>();
         this.arrayItems.addAll(items);
-        RepeatsHelper.DarkTheme(context, false);
+        UIHelper.DarkTheme(context, false);
     }
 
     @Override

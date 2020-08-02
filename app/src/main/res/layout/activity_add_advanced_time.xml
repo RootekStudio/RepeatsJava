@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.AddAdvancedTimeActivity">
+    tools:context=".settings.AdvancedDeliveryEditActivity">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
             android:layout_marginEnd="10dp"
             android:text="@string/Delete"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            app:icon="@drawable/ic_delete" />
+            app:icon="@drawable/delete" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/saveDeliveryButton"
@@ -30,7 +30,7 @@
             android:layout_toEndOf="@id/cancelDeliveryButton"
             android:text="@string/Save"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            app:icon="@drawable/ic_save" />
+            app:icon="@drawable/save" />
 
     </RelativeLayout>
 
@@ -179,7 +179,7 @@
                     android:layout_marginBottom="15dp"
                     android:text="@string/addHours"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    app:icon="@drawable/ic_add" />
+                    app:icon="@drawable/add" />
 
             </LinearLayout>
 

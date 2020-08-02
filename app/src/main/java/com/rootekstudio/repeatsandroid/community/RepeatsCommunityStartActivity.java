@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.UIHelper;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -38,7 +39,7 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RepeatsHelper.DarkTheme(this, false);
+        UIHelper.DarkTheme(this, false);
         setContentView(R.layout.activity_repeats_community_start);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

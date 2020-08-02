@@ -31,18 +31,20 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.rootekstudio.repeatsandroid.Backup;
+import com.rootekstudio.repeatsandroid.backup.CreateBackupActivity;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.OnSystemBoot;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
-import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.activities.AppInfoActivity;
-import com.rootekstudio.repeatsandroid.activities.ChangeDeliveryListActivity;
-import com.rootekstudio.repeatsandroid.activities.EnableSetsListActivity;
-import com.rootekstudio.repeatsandroid.activities.SilenceHoursActivity;
+import com.rootekstudio.repeatsandroid.settings.AdvancedDeliveryListActivity;
+import com.rootekstudio.repeatsandroid.settings.EnableSetsListActivity;
+import com.rootekstudio.repeatsandroid.settings.SilenceHoursActivity;
 import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.Values;
@@ -60,6 +62,14 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     private SharedPreferences sharedPreferences;
 
     public PreferenceFragment() {}
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setEnterTransition(new MaterialFadeThrough());
+        setExitTransition(new MaterialFadeThrough());
+    }
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, String rootKey) {
@@ -234,13 +244,13 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         Preference advancedDelivery = findPreference("advancedDelivery");
         advancedDelivery.setOnPreferenceClickListener(preference -> {
-            startActivity(new Intent(requireContext(), ChangeDeliveryListActivity.class));
+            startActivity(new Intent(requireContext(), AdvancedDeliveryListActivity.class));
             return true;
         });
 
         Preference noSetsInDatabaseInfo = findPreference("noSetsInDatabaseInfo");
-        Drawable drawable = requireContext().getDrawable(R.drawable.ic_info_outline);
-        if (RepeatsHelper.DarkTheme(getContext(), true)) {
+        Drawable drawable = requireContext().getDrawable(R.drawable.info_circle);
+        if (UIHelper.DarkTheme(getContext(), true)) {
             drawable.setColorFilter(Color.parseColor("#6d6d6d"), PorterDuff.Mode.SRC_IN);
         } else {
             drawable.setColorFilter(Color.parseColor("#bfbfbf"), PorterDuff.Mode.SRC_IN);
@@ -263,14 +273,14 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             } else {
-                //RepeatsHelper.resetActivity(requireContext(), requireActivity());
+                UIHelper.restartActivity(requireActivity());
             }
             return true;
         });
 
         Preference createBackup = findPreference("create_backup");
         createBackup.setOnPreferenceClickListener(preference -> {
-            Backup.createBackup(getContext(), requireActivity());
+            startActivity(new Intent(requireContext(), CreateBackupActivity.class));
             return true;
         });
 

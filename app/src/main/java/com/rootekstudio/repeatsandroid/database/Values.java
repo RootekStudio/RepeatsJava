@@ -21,6 +21,4 @@ public class Values {
     public static final int ORDER_BY_WRONG_ANSWERS_RATIO = 3;
     public static final int ORDER_BY_ID_ASC = 4;
     public static final int ORDER_BY_ID_DESC = 5;
-
-    Values() {}
 }

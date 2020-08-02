@@ -2,8 +2,10 @@ package com.rootekstudio.repeatsandroid.statistics;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Transition;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -15,6 +17,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.transition.MaterialSharedAxis;
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SetSingleItem;
@@ -42,9 +46,6 @@ public class SetStatsActivity extends AppCompatActivity {
         setName = intent.getStringExtra("setName");
 
         TextView setNameTextView = findViewById(R.id.setNameSetStats);
-        final TextView goodAnswersTextView = findViewById(R.id.goodAnswersCountSetStats);
-        final TextView wrongAnswersTextView = findViewById(R.id.wrongAnswersCountSetStats);
-        final TextView allAnswersTextView = findViewById(R.id.allAnswersCountSetStats);
         final ProgressBar progressBar = findViewById(R.id.progressBarLoadingSetStats);
 
         setNameTextView.setText(setName);
@@ -58,17 +59,11 @@ public class SetStatsActivity extends AppCompatActivity {
 
 
         new Thread(() -> {
-            final int goodAnswers = DB.columnSum(setID, Values.good_answers);
-            final int wrongAnswers = DB.columnSum(setID, Values.wrong_answers);
-            final int allAnswers = goodAnswers + wrongAnswers;
             List<SetSingleItem> setsStats = DB.allItemsInSet(setID, Values.ORDER_BY_GOOD_ANSWERS_DESC);
             setsStats.add(0, new SetSingleItem());
             adapter = new SetStatsActivityAdapter(setsStats);
 
             runOnUiThread(() -> {
-                goodAnswersTextView.setText(String.valueOf(goodAnswers));
-                wrongAnswersTextView.setText(String.valueOf(wrongAnswers));
-                allAnswersTextView.setText(String.valueOf(allAnswers));
                 recyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.GONE);
             });

@@ -8,7 +8,7 @@
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/ic_clear"
+        android:src="@drawable/clear"
         android:tint="@color/redRepeats"
         app:tint="@color/redRepeats"
         android:layout_gravity="center"

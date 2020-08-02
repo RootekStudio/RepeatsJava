@@ -42,7 +42,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/circle_gradient_background"
                     android:padding="7dp"
-                    android:src="@drawable/ic_add"
+                    android:src="@drawable/add"
                     android:tint="#FFF"
                     app:tint="#FFF"
                     android:layout_marginStart="25dp"/>
@@ -72,7 +72,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/circle_gradient_background"
                     android:padding="7dp"
-                    android:src="@drawable/photo_camera_24px"
+                    android:src="@drawable/camera"
                     android:tint="#FFF"
                     app:tint="#FFF"
                     android:layout_marginStart="25dp"/>
@@ -102,7 +102,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/circle_gradient_background"
                     android:padding="7dp"
-                    android:src="@drawable/folder_open_24px"
+                    android:src="@drawable/folder"
                     android:tint="#FFF"
                     app:tint="#FFF"
                     android:layout_marginStart="25dp"/>
@@ -132,7 +132,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/circle_gradient_background"
                     android:padding="7dp"
-                    android:src="@drawable/ic_group_24px"
+                    android:src="@drawable/people"
                     android:tint="#FFF"
                     app:tint="#FFF"
                     android:layout_marginStart="25dp"/>
@@ -178,7 +178,7 @@
 <!--                        android:layout_marginBottom="10dp"-->
 <!--                        android:background="@drawable/circle_gradient_background"-->
 <!--                        android:padding="15dp"-->
-<!--                        android:src="@drawable/ic_add"-->
+<!--                        android:src="@drawable/add"-->
 <!--                        android:tint="#FFF"-->
 <!--                        app:tint="#FFF" />-->
 
@@ -216,7 +216,7 @@
 <!--                        android:layout_marginBottom="10dp"-->
 <!--                        android:background="@drawable/circle_gradient_background"-->
 <!--                        android:padding="15dp"-->
-<!--                        android:src="@drawable/photo_camera_24px"-->
+<!--                        android:src="@drawable/camera"-->
 <!--                        android:tint="#FFF"-->
 <!--                        app:tint="#FFF" />-->
 
@@ -255,7 +255,7 @@
 <!--                        android:layout_marginBottom="10dp"-->
 <!--                        android:background="@drawable/circle_gradient_background"-->
 <!--                        android:padding="15dp"-->
-<!--                        android:src="@drawable/folder_open_24px"-->
+<!--                        android:src="@drawable/folder"-->
 <!--                        android:tint="#FFF"-->
 <!--                        app:tint="#FFF" />-->
 
@@ -294,7 +294,7 @@
 <!--                        android:layout_marginBottom="10dp"-->
 <!--                        android:background="@drawable/circle_gradient_background"-->
 <!--                        android:padding="15dp"-->
-<!--                        android:src="@drawable/ic_group_24px"-->
+<!--                        android:src="@drawable/people"-->
 <!--                        android:tint="#FFF"-->
 <!--                        app:tint="#FFF" />-->
 

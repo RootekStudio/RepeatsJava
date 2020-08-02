@@ -23,7 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.activities.SetSettingsActivity;
+import com.rootekstudio.repeatsandroid.settings.SetSettingsActivity;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;

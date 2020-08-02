@@ -31,8 +31,8 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_add"
+        android:src="@drawable/add"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="20dp"/>
+        android:layout_margin="20dp" />
 </RelativeLayout>

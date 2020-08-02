@@ -6,9 +6,9 @@
     android:layout_marginEnd="10dp"
     android:layout_marginBottom="5dp"
     android:layout_marginStart="10dp"
-    android:background="@drawable/layout_mainshape"
     android:orientation="vertical"
-    android:elevation="5dp">
+    android:elevation="5dp"
+    android:background="@drawable/layout_mainshape">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,47 +21,124 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10pt"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"/>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/goodPercentTextViewItem"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:id="@+id/relativeProgressBar"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="@string/na" />
-
-            <TextView
-                android:id="@+id/wrongPercentTextViewItem"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_alignParentEnd="true"/>
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/percentTextSetStats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="8pt"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical"/>
+                <ProgressBar
+                    android:id="@+id/progressBarSetStats"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/progresss_bar_stats_shape"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progressDrawable="@drawable/progress_bar_stats"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/relativeGraphSetStats"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_below="@id/goodPercentTextViewItem">
-                <RelativeLayout
-                    android:id="@+id/goodProgress"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/noDataTextView"
                     android:layout_width="wrap_content"
-                    android:layout_height="10dp"
-                    android:background="@color/greenRepeats" />
-                <RelativeLayout
-                    android:id="@+id/wrongProgress"
+                    android:layout_height="wrap_content"
+                    android:text="@string/na"
+                    android:layout_centerInParent="true"
+                    android:textSize="17sp"
+                    android:visibility="gone"/>
+                <LinearLayout
+                    android:id="@+id/setStatsTextLinear"
                     android:layout_width="wrap_content"
-                    android:layout_height="10dp"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/redRepeats" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_centerInParent="true">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginEnd="15dp">
+                        <TextView
+                            android:id="@+id/correctCountSetStats"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textColor="@color/greenRepeats"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="5dp"
+                            android:textSize="@dimen/text_size_stats_set"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/correct"
+                            android:textSize="@dimen/text_size_stats_set"
+                            android:textColor="@color/greenRepeats"/>
+                    </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginEnd="15dp">
+                        <TextView
+                            android:id="@+id/wrongCountSetStats"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textColor="@color/redRepeats"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="5dp"
+                            android:textSize="@dimen/text_size_stats_set"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/wrong"
+                            android:textColor="@color/redRepeats"
+                            android:textSize="@dimen/text_size_stats_set"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/allCountSetStats"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="5dp"
+                            android:textSize="@dimen/text_size_stats_set"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/all"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="@dimen/text_size_stats_set"/>
+                    </LinearLayout>
+                </LinearLayout>
 
             </RelativeLayout>
-        </RelativeLayout>
-
+        </LinearLayout>
         <TextView
             android:id="@+id/clickToSeeDetailsTextView"
             android:layout_width="match_parent"

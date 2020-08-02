@@ -2,15 +2,13 @@ package com.rootekstudio.repeatsandroid;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
-
-import androidx.preference.PreferenceManager;
 
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
 import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/setSettingsInReadAloud"
-        android:icon="@drawable/settings_24px"
+        android:icon="@drawable/settings"
         android:title="@string/languageSettings"
         app:showAsAction="always"/>
 </menu>

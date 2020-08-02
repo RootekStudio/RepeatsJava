@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ChangeDeliveryListActivity"
+    tools:context=".settings.AdvancedDeliveryListActivity"
     android:orientation="vertical">
     <com.google.android.material.button.MaterialButton
         style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        app:icon="@drawable/ic_add"
+        app:icon="@drawable/add"
         android:id="@+id/addAdvancedDeliveryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

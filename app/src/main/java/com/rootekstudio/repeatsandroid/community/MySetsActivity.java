@@ -1,7 +1,6 @@
 package com.rootekstudio.repeatsandroid.community;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -10,7 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
+import com.rootekstudio.repeatsandroid.UIHelper;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import java.util.ArrayList;
 
@@ -36,7 +35,7 @@ public class MySetsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RepeatsHelper.DarkTheme(this, false);
+        UIHelper.DarkTheme(this, false);
         setContentView(R.layout.activity_my_sets);
         progressBar = findViewById(R.id.progressBarMySets);
 

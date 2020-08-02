@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -17,114 +16,160 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:layout_margin="10dp"
+                android:background="@drawable/layout_mainshape"
+                android:elevation="3dp"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/green_layout_shape"
-                    android:padding="10dp">
+                    android:layout_marginBottom="20dp"
+                    android:text="Statystyki dla aplikacji"
+                    android:textSize="10pt"
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp"/>
 
-                    <LinearLayout
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/relativeProgressBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:orientation="horizontal">
+                        android:layout_gravity="center">
 
-                        <TextView
-                            android:id="@+id/goodAnswersCountStats"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginEnd="30dp"
-                            android:textAlignment="center"
-                            android:textColor="#FFF"
-                            app:autoSizeTextType="uniform"
-                            android:gravity="center"/>
-
-                        <TextView
-                            android:layout_width="200dp"
+                        <LinearLayout
+                            android:id="@+id/textCorrectAnswersInProgressBar"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/goodAnswersT"
-                            android:textColor="#FFF"
-                            android:textSize="8pt" />
-                    </LinearLayout>
-                </RelativeLayout>
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/red_layout_shape"
-                    android:padding="10dp">
+                            <TextView
+                                android:id="@+id/goodPercentAppStats"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textSize="12pt" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/correctAnswers"
+                                android:textAlignment="center" />
+                        </LinearLayout>
+
+                        <ProgressBar
+                            android:id="@+id/progressBarAppStats"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:background="@drawable/progresss_bar_stats_shape"
+                            android:indeterminate="false"
+                            android:max="100"
+                            android:progressDrawable="@drawable/progress_bar_stats"
+                            android:layout_centerInParent="true"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:orientation="horizontal">
+                        android:layout_marginStart="15dp"
+                        android:layout_gravity="center">
 
                         <TextView
-                            android:id="@+id/wrongAnswersCountStats"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginEnd="30dp"
-                            android:textAlignment="center"
-                            android:textColor="#FFF"
-                            app:autoSizeTextType="uniform"
-                            android:gravity="center"/>
-
-                        <TextView
-                            android:layout_width="200dp"
+                            android:id="@+id/noDataAppStatsTextView"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/wrongAnswersT"
-                            android:textColor="#FFF"
-                            android:textSize="8pt" />
-                    </LinearLayout>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/layout_mainshape"
-                    android:padding="10dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/allAnswersCountStats"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginEnd="30dp"
-                            android:textAlignment="center"
-                            app:autoSizeTextType="uniform"
-                            android:gravity="center"/>
-
-                        <TextView
-                            android:layout_width="200dp"
+                            android:text="@string/na"
+                            android:textSize="17sp"
+                            android:layout_centerInParent="true"
+                            android:visibility="gone"/>
+                        <LinearLayout
+                            android:id="@+id/textAppStats"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/allAnswersT"
-                            android:textSize="8pt" />
-                    </LinearLayout>
-                </RelativeLayout>
+                            android:layout_centerInParent="true"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/goodAnswersCountAppStats"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/greenRepeats"
+                                    android:textSize="@dimen/text_size_stats_app"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/correct"
+                                    android:textColor="@color/greenRepeats"
+                                    android:textSize="@dimen/text_size_stats_app" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/wrongAnswersCountAppStats"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/redRepeats"
+                                    android:textSize="@dimen/text_size_stats_app"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/wrong"
+                                    android:textColor="@color/redRepeats"
+                                    android:textSize="@dimen/text_size_stats_app" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/allAnswersCountAppStats"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:textSize="@dimen/text_size_stats_app"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/all"
+                                    android:textSize="@dimen/text_size_stats_app" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -150,7 +195,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/keyboard_arrow_down_24px" />
+                    android:src="@drawable/chevron_down" />
             </LinearLayout>
 
 

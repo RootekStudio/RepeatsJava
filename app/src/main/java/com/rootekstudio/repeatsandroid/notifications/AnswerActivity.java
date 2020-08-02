@@ -17,10 +17,11 @@ import com.rootekstudio.repeatsandroid.CheckAnswer;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.activities.SettingsActivity;
+import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.database.GetQuestion;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.Values;
+import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,7 +34,7 @@ public class AnswerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        RepeatsHelper.DarkTheme(this, false);
+        UIHelper.DarkTheme(this, false);
         super.onCreate(savedInstanceState);
         getQuestion = new GetQuestion();
         Intent intent = getIntent();
@@ -194,7 +195,7 @@ public class AnswerActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.Settings, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(AnswerActivity.this, SettingsActivity.class);
+                        Intent intent = new Intent(AnswerActivity.this, MainActivity.class);
                         startActivity(intent);
 
                         finish();

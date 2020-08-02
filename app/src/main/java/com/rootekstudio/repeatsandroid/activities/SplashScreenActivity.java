@@ -3,40 +3,41 @@ package com.rootekstudio.repeatsandroid.activities;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 
+import com.google.gson.Gson;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.SharedPreferencesManager;
+import com.rootekstudio.repeatsandroid.UIHelper;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.firstrun.FirstRunActivity;
 import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
-import java.util.UUID;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 
 public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        RepeatsHelper.DarkTheme(this, false);
+        UIHelper.DarkTheme(this, false);
 
         super.onCreate(savedInstanceState);
 
         SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
         Intent intent;
-        if (sharedPreferencesManager.getFirstRunTerms() != 2) {
+        if (sharedPreferencesManager.getFirstRunTerms() == 0) {
             intent = new Intent(this, FirstRunActivity.class);
         } else {
             intent = new Intent(this, MainActivity.class);
         }
 
         sharedPreferencesManager.getUserID();
-//
-//        AppCenter.start(getApplication(), "347cfec3-4ebc-443c-a9d6-4fdd34df27dd",
-//                Analytics.class, Crashes.class);
 
         createNotificationChannels();
         startActivity(intent);

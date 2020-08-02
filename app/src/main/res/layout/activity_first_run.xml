@@ -42,7 +42,7 @@
             android:layout_marginStart="10dp"
             android:background="@android:color/transparent"
             android:onClick="backClick"
-            android:src="@drawable/navigate_before_24px"
+            android:src="@drawable/chevron_left"
             android:visibility="invisible"/>
 
         <com.google.android.material.tabs.TabLayout
@@ -65,7 +65,7 @@
             android:layout_marginEnd="10dp"
             android:background="@android:color/transparent"
             android:onClick="nextClick"
-            android:src="@drawable/ic_navigate_next" />
+            android:src="@drawable/chevron_right" />
 
         <TextView
             android:id="@+id/readyTextView"

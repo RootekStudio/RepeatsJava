@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/share"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                app:icon="@drawable/ic_share"
+                app:icon="@drawable/share"
                 android:layout_gravity="center"
                 android:layout_marginStart="45dp"
                 android:onClick="shareClick"/>
