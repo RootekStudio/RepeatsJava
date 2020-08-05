@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.rootekstudio.repeatsandroid.backup.SetItemContent;
 import com.rootekstudio.repeatsandroid.backup.SetFullInfo;
+import com.rootekstudio.repeatsandroid.backup.SetItemContent;
 import com.rootekstudio.repeatsandroid.fastlearning.FastLearningSetsListItem;
 import com.rootekstudio.repeatsandroid.statistics.SetStats;
 
@@ -23,7 +23,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
     }
 
     public static synchronized RepeatsDatabase getInstance(Context context) {
-        if(single_instance == null) {
+        if (single_instance == null) {
             single_instance = new RepeatsDatabase(context.getApplicationContext());
         }
         return single_instance;
@@ -43,11 +43,77 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
                 Values.wrong_answers + " INTEGER DEFAULT 0);";
 
         db.execSQL(create);
+
+        createCalendar();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public boolean isCalendarCreated() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT name FROM sqlite_master WHERE type='table' AND name='" + Values.calendar + "';";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()) {
+            cursor.close();
+            db.close();
+            return true;
+        }
+        else {
+            cursor.close();
+            db.close();
+            return false;
+        }
+
+    }
+
+    public void createCalendar() {
+        if(!isCalendarCreated()) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            String createCalendar = "CREATE TABLE IF NOT EXISTS " + Values.calendar + " (" +
+                    Values.set_id + " TEXT PRIMARY KEY NOT NULL, " +
+                    Values.deadline + " TEXT, " +
+                    Values.reminder_days_before + " INTEGER DEFAULT 2, " +
+                    Values.notifications_days + " TEXT, " +
+                    Values.notifications_days_of_week + " TEXT, " +
+                    Values.notifications_hours + " TEXT, " +
+                    Values.notifications_silent_hours + " TEXT, " +
+                    Values.notifications_mode + " INTEGER DEFAULT 0, " +
+                    Values.reminder_enabled + " INTEGER DEFAULT 0);";
+
+            db.execSQL(createCalendar);
+            db.close();
+
+            addAllSetsToCalendar();
+        }
+    }
+
+    public void addAllSetsToCalendar() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "INSERT INTO " + Values.calendar + " (" + Values.set_id + ") SELECT " + Values.set_id + " FROM " + Values.sets_info + ";";
+        db.execSQL(query);
+        db.close();
+    }
+
+
+    public void updateReminderCalendar(String setID, String deadline, String reminderDaysBefore, boolean isEnabled) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int reminderEnabled;
+        if (isEnabled) {
+            reminderEnabled = 1;
+        } else {
+            reminderEnabled = 0;
+        }
+
+        String query = "UPDATE " + Values.calendar + " SET " + Values.deadline + " = " + deadline + ", " + Values.reminder_days_before + " = " +
+                reminderDaysBefore + ", " + Values.reminder_enabled + " = " + reminderEnabled + " WHERE setID = " + setID + ";";
+
+        db.execSQL(query);
+        db.close();
     }
 
     public void createSet(String name) {
@@ -69,7 +135,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + setID + ";";
         Cursor cursor = db.rawQuery(query, null);
         SetItemContent setItemContent;
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 setItemContent = new SetItemContent();
                 setItemContent.setId(cursor.getInt(0));
@@ -80,7 +146,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
                 setItemContent.setWrongAnswers(cursor.getInt(5));
 
                 setItemContents.add(setItemContent);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         cursor.close();
@@ -95,7 +161,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         SetFullInfo setFullInfo;
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 setFullInfo = new SetFullInfo();
                 setFullInfo.setSet_id(cursor.getString(0));
@@ -109,7 +175,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
                 setFullInfo.setWrong_answers(cursor.getInt(8));
 
                 setFullInfoList.add(setFullInfo);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         cursor.close();
@@ -117,7 +183,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         return setFullInfoList;
     }
 
-    public void addSetToSetsInfo(SingleSetInfo List) {
+    public void addSetToSetsInfoAndCalendar(SingleSetInfo List) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Values.set_id, List.getSetID());
@@ -130,6 +196,15 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         contentValues.put(Values.good_answers, List.getGoodAnswers());
         contentValues.put(Values.wrong_answers, List.getWrongAnswers());
         db.insert(Values.sets_info, null, contentValues);
+        db.close();
+
+        addAllSetsToCalendar();
+    }
+
+    public void addSetToCalendar(String setID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "INSERT INTO " + Values.calendar + " (" + Values.set_id + ") VALUES (" + setID + ");";
+        db.execSQL(query);
         db.close();
     }
 
@@ -266,7 +341,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    public String getValueByCondition(String selectColumn, String table, String column , String value) {
+    public String getValueByCondition(String selectColumn, String table, String column, String value) {
         String returnValue = "";
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT " + selectColumn + " FROM " + table + " WHERE " + column + " = '" + value + "';";
@@ -336,9 +411,18 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteSetFromSetInfo(String setID) {
+    public void deleteSetFromDatabase(String setID) {
         SQLiteDatabase db = this.getWritableDatabase();
         String DELETE_NAME = "DELETE FROM " + Values.sets_info + " WHERE " + Values.set_id + " =" + "'" + setID + "';";
+        db.execSQL(DELETE_NAME);
+        db.close();
+
+        deleteSetFromCalendar(setID);
+    }
+
+    public void deleteSetFromCalendar(String setID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String DELETE_NAME = "DELETE FROM " + Values.calendar + " WHERE " + Values.set_id + " =" + "'" + setID + "';";
         db.execSQL(DELETE_NAME);
         db.close();
     }
@@ -449,7 +533,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
 
     public void copyQuestionsAndAnswersToAnotherTable(String copySetID, String pasteSetID) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "INSERT INTO " + pasteSetID + " (" + Values.question + ", " + Values.answer +", " + Values.image + ")" +
+        String query = "INSERT INTO " + pasteSetID + " (" + Values.question + ", " + Values.answer + ", " + Values.image + ")" +
                 " SELECT " + Values.question + ", " + Values.answer + ", " + Values.image + " FROM " + copySetID + " WHERE " + Values.question + " != '' OR " + Values.answer + " != '';";
         db.execSQL(query);
         db.close();
@@ -459,7 +543,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT COUNT(*) FROM " + setID;
         Cursor cursor = db.rawQuery(query, null);
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             return cursor.getInt(0);
         }
 
@@ -472,14 +556,14 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> questionAndAnswer = null;
 
-        String query = "SELECT " + Values.question + ", " + Values.answer + " FROM " + SetID +" WHERE id=" + index + ";";
+        String query = "SELECT " + Values.question + ", " + Values.answer + " FROM " + SetID + " WHERE id=" + index + ";";
         Cursor cursor = db.rawQuery(query, null);
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             questionAndAnswer = new ArrayList<>();
             do {
                 questionAndAnswer.add(cursor.getString(0));
                 questionAndAnswer.add(cursor.getString(1));
-            } while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         db.close();

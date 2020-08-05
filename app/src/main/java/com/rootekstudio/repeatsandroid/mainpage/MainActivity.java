@@ -65,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // TODO: remove this before release
+        RepeatsDatabase db = RepeatsDatabase.getInstance(this);
+        db.createCalendar();
+
         darkTheme = UIHelper.DarkTheme(this, false);
         RepeatsHelper.CheckDir(this);
         setContentView(R.layout.activity_main);

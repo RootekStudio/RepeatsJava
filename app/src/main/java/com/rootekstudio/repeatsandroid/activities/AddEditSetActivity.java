@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ import com.rootekstudio.repeatsandroid.SetsConfigHelper;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 import com.rootekstudio.repeatsandroid.database.Values;
+import com.rootekstudio.repeatsandroid.reminders.EditReminder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -108,6 +111,10 @@ public class AddEditSetActivity extends AppCompatActivity {
         });
     }
     //endregion
+
+    public void setReminders(View view) {
+        new EditReminder(view, id);
+    }
 
     //region readSetFromDatabase
     void readSetFromDatabase(final String SetID, String NAME) {

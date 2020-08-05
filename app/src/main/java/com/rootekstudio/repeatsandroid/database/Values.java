@@ -15,6 +15,18 @@ public class Values {
     public static final String answer = "answer";
     public static final String image = "image";
 
+    public static final String calendar = "calendar";
+    public static final String deadline = "deadline";
+    public static final String reminder_days_before = "reminder_days_before";
+    public static final String notifications_days = "notifications_days";
+    public static final String notifications_days_of_week = "notifications_days_of_week";
+    public static final String notifications_hours = "notifications_hours";
+    public static final String notifications_silent_hours = "notifications_silent_hours";
+    public static final String notifications_mode = "notifications_mode";
+    public static final String reminder_enabled = "reminder_enabled";
+
+
+
     public static final int ORDER_BY_GOOD_ANSWERS_DESC = 0;
     public static final int ORDER_BY_WRONG_ANSWERS_DESC = 1;
     public static final int ORDER_BY_GOOD_ANSWERS_RATIO = 2;

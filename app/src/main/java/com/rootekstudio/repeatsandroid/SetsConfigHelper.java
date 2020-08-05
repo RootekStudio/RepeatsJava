@@ -49,7 +49,7 @@ public class SetsConfigHelper {
 
         //Registering set in database
         DB.createSet(id);
-        DB.addSetToSetsInfo(list);
+        DB.addSetToSetsInfoAndCalendar(list);
 
         if(addEmptyItem) {
             //Adding first empty item to set
@@ -78,7 +78,7 @@ public class SetsConfigHelper {
             file.delete();
         }
 
-        DB.deleteSetFromSetInfo(setID);
+        DB.deleteSetFromDatabase(setID);
         DB.deleteSet(setID);
         JsonFile.removeSetFromJSON(context, setID);
 
