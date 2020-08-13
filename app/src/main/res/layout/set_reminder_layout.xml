@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="30dp"
         android:layout_centerInParent="true"
         android:background="@drawable/dialog_shape"
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_above="@id/buttonsRelative">
+            android:id="@+id/scrollViewSetReminder">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="10dp"
                         android:layout_toStartOf="@id/remindersSwitch"
-                        android:text="Przypomnienie o sprawdzianie" />
+                        android:text="@string/test_reminder" />
 
                     <Switch
                         android:id="@+id/remindersSwitch"
@@ -55,27 +55,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Wybierz datę sprawdzianu"
-                    android:layout_marginBottom="10dp"/>
-
-                <com.applandeo.materialcalendarview.CalendarView
-                    android:id="@+id/calendarViewReminders"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:abbreviationsBarColor="?attr/customItemColor"
-                    app:abbreviationsLabelsColor="?android:attr/textColor"
-                    app:daysLabelsColor="?android:attr/textColor"
-                    app:headerColor="?attr/customItemColor"
-                    app:headerLabelColor="?android:attr/textColor"
-                    app:pagesColor="?attr/customItemColor"
-                    app:type="one_day_picker" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:text="Ustaw termin wysłania przypomnienia" />
+                    android:layout_marginTop="5dp"
+                    android:text="@string/set_date_for_reminder" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -94,9 +75,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="dni przed sprawdzianem" />
-
-
+                        android:text="@string/days_before_test" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
@@ -105,7 +84,7 @@
             android:id="@+id/buttonsRelative"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_alignParentBottom="true">
+            android:layout_below="@id/scrollViewSetReminder">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,8 +106,6 @@
                     app:icon="@drawable/save" />
             </LinearLayout>
         </RelativeLayout>
-
-
 
     </RelativeLayout>
 

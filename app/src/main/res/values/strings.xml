@@ -302,5 +302,30 @@
     <string name="material_calendar_today_button">Today</string>
     <string name="material_calendar_positive_button">OK</string>
     <string name="material_calendar_negative_button">Cancel</string>
+    <string name="reminder_set">Set</string>
+    <string name="reminder_not_set">Not set</string>
+    <string name="channelname5">Test reminder</string>
+    <string name="channeldesc5">Notifications showing tests reminders</string>
+    <string name="tests_coming">There are tests coming from several sets</string>
+    <string name="for_word">For</string>
+    <string name="test_from_polish_only">test from</string>
+    <string name="test">test</string>
+    <string name="in_lower_case">in</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="days_lower_case">days</string>
+    <string name="click_to_learn">Click to start learning</string>
+    <string name="reminders_come_at">Reminders come at</string>
+    <string name="reminders">Reminders</string>
+    <string name="test_reminders">Test reminders</string>
+    <string name="change_time_reminders">Change the time when the reminder is sent</string>
+    <string name="manage_reminders">Manage reminders</string>
+    <string name="test_date">Test date:</string>
+    <string name="change">Change</string>
+    <string name="test_reminder">Test reminder</string>
+    <string name="select_date">Select date</string>
+    <string name="set_date_for_reminder">Set a date for sending the reminder</string>
+    <string name="days_before_test">days before test</string>
+    <string name="app_stats">App statistics</string>
+    <string name="none">None</string>
 
 </resources>

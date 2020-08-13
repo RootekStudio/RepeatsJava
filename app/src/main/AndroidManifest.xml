@@ -112,17 +112,13 @@
         <activity android:name=".mainpage.MainActivity" />
 
         <receiver
-            android:name=".notifications.RepeatsQuestionSend"
-            android:enabled="true"
-            android:exported="true" />
+            android:name=".notifications.RepeatsQuestionSend" />
         <receiver
-            android:name=".notifications.AdvancedTimeNotification"
-            android:enabled="true"
-            android:exported="true" />
+            android:name=".notifications.AdvancedTimeNotification" />
         <receiver
-            android:name=".notifications.UserReply"
-            android:enabled="true"
-            android:exported="true" />
+            android:name=".notifications.UserReply"/>
+        <receiver
+            android:name=".reminders.ReminderBroadcastReceiver" />
 
         <activity
             android:name=".notifications.AnswerActivity"

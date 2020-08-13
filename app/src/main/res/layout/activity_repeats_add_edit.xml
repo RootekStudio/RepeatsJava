@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
         <ScrollView
+            android:id="@+id/scrollViewEditSet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
@@ -24,70 +25,49 @@
                 <RelativeLayout
                     android:id="@+id/setInfoRelative"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
 
                     <EditText
                         android:id="@+id/projectname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginStart="15dp"
                         android:background="@android:color/transparent"
                         android:hint="@string/SetName"
                         android:imeOptions="actionNext"
                         android:inputType="textCapSentences"
-                        android:textAlignment="center"
                         android:textSize="12pt" />
 
                     <LinearLayout
-                        android:id="@+id/infoLinear"
+                        android:id="@+id/testDateLinear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:layout_below="@id/projectname"
-                        android:layout_centerHorizontal="true"
-                        android:orientation="vertical">
-
+                        android:layout_marginStart="15dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Data utworzenia: 01.01.1999"
-                            android:textColor="#5C5C5C" />
-
+                            android:text="@string/test_date"
+                            android:textSize="16sp"/>
                         <TextView
+                            android:id="@+id/testDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="50 elementów"
-                            android:textColor="#5C5C5C" />
+                            android:textSize="16sp"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_marginStart="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/change"
+                            android:onClick="changeTestDate"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
                     </LinearLayout>
-
-
-                    <GridLayout
-                        android:id="@+id/setButtons"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/infoLinear"
-                        android:layout_margin="10dp"
-                        android:columnCount="2">
-
-                        <com.google.android.material.button.MaterialButton
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:layout_gravity="fill"
-                            android:layout_marginEnd="10dp"
-                            android:text="@string/Settings"
-                            app:icon="@drawable/settings" />
-
-                        <com.google.android.material.button.MaterialButton
-                            style="@style/Widget.MaterialComponents.Button"
-                            android:layout_width="0dp"
-                            android:layout_height="50dp"
-                            android:layout_columnWeight="1"
-                            android:layout_gravity="fill"
-                            android:text="@string/share"
-                            app:icon="@drawable/share" />
-                    </GridLayout>
 
                     <RelativeLayout
                         android:id="@+id/setNotifiAddEditLayout"
@@ -96,8 +76,8 @@
                         android:layout_below="@id/reminderRelativeLayout"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/layout_mainshape">
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/rounded_borders">
 
                         <ImageView
                             android:id="@+id/img0"
@@ -125,8 +105,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:text="WŁĄCZONE"
-                                android:textColor="@color/greenRepeats" />
+                                android:textAllCaps="true" />
 
                         </LinearLayout>
 
@@ -145,14 +124,15 @@
                         android:id="@+id/reminderRelativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:layout_below="@id/setButtons"
+                        android:layout_below="@id/testDateLinear"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
-                        android:background="@drawable/layout_mainshape"
+                        android:layout_marginTop="15dp"
                         android:clickable="true"
                         android:focusable="true"
-                        android:onClick="setReminders">
+                        android:onClick="setReminders"
+                        android:background="@drawable/rounded_borders">
 
                         <ImageView
                             android:id="@+id/img1"
@@ -174,14 +154,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:text="Przypomnienie o sprawdzianie" />
+                                android:text="@string/test_reminder" />
 
                             <TextView
+                                android:id="@+id/reminderStatus"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:text="NIEUSTAWIONE"
-                                android:textColor="@color/redRepeats" />
+                                android:textAllCaps="true" />
 
                         </LinearLayout>
 
@@ -201,7 +181,8 @@
                     android:id="@+id/AddRepeatsLinear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    android:animateLayoutChanges="true"/>
             </LinearLayout>
         </ScrollView>
 

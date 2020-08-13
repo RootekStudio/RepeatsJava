@@ -12,5 +12,8 @@ public class RequestCodes {
     public static int READ_ALOUD_NOTIFICATION_ID = 9;
     public static int PICK_IMAGE_FOR_RECOGNITION = 10;
     public static int TAKE_IMAGE_FOR_RECOGNITION = 11;
+    public static int REMINDER_ALARM_ID = 12;
+    public static int REMINDER_NOTIFICATION_ID = 13;
+    public static int REMINDER_NOTIFICATION_CLICK_ID = 14;
 
 }

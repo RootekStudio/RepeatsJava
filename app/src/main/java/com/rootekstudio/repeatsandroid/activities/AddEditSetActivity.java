@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,17 +18,22 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.applandeo.materialcalendarview.CalendarView;
+import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.transition.platform.MaterialContainerTransform;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
@@ -36,9 +42,12 @@ import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.SetsConfigHelper;
 import com.rootekstudio.repeatsandroid.UIHelper;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.reminders.EditReminder;
+import com.rootekstudio.repeatsandroid.reminders.ReminderInfo;
+import com.rootekstudio.repeatsandroid.reminders.SetTestDate;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,9 +55,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class AddEditSetActivity extends AppCompatActivity {
@@ -66,6 +79,10 @@ public class AddEditSetActivity extends AppCompatActivity {
     static String id;
     SetsConfigHelper setsConfigHelper;
 
+    ReminderInfo reminderInfo;
+
+    ScrollView scrollView;
+
     //region onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +91,8 @@ public class AddEditSetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_repeats_add_edit);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setsConfigHelper = new SetsConfigHelper(this);
+
+        scrollView = findViewById(R.id.scrollViewEditSet);
 
         //Getting basic information about set (if new or  already existing, id, and ignore chars option)
         Intent intent = getIntent();
@@ -95,10 +114,37 @@ public class AddEditSetActivity extends AppCompatActivity {
             addView(parent, this);
             //Adding single item (with question and answer) to database
             id = setsConfigHelper.createNewSet(true, "");
+            reminderInfo = RepeatsDatabase.getInstance(this).getInfoAboutReminderFromCalendar(id);
 
         } else {
             id = editing;
+            reminderInfo = RepeatsDatabase.getInstance(this).getInfoAboutReminderFromCalendar(id);
             readSetFromDatabase(editing, SetName);
+        }
+
+        TextView reminderStatus = findViewById(R.id.reminderStatus);
+        TextView testDate = findViewById(R.id.testDate);
+
+        if(reminderInfo.getDeadline() != null) {
+            Calendar deadlineCalendar = Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                deadlineCalendar.setTime(Objects.requireNonNull(simpleDateFormat.parse(reminderInfo.getDeadline())));
+                testDate.setText(DateFormat.getDateInstance().format(deadlineCalendar.getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
+            testDate.setText(getResources().getString(R.string.none));
+        }
+
+        if(reminderInfo.getEnabled() == 1) {
+            reminderStatus.setText(getString(R.string.reminder_set));
+            reminderStatus.setTextColor(getResources().getColor(R.color.greenRepeats));
+        }
+        else {
+            reminderStatus.setText(getString(R.string.reminder_not_set));
+            reminderStatus.setTextColor(getResources().getColor(R.color.redRepeats));
         }
 
         FloatingActionButton fab = findViewById(R.id.AddQuestionFAB);
@@ -111,6 +157,10 @@ public class AddEditSetActivity extends AppCompatActivity {
         });
     }
     //endregion
+
+    public void changeTestDate(View view) throws OutOfDateRangeException, ParseException {
+        new SetTestDate(view, id);
+    }
 
     public void setReminders(View view) {
         new EditReminder(view, id);
@@ -125,7 +175,7 @@ public class AddEditSetActivity extends AppCompatActivity {
         Thread readFromDatabase = new Thread(new Runnable() {
             @Override
             public void run() {
-                List<SetSingleItem> SET = setsConfigHelper.getRepeatsDatabase().allItemsInSet(SetID, -1);
+                List<SetSingleItem> SET = setsConfigHelper.getRepeatsDatabase().allItemsInSet(SetID, Values.ORDER_BY_ID_DESC);
                 int ItemsCount = SET.size();
 
                 for (int i = 0; i < ItemsCount; i++) {
@@ -245,7 +295,9 @@ public class AddEditSetActivity extends AppCompatActivity {
         answer.setFilters(new InputFilter[]{inputFilter});
 
         //Adding item to root view
-        viewGroup.addView(item);
+        viewGroup.addView(item, 0);
+
+        //scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
     }
     //endregion
 
@@ -268,8 +320,8 @@ public class AddEditSetActivity extends AppCompatActivity {
             }
 
             if (rootView.getChildCount() != 1) {
-                rootView.removeView(parent);
                 setsConfigHelper.getRepeatsDatabase().deleteItemFromSet(id, index);
+                rootView.removeView(parent);
             }
         }
     };

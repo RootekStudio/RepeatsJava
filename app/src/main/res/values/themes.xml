@@ -38,6 +38,7 @@
         <item name="windowActionBarOverlay">true</item>
         <item name="colorPrimaryDark">#000000</item>
         <item name="android:navigationBarColor" tools:targetApi="o_mr1">#000000</item>
+        <item name="rippleColor">#4D000000</item>
     </style>
 
     <style name="bottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">

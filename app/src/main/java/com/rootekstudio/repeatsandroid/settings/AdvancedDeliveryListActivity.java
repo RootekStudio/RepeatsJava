@@ -98,7 +98,7 @@ public class AdvancedDeliveryListActivity extends AppCompatActivity {
                 //read days
                 JSONArray days = object.getJSONArray("days");
                 StringBuilder daysBuilder = new StringBuilder();
-                daysBuilder.append(getString(R.string.days));
+                daysBuilder.append(getString(R.string.days)).append(":");
                 daysBuilder.append(" ");
 
                 int daysCount = days.length();

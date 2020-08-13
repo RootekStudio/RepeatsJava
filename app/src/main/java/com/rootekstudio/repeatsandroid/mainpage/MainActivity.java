@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: remove this before release
         RepeatsDatabase db = RepeatsDatabase.getInstance(this);
-        db.createCalendar();
+        db.createCalendarForOlderVersions();
 
         darkTheme = UIHelper.DarkTheme(this, false);
         RepeatsHelper.CheckDir(this);
@@ -144,12 +144,12 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-//        if (currentFragment.equals("sets")) {
-//            FragmentManager fragmentManager = getSupportFragmentManager();
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
-//            fragmentTransaction.commit();
-//        }
+        if (currentFragment.equals("sets")) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
+            fragmentTransaction.commit();
+        }
     }
 
     public void whatsNewClickMain(View view) {

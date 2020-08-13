@@ -46,14 +46,16 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+
             CharSequence name = getString(R.string.ChannelTitle);
             String description = getString(R.string.ChannelDescription);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("RepeatsQuestionChannel", name, importance);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("RepeatsSendQuestionChannel", name, importance);
             channel.setDescription(description);
 
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
+            notificationManager.deleteNotificationChannel("RepeatsQuestionChannel");
 
             CharSequence name2 = getString(R.string.channelname2);
             String description2 = getString(R.string.channeldesc2);
@@ -61,8 +63,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             NotificationChannel channel2 = new NotificationChannel("RepeatsAnswerChannel", name2, importance2);
             channel2.setDescription(description2);
 
-            NotificationManager notificationManager2 = getSystemService(NotificationManager.class);
-            notificationManager2.createNotificationChannel(channel2);
+            notificationManager.createNotificationChannel(channel2);
 
             CharSequence name3 = getString(R.string.channelname3);
             String description3 = getString(R.string.channeldesc3);
@@ -70,8 +71,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             NotificationChannel channel3 = new NotificationChannel("RepeatsNextChannel", name3, importance3);
             channel3.setDescription(description3);
 
-            NotificationManager notificationManager3 = getSystemService(NotificationManager.class);
-            notificationManager3.createNotificationChannel(channel3);
+            notificationManager.createNotificationChannel(channel3);
 
             CharSequence name4 = getString(R.string.channelname4);
             String description4 = getString(R.string.channeldesc4);
@@ -79,8 +79,15 @@ public class SplashScreenActivity extends AppCompatActivity {
             NotificationChannel channel4 = new NotificationChannel("RepeatsReadAloudChannel", name4, importance4);
             channel4.setDescription(description4);
 
-            NotificationManager notificationManager4 = getSystemService(NotificationManager.class);
-            notificationManager4.createNotificationChannel(channel4);
+            notificationManager.createNotificationChannel(channel4);
+
+            CharSequence name5 = getString(R.string.channelname5);
+            String description5 = getString(R.string.channeldesc5);
+            int importance5 = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel5 = new NotificationChannel("RepeatsRemindersChannel", name5, importance5);
+            channel5.setDescription(description5);
+
+            notificationManager.createNotificationChannel(channel5);
         }
     }
 }

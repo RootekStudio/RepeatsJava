@@ -81,9 +81,11 @@ public class RepeatsNotificationTemplate {
         if (IsNext) {
             mBuilder = new NotificationCompat.Builder(context, "RepeatsNextChannel");
             mBuilder.setDefaults(Notification.DEFAULT_LIGHTS);
+            mBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
         } else {
-            mBuilder = new NotificationCompat.Builder(context, "RepeatsQuestionChannel");
+            mBuilder = new NotificationCompat.Builder(context, "RepeatsSendQuestionChannel");
             mBuilder.setDefaults(Notification.DEFAULT_ALL);
+            mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
         }
 
         mBuilder
@@ -92,7 +94,6 @@ public class RepeatsNotificationTemplate {
                 .setContentText(Question)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(Question))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setColor(context.getResources().getColor(R.color.colorAccent))
                 .setColorized(true)
                 .setAutoCancel(true);

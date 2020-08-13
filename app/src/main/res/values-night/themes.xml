@@ -25,6 +25,7 @@
         <item name="customEditTextColor">@color/darkEditTextColor</item>
 
         <item name="android:homeAsUpIndicator">@drawable/back</item>
+        <item name="rippleColor">#4DFFFFFF</item>
     </style>
 
     <style name="bottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">

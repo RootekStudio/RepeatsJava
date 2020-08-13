@@ -75,6 +75,10 @@ public class Fragment0 extends Fragment {
             setNameTextView.setText(singleItem.getSetName());
 
             linearLayout.addView(singleView);
+
+            if(FastLearningInfo.setsFromNotification.contains(singleItem.getSetID())) {
+                checkBox.setChecked(true);
+            }
         }
 
         return view;

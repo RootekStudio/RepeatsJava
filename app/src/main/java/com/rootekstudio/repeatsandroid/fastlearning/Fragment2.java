@@ -16,6 +16,7 @@ import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Fragment2 extends Fragment {
     private LinearLayout linearList;
@@ -26,7 +27,7 @@ public class Fragment2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fastlearning_fragment2, container, false);
         linearList = view.findViewById(R.id.linearLayoutQuestionsListFL);
-        button = view.findViewById(R.id.nextConfigFL);
+        button = requireActivity().findViewById(R.id.nextConfigFL);
         button.setEnabled(false);
 
         textCount = view.findViewById(R.id.questionsCountTextView);

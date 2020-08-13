@@ -1,5 +1,8 @@
 package com.rootekstudio.repeatsandroid.mainpage;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +22,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
@@ -39,6 +43,8 @@ import com.rootekstudio.repeatsandroid.OnSystemBoot;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
+import com.rootekstudio.repeatsandroid.reminders.ReminderBroadcastReceiver;
+import com.rootekstudio.repeatsandroid.reminders.SetReminders;
 import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.activities.AppInfoActivity;
@@ -56,6 +62,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.Set;
+
+import static com.rootekstudio.repeatsandroid.RequestCodes.REMINDER_ALARM_ID;
 
 public class PreferenceFragment extends PreferenceFragmentCompat {
     private SharedPreferencesManager sharedPreferencesManager;
@@ -278,6 +287,79 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             return true;
         });
 
+        SwitchPreferenceCompat remindersEnabled = findPreference(SharedPreferencesManager.REMINDERS_ENABLED_KEY);
+        remindersEnabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                sharedPreferencesManager.setRemindersEnabled((boolean) newValue);
+                if((boolean) newValue) {
+                    SetReminders.startReminders(getContext());
+
+                    findPreference(SharedPreferencesManager.REMINDERS_TIME_KEY).setVisible(true);
+                    findPreference("manageReminders").setVisible(true);
+                }
+                else {
+                    SetReminders.stopReminders(getContext());
+
+                    findPreference(SharedPreferencesManager.REMINDERS_TIME_KEY).setVisible(false);
+                    findPreference("manageReminders").setVisible(false);
+                }
+
+                return true;
+            }
+        });
+
+        Preference remindersTime = findPreference(SharedPreferencesManager.REMINDERS_TIME_KEY);
+        remindersTime.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hour, int minute) {
+                        String stringHour;
+                        String stringMinute;
+                        if (hour <= 9) {
+                            stringHour = "0" + hour;
+                        } else {
+                            stringHour = String.valueOf(hour);
+                        }
+
+                        if (minute <= 9) {
+                            stringMinute = "0" + minute;
+                        } else {
+                            stringMinute = String.valueOf(minute);
+                        }
+
+                        String time = stringHour + ":" + stringMinute;
+                        sharedPreferencesManager.setRemindersTime(time);
+                        preference.setSummary(getResources().getString(R.string.reminders_come_at) + " " + time);
+
+                        SetReminders.restartReminders(getContext());
+
+                        if(!SetReminders.checkIfReminderIsRegistered(getContext())) {
+                            remindersEnabled.setChecked(false);
+                        }
+                    }
+                };
+
+                int oldHour = Integer.parseInt(sharedPreferencesManager.getRemindersTime().substring(0,2));
+                int oldMinute = Integer.parseInt(sharedPreferencesManager.getRemindersTime().substring(3,5));
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), timeSetListener, oldHour, oldMinute, true);
+                timePickerDialog.show();
+
+                return true;
+            }
+        });
+
+        Preference manageReminders = findPreference("manageReminders");
+        manageReminders.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                return true;
+            }
+        });
+
         Preference createBackup = findPreference("create_backup");
         createBackup.setOnPreferenceClickListener(preference -> {
             startActivity(new Intent(requireContext(), CreateBackupActivity.class));
@@ -337,6 +419,16 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
 
         //Load settings
+
+        if(sharedPreferencesManager.getRemindersEnabled()) {
+            remindersEnabled.setChecked(true);
+            remindersTime.setSummary("Powiadomienia przychodzą o " + sharedPreferencesManager.getRemindersTime());
+        }
+        else {
+            remindersEnabled.setChecked(false);
+            remindersTime.setVisible(false);
+            manageReminders.setVisible(false);
+        }
 
         if (RepeatsDatabase.getInstance(getContext()).itemsInSetCount(Values.sets_info) == 0) {
             createBackup.setVisible(false);

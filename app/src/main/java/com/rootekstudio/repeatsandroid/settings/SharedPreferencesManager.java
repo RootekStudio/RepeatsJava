@@ -11,14 +11,16 @@ import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import java.util.UUID;
 
 public class SharedPreferencesManager {
-    private final String FREQUENCY_KEY = "frequency";
-    private final String SILENCE_HOURS_KEY = "silenceHoursSwitch";
-    private final String USER_ID_KEY = "userID";
-    private final String FIRST_RUN_KEY = "firstRunTerms";
-    private final String LIST_NOTIFI_KEY = "ListNotifi";
-    private final String VERSION_KEY = "version";
-    private final String THEME_KEY = "theme";
-    private final String BATTERY_OPTIMIZATION_KEY = "batteryOptimization";
+    public static final String FREQUENCY_KEY = "frequency";
+    public static final String SILENCE_HOURS_KEY = "silenceHoursSwitch";
+    public static final String USER_ID_KEY = "userID";
+    public static final String FIRST_RUN_KEY = "firstRunTerms";
+    public static final String LIST_NOTIFI_KEY = "ListNotifi";
+    public static final String VERSION_KEY = "version";
+    public static final String THEME_KEY = "theme";
+    public static final String BATTERY_OPTIMIZATION_KEY = "batteryOptimization";
+    public static final String REMINDERS_ENABLED_KEY = "remindersEnabled";
+    public static final String REMINDERS_TIME_KEY = "remindersTime";
 
     private SharedPreferences sharedPreferences;
 
@@ -147,5 +149,31 @@ public class SharedPreferencesManager {
             setBatteryOptimization(false);
         }
         return sharedPreferences.getBoolean(BATTERY_OPTIMIZATION_KEY, false);
+    }
+
+    public void setRemindersEnabled(boolean remindersEnabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(REMINDERS_ENABLED_KEY, remindersEnabled);
+        editor.apply();
+    }
+
+    public boolean getRemindersEnabled() {
+        if(!sharedPreferences.contains(REMINDERS_ENABLED_KEY)) {
+            setRemindersEnabled(true);
+        }
+        return sharedPreferences.getBoolean(REMINDERS_ENABLED_KEY, true);
+    }
+
+    public void setRemindersTime(String remindersTime) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(REMINDERS_TIME_KEY, remindersTime);
+        editor.apply();
+    }
+
+    public String getRemindersTime() {
+        if(!sharedPreferences.contains(REMINDERS_TIME_KEY)) {
+            setRemindersTime("14:00");
+        }
+        return sharedPreferences.getString(REMINDERS_TIME_KEY, "14:00");
     }
 }

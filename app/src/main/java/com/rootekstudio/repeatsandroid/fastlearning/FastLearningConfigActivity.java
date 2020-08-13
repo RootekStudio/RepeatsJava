@@ -55,6 +55,11 @@ public class FastLearningConfigActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         String selectedSetID = getIntent().getStringExtra("setID");
+        String reminderRequest = getIntent().getStringExtra("reminderRequest");
+        if(reminderRequest != null) {
+            FastLearningInfo.setsFromNotification = reminderRequest;
+        }
+
         if (selectedSetID != null) {
             List<SetSingleItem> setItems = DB.allItemsInSet(selectedSetID, -1);
             FastLearningSetsListItem newItem = DB.singleSetIdNameAndStats(selectedSetID);

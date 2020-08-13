@@ -41,6 +41,24 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        app:title="@string/reminders"
+        app:iconSpaceReserved="false"
+        app:key="remindersGroup">
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="remindersEnabled"
+            app:title="@string/test_reminders" />
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="remindersTime"
+            app:title="@string/change_time_reminders" />
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="manageReminders"
+            app:title="@string/manage_reminders" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:title="@string/Theme"
         app:iconSpaceReserved="false">
         <ListPreference

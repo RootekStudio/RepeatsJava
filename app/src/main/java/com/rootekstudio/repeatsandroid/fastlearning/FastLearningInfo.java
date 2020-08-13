@@ -14,6 +14,7 @@ class FastLearningInfo {
     static boolean ignoreChars;
     static int questionsCount;
     static int allAvailableQuestionsCount;
+    static String setsFromNotification;
 
     static void reset() {
         selectedSets = new ArrayList<>();
@@ -23,5 +24,6 @@ class FastLearningInfo {
         ignoreChars = false;
         questionsCount = 0;
         allAvailableQuestionsCount = 0;
+        setsFromNotification = null;
     }
 }
