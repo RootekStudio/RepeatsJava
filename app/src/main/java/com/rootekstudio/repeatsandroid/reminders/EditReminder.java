@@ -26,11 +26,11 @@ public class EditReminder {
     boolean enabled;
     Calendar calendar;
 
-    public EditReminder(View view, String setID) {
-        editReminder(view, setID);
+    public EditReminder(View view, String setID, boolean isSettings) {
+        editReminder(view, setID, isSettings);
     }
 
-    void editReminder(View view, String setID) {
+    void editReminder(View view, String setID, boolean isSettings) {
         calendar = Calendar.getInstance();
         ReminderInfo reminderInfo = RepeatsDatabase.getInstance(view.getContext()).getInfoAboutReminderFromCalendar(setID);
 
@@ -39,6 +39,11 @@ public class EditReminder {
         EditText daysEditText = popupView.findViewById(R.id.editTextDaysReminder);
         Button cancelButton = popupView.findViewById(R.id.cancelPopupReminder);
         Button saveButton = popupView.findViewById(R.id.saveReminder);
+        RelativeLayout relativeWithSwitch = popupView.findViewById(R.id.relativeSwitchReminder);
+
+        if(isSettings) {
+            relativeWithSwitch.setVisibility(View.GONE);
+        }
 
         if(reminderInfo.getEnabled() == 1) {
             reminderSwitch.setChecked(true);
@@ -71,7 +76,7 @@ public class EditReminder {
             }
         });
 
-        RelativeLayout relativeWithSwitch = popupView.findViewById(R.id.relativeSwitchReminder);
+
         relativeWithSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,36 +102,52 @@ public class EditReminder {
                 long todayInMillis = Calendar.getInstance().getTimeInMillis();
 
                 if(days.equals("")) {
-                    Toast.makeText(view.getContext(), "Wpisz liczbę dni", Toast.LENGTH_LONG).show();
+                    Toast.makeText(view.getContext(), view.getContext().getString(R.string.enter_days), Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 int daysInt = Integer.parseInt(days);
 
+                if(daysInt == 0) {
+                    Toast.makeText(view.getContext(), view.getContext().getString(R.string.enter_days), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 long daysInMillis = daysInt * 1000 * 60 * 60 * 24;
-                long reminderDateInMillis = calendar.getTimeInMillis();
+                long testDateInMillis = calendar.getTimeInMillis();
 
                 TextView reminderStatus = view.findViewById(R.id.reminderStatus);
 
                 if(enabled) {
-                    if (reminderDateInMillis - daysInMillis < todayInMillis) {
-                        Toast.makeText(view.getContext(), "Nieprawidłowa data", Toast.LENGTH_LONG).show();
+                    if (testDateInMillis - daysInMillis < todayInMillis) {
+                        Toast.makeText(view.getContext(), view.getContext().getString(R.string.invalid_date), Toast.LENGTH_LONG).show();
                         return;
                     }
 
-                    RepeatsDatabase.getInstance(view.getContext()).updateReminderEnabled(setID, enabled);
+                    if(!isSettings) {
+                        RepeatsDatabase.getInstance(view.getContext()).updateReminderEnabled(setID, enabled);
+                    }
+
                     RepeatsDatabase.getInstance(view.getContext()).updateReminderDaysBefore(setID, days);
 
-                    reminderStatus.setText(view.getContext().getResources().getString(R.string.reminder_set));
-                    reminderStatus.setTextColor(view.getContext().getResources().getColor(R.color.greenRepeats));
+                    if(reminderStatus != null) {
+                        reminderStatus.setText(view.getContext().getResources().getString(R.string.reminder_set));
+                        reminderStatus.setTextColor(view.getContext().getResources().getColor(R.color.greenRepeats));
+                    }
 
                     SetReminders.startReminders(view.getContext());
                 }
                 else {
                     RepeatsDatabase.getInstance(view.getContext()).updateReminderEnabled(setID, enabled);
+                    RepeatsDatabase.getInstance(view.getContext()).updateReminderDaysBefore(setID, days);
 
-                    reminderStatus.setText(view.getContext().getResources().getString(R.string.reminder_not_set));
-                    reminderStatus.setTextColor(view.getContext().getResources().getColor(R.color.redRepeats));
+                    if(!isSettings) {
+                        reminderStatus.setText(view.getContext().getResources().getString(R.string.reminder_not_set));
+                        reminderStatus.setTextColor(view.getContext().getResources().getColor(R.color.redRepeats));
+                    } else {
+                        TextView reminderInfo = view.findViewById(R.id.reminderDateReminderSettings);
+                        reminderInfo.setText(view.getContext().getResources().getQuantityString(R.plurals.reminder_days, daysInt, daysInt));
+                    }
                 }
 
                 popupWindow.dismiss();

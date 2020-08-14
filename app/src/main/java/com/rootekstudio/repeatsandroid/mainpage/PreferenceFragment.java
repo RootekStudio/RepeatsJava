@@ -45,6 +45,7 @@ import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.reminders.ReminderBroadcastReceiver;
 import com.rootekstudio.repeatsandroid.reminders.SetReminders;
+import com.rootekstudio.repeatsandroid.settings.ManageRemindersActivity;
 import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.activities.AppInfoActivity;
@@ -356,6 +357,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         manageReminders.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(getContext(), ManageRemindersActivity.class));
                 return true;
             }
         });

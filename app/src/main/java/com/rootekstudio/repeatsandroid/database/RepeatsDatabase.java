@@ -68,7 +68,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
     }
 
     public void createCalendarForOlderVersions() {
-        if(!isCalendarCreated()) {
+        if (!isCalendarCreated()) {
             SQLiteDatabase db = this.getWritableDatabase();
             String createCalendar = "CREATE TABLE IF NOT EXISTS " + Values.calendar + " (" +
                     Values.set_id + " TEXT PRIMARY KEY NOT NULL, " +
@@ -95,12 +95,11 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         String query = "SELECT name FROM sqlite_master WHERE type='table' AND name='calendar'";
         Cursor cursor = db.rawQuery(query, null);
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             cursor.close();
             db.close();
             return true;
-        }
-        else {
+        } else {
             cursor.close();
             db.close();
             return false;
@@ -118,7 +117,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         }
 
         setsID = setsID.replace("\n", "','");
-        setsID = "'" +setsID + "'";
+        setsID = "'" + setsID + "'";
 
         String query = "UPDATE " + Values.calendar + " SET " + Values.reminder_enabled + " = '" + reminderEnabled + "' WHERE " + Values.set_id + " IN (" + setsID + ");";
 
@@ -160,6 +159,35 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         cursorReminder.close();
         db.close();
         return reminderInfo;
+    }
+
+    public List<ReminderInfo> getInfoAboutAllReminders(int orderOption) {
+        String order = "";
+        if (orderOption == Values.ORDER_BY_ID_ASC) {
+            order = "ORDER BY " + Values.set_id + " ASC";
+        } else if (orderOption == Values.ORDER_BY_ID_DESC) {
+            order = "ORDER BY " + Values.set_id + " DESC";
+        }
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + Values.set_id + ", " + Values.deadline + ", " + Values.reminder_days_before + ", " + Values.reminder_enabled + " FROM " + Values.calendar + " " + order + ";";
+        Cursor cursorReminder = db.rawQuery(query, null);
+        List<ReminderInfo> reminderInfos = new ArrayList<>();
+        if (cursorReminder.moveToFirst()) {
+            do {
+                ReminderInfo reminderInfo = new ReminderInfo();
+                reminderInfo.setSetID(cursorReminder.getString(0));
+                reminderInfo.setDeadline(cursorReminder.getString(1));
+                reminderInfo.setReminderDaysBefore(cursorReminder.getInt(2));
+                reminderInfo.setEnabled(cursorReminder.getInt(3));
+                reminderInfos.add(reminderInfo);
+
+            } while (cursorReminder.moveToNext());
+        }
+
+        cursorReminder.close();
+        db.close();
+        return reminderInfos;
     }
 
     public List<ReminderInfo> listOfEnabledReminders() {

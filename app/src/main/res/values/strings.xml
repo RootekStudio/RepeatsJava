@@ -319,7 +319,7 @@
     <string name="test_reminders">Test reminders</string>
     <string name="change_time_reminders">Change the time when the reminder is sent</string>
     <string name="manage_reminders">Manage reminders</string>
-    <string name="test_date">Test date:</string>
+    <string name="test_date">Test date: %1$s</string>
     <string name="change">Change</string>
     <string name="test_reminder">Test reminder</string>
     <string name="select_date">Select date</string>
@@ -327,5 +327,15 @@
     <string name="days_before_test">days before test</string>
     <string name="app_stats">App statistics</string>
     <string name="none">None</string>
+    <plurals name="reminder_days">
+        <item quantity="one">Reminder %d day before the test</item>
+        <item quantity="other">Reminder %d days before the test</item>
+    </plurals>
+    <string name="change_date_to_reminder">Invalid date. Change the test date and/or reminder time and try again.</string>
+    <string name="enter_days">Enter the number of days</string>
+    <string name="invalid_date">Invalid date</string>
+    <string name="reminder_days_before">Reminder $1%d days before the test</string>
+    <string name="date_not_compatible">The date of the test has been changed. The previous settings are not compatible with the new date. Change the date when the reminder is sent to turn the reminders back on.</string>
+    <string name="enter_test_date">First, enter the date of the test</string>
 
 </resources>

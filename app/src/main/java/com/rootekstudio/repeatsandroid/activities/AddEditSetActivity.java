@@ -130,12 +130,12 @@ public class AddEditSetActivity extends AppCompatActivity {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 deadlineCalendar.setTime(Objects.requireNonNull(simpleDateFormat.parse(reminderInfo.getDeadline())));
-                testDate.setText(DateFormat.getDateInstance().format(deadlineCalendar.getTime()));
+                testDate.setText(getString(R.string.test_date, DateFormat.getDateInstance().format(deadlineCalendar.getTime())));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         } else {
-            testDate.setText(getResources().getString(R.string.none));
+            testDate.setText(getResources().getString(R.string.test_date, getResources().getString(R.string.none)));
         }
 
         if(reminderInfo.getEnabled() == 1) {
@@ -159,11 +159,16 @@ public class AddEditSetActivity extends AppCompatActivity {
     //endregion
 
     public void changeTestDate(View view) throws OutOfDateRangeException, ParseException {
-        new SetTestDate(view, id);
+        new SetTestDate(view, id, false);
     }
 
     public void setReminders(View view) {
-        new EditReminder(view, id);
+        if(RepeatsDatabase.getInstance(this).getInfoAboutReminderFromCalendar(id).getDeadline() != null) {
+            new EditReminder(view, id,false);
+        }
+        else {
+            Toast.makeText(this, getString(R.string.enter_test_date), Toast.LENGTH_LONG).show();
+        }
     }
 
     //region readSetFromDatabase

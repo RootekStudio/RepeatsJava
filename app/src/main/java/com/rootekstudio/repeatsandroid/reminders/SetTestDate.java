@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +28,7 @@ import java.util.Objects;
 
 public class SetTestDate {
     PopupWindow popupWindow;
-    public SetTestDate(View view, String setID) throws OutOfDateRangeException, ParseException {
+    public SetTestDate(View view, String setID, boolean isSettings) throws OutOfDateRangeException, ParseException {
         ReminderInfo reminderInfo = RepeatsDatabase.getInstance(view.getContext()).getInfoAboutReminderFromCalendar(setID);
         View popupView = LayoutInflater.from(view.getContext()).inflate(R.layout.calendar_picker, null);
         CalendarView calendarView = popupView.findViewById(R.id.calendarViewReminders);
@@ -54,7 +55,7 @@ public class SetTestDate {
                 Calendar selectedDate = calendarView.getFirstSelectedDate();
 
                 if (selectedDate.getTimeInMillis() < Calendar.getInstance().getTimeInMillis()) {
-                    Toast.makeText(view.getContext(), "Nie możesz ustawić przypomnienia w przeszłości xD", Toast.LENGTH_LONG).show();
+                    Toast.makeText(view.getContext(), v.getContext().getString(R.string.invalid_date), Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -77,11 +78,25 @@ public class SetTestDate {
                 String deadlineDate = yearString + "-" + monthString + "-" + dayString;
                 RepeatsDatabase.getInstance(view.getContext()).updateTestDate(setID, deadlineDate);
 
-                DateFormat dateFormat = DateFormat.getDateInstance();
-
                 View parent = (ViewGroup)view.getParent();
                 TextView textView = parent.findViewById(R.id.testDate);
-                textView.setText(dateFormat.format(selectedDate.getTime()));
+                textView.setText(view.getContext().getString(R.string.test_date, DateFormat.getDateInstance().format(selectedDate.getTime())));
+
+                if(selectedDate.getTimeInMillis() - reminderInfo.getReminderDaysBefore() * 1000 * 60 * 60 * 24 < Calendar.getInstance().getTimeInMillis()) {
+                    Toast.makeText(v.getContext(), v.getContext().getString(R.string.date_not_compatible), Toast.LENGTH_LONG).show();
+                    if(isSettings) {
+                        View viewParent = (View)view.getParent();
+                        Switch switchReminder = viewParent.findViewById(R.id.reminderSwitchSettings);
+                        switchReminder.setChecked(false);
+                    }
+                    else {
+                        TextView reminderStatus = parent.getRootView().findViewById(R.id.reminderStatus);
+                        reminderStatus.setText(view.getContext().getResources().getString(R.string.reminder_not_set));
+                        reminderStatus.setTextColor(view.getContext().getResources().getColor(R.color.redRepeats));
+                    }
+
+                    RepeatsDatabase.getInstance(view.getContext()).updateReminderEnabled(setID, false);
+                }
 
                 popupWindow.dismiss();
             }

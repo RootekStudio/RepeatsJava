@@ -22,8 +22,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".backup.CreateBackupActivity"
-            android:label="@string/createBackup"/>
+        <activity android:name=".settings.ManageRemindersActivity"
+            android:label="@string/manage_reminders"/>
+        <activity
+            android:name=".backup.CreateBackupActivity"
+            android:label="@string/createBackup" />
         <activity
             android:name=".activities.AppInfoActivity"
             android:label="@string/About" />
@@ -111,14 +114,10 @@
 
         <activity android:name=".mainpage.MainActivity" />
 
-        <receiver
-            android:name=".notifications.RepeatsQuestionSend" />
-        <receiver
-            android:name=".notifications.AdvancedTimeNotification" />
-        <receiver
-            android:name=".notifications.UserReply"/>
-        <receiver
-            android:name=".reminders.ReminderBroadcastReceiver" />
+        <receiver android:name=".notifications.RepeatsQuestionSend" />
+        <receiver android:name=".notifications.AdvancedTimeNotification" />
+        <receiver android:name=".notifications.UserReply" />
+        <receiver android:name=".reminders.ReminderBroadcastReceiver" />
 
         <activity
             android:name=".notifications.AnswerActivity"
