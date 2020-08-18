@@ -62,7 +62,8 @@ public class ManageRemindersActivity extends AppCompatActivity {
             relativeSwitch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    reminderSwitch.setChecked(!reminderSwitch.isChecked());
+                    Switch localSwitch = v.findViewById(R.id.reminderSwitchSettings);
+                    localSwitch.setChecked(!localSwitch.isChecked());
                 }
             });
 

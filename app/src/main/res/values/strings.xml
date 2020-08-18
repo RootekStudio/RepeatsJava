@@ -338,4 +338,24 @@
     <string name="date_not_compatible">The date of the test has been changed. The previous settings are not compatible with the new date. Change the date when the reminder is sent to turn the reminders back on.</string>
     <string name="enter_test_date">First, enter the date of the test</string>
 
+    <plurals name="when_test">
+        <item quantity="one">%1$s test tomorrow</item>
+        <item quantity="other">%1$s test in %2$d days</item>
+    </plurals>
+    <string name="notifications_with_questions">Notifications with questions</string>
+    <string name="select_days">Select days:</string>
+    <string name="notifications_configuration">Notifications configuration</string>
+    <string name="turned_on">Turned on</string>
+    <string name="manage_notifications">Manage notifications</string>
+    <plurals name="frequencyText">
+        <item quantity="one">Notifications come every %d minute</item>
+        <item quantity="other">Notifications come every %d minutes</item>
+    </plurals>
+    <string name="change_settings">Change settings</string>
+    <string name="reminders_turned_off_app">Reminders have been turned off in the app\'s settings</string>
+    <string name="notifications_turned_off_app">Notifications have been turned off in the app\'s settings</string>
+    <string name="select_at_least_one_day">Please select at least one day</string>
+    <string name="from_not_greater_than_to">The \"from\" hour cannot be greater than the \"to\" hour</string>
+    <string name="from_to_cannot_be_same">Hours \"from\" and \"to\" cannot be the same</string>
+
 </resources>

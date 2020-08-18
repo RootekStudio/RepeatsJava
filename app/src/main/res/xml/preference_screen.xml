@@ -4,36 +4,18 @@
         app:title="@string/notifications"
         app:iconSpaceReserved="false"
         app:key="notificationsGroup">
-        <ListPreference
+        <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
-            app:key="ListNotifi"
-            app:title="@string/notifi_mode"
-            app:entries="@array/notifications"
-            app:entryValues="@array/notificationsValue"
-            app:defaultValue="0"
-            app:dialogTitle="@string/notifi_mode"/>
+            app:key="notificationsEnabled"
+            app:title="@string/notifications_with_questions"/>
         <Preference
             app:iconSpaceReserved="false"
             app:key="timeAsk"
             app:title="@string/FreqAskPref"/>
         <Preference
             app:iconSpaceReserved="false"
-            app:key="EnableSets"
-            app:title="@string/EnableTitle"
-            app:summary="@string/EnableSummary" />
-        <SwitchPreferenceCompat
-            app:iconSpaceReserved="false"
-            app:key="silenceHoursSwitch"
-            app:title="@string/silenceHours"
-            app:summary="@string/silenceHoursSummary"/>
-        <Preference
-            app:iconSpaceReserved="false"
-            app:key="silenceHoursSettings"
-            app:title="@string/changeSilenceHours"/>
-        <Preference
-            app:iconSpaceReserved="false"
-            app:key="advancedDelivery"
-            app:title="@string/changeDelivery"/>
+            app:key="manageNotifications"
+            app:title="@string/manage_notifications"/>
         <Preference
             app:key="noSetsInDatabaseInfo"
             app:summary="@string/noSetsInfoSettings"

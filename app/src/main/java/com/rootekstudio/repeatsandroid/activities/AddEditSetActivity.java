@@ -9,21 +9,15 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -31,12 +25,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
-import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.transition.platform.MaterialContainerTransform;
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
@@ -48,6 +38,8 @@ import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.reminders.EditReminder;
 import com.rootekstudio.repeatsandroid.reminders.ReminderInfo;
 import com.rootekstudio.repeatsandroid.reminders.SetTestDate;
+import com.rootekstudio.repeatsandroid.settings.EditNotificationsForSetActivity;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,26 +60,32 @@ public class AddEditSetActivity extends AppCompatActivity {
 
     //View that contains ImageView
     ViewParent imagePreview;
-    ViewGroup parent = null;
-    boolean deleted = false;
+    ViewGroup parent;
+    boolean deleted;
 
     //Last index from database
-    int lastIndex = 0;
+    int lastIndex;
     static boolean IsDark;
+    boolean paused;
 
     //id of the table
     static String id;
+
     SetsConfigHelper setsConfigHelper;
-
     ReminderInfo reminderInfo;
-
     ScrollView scrollView;
+    TextView notificationStatus;
 
     //region onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         IsDark = UIHelper.DarkTheme(this, false);
+        lastIndex = 0;
+        paused = false;
+        parent = null;
+        deleted = false;
+
         setContentView(R.layout.activity_repeats_add_edit);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setsConfigHelper = new SetsConfigHelper(this);
@@ -109,23 +107,44 @@ public class AddEditSetActivity extends AppCompatActivity {
 
         parent = findViewById(R.id.AddRepeatsLinear);
 
+        boolean notificationsEnabled;
+
         //if this is a new set
         if (editing.equals("FALSE")) {
+            lastIndex++;
             addView(parent, this);
             //Adding single item (with question and answer) to database
             id = setsConfigHelper.createNewSet(true, "");
             reminderInfo = RepeatsDatabase.getInstance(this).getInfoAboutReminderFromCalendar(id);
+            notificationsEnabled = RepeatsDatabase.getInstance(this).areNotificationsEnabledForSet(id);
 
         } else {
             id = editing;
             reminderInfo = RepeatsDatabase.getInstance(this).getInfoAboutReminderFromCalendar(id);
+            notificationsEnabled = RepeatsDatabase.getInstance(this).areNotificationsEnabledForSet(id);
             readSetFromDatabase(editing, SetName);
         }
+
+        notificationStatus = findViewById(R.id.notificationsStatusTextView);
+
+        if (SharedPreferencesManager.getInstance(this).getNotificationsEnabled()) {
+            if (notificationsEnabled) {
+                notificationStatus.setText(getString(R.string.turned_on));
+                notificationStatus.setTextColor(getResources().getColor(R.color.greenRepeats));
+            } else {
+                notificationStatus.setText(getString(R.string.turned_off));
+                notificationStatus.setTextColor(getResources().getColor(R.color.redRepeats));
+            }
+        } else {
+            notificationStatus.setText(getString(R.string.turned_off));
+            notificationStatus.setTextColor(getResources().getColor(R.color.redRepeats));
+        }
+
 
         TextView reminderStatus = findViewById(R.id.reminderStatus);
         TextView testDate = findViewById(R.id.testDate);
 
-        if(reminderInfo.getDeadline() != null) {
+        if (reminderInfo.getDeadline() != null) {
             Calendar deadlineCalendar = Calendar.getInstance();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             try {
@@ -138,12 +157,16 @@ public class AddEditSetActivity extends AppCompatActivity {
             testDate.setText(getResources().getString(R.string.test_date, getResources().getString(R.string.none)));
         }
 
-        if(reminderInfo.getEnabled() == 1) {
-            reminderStatus.setText(getString(R.string.reminder_set));
-            reminderStatus.setTextColor(getResources().getColor(R.color.greenRepeats));
-        }
-        else {
-            reminderStatus.setText(getString(R.string.reminder_not_set));
+        if (SharedPreferencesManager.getInstance(this).getRemindersEnabled()) {
+            if (reminderInfo.getEnabled() == 1) {
+                reminderStatus.setText(getString(R.string.reminder_set));
+                reminderStatus.setTextColor(getResources().getColor(R.color.greenRepeats));
+            } else {
+                reminderStatus.setText(getString(R.string.reminder_not_set));
+                reminderStatus.setTextColor(getResources().getColor(R.color.redRepeats));
+            }
+        } else {
+            reminderStatus.setText(getString(R.string.turned_off));
             reminderStatus.setTextColor(getResources().getColor(R.color.redRepeats));
         }
 
@@ -151,8 +174,8 @@ public class AddEditSetActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                lastIndex = setsConfigHelper.getRepeatsDatabase().addEmptyItemToSet(id);
                 addView(parent, AddEditSetActivity.this);
-                setsConfigHelper.getRepeatsDatabase().addEmptyItemToSet(id);
             }
         });
     }
@@ -163,11 +186,24 @@ public class AddEditSetActivity extends AppCompatActivity {
     }
 
     public void setReminders(View view) {
-        if(RepeatsDatabase.getInstance(this).getInfoAboutReminderFromCalendar(id).getDeadline() != null) {
-            new EditReminder(view, id,false);
+        if (SharedPreferencesManager.getInstance(this).getRemindersEnabled()) {
+            if (RepeatsDatabase.getInstance(this).getInfoAboutReminderFromCalendar(id).getDeadline() != null) {
+                new EditReminder(view, id, false);
+            } else {
+                Toast.makeText(this, getString(R.string.enter_test_date), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.reminders_turned_off_app), Toast.LENGTH_LONG).show();
         }
-        else {
-            Toast.makeText(this, getString(R.string.enter_test_date), Toast.LENGTH_LONG).show();
+    }
+
+    public void editNotifications(View view) {
+        if (SharedPreferencesManager.getInstance(this).getNotificationsEnabled()) {
+            Intent intent = new Intent(this, EditNotificationsForSetActivity.class);
+            intent.putExtra("setID", id);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, getString(R.string.notifications_turned_off_app), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -261,7 +297,7 @@ public class AddEditSetActivity extends AppCompatActivity {
                         }
                     });
 
-                    if (i == ItemsCount - 1) {
+                    if (i == 0) {
                         lastIndex = ID;
                     }
                 }
@@ -277,7 +313,6 @@ public class AddEditSetActivity extends AppCompatActivity {
         View item = inflater.inflate(R.layout.addrepeatslistitem, viewGroup, false);
         RelativeLayout rel = item.findViewById(R.id.RelativeAddItem);
 
-        lastIndex++;
         rel.setTag(lastIndex);
 
         //Finding views
@@ -301,6 +336,7 @@ public class AddEditSetActivity extends AppCompatActivity {
 
         //Adding item to root view
         viewGroup.addView(item, 0);
+
 
         //scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
     }
@@ -628,6 +664,28 @@ public class AddEditSetActivity extends AppCompatActivity {
         if (!deleted) {
             resetFocus();
         }
-
+        paused = true;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (paused) {
+            if (SharedPreferencesManager.getInstance(this).getNotificationsEnabled()) {
+                if (RepeatsDatabase.getInstance(this).areNotificationsEnabledForSet(id)) {
+                    notificationStatus.setText(getString(R.string.turned_on));
+                    notificationStatus.setTextColor(getResources().getColor(R.color.greenRepeats));
+                } else {
+                    notificationStatus.setText(getString(R.string.turned_off));
+                    notificationStatus.setTextColor(getResources().getColor(R.color.redRepeats));
+                }
+            } else {
+                notificationStatus.setText(getString(R.string.turned_off));
+                notificationStatus.setTextColor(getResources().getColor(R.color.redRepeats));
+            }
+
+            paused = false;
+        }
+    }
+
 }

@@ -332,4 +332,26 @@
     <string name="reminder_days_before">Przypomnienie $1%d dni przed sprawdzianem</string>
     <string name="date_not_compatible">Zmieniono termin sprawdzianu. Poprzednie ustawienia nie są kompatybilne z nowym terminem. Zmień termin wysłania przypomnienia aby ponownie włączyć przypomnienia.</string>
     <string name="enter_test_date">Najpierw podaj termin sprawdzianu</string>
+    <plurals name="when_test" tools:ignore="MissingQuantity">
+        <item quantity="one">Jutro sprawdzian z %1$s</item>
+        <item quantity="other">Za %2$d dni sprawdzian z %1$s</item>
+    </plurals>
+    <string name="notifications_with_questions">Powiadomienia z pytaniami</string>
+    <string name="select_days">Wybierz dni:</string>
+    <string name="notifications_configuration">Konfiguracja powiadomień</string>
+    <string name="turned_on">Włączone</string>
+    <string name="manage_notifications">Zarządzaj powiadomieniami</string>
+
+    <plurals name="frequencyText" tools:ignore="MissingQuantity">
+        <item quantity="one">Powiadomienia przychodzą co %d minutę</item>
+        <item quantity="few">Powiadomienia przychodzą co %d minuty</item>
+        <item quantity="other">Powiadomienia przychodzą co %d minut</item>
+    </plurals>
+    <string name="change_settings">Zmień ustawienia</string>
+    <string name="reminders_turned_off_app">Przypomnienia zostały wyłączone w ustawieniach aplikacji</string>
+    <string name="notifications_turned_off_app">Powiadomienia zostały wyłączone w ustawieniach aplikacji</string>
+    <string name="select_at_least_one_day">Wybierz co najmniej jeden dzień</string>
+    <string name="from_not_greater_than_to">Godzina \"od\" nie może być większa od godziny \"do\"</string>
+    <string name="from_to_cannot_be_same">Godziny \"od\" i \"do\" nie mogą być takie same</string>
+
 </resources>

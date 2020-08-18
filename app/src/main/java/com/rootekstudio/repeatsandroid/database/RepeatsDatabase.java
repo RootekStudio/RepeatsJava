@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.rootekstudio.repeatsandroid.backup.SetFullInfo;
 import com.rootekstudio.repeatsandroid.backup.SetItemContent;
 import com.rootekstudio.repeatsandroid.fastlearning.FastLearningSetsListItem;
+import com.rootekstudio.repeatsandroid.notifications.NotificationInfo;
 import com.rootekstudio.repeatsandroid.reminders.ReminderInfo;
 import com.rootekstudio.repeatsandroid.statistics.SetStats;
 
@@ -49,10 +50,8 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
                 Values.set_id + " TEXT PRIMARY KEY NOT NULL, " +
                 Values.deadline + " TEXT, " +
                 Values.reminder_days_before + " INTEGER DEFAULT 2, " +
-                Values.notifications_days + " TEXT, " +
                 Values.notifications_days_of_week + " TEXT, " +
                 Values.notifications_hours + " TEXT, " +
-                Values.notifications_silent_hours + " TEXT, " +
                 Values.notifications_mode + " INTEGER DEFAULT 0, " +
                 Values.reminder_enabled + " INTEGER DEFAULT 0);";
 
@@ -65,6 +64,123 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public void updateSingleSetNotificationInfo(NotificationInfo notificationInfo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Values.notifications_days_of_week, notificationInfo.getDaysOfWeek());
+        contentValues.put(Values.notifications_hours, notificationInfo.getHours());
+        contentValues.put(Values.notifications_mode, notificationInfo.getMode());
+
+        db.update(Values.calendar, contentValues, Values.set_id + "=?", new String[]{notificationInfo.getSetID()});
+        db.close();
+    }
+
+    public NotificationInfo singleSetNotificationInfo(String setID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " +
+                Values.notifications_days_of_week + ", " +
+                Values.notifications_hours + ", " +
+                Values.notifications_mode + " FROM " +
+                Values.calendar + " WHERE " +
+                Values.set_id + " = '" + setID +"';";
+
+        Cursor cursor = db.rawQuery(query, null);
+        NotificationInfo notificationInfo = new NotificationInfo();
+
+        if(cursor.moveToFirst()) {
+            notificationInfo.setSetID(setID);
+            notificationInfo.setDaysOfWeek(cursor.getString(0));
+            notificationInfo.setHours(cursor.getString(1));
+            notificationInfo.setMode(cursor.getInt(2));
+        }
+
+        cursor.close();
+        db.close();
+        return notificationInfo;
+    }
+
+    public List<NotificationInfo> setsNotificationsInfo() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " +
+                Values.set_id + ", " +
+                Values.notifications_days_of_week + ", " +
+                Values.notifications_hours + ", " +
+                Values.notifications_mode + " FROM " +
+                Values.calendar + ";";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        List<NotificationInfo> notificationInfos = new ArrayList<>();
+        if(cursor.moveToFirst()) {
+            do {
+                NotificationInfo notificationInfo = new NotificationInfo();
+                notificationInfo.setSetID(cursor.getString(0));
+                notificationInfo.setDaysOfWeek(cursor.getString(1));
+                notificationInfo.setHours(cursor.getString(2));
+                notificationInfo.setMode(cursor.getInt(3));
+                notificationInfos.add(notificationInfo);
+            } while(cursor.moveToNext());
+
+        }
+
+        cursor.close();
+        db.close();
+        return notificationInfos;
+    }
+
+    public List<NotificationInfo> enabledNotificationsInfo() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " +
+                Values.set_id + ", " +
+                Values.notifications_days_of_week + ", " +
+                Values.notifications_hours + ", " +
+                Values.notifications_mode + " FROM " +
+                Values.calendar + " WHERE " + Values.notifications_mode + " IN (1,2);";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        List<NotificationInfo> notificationInfos = new ArrayList<>();
+        if(cursor.moveToFirst()) {
+            do {
+                NotificationInfo notificationInfo = new NotificationInfo();
+                notificationInfo.setSetID(cursor.getString(0));
+                notificationInfo.setDaysOfWeek(cursor.getString(1));
+                notificationInfo.setHours(cursor.getString(2));
+                notificationInfo.setMode(cursor.getInt(3));
+                notificationInfos.add(notificationInfo);
+            } while(cursor.moveToNext());
+
+        }
+
+        cursor.close();
+        db.close();
+        return notificationInfos;
+    }
+
+    public boolean areNotificationsEnabledForSet(String setID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT " + Values.notifications_mode  + " FROM " + Values.calendar + " WHERE " + Values.set_id + " = '" + setID + "';";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            if(cursor.getInt(0) == 0) {
+                cursor.close();
+                db.close();
+                return false;
+            }
+            else {
+                cursor.close();
+                db.close();
+                return true;
+            }
+        } else {
+            cursor.close();
+            db.close();
+            return false;
+        }
     }
 
     public void createCalendarForOlderVersions() {
@@ -121,6 +237,20 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
 
         String query = "UPDATE " + Values.calendar + " SET " + Values.reminder_enabled + " = '" + reminderEnabled + "' WHERE " + Values.set_id + " IN (" + setsID + ");";
 
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void updateNotificationEnabled(String setID, boolean isEnabled) {
+        int notificationEnabled;
+        if (isEnabled) {
+            notificationEnabled = 1;
+        } else {
+            notificationEnabled = 0;
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + Values.calendar + " SET " + Values.notifications_mode + " = '" + notificationEnabled + "' WHERE " + Values.set_id + " = '" + setID + "';";
         db.execSQL(query);
         db.close();
     }
@@ -188,6 +318,40 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         cursorReminder.close();
         db.close();
         return reminderInfos;
+    }
+
+    public List<NotificationInfo> getInfoAboutAllNotifications(int orderOption) {
+        String order = "";
+        if (orderOption == Values.ORDER_BY_ID_ASC) {
+            order = "ORDER BY " + Values.set_id + " ASC";
+        } else if (orderOption == Values.ORDER_BY_ID_DESC) {
+            order = "ORDER BY " + Values.set_id + " DESC";
+        }
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + Values.set_id + ", " +
+                Values.notifications_days_of_week + ", " +
+                Values.notifications_hours + ", " +
+                Values.notifications_mode + " FROM " +
+                Values.calendar + " " + order + ";";
+
+        Cursor cursor = db.rawQuery(query, null);
+        List<NotificationInfo> notificationInfos = new ArrayList<>();
+
+        if(cursor.moveToFirst()) {
+            do {
+                NotificationInfo notificationInfo = new NotificationInfo();
+                notificationInfo.setSetID(cursor.getString(0));
+                notificationInfo.setDaysOfWeek(cursor.getString(1));
+                notificationInfo.setHours(cursor.getString(2));
+                notificationInfo.setMode(cursor.getInt(3));
+                notificationInfos.add(notificationInfo);
+            } while(cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        return notificationInfos;
     }
 
     public List<ReminderInfo> listOfEnabledReminders() {
@@ -328,7 +492,7 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addEmptyItemToSet(String SetID) {
+    public int addEmptyItemToSet(String SetID) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("question", "");
@@ -336,7 +500,18 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         values.put("image", "");
 
         db.insert(SetID, null, values);
+
+        String query = "SELECT last_insert_rowid()";
+        Cursor cursor = db.rawQuery(query, null);
+
+        int lastItemID = 0;
+
+        if(cursor.moveToFirst()) {
+            lastItemID = cursor.getInt(0);
+        }
+
         db.close();
+        return lastItemID;
     }
 
     public SingleSetInfo singleSetInfo(String setID) {
@@ -404,6 +579,22 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         db.close();
         cursor.close();
         return ALL;
+    }
+
+    List<String> getAllSetsIDs() {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        String query = "SELECT " + Values.set_id + " FROM " + Values.sets_info + ";";
+        Cursor cursor = DB.rawQuery(query, null);
+
+        List<String> allSetsIDs = new ArrayList<>();
+
+        if(cursor.moveToFirst()) {
+            do {
+                allSetsIDs.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+        return allSetsIDs;
     }
 
     List<SingleSetInfo> allEnabledSetsInfo() {

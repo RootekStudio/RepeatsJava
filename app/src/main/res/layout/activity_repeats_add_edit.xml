@@ -73,7 +73,10 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="15dp"
-                        android:background="@drawable/rounded_borders">
+                        android:background="@drawable/rounded_borders"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="editNotifications">
 
                         <ImageView
                             android:id="@+id/img0"
@@ -98,6 +101,7 @@
                                 android:text="Powiadomienia z zestawu" />
 
                             <TextView
+                                android:id="@+id/notificationsStatusTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"

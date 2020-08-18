@@ -11,13 +11,17 @@ import androidx.annotation.RequiresApi;
 
 import com.rootekstudio.repeatsandroid.CheckAnswer;
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.notifications.RepeatsNotificationTemplate;
 
-@RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
 public class UserReply extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String UserAnswer = getMessageText(intent).toString();
+        String setID = intent.getStringExtra("setID");
+        int itemID = intent.getIntExtra("itemID", -1);
+        String setsIDs = intent.getStringExtra("setsIDs");
         String Correct = intent.getStringExtra("Correct");
 
         String ReallyCorrect = Correct;
@@ -27,6 +31,7 @@ public class UserReply extends BroadcastReceiver {
             ignoreChars = true;
         }
 
+        RepeatsDatabase DB = RepeatsDatabase.getInstance(context);
         boolean check = CheckAnswer.isAnswerCorrect(UserAnswer, Correct, ignoreChars);
 
         if (check) {
@@ -34,16 +39,26 @@ public class UserReply extends BroadcastReceiver {
                 ReallyCorrect = ReallyCorrect.replace("\r\n", ", ");
                 RepeatsNotificationTemplate.AnswerNotifi(context,
                         context.getString(R.string.CorrectAnswer1),
-                        context.getString(R.string.CorrectAnswer2) + "\n" + context.getString(R.string.otherCorrectAnswers) + " " + ReallyCorrect, true, intent.getStringExtra("setID"), intent.getIntExtra("itemID", -1));
+                        context.getString(R.string.CorrectAnswer2) + "\n" + context.getString(R.string.otherCorrectAnswers) + " " + ReallyCorrect, setsIDs);
             } else {
                 RepeatsNotificationTemplate.AnswerNotifi(context,
                         context.getString(R.string.CorrectAnswer1),
-                        context.getString(R.string.CorrectAnswer2), true, intent.getStringExtra("setID"), intent.getIntExtra("itemID", -1));
+                        context.getString(R.string.CorrectAnswer2), setsIDs);
             }
+
+            new Thread(() -> {
+                DB.increaseValueInSet(setID, itemID, Values.good_answers, 1);
+                DB.increaseValueInSetsInfo(setID, Values.good_answers, 1);
+            }).start();
         } else {
             RepeatsNotificationTemplate.AnswerNotifi(context,
                     context.getString(R.string.IncorrectAnswer1),
-                    context.getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect, false, intent.getStringExtra("setID"), intent.getIntExtra("itemID", -1));
+                    context.getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect, setsIDs);
+
+            new Thread(() -> {
+                DB.increaseValueInSet(setID, itemID, Values.wrong_answers, 1);
+                DB.increaseValueInSetsInfo(setID, Values.wrong_answers, 1);
+            }).start();
         }
     }
 

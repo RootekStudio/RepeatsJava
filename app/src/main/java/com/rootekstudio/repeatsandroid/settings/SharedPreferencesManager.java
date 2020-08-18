@@ -21,6 +21,7 @@ public class SharedPreferencesManager {
     public static final String BATTERY_OPTIMIZATION_KEY = "batteryOptimization";
     public static final String REMINDERS_ENABLED_KEY = "remindersEnabled";
     public static final String REMINDERS_TIME_KEY = "remindersTime";
+    public static final String NOTIFICATIONS_ENABLED_KEY = "notificationsEnabled";
 
     private SharedPreferences sharedPreferences;
 
@@ -175,5 +176,18 @@ public class SharedPreferencesManager {
             setRemindersTime("14:00");
         }
         return sharedPreferences.getString(REMINDERS_TIME_KEY, "14:00");
+    }
+
+    public void setNotificationsEnabled(boolean notificationsEnabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(NOTIFICATIONS_ENABLED_KEY, notificationsEnabled);
+        editor.apply();
+    }
+
+    public boolean getNotificationsEnabled() {
+        if(!sharedPreferences.contains(NOTIFICATIONS_ENABLED_KEY)) {
+            setNotificationsEnabled(true);
+        }
+        return sharedPreferences.getBoolean(NOTIFICATIONS_ENABLED_KEY, true);
     }
 }

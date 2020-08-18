@@ -22,8 +22,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Repeats"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".settings.ManageRemindersActivity"
-            android:label="@string/manage_reminders"/>
+        <activity android:name=".settings.ManageNotificationsActivity"
+            android:label="@string/manage_notifications"/>
+        <activity
+            android:name=".settings.EditNotificationsForSetActivity"
+            android:label="@string/notifications_configuration" />
+        <activity
+            android:name=".settings.ManageRemindersActivity"
+            android:label="@string/manage_reminders" />
         <activity
             android:name=".backup.CreateBackupActivity"
             android:label="@string/createBackup" />
@@ -96,9 +102,11 @@
 
         <receiver
             android:name=".OnSystemBoot"
-            android:enabled="false">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
 
@@ -114,10 +122,10 @@
 
         <activity android:name=".mainpage.MainActivity" />
 
-        <receiver android:name=".notifications.RepeatsQuestionSend" />
-        <receiver android:name=".notifications.AdvancedTimeNotification" />
         <receiver android:name=".notifications.UserReply" />
         <receiver android:name=".reminders.ReminderBroadcastReceiver" />
+        <receiver android:name=".notifications.NotificationBroadcastReceiver" />
+        <receiver android:name=".notifications.NextQuestionBroadcastReceiver" />
 
         <activity
             android:name=".notifications.AnswerActivity"

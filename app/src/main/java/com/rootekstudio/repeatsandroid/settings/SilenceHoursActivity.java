@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.UIHelper;
-import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 
 import org.json.JSONObject;
 
@@ -124,8 +123,8 @@ public class SilenceHoursActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            ConstNotifiSetup.CancelNotifications(context);
-            ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
+//            ConstNotifiSetup.CancelNotifications(context);
+//            ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
 
             addButtons(hoursLayout, String.valueOf(lastIndex), "22:00", "06:00");
             rootLayout.addView(hoursLayout);
@@ -175,8 +174,8 @@ public class SilenceHoursActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    ConstNotifiSetup.CancelNotifications(context);
-                    ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
+//                    ConstNotifiSetup.CancelNotifications(context);
+//                    ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
 
                     rootLayout.removeView((View) view.getParent());
                 }
@@ -223,8 +222,8 @@ public class SilenceHoursActivity extends AppCompatActivity {
                     fileWriter.flush();
                     fileWriter.close();
 
-                    ConstNotifiSetup.CancelNotifications(context);
-                    ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
+//                    ConstNotifiSetup.CancelNotifications(context);
+//                    ConstNotifiSetup.RegisterNotifications(context, null, RepeatsHelper.staticFrequencyCode);
 
                 } catch (Exception e) {
                     e.printStackTrace();

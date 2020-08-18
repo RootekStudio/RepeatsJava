@@ -15,5 +15,10 @@ public class RequestCodes {
     public static int REMINDER_ALARM_ID = 12;
     public static int REMINDER_NOTIFICATION_ID = 13;
     public static int REMINDER_NOTIFICATION_CLICK_ID = 14;
+    public static int PENDING_INTENT_QUESTION_NOTIFICATION_REQUEST_CODE = 15;
+    public static int PENDING_INTENT_USER_REPLY_REQUEST_CODE = 16;
+    public static int QUESTION_NOTIFICATION_ID = 17;
+    public static int PENDING_INTENT_QUESTION_NOTIFICATION_CLICK_REQUEST_CODE = 18;
+    public static int PENDING_INTENT_NEXT_QUESTION_REQUEST_CODE = 19;
 
 }

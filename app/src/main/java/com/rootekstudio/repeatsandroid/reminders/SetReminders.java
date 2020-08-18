@@ -15,16 +15,11 @@ import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.TreeMap;
 
 import static com.rootekstudio.repeatsandroid.RequestCodes.REMINDER_ALARM_ID;
 
@@ -34,9 +29,8 @@ public class SetReminders {
 
         List<ReminderInfo> reminders = DB.listOfEnabledReminders();
         int earliestDay = 367;
-        TreeMap<Integer, String> setsNamesAndDaysBefore = new TreeMap<>();
+        List<ReminderDayAndName> setsNamesAndDaysBefore = new ArrayList<>();
         StringBuilder setsIDsBuilder = new StringBuilder();
-        StringBuilder setsNamesBuilder = new StringBuilder();
         StringBuilder daysBeforeBuilder = new StringBuilder();
 
         if(reminders.size() != 0) {
@@ -61,27 +55,22 @@ public class SetReminders {
                     setsIDsBuilder.append(reminders.get(i).getSetID());
 
                     setsNamesAndDaysBefore.clear();
-                    setsNamesAndDaysBefore.put(reminders.get(i).getReminderDaysBefore(), DB.setNameResolver(reminders.get(i).getSetID()));
+                    setsNamesAndDaysBefore.add(new ReminderDayAndName(reminders.get(i).getReminderDaysBefore(), DB.setNameResolver(reminders.get(i).getSetID())));
 
                     earliestDay = dayOfYear;
                 }
                 else if(dayOfYear == earliestDay) {
                     setsIDsBuilder.append("\n").append(reminders.get(i).getSetID());
-                    setsNamesAndDaysBefore.put(reminders.get(i).getReminderDaysBefore(), DB.setNameResolver(reminders.get(i).getSetID()));
+                    setsNamesAndDaysBefore.add(new ReminderDayAndName(reminders.get(i).getReminderDaysBefore(), DB.setNameResolver(reminders.get(i).getSetID())));
                 }
             }
 
-            Collection<String> setsIDCollection = setsNamesAndDaysBefore.values();
-            for (String s : setsIDCollection) {
-                setsNamesBuilder.append("\n").append(s);
+            Collections.sort(setsNamesAndDaysBefore);
+
+            for(int i = 0; i < setsNamesAndDaysBefore.size(); i++) {
+                daysBeforeBuilder.append("\n").append(setsNamesAndDaysBefore.get(i).getDaysBefore());
             }
 
-            Set<Integer> daysSet = setsNamesAndDaysBefore.keySet();
-            for(Integer i : daysSet) {
-                daysBeforeBuilder.append("\n").append(i);
-            }
-
-            String setsNames = setsNamesBuilder.toString().replaceFirst("\n", "");
             String days = daysBeforeBuilder.toString().replaceFirst("\n", "");
 
             Calendar reminderCalendar = Calendar.getInstance();
@@ -99,7 +88,6 @@ public class SetReminders {
 
             Intent intent = new Intent(context, ReminderBroadcastReceiver.class);
             intent.putExtra("setsIDs", setsIDsBuilder.toString());
-            intent.putExtra("setsNames", setsNames);
             intent.putExtra("daysBefore", days);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, REMINDER_ALARM_ID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -113,19 +101,12 @@ public class SetReminders {
                         millis,
                         pendingIntent);
             }
-
-            ComponentName receiver = new ComponentName(context, OnSystemBoot.class);
-            PackageManager pm = context.getPackageManager();
-
-            pm.setComponentEnabledSetting(receiver,
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP);
         }
     }
 
     public static void stopReminders(Context context) {
         Intent intent = new Intent(context, ReminderBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, REMINDER_ALARM_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, REMINDER_ALARM_ID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
     }

@@ -24,11 +24,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.Values;
-import com.rootekstudio.repeatsandroid.notifications.AdvancedTimeNotification;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 
 import org.json.JSONArray;
@@ -93,7 +91,7 @@ public class AdvancedDeliveryEditActivity extends AppCompatActivity {
                     if (rootObject.length() != 1) {
                         rootObject.remove(isEdit);
                         JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
-                        NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(isEdit));
+                        //NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(isEdit));
                     }
                 }
                 onBackPressed();
@@ -427,15 +425,15 @@ public class AdvancedDeliveryEditActivity extends AppCompatActivity {
                 if (isEdit.equals("")) {
                     JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
                 } else {
-                    NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(isEdit));
+//                    NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(isEdit));
                     rootObject.remove(isEdit);
                     JsonFile.createNewJson(context, rootObject.toString(), "advancedDelivery.json");
                 }
 
-                Intent newIntent = new Intent(context, AdvancedTimeNotification.class);
-                newIntent.putExtra("jsonIndex", String.valueOf(lastKey));
+//                Intent newIntent = new Intent(context, AdvancedTimeNotification.class);
+//                newIntent.putExtra("jsonIndex", String.valueOf(lastKey));
 
-                NotificationHelper.registerAdvancedAlarm(context, Integer.parseInt(freq), newIntent, null, String.valueOf(lastKey));
+               // NotificationHelper.registerAdvancedAlarm(context, Integer.parseInt(freq), newIntent, null, String.valueOf(lastKey));
 
                 onBackPressed();
 

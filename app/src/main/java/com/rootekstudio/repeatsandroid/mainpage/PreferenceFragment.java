@@ -1,7 +1,5 @@
 package com.rootekstudio.repeatsandroid.mainpage;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -37,41 +35,32 @@ import androidx.preference.SwitchPreferenceCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.rootekstudio.repeatsandroid.Backup;
-import com.rootekstudio.repeatsandroid.backup.CreateBackupActivity;
-import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.OnSystemBoot;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
-import com.rootekstudio.repeatsandroid.reminders.ReminderBroadcastReceiver;
-import com.rootekstudio.repeatsandroid.reminders.SetReminders;
-import com.rootekstudio.repeatsandroid.settings.ManageRemindersActivity;
-import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.activities.AppInfoActivity;
-import com.rootekstudio.repeatsandroid.settings.AdvancedDeliveryListActivity;
-import com.rootekstudio.repeatsandroid.settings.EnableSetsListActivity;
-import com.rootekstudio.repeatsandroid.settings.SilenceHoursActivity;
 import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
+import com.rootekstudio.repeatsandroid.backup.CreateBackupActivity;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.Values;
-import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
-import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
-import com.rootekstudio.repeatsandroid.notifications.RegisterNotifications;
+import com.rootekstudio.repeatsandroid.notifications.NotificationsScheduler;
+import com.rootekstudio.repeatsandroid.reminders.SetReminders;
+import com.rootekstudio.repeatsandroid.settings.ManageNotificationsActivity;
+import com.rootekstudio.repeatsandroid.settings.ManageRemindersActivity;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Iterator;
-import java.util.Set;
-
-import static com.rootekstudio.repeatsandroid.RequestCodes.REMINDER_ALARM_ID;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class PreferenceFragment extends PreferenceFragmentCompat {
     private SharedPreferencesManager sharedPreferencesManager;
     private SharedPreferences sharedPreferences;
+    boolean is24HourFormat;
 
-    public PreferenceFragment() {}
+    public PreferenceFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +72,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, String rootKey) {
+        is24HourFormat = android.text.format.DateFormat.is24HourFormat(getContext());
+
         setPreferencesFromResource(R.xml.preference_screen, rootKey);
         sharedPreferencesManager = SharedPreferencesManager.getInstance(requireContext());
         sharedPreferences = sharedPreferencesManager.getSharedPreferences();
@@ -101,86 +92,25 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             }
         }
 
-        int freq = sharedPreferences.getInt("frequency", 0);
-
-        ListPreference notifiListPreference = findPreference("ListNotifi");
-        notifiListPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-
-            int value = Integer.parseInt((String) newValue);
-
-            if (value == 0) {
-                ConstNotifiSetup.CancelNotifications(getContext());
-
-                findPreference("timeAsk").setVisible(false);
-                findPreference("EnableSets").setVisible(false);
-                findPreference("silenceHoursSwitch").setVisible(false);
-                findPreference("silenceHoursSettings").setVisible(false);
-                findPreference("advancedDelivery").setVisible(false);
-
-                notifiListPreference.setSummary(R.string.turned_off);
-
-                try {
-                    JSONObject advancedFile = new JSONObject(JsonFile.readJson(getContext(), "advancedDelivery.json"));
-
-                    Iterator<String> iterator = advancedFile.keys();
-
-                    while (iterator.hasNext()) {
-                        String key = iterator.next();
-                        NotificationHelper.cancelAdvancedAlarm(getContext(), Integer.parseInt(key));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            } else if (value == 1) {
-
-                ConstNotifiSetup.RegisterNotifications(getContext(), null, RepeatsHelper.staticFrequencyCode);
-
-                findPreference("timeAsk").setVisible(true);
-                findPreference("EnableSets").setVisible(true);
-                findPreference("silenceHoursSwitch").setVisible(true);
-                findPreference("advancedDelivery").setVisible(false);
-
-                boolean silenceSwitch = sharedPreferences.getBoolean("silenceHoursSwitch", true);
-                if (silenceSwitch) {
-                    findPreference("silenceHoursSettings").setVisible(true);
+        SwitchPreferenceCompat notificationsEnabled = findPreference("notificationsEnabled");
+        notificationsEnabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                sharedPreferencesManager.setNotificationsEnabled((boolean) newValue);
+                if ((boolean) newValue) {
+                    NotificationsScheduler.scheduleNotifications(getContext());
+                    findPreference("timeAsk").setVisible(true);
+                    findPreference("manageNotifications").setVisible(true);
                 } else {
-                    findPreference("silenceHoursSettings").setVisible(false);
+                    NotificationsScheduler.stopNotifications(getContext());
+                    findPreference("timeAsk").setVisible(false);
+                    findPreference("manageNotifications").setVisible(false);
                 }
-
-                try {
-                    JSONObject advancedFile = new JSONObject(JsonFile.readJson(getContext(), "advancedDelivery.json"));
-
-                    Iterator<String> iterator = advancedFile.keys();
-
-                    while (iterator.hasNext()) {
-                        String key = iterator.next();
-                        NotificationHelper.cancelAdvancedAlarm(getContext(), Integer.parseInt(key));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                notifiListPreference.setSummary(R.string.const_freq);
-            } else if (value == 2) {
-                ConstNotifiSetup.CancelNotifications(getContext());
-
-                findPreference("timeAsk").setVisible(false);
-                findPreference("EnableSets").setVisible(false);
-                findPreference("silenceHoursSwitch").setVisible(false);
-                findPreference("silenceHoursSettings").setVisible(false);
-                findPreference("advancedDelivery").setVisible(true);
-
-                RegisterNotifications.registerAdvancedDelivery(getContext());
-
-                notifiListPreference.setSummary(R.string.advanced_notifi);
+                return true;
             }
-
-            return true;
         });
 
         Preference timeAsk = findPreference("timeAsk");
-        timeAsk.setSummary(getString(R.string.FreqText) + " " + freq + " " + getString(R.string.minutes));
         timeAsk.setOnPreferenceClickListener(preference -> {
             MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireContext());
             dialogBuilder.setBackground(requireContext().getDrawable(R.drawable.dialog_shape));
@@ -212,12 +142,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 String text = editText.getText().toString();
                 if (!text.equals("")) {
                     saveTime(text);
-                    ComponentName receiver = new ComponentName(requireContext(), OnSystemBoot.class);
-                    PackageManager pm = requireContext().getPackageManager();
-
-                    pm.setComponentEnabledSetting(receiver,
-                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                            PackageManager.DONT_KILL_APP);
                 }
             });
             dialogBuilder.show();
@@ -225,37 +149,13 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             return true;
         });
 
-        Preference enableSets = findPreference("EnableSets");
-        enableSets.setOnPreferenceClickListener(preference -> {
-            startActivity(new Intent(requireContext(), EnableSetsListActivity.class));
-            return true;
-        });
-
-        SwitchPreferenceCompat silenceHours = findPreference("silenceHoursSwitch");
-        silenceHours.setOnPreferenceChangeListener((preference, newValue) -> {
-
-            if ((boolean) (newValue)) {
-                findPreference("silenceHoursSettings").setVisible(true);
-            } else {
-                findPreference("silenceHoursSettings").setVisible(false);
+        Preference manageNotifications = findPreference("manageNotifications");
+        manageNotifications.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(getContext(), ManageNotificationsActivity.class));
+                return true;
             }
-
-            ConstNotifiSetup.CancelNotifications(requireContext());
-            ConstNotifiSetup.RegisterNotifications(requireContext(), null, RepeatsHelper.staticFrequencyCode);
-
-            return true;
-        });
-
-        Preference silenceHoursSettings = findPreference("silenceHoursSettings");
-        silenceHoursSettings.setOnPreferenceClickListener(preference -> {
-            startActivity(new Intent(requireContext(), SilenceHoursActivity.class));
-            return true;
-        });
-
-        Preference advancedDelivery = findPreference("advancedDelivery");
-        advancedDelivery.setOnPreferenceClickListener(preference -> {
-            startActivity(new Intent(requireContext(), AdvancedDeliveryListActivity.class));
-            return true;
         });
 
         Preference noSetsInDatabaseInfo = findPreference("noSetsInDatabaseInfo");
@@ -293,13 +193,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 sharedPreferencesManager.setRemindersEnabled((boolean) newValue);
-                if((boolean) newValue) {
+                if ((boolean) newValue) {
                     SetReminders.startReminders(getContext());
 
                     findPreference(SharedPreferencesManager.REMINDERS_TIME_KEY).setVisible(true);
                     findPreference("manageReminders").setVisible(true);
-                }
-                else {
+                } else {
                     SetReminders.stopReminders(getContext());
 
                     findPreference(SharedPreferencesManager.REMINDERS_TIME_KEY).setVisible(false);
@@ -332,21 +231,37 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         }
 
                         String time = stringHour + ":" + stringMinute;
+
+                        if (is24HourFormat) {
+                            remindersTime.setSummary(getResources().getString(R.string.reminders_come_at) + " " + time);
+                        } else {
+                            SimpleDateFormat displayFormat = new SimpleDateFormat("hh:mm a");
+                            SimpleDateFormat parseFormat = new SimpleDateFormat("HH:mm");
+                            Date date = null;
+                            try {
+                                date = parseFormat.parse(time);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            remindersTime.setSummary(getResources().getString(R.string.reminders_come_at) + " " + displayFormat.format(date));
+                        }
+
                         sharedPreferencesManager.setRemindersTime(time);
-                        preference.setSummary(getResources().getString(R.string.reminders_come_at) + " " + time);
 
                         SetReminders.restartReminders(getContext());
 
-                        if(!SetReminders.checkIfReminderIsRegistered(getContext())) {
+                        if (!SetReminders.checkIfReminderIsRegistered(getContext())) {
                             remindersEnabled.setChecked(false);
                         }
                     }
                 };
 
-                int oldHour = Integer.parseInt(sharedPreferencesManager.getRemindersTime().substring(0,2));
-                int oldMinute = Integer.parseInt(sharedPreferencesManager.getRemindersTime().substring(3,5));
+                int oldHour = Integer.parseInt(sharedPreferencesManager.getRemindersTime().substring(0, 2));
+                int oldMinute = Integer.parseInt(sharedPreferencesManager.getRemindersTime().substring(3, 5));
 
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), timeSetListener, oldHour, oldMinute, true);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), timeSetListener, oldHour,
+                        oldMinute, is24HourFormat);
                 timePickerDialog.show();
 
                 return true;
@@ -419,14 +334,31 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             return true;
         });
 
-
         //Load settings
+        notificationsEnabled.setChecked(sharedPreferencesManager.getNotificationsEnabled());
+        timeAsk.setVisible(sharedPreferencesManager.getNotificationsEnabled());
+        manageNotifications.setVisible(sharedPreferencesManager.getNotificationsEnabled());
 
-        if(sharedPreferencesManager.getRemindersEnabled()) {
+        int freq = sharedPreferencesManager.getFrequency();
+        timeAsk.setSummary(getResources().getQuantityString(R.plurals.frequencyText, freq, freq));
+
+        if (sharedPreferencesManager.getRemindersEnabled()) {
             remindersEnabled.setChecked(true);
-            remindersTime.setSummary("Powiadomienia przychodzą o " + sharedPreferencesManager.getRemindersTime());
-        }
-        else {
+
+            if (android.text.format.DateFormat.is24HourFormat(getContext())) {
+                remindersTime.setSummary(getResources().getString(R.string.reminders_come_at) + " " + sharedPreferencesManager.getRemindersTime());
+            } else {
+                SimpleDateFormat displayFormat = new SimpleDateFormat("hh:mm a");
+                SimpleDateFormat parseFormat = new SimpleDateFormat("HH:mm");
+                Date date = null;
+                try {
+                    date = parseFormat.parse(sharedPreferencesManager.getRemindersTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                remindersTime.setSummary(getResources().getString(R.string.reminders_come_at) + " " + displayFormat.format(date));
+            }
+        } else {
             remindersEnabled.setChecked(false);
             remindersTime.setVisible(false);
             manageReminders.setVisible(false);
@@ -436,40 +368,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             createBackup.setVisible(false);
             noSetsInDatabaseInfo.setVisible(true);
             findPreference("notificationsGroup").setEnabled(false);
-        }
-
-        int getNotifiMode = Integer.parseInt(sharedPreferences.getString("ListNotifi", "0"));
-
-        if (getNotifiMode == 0) {
-            findPreference("timeAsk").setVisible(false);
-            findPreference("EnableSets").setVisible(false);
-            findPreference("silenceHoursSwitch").setVisible(false);
-            findPreference("silenceHoursSettings").setVisible(false);
-            findPreference("advancedDelivery").setVisible(false);
-
-            notifiListPreference.setSummary(R.string.turned_off);
-
-        } else if (getNotifiMode == 1) {
-            findPreference("timeAsk").setVisible(true);
-            findPreference("EnableSets").setVisible(true);
-            findPreference("silenceHoursSwitch").setVisible(true);
-            findPreference("advancedDelivery").setVisible(false);
-            boolean switchSilence = sharedPreferences.getBoolean("silenceHoursSwitch", true);
-            if (switchSilence) {
-                findPreference("silenceHoursSettings").setVisible(true);
-            } else {
-                findPreference("silenceHoursSettings").setVisible(false);
-            }
-
-            notifiListPreference.setSummary(R.string.const_freq);
-        } else if (getNotifiMode == 2) {
-            findPreference("timeAsk").setVisible(false);
-            findPreference("EnableSets").setVisible(false);
-            findPreference("silenceHoursSwitch").setVisible(false);
-            findPreference("silenceHoursSettings").setVisible(false);
-            findPreference("advancedDelivery").setVisible(true);
-
-            notifiListPreference.setSummary(R.string.advanced_notifi);
         }
     }
 
@@ -512,8 +410,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         int frequency = Integer.parseInt(text);
 
         sharedPreferencesManager.setFrequency(frequency);
-        ConstNotifiSetup.CancelNotifications(requireContext());
-        ConstNotifiSetup.RegisterNotifications(requireContext(), null, RepeatsHelper.staticFrequencyCode);
+        NotificationsScheduler.restartNotifications(getContext());
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

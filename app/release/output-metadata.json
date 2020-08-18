@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "properties": [],
-      "versionCode": 2080006,
-      "versionName": "2.8-prerelease6",
+      "versionCode": 2080007,
+      "versionName": "2.8-prerelease7",
       "enabled": true,
       "outputFile": "app-release.apk"
     }

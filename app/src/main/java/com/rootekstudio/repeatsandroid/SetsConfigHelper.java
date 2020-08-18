@@ -6,8 +6,8 @@ import android.content.Context;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
 import com.rootekstudio.repeatsandroid.database.Values;
-import com.rootekstudio.repeatsandroid.notifications.ConstNotifiSetup;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
+import com.rootekstudio.repeatsandroid.notifications.NotificationsScheduler;
 import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import org.json.JSONException;
@@ -84,21 +84,7 @@ public class SetsConfigHelper {
 
         //if there is no set left in database, turn off notifications
         if (DB.itemsInSetCount(Values.sets_info) == 0) {
-            ConstNotifiSetup.CancelNotifications(context);
-            try {
-                JSONObject advancedFile = new JSONObject(JsonFile.readJson(context, "advancedDelivery.json"));
-
-                Iterator<String> iterator = advancedFile.keys();
-
-                while (iterator.hasNext()) {
-                    String key = iterator.next();
-                    NotificationHelper.cancelAdvancedAlarm(context, Integer.parseInt(key));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
+            NotificationsScheduler.stopNotifications(context);
             SharedPreferencesManager.getInstance(context).setListNotifi("0");
         }
     }

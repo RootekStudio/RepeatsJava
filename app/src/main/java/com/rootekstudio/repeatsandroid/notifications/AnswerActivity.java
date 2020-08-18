@@ -16,7 +16,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rootekstudio.repeatsandroid.CheckAnswer;
 import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.database.GetQuestion;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 
 public class AnswerActivity extends AppCompatActivity {
     private GetQuestion getQuestion;
-    private String jsonIndex;
+    private String setsIDs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,7 @@ public class AnswerActivity extends AppCompatActivity {
         getQuestion.setIgnoreChars(intent.getIntExtra("IgnoreChars", 0));
         getQuestion.setSetID(intent.getStringExtra("setID"));
         getQuestion.setItemID(intent.getIntExtra("itemID", -1));
-        jsonIndex = intent.getStringExtra("jsonIndex");
+        setsIDs = intent.getStringExtra("setsIDs");
 
         createAlertDialogWithQuestion();
     }
@@ -161,12 +160,7 @@ public class AnswerActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.Next, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (jsonIndex != null) {
-                            ArrayList<String> setsID = JsonFile.getSelectedSetsIdFromJSON(AnswerActivity.this, jsonIndex);
-                            getQuestion = new GetQuestion(AnswerActivity.this, setsID);
-                        } else {
-                            getQuestion = new GetQuestion(AnswerActivity.this);
-                        }
+                        getQuestion = new GetQuestion(AnswerActivity.this, setsIDs);
                         dialogInterface.dismiss();
                         if (getQuestion.getQuestion() == null) {
                             createAlertDialogWithError();

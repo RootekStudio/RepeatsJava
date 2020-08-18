@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.fragment.app.Fragment;
 
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.database.GetQuestion;
 import com.rootekstudio.repeatsandroid.notifications.RepeatsNotificationTemplate;
 
 public class Fragment1 extends Fragment {
@@ -16,7 +17,8 @@ public class Fragment1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.firstrun1, container, false);
         Button button = view.findViewById(R.id.sendTestNotifiButton);
-        button.setOnClickListener(view1 -> RepeatsNotificationTemplate.NotifiTemplate(getContext(), false, null));
+        GetQuestion getQuestion = new GetQuestion(getContext());
+        button.setOnClickListener(view1 -> RepeatsNotificationTemplate.questionNotification(getContext(), getQuestion, getQuestion.getSetID(), false));
         return view;
     }
 }

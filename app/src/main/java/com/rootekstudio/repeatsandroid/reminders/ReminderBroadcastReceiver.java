@@ -16,7 +16,6 @@ import com.rootekstudio.repeatsandroid.fastlearning.FastLearningConfigActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class ReminderBroadcastReceiver extends BroadcastReceiver {
@@ -24,16 +23,15 @@ public class ReminderBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String setsIDs = intent.getStringExtra("setsIDs");
-        String setsNames = intent.getStringExtra("setsNames");
         String daysBefore = intent.getStringExtra("daysBefore");
 
         RepeatsDatabase.getInstance(context).updateReminderEnabled(setsIDs, false);
         List<String> setsNamesList = new ArrayList<>();
         List<String> daysBeforeList = new ArrayList<>();
 
-        Scanner scannerNames = new Scanner(setsNames);
-        while (scannerNames.hasNextLine()) {
-            setsNamesList.add(scannerNames.nextLine());
+        Scanner scannerIDs = new Scanner(setsIDs);
+        while (scannerIDs.hasNextLine()) {
+            setsNamesList.add(RepeatsDatabase.getInstance(context).setNameResolver(scannerIDs.nextLine()));
         }
 
         Scanner scannerDays = new Scanner(daysBefore);
@@ -46,54 +44,16 @@ public class ReminderBroadcastReceiver extends BroadcastReceiver {
 
         if (daysBeforeList.size() > 1) {
             title = "\u23F0 " + context.getResources().getString(R.string.tests_coming);
-            if (Locale.getDefault().toString().equals("pl_PL")) {
-                for (int i = 0; i < daysBeforeList.size(); i++) {
-                    if (Integer.parseInt(daysBeforeList.get(i)) == 1) {
-                        text += context.getResources().getString(R.string.tomorrow) + " " +
-                                context.getResources().getString(R.string.test_from_polish_only) + " " +
-                                setsNamesList.get(i) + "\n";
-                    } else {
-                        text += context.getResources().getString(R.string.for_word) + " " + daysBeforeList.get(i) + " " +
-                                context.getResources().getString(R.string.days_lower_case) + " " +
-                                context.getResources().getString(R.string.test_from_polish_only) + " " +
-                                setsNamesList.get(i) + "\n";
-                    }
-                }
-            } else {
-                for (int i = 0; i < daysBeforeList.size(); i++) {
-                    if (Integer.parseInt(daysBeforeList.get(i)) == 1) {
-                        text += setsNamesList.get(i) + " " + context.getResources().getString(R.string.test) + " " +
-                                context.getResources().getString(R.string.tomorrow) + "\n";
-                    } else {
-                        text += setsNamesList.get(i) + " " + context.getResources().getString(R.string.test) + " " +
-                                context.getResources().getString(R.string.in_lower_case) + " " + daysBeforeList.get(i) + " " +
-                                context.getResources().getString(R.string.days_lower_case) + " " + "\n";
-                    }
-                }
+            for (int i = 0; i < daysBeforeList.size(); i++) {
+                text += context.getResources().getQuantityString(R.plurals.when_test, Integer.parseInt(daysBeforeList.get(i)),
+                        setsNamesList.get(i), Integer.parseInt(daysBeforeList.get(i))) + "\n";
             }
-
             text += "\n" + context.getResources().getString(R.string.click_to_learn);
+
         } else {
             int days = Integer.parseInt(daysBeforeList.get(0));
-            if (Locale.getDefault().toString().equals("pl_PL")) {
-                if (days > 1) {
-                    title = "\u23F0 " + context.getResources().getString(R.string.for_word) + " " +
-                            days + " " + context.getResources().getString(R.string.days_lower_case) + " " +
-                            context.getResources().getString(R.string.test_from_polish_only) + " " + setsNamesList.get(0);
-                } else {
-                    title = "\u23F0 " + context.getResources().getString(R.string.tomorrow) + " " +
-                            context.getResources().getString(R.string.test_from_polish_only) + " " + setsNamesList.get(0);
-                }
-            } else {
-                if (days > 1) {
-                    title = "\u23F0 " + setsNamesList.get(0) + " " + context.getResources().getString(R.string.test) + " " +
-                            context.getResources().getString(R.string.in_lower_case) + " " +
-                            days + " " + context.getResources().getString(R.string.days_lower_case);
-                } else {
-                    title = "\u23F0 " + setsNamesList.get(0) + " " + context.getResources().getString(R.string.test) + " " +
-                            context.getResources().getString(R.string.tomorrow);
-                }
-            }
+            title = "\u23F0 " + context.getResources().getQuantityString(R.plurals.when_test, days,
+                    setsNamesList.get(0), days);
             text = context.getResources().getString(R.string.click_to_learn);
         }
 

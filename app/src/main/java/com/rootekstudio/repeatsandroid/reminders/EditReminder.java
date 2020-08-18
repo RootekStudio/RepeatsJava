@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -130,12 +131,18 @@ public class EditReminder {
 
                     RepeatsDatabase.getInstance(view.getContext()).updateReminderDaysBefore(setID, days);
 
-                    if(reminderStatus != null) {
+                    if(!isSettings) {
                         reminderStatus.setText(view.getContext().getResources().getString(R.string.reminder_set));
                         reminderStatus.setTextColor(view.getContext().getResources().getColor(R.color.greenRepeats));
                     }
+                    else {
+                        TextView reminderInfo = view.findViewById(R.id.reminderDateReminderSettings);
+                        reminderInfo.setText(view.getContext().getResources().getQuantityString(R.plurals.reminder_days, daysInt, daysInt));
+                    }
 
-                    SetReminders.startReminders(view.getContext());
+                    if(SharedPreferencesManager.getInstance(view.getContext()).getRemindersEnabled()) {
+                        SetReminders.restartReminders(view.getContext());
+                    }
                 }
                 else {
                     RepeatsDatabase.getInstance(view.getContext()).updateReminderEnabled(setID, enabled);
