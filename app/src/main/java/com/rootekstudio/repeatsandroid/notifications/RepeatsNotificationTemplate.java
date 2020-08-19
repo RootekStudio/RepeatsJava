@@ -113,7 +113,6 @@ public class RepeatsNotificationTemplate {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "RepeatsSendQuestionChannel")
                 .setSmallIcon(R.drawable.ic_notifi_icon)
                 .setContentTitle(Title)
-                .setContentText(Text)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(Text))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

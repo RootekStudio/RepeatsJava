@@ -15,4 +15,7 @@
     <color name="buttonDark">#262626</color>
     <color name="darkMainItem">#1c1c1c</color>
     <color name="darkEditTextColor">#222222</color>
+
+    <color name="editSetButtonBackgroundLight">#FAFAFA</color>
+    <color name="editSetButtonBackgroundDark">#1C1C1C</color>
 </resources>

@@ -74,6 +74,17 @@ public class Backup {
                     @Override
                     public void run() {
                         SetToFile.saveSetsToFile(context, setsID, names);
+
+                        Uri zipUri = Uri.fromFile(SetToFile.zipFile);
+
+                        OutputStream outputStream = null;
+                        try {
+                            outputStream = context.getContentResolver().openOutputStream(zipUri);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
+                        ZipSet.zip(SetToFile.filesToShare, outputStream);
                         RepeatsHelper.shareSets(context, activity);
 
                         activity.runOnUiThread(new Runnable() {

@@ -16,7 +16,6 @@ import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SetSingleItem;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Fragment2 extends Fragment {
     private LinearLayout linearList;
@@ -51,9 +50,9 @@ public class Fragment2 extends Fragment {
                 //add view with set name
                 if (!singleItem.getSetID().equals(setID)) {
                     setID = singleItem.getSetID();
-                    View view = inflater.inflate(R.layout.fastlearning_list_singleitem, linearList, false);
-                    TextView textView = view.findViewById(R.id.setNameListViewItemFL);
-                    CheckBox checkBox = view.findViewById(R.id.checkBoxListViewFL);
+                    View view = inflater.inflate(R.layout.set_name_with_checkbox, linearList, false);
+                    TextView textView = view.findViewById(R.id.setNameListViewItemName);
+                    CheckBox checkBox = view.findViewById(R.id.checkBoxListViewName);
 
                     checkBox.setVisibility(View.GONE);
                     String text = getString(R.string.Set) + ": " + singleItem.getSetName();
@@ -64,9 +63,9 @@ public class Fragment2 extends Fragment {
                 }
 
                 //add view with question and checkbox
-                View view = inflater.inflate(R.layout.fastlearning_list_singleitem, linearList, false);
-                TextView textView = view.findViewById(R.id.setNameListViewItemFL);
-                CheckBox checkBox = view.findViewById(R.id.checkBoxListViewFL);
+                View view = inflater.inflate(R.layout.set_name_with_checkbox, linearList, false);
+                TextView textView = view.findViewById(R.id.setNameListViewItemName);
+                CheckBox checkBox = view.findViewById(R.id.checkBoxListViewName);
 
                 textView.setText(singleItem.getQuestion());
                 checkBox.setOnCheckedChangeListener((compoundButton, b) -> {

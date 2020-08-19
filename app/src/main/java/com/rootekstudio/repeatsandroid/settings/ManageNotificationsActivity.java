@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
@@ -34,7 +35,15 @@ public class ManageNotificationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_notifications);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         mainLinearLayout = findViewById(R.id.linearManageNotifications);
+        mainLinearLayout.removeAllViews();
+
         List<NotificationInfo> notificationInfoList = RepeatsDatabase.getInstance(this).getInfoAboutAllNotifications(Values.ORDER_BY_ID_DESC);
         for(int i = 0; i < notificationInfoList.size(); i++) {
             NotificationInfo notificationInfo = notificationInfoList.get(i);
@@ -69,8 +78,18 @@ public class ManageNotificationsActivity extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     View viewParent = (View)buttonView.getParent().getParent().getParent();
                     String setID = (String)viewParent.getTag();
-                    RepeatsDatabase.getInstance(buttonView.getContext()).updateNotificationEnabled(setID, isChecked);
-                    NotificationsScheduler.restartNotifications(buttonView.getContext());
+                    if(RepeatsDatabase.getInstance(buttonView.getContext()).singleSetNotificationInfo(setID).getHours() == null) {
+                        Toast.makeText(ManageNotificationsActivity.this, getString(R.string.set_rules_for_notifi), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(ManageNotificationsActivity.this, EditNotificationsForSetActivity.class);
+                        intent.putExtra("setID", setID);
+                        intent.putExtra("fromSettings", true);
+                        intent.putExtra("requestedTurnOn", true);
+                        startActivity(intent);
+                        buttonView.setChecked(false);
+                    } else {
+                        RepeatsDatabase.getInstance(buttonView.getContext()).updateNotificationEnabled(setID, isChecked);
+                        NotificationsScheduler.restartNotifications(buttonView.getContext());
+                    }
                 }
             });
 

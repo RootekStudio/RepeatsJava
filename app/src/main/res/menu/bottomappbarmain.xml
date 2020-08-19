@@ -11,11 +11,6 @@
         android:title="@string/sets" />
 
     <item
-        android:id="@+id/calendarButtonMain"
-        android:icon="@drawable/calendar"
-        android:title="@string/calendar" />
-
-    <item
         android:id="@+id/stats_button"
         android:icon="@drawable/stats"
         android:title="@string/stats" />

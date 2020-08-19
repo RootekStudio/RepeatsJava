@@ -231,7 +231,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="75dp"
                     android:gravity="center"
-                    android:text="@string/rate"
+                    android:text="@string/rateApp"
                     android:textSize="7.5pt"/>
             </RelativeLayout>
         </LinearLayout>

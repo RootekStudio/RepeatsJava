@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.rootekstudio.repeatsandroid.backup.SetFullInfo;
-import com.rootekstudio.repeatsandroid.backup.SetItemContent;
 import com.rootekstudio.repeatsandroid.fastlearning.FastLearningSetsListItem;
 import com.rootekstudio.repeatsandroid.notifications.NotificationInfo;
 import com.rootekstudio.repeatsandroid.reminders.ReminderInfo;
@@ -403,67 +401,12 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<SetItemContent> getFullSetContent(String setID) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<SetItemContent> setItemContents = new ArrayList<>();
-        String query = "SELECT * FROM " + setID + ";";
-        Cursor cursor = db.rawQuery(query, null);
-        SetItemContent setItemContent;
-        if (cursor.moveToFirst()) {
-            do {
-                setItemContent = new SetItemContent();
-                setItemContent.setId(cursor.getInt(0));
-                setItemContent.setQuestion(cursor.getString(1));
-                setItemContent.setAnswer(cursor.getString(2));
-                setItemContent.setImage(cursor.getString(3));
-                setItemContent.setGoodAnswers(cursor.getInt(4));
-                setItemContent.setWrongAnswers(cursor.getInt(5));
-
-                setItemContents.add(setItemContent);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return setItemContents;
-    }
-
-    public List<SetFullInfo> getAllSetsFullInfo() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<SetFullInfo> setFullInfoList = new ArrayList<>();
-        String query = "SELECT * FROM " + Values.sets_info + ";";
-        Cursor cursor = db.rawQuery(query, null);
-        SetFullInfo setFullInfo;
-
-        if (cursor.moveToFirst()) {
-            do {
-                setFullInfo = new SetFullInfo();
-                setFullInfo.setSet_id(cursor.getString(0));
-                setFullInfo.setSet_name(cursor.getString(1));
-                setFullInfo.setCreation_date(cursor.getString(2));
-                setFullInfo.setEnabled(cursor.getInt(3));
-                setFullInfo.setIgnore_chars(cursor.getInt(4));
-                setFullInfo.setFirst_lang(cursor.getString(5));
-                setFullInfo.setSecond_lang(cursor.getString(6));
-                setFullInfo.setGood_answers(cursor.getInt(7));
-                setFullInfo.setWrong_answers(cursor.getInt(8));
-
-                setFullInfoList.add(setFullInfo);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return setFullInfoList;
-    }
-
     public void addSetToSetsInfoAndCalendar(SingleSetInfo List) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Values.set_id, List.getSetID());
         contentValues.put(Values.set_name, List.getSetName());
         contentValues.put(Values.creation_date, List.getCreateDate());
-        contentValues.put(Values.enabled, List.getIsEnabled());
         contentValues.put(Values.ignore_chars, List.getIgnoreChars());
         contentValues.put(Values.first_lang, List.getFirstLanguage());
         contentValues.put(Values.second_lang, List.getSecondLanguage());
@@ -516,7 +459,15 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
 
     public SingleSetInfo singleSetInfo(String setID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + Values.sets_info + " WHERE " + Values.set_id + " = '" + setID + "';";
+        String query = "SELECT " + Values.set_id + ", " +
+                Values.set_name + ", " +
+                Values.creation_date + ", " +
+                Values.ignore_chars + ", " +
+                Values.first_lang + ", " +
+                Values.second_lang + ", " +
+                Values.good_answers + ", " +
+                Values.wrong_answers +
+                " FROM " + Values.sets_info + " WHERE " + Values.set_id + " = '" + setID + "';";
         Cursor cursor = db.rawQuery(query, null);
 
         SingleSetInfo singleSetInfo = new SingleSetInfo();
@@ -527,12 +478,11 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
             singleSetInfo.setSetID(cursor.getString(0));
             singleSetInfo.setSetName(cursor.getString(1));
             singleSetInfo.setCreateDate(cursor.getString(2));
-            singleSetInfo.setIsEnabled(cursor.getInt(3));
-            singleSetInfo.setIgnoreChars(cursor.getInt(4));
-            singleSetInfo.setFirstLanguage(cursor.getString(5));
-            singleSetInfo.setSecondLanguage(cursor.getString(6));
-            singleSetInfo.setGoodAnswers(cursor.getInt(7));
-            singleSetInfo.setWrongAnswers(cursor.getInt(8));
+            singleSetInfo.setIgnoreChars(cursor.getInt(3));
+            singleSetInfo.setFirstLanguage(cursor.getString(4));
+            singleSetInfo.setSecondLanguage(cursor.getString(5));
+            singleSetInfo.setGoodAnswers(cursor.getInt(6));
+            singleSetInfo.setWrongAnswers(cursor.getInt(7));
 
             cursor.close();
         }
@@ -555,7 +505,15 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         }
 
         List<SingleSetInfo> ALL = new LinkedList<>();
-        String query = "SELECT * FROM " + Values.sets_info + " " + order + ";";
+        String query = "SELECT " + Values.set_id + ", " +
+                Values.set_name + ", " +
+                Values.creation_date + ", " +
+                Values.ignore_chars + ", " +
+                Values.first_lang + ", " +
+                Values.second_lang + ", " +
+                Values.good_answers + ", " +
+                Values.wrong_answers +
+                " FROM " + Values.sets_info + " " + order + ";";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         SingleSetInfo list;
@@ -566,12 +524,11 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
                 list.setSetID(cursor.getString(0));
                 list.setSetName(cursor.getString(1));
                 list.setCreateDate(cursor.getString(2));
-                list.setIsEnabled(cursor.getInt(3));
-                list.setIgnoreChars(cursor.getInt(4));
-                list.setFirstLanguage(cursor.getString(5));
-                list.setSecondLanguage(cursor.getString(6));
-                list.setGoodAnswers(cursor.getInt(7));
-                list.setWrongAnswers(cursor.getInt(8));
+                list.setIgnoreChars(cursor.getInt(3));
+                list.setFirstLanguage(cursor.getString(4));
+                list.setSecondLanguage(cursor.getString(5));
+                list.setGoodAnswers(cursor.getInt(6));
+                list.setWrongAnswers(cursor.getInt(7));
                 ALL.add(list);
             } while (cursor.moveToNext());
         }
@@ -595,33 +552,6 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         }
 
         return allSetsIDs;
-    }
-
-    List<SingleSetInfo> allEnabledSetsInfo() {
-        List<SingleSetInfo> ALL = new LinkedList<>();
-        String query = "SELECT * FROM " + Values.sets_info + " WHERE " + Values.enabled + " = 1;";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                SingleSetInfo list = new SingleSetInfo();
-                list.setSetID(cursor.getString(0));
-                list.setSetName(cursor.getString(1));
-                list.setCreateDate(cursor.getString(2));
-                list.setIsEnabled(cursor.getInt(3));
-                list.setIgnoreChars(cursor.getInt(4));
-                list.setFirstLanguage(cursor.getString(5));
-                list.setSecondLanguage(cursor.getString(6));
-                list.setGoodAnswers(cursor.getInt(7));
-                list.setWrongAnswers(cursor.getInt(8));
-                ALL.add(list);
-            } while (cursor.moveToNext());
-        }
-
-        db.close();
-        cursor.close();
-        return ALL;
     }
 
     void addItemToSetWithValues(String SetID, String question, String answer, String image) {
@@ -1034,16 +964,6 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
         } else {
             Command = "UPDATE " + TABLE + " SET " + WHAT + ";";
         }
-
-        db.execSQL(Command);
-        db.close();
-    }
-
-    public void ResetEnabled() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String Command;
-
-        Command = "UPDATE " + Values.sets_info + " SET " + Values.enabled + " = 1;";
 
         db.execSQL(Command);
         db.close();

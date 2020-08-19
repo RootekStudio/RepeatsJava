@@ -47,7 +47,7 @@
     <string name="share">Udostępnij</string>
     <string name="notifiFromSets">Powiadomienia z zestawów</string>
     <string name="loading">Wczytywanie...</string>
-    <string name="rate">Oceń aplikację w Google Play</string>
+    <string name="rateApp">Oceń aplikację w Google Play</string>
     <string name="savingInProgress">Trwa zapisywanie zestawu...</string>
     <string name="explorerNotFound">Explorator plików nie został znaleziony. Nie można wczytać zestawu z pliku.</string>
     <string name="storeNotFound">Nie znaleziono Sklepu Google Play</string>
@@ -61,8 +61,8 @@
     <string name="Continue">Kontynuuj</string>
     <string name="SystemTheme">Zgodny z systemem</string>
     <string name="backup">Kopia zapasowa</string>
-    <string name="createBackup">Utwórz kopię zapasową</string>
-    <string name="restoreBackup">Przywróć kopię zapasową</string>
+    <string name="createBackup">Utwórz kopię zapasową zestawów</string>
+    <string name="restoreBackup">Przywróć kopię zapasową zestawów</string>
     <string name="localBackup">Na urządzeniu</string>
     <string name="cloudBackup">W chmurze lub innych aplikacjach</string>
     <string name="where_Backup">Gdzie zapisać kopię zapasową?</string>
@@ -236,7 +236,7 @@
     <string name="saveToExistingSet">Zapisz do istniejącego zestawu</string>
     <string name="items">elementów</string>
     <string name="shareDate">Data udostępnienia:</string>
-    <string name="setContent">Zawartość zestawu:</string>
+    <string name="setContentItem">Zawartość zestawu:</string>
     <string name="download">Pobierz</string>
     <string name="createNew">Utwórz nowy</string>
     <string name="fromPhoto">Ze zdjęcia</string>
@@ -353,5 +353,13 @@
     <string name="select_at_least_one_day">Wybierz co najmniej jeden dzień</string>
     <string name="from_not_greater_than_to">Godzina \"od\" nie może być większa od godziny \"do\"</string>
     <string name="from_to_cannot_be_same">Godziny \"od\" i \"do\" nie mogą być takie same</string>
+    <string name="frequency_cannot_be_0">Częstotliwość nie może być równa 0</string>
+    <string name="error_setting_reminders">Wystąpił błąd przy konfigurowaniu przypomnień</string>
+    <string name="ok">Ok</string>
+    <string name="correct_answers">Poprawne odpowiedzi:</string>
+    <string name="set_rules_for_notifi">Najpierw ustaw reguły wysyłania powiadomień</string>
+    <string name="do_you_like_app">Podoba Ci się aplikacja Repeats?</string>
+    <string name="rate_app_in_google_play">Oceń ją w sklepie Google Play</string>
+    <string name="rate">Oceń</string>
 
 </resources>

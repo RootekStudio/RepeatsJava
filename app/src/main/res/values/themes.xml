@@ -24,6 +24,8 @@
         <item name="customItemColor">@color/lightMainItem</item>
         <item name="customEditTextColor">@color/lightEditTextColor</item>
         <item name="android:homeAsUpIndicator">@drawable/back</item>
+
+        <item name="rippleColor">#4D000000</item>
     </style>
 
     <style name="customActionBar" parent="@style/ThemeOverlay.MaterialComponents.ActionBar">

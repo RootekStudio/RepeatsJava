@@ -1,7 +1,6 @@
 package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.app.ActionBar;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -12,7 +11,6 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -22,14 +20,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.Preference;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.Task;
 import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
-import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.ZipSet;
 import com.rootekstudio.repeatsandroid.activities.AddEditSetActivity;
@@ -38,6 +40,7 @@ import com.rootekstudio.repeatsandroid.database.MigrateDatabase;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SaveShared;
 import com.rootekstudio.repeatsandroid.search.SearchActivity;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -96,12 +99,44 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.startButtonMain);
         } else if (currentFragment.equals("sets")) {
             bottomNavigationView.setSelectedItemId(R.id.setsButtonMain);
-        } else if(currentFragment.equals("calendar")) {
-            bottomNavigationView.setSelectedItemId(R.id.calendarButtonMain);
         } else if (currentFragment.equals("stats")) {
             bottomNavigationView.setSelectedItemId(R.id.stats_button);
         } else if (currentFragment.equals("preferences")) {
             bottomNavigationView.setSelectedItemId(R.id.app_bar_settings);
+        }
+
+        int requestForAppReview = SharedPreferencesManager.getInstance(this).getRequestForAppReview();
+        if(requestForAppReview == 3 || requestForAppReview == 10) {
+
+            MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(this);
+            alertDialog.setBackground(getDrawable(R.drawable.dialog_shape))
+                    .setTitle(R.string.do_you_like_app)
+                    .setMessage(R.string.rate_app_in_google_play)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.Cancel, (dialogInterface, i) -> {
+                        SharedPreferencesManager.getInstance(this).setRequestForAppReview(requestForAppReview + 1);
+                    })
+                    .setPositiveButton(R.string.rate, (dialogInterface, i) -> {
+                        ReviewManager manager = ReviewManagerFactory.create(this);
+                        Task<ReviewInfo> request = manager.requestReviewFlow();
+
+                        request.addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                ReviewInfo reviewInfo = task.getResult();
+
+                                Task<Void> flow = manager.launchReviewFlow(this, reviewInfo);
+                                flow.addOnCompleteListener(reviewTask -> {
+                                    SharedPreferencesManager.getInstance(this).setRequestForAppReview(-1);
+                                });
+                            }
+                        });
+                    });
+
+
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
+        } else if(requestForAppReview > -1 && requestForAppReview < 10) {
+            SharedPreferencesManager.getInstance(this).setRequestForAppReview(requestForAppReview + 1);
         }
     }
 
@@ -118,12 +153,6 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.frameLayoutMain, new SetsFragment());
             fragmentTransaction.commit();
             currentFragment = "sets";
-        } else if (item.getItemId() == R.id.calendarButtonMain) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameLayoutMain, new CalendarFragment());
-            fragmentTransaction.commit();
-            currentFragment = "calendar";
         } else if (item.getItemId() == R.id.stats_button) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

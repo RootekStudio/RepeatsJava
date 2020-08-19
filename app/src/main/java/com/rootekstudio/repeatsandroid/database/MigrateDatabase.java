@@ -51,6 +51,9 @@ public class MigrateDatabase {
 
             writableNewDB.insert(Values.sets_info, null, contentValues);
 
+            String calendarQuery = "INSERT INTO " + Values.calendar + " (" + Values.set_id + ") VALUES (" + setID + ");";
+            writableNewDB.execSQL(calendarQuery);
+
             String CREATE_SET = "CREATE TABLE IF NOT EXISTS " + setID + " (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     Values.question + " TEXT, " +
@@ -75,6 +78,8 @@ public class MigrateDatabase {
             }
         }
 
+        oldDB.close();
+        writableNewDB.close();
         context.deleteDatabase("repeats");
     }
 

@@ -39,7 +39,7 @@ public class UserReply extends BroadcastReceiver {
                 ReallyCorrect = ReallyCorrect.replace("\r\n", ", ");
                 RepeatsNotificationTemplate.AnswerNotifi(context,
                         context.getString(R.string.CorrectAnswer1),
-                        context.getString(R.string.CorrectAnswer2) + "\n" + context.getString(R.string.otherCorrectAnswers) + " " + ReallyCorrect, setsIDs);
+                        context.getString(R.string.CorrectAnswer2) + "\n" + context.getString(R.string.allCorrectAnswers) + " " + ReallyCorrect, setsIDs);
             } else {
                 RepeatsNotificationTemplate.AnswerNotifi(context,
                         context.getString(R.string.CorrectAnswer1),
@@ -51,9 +51,17 @@ public class UserReply extends BroadcastReceiver {
                 DB.increaseValueInSetsInfo(setID, Values.good_answers, 1);
             }).start();
         } else {
-            RepeatsNotificationTemplate.AnswerNotifi(context,
-                    context.getString(R.string.IncorrectAnswer1),
-                    context.getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect, setsIDs);
+            if(ReallyCorrect.contains("\n")) {
+                ReallyCorrect = ReallyCorrect.replace("\r\n", ", ");
+                RepeatsNotificationTemplate.AnswerNotifi(context,
+                        context.getString(R.string.IncorrectAnswer1),
+                        context.getString(R.string.correct_answers) + " " + ReallyCorrect, setsIDs);
+            } else {
+                RepeatsNotificationTemplate.AnswerNotifi(context,
+                        context.getString(R.string.IncorrectAnswer1),
+                        context.getString(R.string.IncorrectAnswer2) + " " + ReallyCorrect, setsIDs);
+            }
+
 
             new Thread(() -> {
                 DB.increaseValueInSet(setID, itemID, Values.wrong_answers, 1);

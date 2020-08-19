@@ -1,5 +1,6 @@
 package com.rootekstudio.repeatsandroid.mainpage;
 
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -41,7 +42,6 @@ import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.activities.AppInfoActivity;
 import com.rootekstudio.repeatsandroid.activities.WhatsNewActivity;
-import com.rootekstudio.repeatsandroid.backup.CreateBackupActivity;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.notifications.NotificationsScheduler;
@@ -58,6 +58,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     private SharedPreferencesManager sharedPreferencesManager;
     private SharedPreferences sharedPreferences;
     boolean is24HourFormat;
+
+    Dialog askTimeDialog;
 
     public PreferenceFragment() {
     }
@@ -128,7 +130,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     EditText time = (EditText) view;
                     String timeText = time.getText().toString();
                     if (!timeText.equals("")) {
-                        saveTime(timeText);
+                        if(Integer.parseInt(timeText) != 0) {
+                            saveTime(timeText);
+                            askTimeDialog.dismiss();
+                        } else {
+                            Toast.makeText(getContext(), getString(R.string.frequency_cannot_be_0), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
                 return false;
@@ -141,10 +148,15 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             dialogBuilder.setPositiveButton(R.string.Save, (dialog, which) -> {
                 String text = editText.getText().toString();
                 if (!text.equals("")) {
-                    saveTime(text);
+                    if(Integer.parseInt(text) != 0) {
+                        saveTime(text);
+                    } else {
+                        Toast.makeText(getContext(), getString(R.string.frequency_cannot_be_0), Toast.LENGTH_SHORT).show();
+
+                    }
                 }
             });
-            dialogBuilder.show();
+            askTimeDialog = dialogBuilder.show();
 
             return true;
         });
@@ -279,7 +291,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         Preference createBackup = findPreference("create_backup");
         createBackup.setOnPreferenceClickListener(preference -> {
-            startActivity(new Intent(requireContext(), CreateBackupActivity.class));
+            Backup.createBackup(getContext(), getActivity());
             return true;
         });
 

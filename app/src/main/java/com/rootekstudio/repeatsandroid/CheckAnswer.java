@@ -9,6 +9,8 @@ public class CheckAnswer {
     public static boolean isAnswerCorrect(String user, String correct, boolean ignore) {
 
         user = user.trim();
+        user = user.toLowerCase();
+        correct = correct.toLowerCase();
 
         if (ignore) {
             user = Normalizer.normalize(user, Normalizer.Form.NFD)

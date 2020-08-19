@@ -11,6 +11,7 @@ import android.os.Build;
 import android.widget.Toast;
 
 import com.rootekstudio.repeatsandroid.OnSystemBoot;
+import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
@@ -43,7 +44,7 @@ public class SetReminders {
                 try {
                     calendar.setTime(Objects.requireNonNull(simpleDateFormat.parse(deadline)));
                 } catch (Exception e) {
-                    Toast.makeText(context, "Wystąpił błąd przy konfigurowaniu przypomnień", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.error_setting_reminders), Toast.LENGTH_SHORT).show();
                     return;
                 }
 

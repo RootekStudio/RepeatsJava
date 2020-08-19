@@ -49,7 +49,7 @@
     <string name="share">Share</string>
     <string name="notifiFromSets">Notifications from sets</string>
     <string name="loading">Loading...</string>
-    <string name="rate">Rate app</string>
+    <string name="rateApp">Rate app</string>
     <string name="savingInProgress">Saving set in progress</string>
     <string name="explorerNotFound">File explorer was not found. Repeats can\'t read set from file.</string>
     <string name="storeNotFound">Google Play Store was not found</string>
@@ -240,7 +240,7 @@
     <string name="saveToExistingSet">Save to existing set</string>
     <string name="items">items</string>
     <string name="shareDate">Share date:</string>
-    <string name="setContent">Set content:</string>
+    <string name="setContentItem">Set content:</string>
     <string name="download">Download</string>
     <string name="createNew">Create new</string>
     <string name="fromPhoto">From photo</string>
@@ -357,5 +357,13 @@
     <string name="select_at_least_one_day">Please select at least one day</string>
     <string name="from_not_greater_than_to">The \"from\" hour cannot be greater than the \"to\" hour</string>
     <string name="from_to_cannot_be_same">Hours \"from\" and \"to\" cannot be the same</string>
+    <string name="frequency_cannot_be_0">The frequency cannot be 0</string>
+    <string name="error_setting_reminders">There was an error setting up reminders</string>
+    <string name="ok">Ok</string>
+    <string name="correct_answers">Correct answers:</string>
+    <string name="set_rules_for_notifi">First, set the rules for sending notifications</string>
+    <string name="do_you_like_app">Do you like the Repeats app?</string>
+    <string name="rate_app_in_google_play">Please rate it on the Google Play Store</string>
+    <string name="rate">Rate</string>
 
 </resources>

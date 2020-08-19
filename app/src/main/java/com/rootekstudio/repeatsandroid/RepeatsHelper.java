@@ -15,7 +15,6 @@ import java.io.File;
 
 public class RepeatsHelper {
     public static final String breakLine = "\r\n";
-    public static final int staticFrequencyCode = 10000;
     public static String version = "2.7";
 
     public static void CheckDir(Context cnt) {

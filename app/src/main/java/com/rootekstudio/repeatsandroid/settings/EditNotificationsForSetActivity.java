@@ -98,6 +98,10 @@ public class EditNotificationsForSetActivity extends AppCompatActivity {
             notificationsSwitch.setChecked(true);
         }
 
+        if(getIntent().getBooleanExtra("requestedTurnOn", false)) {
+            mode = 1;
+        }
+
         notificationsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

@@ -26,6 +26,7 @@
 
         <item name="android:homeAsUpIndicator">@drawable/back</item>
         <item name="rippleColor">#4DFFFFFF</item>
+        <item name="editSetButtons">@color/editSetButtonBackgroundDark</item>
     </style>
 
     <style name="bottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">

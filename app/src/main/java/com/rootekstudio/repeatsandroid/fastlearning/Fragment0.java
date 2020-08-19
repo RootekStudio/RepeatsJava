@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,9 +31,9 @@ public class Fragment0 extends Fragment {
 
         for (int i = 0; i < setsList.size(); i++) {
             final FastLearningSetsListItem singleItem = setsList.get(i);
-            View singleView = LayoutInflater.from(linearLayout.getContext()).inflate(R.layout.fastlearning_list_singleitem, null);
+            View singleView = LayoutInflater.from(linearLayout.getContext()).inflate(R.layout.set_name_with_checkbox, null);
 
-            final CheckBox checkBox = singleView.findViewById(R.id.checkBoxListViewFL);
+            final CheckBox checkBox = singleView.findViewById(R.id.checkBoxListViewName);
 
             for (int j = 0; j < FastLearningInfo.selectedSets.size(); j++) {
                 if (FastLearningInfo.selectedSets.get(j).getSetID().equals(singleItem.getSetID())) {
@@ -71,13 +70,15 @@ public class Fragment0 extends Fragment {
                 }
             });
 
-            TextView setNameTextView = singleView.findViewById(R.id.setNameListViewItemFL);
+            TextView setNameTextView = singleView.findViewById(R.id.setNameListViewItemName);
             setNameTextView.setText(singleItem.getSetName());
 
             linearLayout.addView(singleView);
 
-            if(FastLearningInfo.setsFromNotification.contains(singleItem.getSetID())) {
-                checkBox.setChecked(true);
+            if(FastLearningInfo.setsFromNotification != null) {
+                if(FastLearningInfo.setsFromNotification.contains(singleItem.getSetID())) {
+                    checkBox.setChecked(true);
+                }
             }
         }
 

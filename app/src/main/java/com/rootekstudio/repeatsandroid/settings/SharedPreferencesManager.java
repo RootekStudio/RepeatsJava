@@ -22,6 +22,7 @@ public class SharedPreferencesManager {
     public static final String REMINDERS_ENABLED_KEY = "remindersEnabled";
     public static final String REMINDERS_TIME_KEY = "remindersTime";
     public static final String NOTIFICATIONS_ENABLED_KEY = "notificationsEnabled";
+    public static final String REQUEST_FOR_APP_REVIEW = "appReview";
 
     private SharedPreferences sharedPreferences;
 
@@ -189,5 +190,19 @@ public class SharedPreferencesManager {
             setNotificationsEnabled(true);
         }
         return sharedPreferences.getBoolean(NOTIFICATIONS_ENABLED_KEY, true);
+    }
+
+    public void setRequestForAppReview(int requestForAppReview) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(REQUEST_FOR_APP_REVIEW, requestForAppReview);
+        editor.apply();
+    }
+
+    public int getRequestForAppReview() {
+        if(!sharedPreferences.contains(REQUEST_FOR_APP_REVIEW)) {
+            setRequestForAppReview(0);
+        }
+
+        return sharedPreferences.getInt(REQUEST_FOR_APP_REVIEW, 0);
     }
 }
