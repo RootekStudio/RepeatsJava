@@ -2,14 +2,9 @@ package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,9 +29,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.transition.MaterialFadeThrough;
 import com.rootekstudio.repeatsandroid.Backup;
-import com.rootekstudio.repeatsandroid.OnSystemBoot;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.UIHelper;
@@ -166,15 +159,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
-
-        Preference noSetsInDatabaseInfo = findPreference("noSetsInDatabaseInfo");
-        Drawable drawable = requireContext().getDrawable(R.drawable.info_circle);
-        if (UIHelper.DarkTheme(getContext(), true)) {
-            drawable.setColorFilter(Color.parseColor("#6d6d6d"), PorterDuff.Mode.SRC_IN);
-        } else {
-            drawable.setColorFilter(Color.parseColor("#bfbfbf"), PorterDuff.Mode.SRC_IN);
-        }
-        noSetsInDatabaseInfo.setIcon(drawable);
 
         final ListPreference theme = findPreference("theme");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -351,22 +335,22 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         int freq = sharedPreferencesManager.getFrequency();
         timeAsk.setSummary(getResources().getQuantityString(R.plurals.frequencyText, freq, freq));
 
+        if (android.text.format.DateFormat.is24HourFormat(getContext())) {
+            remindersTime.setSummary(getResources().getString(R.string.reminders_come_at) + " " + sharedPreferencesManager.getRemindersTime());
+        } else {
+            SimpleDateFormat displayFormat = new SimpleDateFormat("hh:mm a");
+            SimpleDateFormat parseFormat = new SimpleDateFormat("HH:mm");
+            Date date = null;
+            try {
+                date = parseFormat.parse(sharedPreferencesManager.getRemindersTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            remindersTime.setSummary(getResources().getString(R.string.reminders_come_at) + " " + displayFormat.format(date));
+        }
+
         if (sharedPreferencesManager.getRemindersEnabled()) {
             remindersEnabled.setChecked(true);
-
-            if (android.text.format.DateFormat.is24HourFormat(getContext())) {
-                remindersTime.setSummary(getResources().getString(R.string.reminders_come_at) + " " + sharedPreferencesManager.getRemindersTime());
-            } else {
-                SimpleDateFormat displayFormat = new SimpleDateFormat("hh:mm a");
-                SimpleDateFormat parseFormat = new SimpleDateFormat("HH:mm");
-                Date date = null;
-                try {
-                    date = parseFormat.parse(sharedPreferencesManager.getRemindersTime());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                remindersTime.setSummary(getResources().getString(R.string.reminders_come_at) + " " + displayFormat.format(date));
-            }
         } else {
             remindersEnabled.setChecked(false);
             remindersTime.setVisible(false);
@@ -375,8 +359,14 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (RepeatsDatabase.getInstance(getContext()).itemsInSetCount(Values.sets_info) == 0) {
             createBackup.setVisible(false);
-            noSetsInDatabaseInfo.setVisible(true);
+
             findPreference("notificationsGroup").setEnabled(false);
+            timeAsk.setVisible(false);
+            manageNotifications.setVisible(false);
+
+            findPreference("remindersGroup").setEnabled(false);
+            remindersTime.setVisible(false);
+            manageReminders.setVisible(false);
         }
     }
 

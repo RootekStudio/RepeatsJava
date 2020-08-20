@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.firstrun.FirstRunActivity;
 
@@ -102,6 +101,14 @@ public class AppInfoActivity extends AppCompatActivity {
     public void iconsCreditClick(View view) {
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/tabler/tabler-icons/blob/master/LICENSE")));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.browserNotFound, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void iconsMaterialCreditClick(View view) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://material.io/resources/icons")));
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, R.string.browserNotFound, Toast.LENGTH_LONG).show();
         }

@@ -21,16 +21,5 @@
         <item>@string/SystemTheme</item>
     </string-array>
 
-    <string-array name="notifications">
-        <item>@string/turned_off</item>
-        <item>@string/const_freq</item>
-        <item>@string/advanced_notifi</item>
-    </string-array>
-
-    <string-array name="notificationsValue">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
 </resources>
 

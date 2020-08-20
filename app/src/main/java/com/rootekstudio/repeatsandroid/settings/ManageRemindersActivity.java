@@ -1,14 +1,10 @@
 package com.rootekstudio.repeatsandroid.settings;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -17,7 +13,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.Values;
@@ -25,8 +22,6 @@ import com.rootekstudio.repeatsandroid.reminders.EditReminder;
 import com.rootekstudio.repeatsandroid.reminders.ReminderInfo;
 import com.rootekstudio.repeatsandroid.reminders.SetReminders;
 import com.rootekstudio.repeatsandroid.reminders.SetTestDate;
-
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;

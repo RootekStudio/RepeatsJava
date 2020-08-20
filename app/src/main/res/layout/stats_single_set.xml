@@ -67,65 +67,62 @@
                     android:id="@+id/setStatsTextLinear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="10dp"
                     android:layout_centerInParent="true">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginEnd="15dp">
+                        android:orientation="vertical"
+                        android:layout_marginEnd="5dp">
                         <TextView
                             android:id="@+id/correctCountSetStats"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_gravity="end"
                             android:textColor="@color/greenRepeats"
+                            android:text="10"
                             android:textStyle="bold"
-                            android:layout_marginEnd="5dp"
                             android:textSize="@dimen/text_size_stats_set"/>
+
+                        <TextView
+                            android:id="@+id/wrongCountSetStats"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:textColor="@color/redRepeats"
+                            android:textStyle="bold"
+                            android:text="5"
+                            android:textSize="@dimen/text_size_stats_set"/>
+
+                        <TextView
+                            android:id="@+id/allCountSetStats"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:textStyle="bold"
+                            android:text="100"
+                            android:textSize="@dimen/text_size_stats_set"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginEnd="15dp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/correct"
                             android:textSize="@dimen/text_size_stats_set"
                             android:textColor="@color/greenRepeats"/>
-                    </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginEnd="15dp">
-                        <TextView
-                            android:id="@+id/wrongCountSetStats"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:textColor="@color/redRepeats"
-                            android:textStyle="bold"
-                            android:layout_marginEnd="5dp"
-                            android:textSize="@dimen/text_size_stats_set"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/wrong"
                             android:textColor="@color/redRepeats"
-                            android:textSize="@dimen/text_size_stats_set"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/allCountSetStats"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:textStyle="bold"
-                            android:layout_marginEnd="5dp"
                             android:textSize="@dimen/text_size_stats_set"/>
                         <TextView
                             android:layout_width="wrap_content"

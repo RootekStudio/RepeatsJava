@@ -3,19 +3,18 @@ package com.rootekstudio.repeatsandroid;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
-
-import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import java.io.File;
 
 public class RepeatsHelper {
     public static final String breakLine = "\r\n";
     public static String version = "2.8";
+    public static int termsChanged = 1;
 
     public static void CheckDir(Context cnt) {
         File file = new File(cnt.getFilesDir(), "shared");
@@ -31,6 +30,13 @@ public class RepeatsHelper {
         } else {
             file.mkdir();
         }
+    }
+
+    public static boolean isOnline(Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
     static void shareSets(Context context, Activity activity) {

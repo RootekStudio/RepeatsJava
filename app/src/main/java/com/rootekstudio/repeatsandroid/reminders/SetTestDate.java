@@ -1,6 +1,5 @@
 package com.rootekstudio.repeatsandroid.reminders;
 
-import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +16,9 @@ import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 
-import org.w3c.dom.Text;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Objects;
 

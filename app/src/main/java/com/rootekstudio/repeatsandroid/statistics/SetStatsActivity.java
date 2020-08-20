@@ -2,10 +2,8 @@ package com.rootekstudio.repeatsandroid.statistics;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Transition;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,8 +15,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.transition.MaterialSharedAxis;
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SetSingleItem;

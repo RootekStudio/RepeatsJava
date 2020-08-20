@@ -35,7 +35,6 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
                 Values.set_id + " TEXT PRIMARY KEY NOT NULL, " +
                 Values.set_name + " TEXT, " +
                 Values.creation_date + " DATETIME, " +
-                Values.enabled + " INTEGER DEFAULT 1, " +
                 Values.ignore_chars + " INTEGER DEFAULT 0, " +
                 Values.first_lang + " TEXT, " +
                 Values.second_lang + " TEXT, " +

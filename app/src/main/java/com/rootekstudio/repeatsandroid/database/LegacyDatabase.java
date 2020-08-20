@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 public class LegacyDatabase extends SQLiteOpenHelper {
     int version = 4;
@@ -51,13 +50,6 @@ public class LegacyDatabase extends SQLiteOpenHelper {
                     singleSetInfo.setSetName(cursor.getString(1));
                     singleSetInfo.setCreateDate(cursor.getString(2));
 
-                    if(cursor.getString(3).equals("true")) {
-                        singleSetInfo.setIsEnabled(1);
-                    }
-                    else {
-                        singleSetInfo.setIsEnabled(0);
-                    }
-
                     if(cursor.getString(4).equals("true")) {
                         singleSetInfo.setIgnoreChars(1);
                     }
@@ -85,13 +77,6 @@ public class LegacyDatabase extends SQLiteOpenHelper {
                     singleSetInfo.setSetID(cursor.getString(0));
                     singleSetInfo.setSetName(cursor.getString(1));
                     singleSetInfo.setCreateDate(cursor.getString(2));
-
-                    if(cursor.getString(3).equals("true")) {
-                        singleSetInfo.setIsEnabled(1);
-                    }
-                    else {
-                        singleSetInfo.setIsEnabled(0);
-                    }
 
                     if(cursor.getString(4).equals("true")) {
                         singleSetInfo.setIgnoreChars(1);
@@ -124,13 +109,6 @@ public class LegacyDatabase extends SQLiteOpenHelper {
                     singleSetInfo.setSetName(cursor.getString(1));
                     singleSetInfo.setCreateDate(cursor.getString(2));
 
-                    if(cursor.getString(3).equals("true")) {
-                        singleSetInfo.setIsEnabled(1);
-                    }
-                    else {
-                        singleSetInfo.setIsEnabled(0);
-                    }
-
                     if(cursor.getString(4).equals("true")) {
                         singleSetInfo.setIgnoreChars(1);
                     }
@@ -160,13 +138,6 @@ public class LegacyDatabase extends SQLiteOpenHelper {
                     singleSetInfo.setSetID(cursor.getString(0));
                     singleSetInfo.setSetName(cursor.getString(1));
                     singleSetInfo.setCreateDate(cursor.getString(2));
-
-                    if(cursor.getString(3).equals("true")) {
-                        singleSetInfo.setIsEnabled(1);
-                    }
-                    else {
-                        singleSetInfo.setIsEnabled(0);
-                    }
 
                     singleSetInfo.setIgnoreChars(0);
                     singleSetInfo.setFirstLanguage(firstLanguage);

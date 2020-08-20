@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rootekstudio.repeatsandroid.CheckAnswer;
-import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.database.GetQuestion;
@@ -25,7 +24,6 @@ import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 public class AnswerActivity extends AppCompatActivity {
     private GetQuestion getQuestion;

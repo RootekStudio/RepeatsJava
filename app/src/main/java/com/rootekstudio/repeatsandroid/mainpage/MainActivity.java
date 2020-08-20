@@ -1,6 +1,7 @@
 package com.rootekstudio.repeatsandroid.mainpage;
 
 import android.app.ActionBar;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AlertDialog;
@@ -20,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.Preference;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -28,10 +29,9 @@ import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.tasks.Task;
-import com.microsoft.appcenter.AppCenter;
-import com.microsoft.appcenter.utils.async.AppCenterFuture;
 import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsAnalytics;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.UIHelper;
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        boolean analyticsEnabled = RepeatsAnalytics.isAnalyticsEnabled();
         if (MigrateDatabase.oldDBExists()) {
             AlertDialog dialog = UIHelper.loadingDialog(getString(R.string.dataMigrate), this);
             dialog.show();
@@ -70,9 +71,39 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // TODO: remove this before release
-        RepeatsDatabase db = RepeatsDatabase.getInstance(this);
-        db.createCalendarForOlderVersions();
+        int requestForAppReview = SharedPreferencesManager.getInstance(this).getRequestForAppReview();
+        if(requestForAppReview == 3 || requestForAppReview == 10) {
+
+            MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(this);
+            alertDialog.setBackground(getDrawable(R.drawable.dialog_shape))
+                    .setTitle(R.string.do_you_like_app)
+                    .setMessage(R.string.rate_app_in_google_play)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.Cancel, (dialogInterface, i) -> {
+                        SharedPreferencesManager.getInstance(this).setRequestForAppReview(requestForAppReview + 1);
+                    })
+                    .setPositiveButton(R.string.rate, (dialogInterface, i) -> {
+                        ReviewManager manager = ReviewManagerFactory.create(this);
+                        Task<ReviewInfo> request = manager.requestReviewFlow();
+
+                        request.addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                ReviewInfo reviewInfo = task.getResult();
+
+                                Task<Void> flow = manager.launchReviewFlow(this, reviewInfo);
+                                flow.addOnCompleteListener(reviewTask -> {});
+                            }
+                        });
+
+                        SharedPreferencesManager.getInstance(this).setRequestForAppReview(-1);
+                    });
+
+
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
+        } else if(requestForAppReview > -1 && requestForAppReview < 10) {
+            SharedPreferencesManager.getInstance(this).setRequestForAppReview(requestForAppReview + 1);
+        }
 
         darkTheme = UIHelper.DarkTheme(this, false);
         RepeatsHelper.CheckDir(this);
@@ -157,13 +188,28 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferencesManager.getInstance(this).setVersion(RepeatsHelper.version);
         Intent intent = new Intent(this, WhatsNewActivity.class);
         startActivity(intent);
-        view.setVisibility(View.GONE);
     }
 
     public void closeUpdateInfo(View view) {
         SharedPreferencesManager.getInstance(this).setVersion(RepeatsHelper.version);
         LinearLayout linearLayout = findViewById(R.id.linearStart);
         linearLayout.removeView(findViewById(R.id.infoLayout));
+    }
+
+    public void termsChangedMain(View view) {
+        SharedPreferencesManager.getInstance(this).setVersion(RepeatsHelper.version);
+        SharedPreferencesManager.getInstance(this).setTermsChanged(RepeatsHelper.termsChanged);
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://rootekstudio.wordpress.com/polityka-prywatnosci")));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.browserNotFound, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void termsChangedClose(View view) {
+        SharedPreferencesManager.getInstance(this).setTermsChanged(RepeatsHelper.termsChanged);
+        LinearLayout linearLayout = findViewById(R.id.linearStart);
+        linearLayout.removeView(findViewById(R.id.termsUpdateLayout));
     }
 
     @Override

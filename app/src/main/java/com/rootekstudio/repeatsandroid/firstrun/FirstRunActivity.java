@@ -13,10 +13,10 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.SetsConfigHelper;
-import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

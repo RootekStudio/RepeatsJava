@@ -12,19 +12,13 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.RemoteInput;
 
-import com.rootekstudio.repeatsandroid.JsonFile;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.database.GetQuestion;
-import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
-import com.rootekstudio.repeatsandroid.database.Values;
-import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class RepeatsNotificationTemplate {
     public static void questionNotification(Context context, GetQuestion getQuestion, String setsIDs, boolean isNext) {
@@ -113,6 +107,7 @@ public class RepeatsNotificationTemplate {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "RepeatsSendQuestionChannel")
                 .setSmallIcon(R.drawable.ic_notifi_icon)
                 .setContentTitle(Title)
+                .setContentText(Text)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(Text))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

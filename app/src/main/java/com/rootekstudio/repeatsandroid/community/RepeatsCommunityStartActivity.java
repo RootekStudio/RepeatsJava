@@ -113,37 +113,45 @@ public class RepeatsCommunityStartActivity extends AppCompatActivity {
             return;
         }
 
-        db.collection("sets")
-                .whereArrayContainsAny("tags", queries)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        documents = new ArrayList<>();
-                        resultNames = new ArrayList<>();
+        if(RepeatsHelper.isOnline(this)) {
+            db.collection("sets")
+                    .whereArrayContainsAny("tags", queries)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            documents = new ArrayList<>();
+                            resultNames = new ArrayList<>();
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String a = (String) document.get("availability");
-                            if (a.equals("PUBLIC")) {
-                                documents.add(document);
-                                resultNames.add(document.get("displayName").toString());
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String a = (String) document.get("availability");
+                                if (a.equals("PUBLIC")) {
+                                    documents.add(document);
+                                    resultNames.add(document.get("displayName").toString());
+                                }
                             }
+
+                            mAdapter = new RCmainListAdapter(resultNames, 0);
+                            mAdapter.notifyDataSetChanged();
+                            recyclerView.setAdapter(mAdapter);
+
+                            if (documents.size() == 0) {
+                                linearSearchInfo.setVisibility(View.VISIBLE);
+                                searchInfoText.setText(R.string.nothingFound);
+                            }
+
+                            progressBar.setVisibility(View.GONE);
+                        } else {
+                            Objects.requireNonNull(task.getException()).printStackTrace();
                         }
+                    });
+        } else {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, getString(R.string.problem_connecting_to_db), Toast.LENGTH_LONG).show();
+        }
 
-                        mAdapter = new RCmainListAdapter(resultNames, 0);
-                        mAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(mAdapter);
-
-                        if (documents.size() == 0) {
-                            linearSearchInfo.setVisibility(View.VISIBLE);
-                            searchInfoText.setText(R.string.nothingFound);
-                        }
-
-                        progressBar.setVisibility(View.GONE);
-                    } else {
-                        Objects.requireNonNull(task.getException()).printStackTrace();
-                    }
-                });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,21 +1,16 @@
 package com.rootekstudio.repeatsandroid.search;
 
-import android.animation.TimeInterpolator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.transition.platform.MaterialContainerTransform;
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.RepeatsAnalytics;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.database.MigrateDatabase;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
@@ -30,6 +25,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        RepeatsAnalytics.startAnalytics(getApplication());
         super.onCreate(savedInstanceState);
         if(MigrateDatabase.oldDBExists()) {
             AlertDialog dialog = UIHelper.loadingDialog(getString(R.string.dataMigrate), this);

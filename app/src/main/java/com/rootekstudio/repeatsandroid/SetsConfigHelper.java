@@ -6,18 +6,13 @@ import android.content.Context;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
 import com.rootekstudio.repeatsandroid.database.Values;
-import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 import com.rootekstudio.repeatsandroid.notifications.NotificationsScheduler;
 import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Locale;
 
 public class SetsConfigHelper {
@@ -42,9 +37,9 @@ public class SetsConfigHelper {
 
         SingleSetInfo list;
         if (Locale.getDefault().toString().equals("pl_PL")) {
-            list = new SingleSetInfo(id, setName, creationDate, 1, 0, "pl_PL", "en_GB");
+            list = new SingleSetInfo(id, setName, creationDate, 0, "pl_PL", "en_GB");
         } else {
-            list = new SingleSetInfo(id, setName, creationDate, 1, 0, "en_US", "es_ES");
+            list = new SingleSetInfo(id, setName, creationDate, 0, "en_US", "es_ES");
         }
 
         //Registering set in database

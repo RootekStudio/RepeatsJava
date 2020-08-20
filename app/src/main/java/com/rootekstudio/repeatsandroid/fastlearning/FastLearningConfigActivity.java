@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
+import com.rootekstudio.repeatsandroid.RepeatsAnalytics;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.database.MigrateDatabase;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
@@ -30,6 +30,7 @@ public class FastLearningConfigActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        RepeatsAnalytics.startAnalytics(getApplication());
         super.onCreate(savedInstanceState);
 
         if(MigrateDatabase.oldDBExists()) {

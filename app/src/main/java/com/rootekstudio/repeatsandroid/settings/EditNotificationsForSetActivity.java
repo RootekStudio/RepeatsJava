@@ -18,12 +18,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
-import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 import com.rootekstudio.repeatsandroid.notifications.NotificationInfo;
 import com.rootekstudio.repeatsandroid.notifications.NotificationsScheduler;
 

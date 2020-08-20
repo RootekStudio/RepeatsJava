@@ -4,7 +4,6 @@ public class SingleSetInfo {
     private String setID;
     private String setName;
     private String CreateDate;
-    private int IsEnabled;
     private int IgnoreChars;
     private String firstLanguage;
     private String secondLanguage;
@@ -14,11 +13,10 @@ public class SingleSetInfo {
     public SingleSetInfo() {
     }
 
-    public SingleSetInfo(String setID, String setName, String CreateDate, int IsEnabled, int IgnoreChars, String firstLanguage, String secondLanguage) {
+    public SingleSetInfo(String setID, String setName, String CreateDate, int IgnoreChars, String firstLanguage, String secondLanguage) {
         this.setID = setID;
         this.setName = setName;
         this.CreateDate = CreateDate;
-        this.IsEnabled = IsEnabled;
         this.IgnoreChars = IgnoreChars;
         this.firstLanguage = firstLanguage;
         this.secondLanguage = secondLanguage;
@@ -36,10 +34,6 @@ public class SingleSetInfo {
 
     public String getCreateDate() {
         return CreateDate;
-    }
-
-    public int getIsEnabled() {
-        return IsEnabled;
     }
 
     public int getIgnoreChars() {
@@ -73,8 +67,6 @@ public class SingleSetInfo {
     public void setCreateDate(String CreateDate) {
         this.CreateDate = CreateDate;
     }
-
-    public void setIsEnabled(int IsEnabled) { this.IsEnabled = IsEnabled; }
 
     public void setIgnoreChars(int IgnoreChars) {
         this.IgnoreChars = IgnoreChars;

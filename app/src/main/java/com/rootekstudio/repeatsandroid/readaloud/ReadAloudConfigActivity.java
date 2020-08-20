@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.rootekstudio.repeatsandroid.R;
+import com.rootekstudio.repeatsandroid.RepeatsAnalytics;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.database.MigrateDatabase;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
@@ -23,6 +24,7 @@ public class ReadAloudConfigActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        RepeatsAnalytics.startAnalytics(getApplication());
         super.onCreate(savedInstanceState);
 
         if (MigrateDatabase.oldDBExists()) {

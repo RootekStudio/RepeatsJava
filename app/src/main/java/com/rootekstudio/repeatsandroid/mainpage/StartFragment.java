@@ -12,10 +12,8 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.transition.MaterialFadeThrough;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
-import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.community.RepeatsCommunityStartActivity;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
@@ -23,6 +21,7 @@ import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.fastlearning.FastLearningConfigActivity;
 import com.rootekstudio.repeatsandroid.readaloud.ReadAloudActivity;
 import com.rootekstudio.repeatsandroid.readaloud.ReadAloudConfigActivity;
+import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 
 import java.util.Collections;
 import java.util.List;
@@ -140,6 +139,11 @@ public class StartFragment extends Fragment {
             if (!sharedPreferencesManager.getVersion().equals(RepeatsHelper.version)) {
                 view.findViewById(R.id.infoLayout).setVisibility(View.VISIBLE);
                 sharedPreferencesManager.setVersion(RepeatsHelper.version);
+
+                if(sharedPreferencesManager.getTermsChanged() != RepeatsHelper.termsChanged) {
+                    view.findViewById(R.id.termsUpdateLayout).setVisibility(View.VISIBLE);
+                    sharedPreferencesManager.setTermsChanged(RepeatsHelper.termsChanged);
+                }
             }
 
         } catch (Exception e) {

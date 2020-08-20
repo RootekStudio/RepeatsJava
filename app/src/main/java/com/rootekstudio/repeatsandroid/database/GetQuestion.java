@@ -2,8 +2,6 @@ package com.rootekstudio.repeatsandroid.database;
 
 import android.content.Context;
 
-import com.rootekstudio.repeatsandroid.notifications.NotificationInfo;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

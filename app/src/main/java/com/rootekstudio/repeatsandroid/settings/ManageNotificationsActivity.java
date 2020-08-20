@@ -1,7 +1,5 @@
 package com.rootekstudio.repeatsandroid.settings;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,14 +13,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.Values;
 import com.rootekstudio.repeatsandroid.notifications.NotificationInfo;
 import com.rootekstudio.repeatsandroid.notifications.NotificationsScheduler;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

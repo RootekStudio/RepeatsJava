@@ -21,20 +21,13 @@
     <string name="Settings">Ustawienia</string>
     <string name="DeleteSet">Usuń zestaw</string>
     <string name="notifications">Powiadomienia</string>
-    <string name="EnableTitle">Powiadomienia z konkretnych zestawów</string>
-    <string name="EnableSummary">Określ z których zestawów mają przychodzić powiadomienia</string>
     <string name="FreqAskPref">Zmień częstotliwość wysyłania powiadomień</string>
-    <string name="FreqText">Powiadomienia przychodzą co</string>
     <string name="minutes">minut</string>
     <string name="changeTheme">Zmień motyw</string>
     <string name="Theme">Motyw</string>
     <string name="Light">Jasny</string>
     <string name="Dark">Ciemny</string>
     <string name="search_hint">Wyszukaj</string>
-    <string name="channelname2">Powiadomienia z odpowiedzią</string>
-    <string name="channeldesc2">Ten kanał odpowiada za dostrczenie powiadomienia z odpowiedzią</string>
-    <string name="channelname3">Powiadomienia funkcji Następne pytanie</string>
-    <string name="channeldesc3">Ten kanał odpowiada za funkcję Następne pytanie</string>
     <string name="SendFeedback">Prześlij opinię</string>
     <string name="FeedbackSubject">Opinia o Repeats na Androida wersja</string>
     <string name="WantDelete">Czy na pewno chcesz usunąć cały zestaw?</string>
@@ -45,7 +38,6 @@
     <string name="IgnoreChars">Ignoruj znaki specjalne</string>
     <string name="AddSet">Dodaj zestaw</string>
     <string name="share">Udostępnij</string>
-    <string name="notifiFromSets">Powiadomienia z zestawów</string>
     <string name="loading">Wczytywanie...</string>
     <string name="rateApp">Oceń aplikację w Google Play</string>
     <string name="savingInProgress">Trwa zapisywanie zestawu...</string>
@@ -84,32 +76,11 @@
     <string name="to">do:</string>
     <string name="from">Od:</string>
     <string name="turned_off">Wyłączone</string>
-    <string name="const_freq">Stała częstotliwość</string>
-    <string name="advanced_notifi">Zaawansowane ustawienia dostarczania</string>
-    <string name="notifi_mode">Tryb powiadomień</string>
     <string name="silenceHours">Godziny ciszy</string>
-    <string name="silenceHoursSummary">Godziny ciszy pozwalają na ustawienie godzin w których powiadomienia nie będą przychodzić</string>
-    <string name="changeSilenceHours">Zmień godziny ciszy</string>
     <string name="batteryOptimization">Optymalizacja baterii</string>
-    <string name="changeDelivery">Zmień ustawienia dostarczania powiadomień</string>
-    <string name="frequency">Częstotliwość:</string>
-    <string name="days">Dni</string>
     <string name="sets">Zestawy</string>
-    <string name="fri">pt.</string>
-    <string name="mon">pon.</string>
-    <string name="sat">sob.</string>
-    <string name="sun">niedz.</string>
-    <string name="thu">czw.</string>
-    <string name="tue">wt.</string>
-    <string name="wed">śr.</string>
-    <string name="deliverySettings">Ustawienia dostarczania</string>
-    <string name="editRule">Edytuj regułę</string>
-    <string name="addRule">Dodaj regułę</string>
-    <string name="noSetsInfoSettings">Dodaj co najmniej jeden zestaw aby włączyć powiadomienia</string>
-    <string name="selectDays">Wybierz dni:</string>
     <string name="checkSetSettings">Sprawdź swoje ustawienia</string>
     <string name="cantLoadSet">Nie można załadować żadnego zestawu</string>
-    <string name="specialThanksDawid">Specjalne podziękowania dla Dawida Poradzińskiego za gruntowne testowanie aplikacji</string>
     <string name="welcome">Witaj w</string>
     <string name="startQuestionRC">Czego chcesz się dzisiaj nauczyć?</string>
     <string name="repeatsCommunity">Społeczność Repeats</string>
@@ -145,25 +116,25 @@
     <string name="playing_set">Odtwarzanie zestawu:</string>
     <string name="click_here_read_notifi">Kliknij tutaj aby przejść do odtwarzacza</string>
     <string name="see_whats_now">Zobacz co nowego</string>
-    <string name="welcome_to_update">Witaj w Repeats 2.7</string>
+    <string name="welcome_to_update">Witaj w Repeats 2.8</string>
     <string name="app_updated_info">Zaktualizowano aplikację do najnowszej wersji</string>
     <string name="channelname4">Powiadomienie stałe funkcji Czytanie na głos</string>
     <string name="channeldesc4">Powiadomienie pokazujące się podczas odsłuchiwania zestawu za pomocą funkcji Czytanie na głos</string>
     <string name="checking_answers">Sprawdzanie odpowiedzi</string>
     <string name="set_languages">Języki zestawu</string>
-    <string name="ignore_chars_info">Po włączeniu tej funkcji wielkość liter, spacje i znaki diakrytyczne będą igonorowane przy sprawdzaniu poprawności odpowiedzi. Uwaga: Funkcja nie działa poprawnie z pismem chińskim.</string>
+    <string name="ignore_chars_info">Po włączeniu tej funkcji spacje i znaki diakrytyczne będą igonorowane przy sprawdzaniu poprawności odpowiedzi. Uwaga: Funkcja nie działa poprawnie z pismem chińskim.</string>
     <string name="whatsNew">Co nowego</string>
     <string name="otherCorrectAnswers">Inne poprawne odpowiedzi:</string>
     <string name="cannotLoadLangList">Nie mogliśmy załadować listy języków</string>
     <string name="cannotLoadTTS">Nie mogliśmy załadować Zamiany tekstu na mowę Google. Sprawdź czy masz tę aplikację zainstalowaną na swoim urządzeniu.</string>
-    <string name="whatsNewDesc0">Nowa funkcja pozwala na utworzenie zestawu z tekstu wykrytego ze zdjęcia.\n\nPo wybraniu i przeskanowaniu zdjęcia, użytkownikowi wyświetla się lista wykrytch słów, z których może ułożyć pytania i odpowiedzi.
-        Istnieje możliwość zrobienia zdjęcia z poziomu aplikacji, jak również wybrania wcześniej zrobionego zdjęcia z galerii.</string>
-    <string name="whatsNewDesc1">Dla systemu Android w wersji 7.1 i nowszej pojawiła się możliwość szybkiego dostępu do najważniejszych funkcji aplikacji
-    (Szybka nauka, Czytanie na głos, wyszukiwarka) z poziomu ikony na stronie głównej aplikacji uruchamiającej. Wystarczy przytrzymać na dłużej ikonę aplikacji Repeats.</string>
-    <string name="whatsNewDesc3">- Usprawniono wygląd Szybkiej nauki, zwłaszcza dla urządzeń z mniejszymi ekranami
-        \n\n- Usprawniono wygląd Społeczności Repeats i strony podglądu zestawu
-        \n\n- Nowy wygląd okna "Dodaj zestaw"
-        \n\n- Poprawiono stabilność aplikacji</string>
+    <string name="whatsNewDesc0">Aplikacja Repeats przypomni Ci o nadchodzącym sprawdzianie. Wybierz dzień sprawdzianu, a następnie ustaw, ile dni przed sprawdzianem aplikacja ma wysłać przypomnienie.</string>
+    <string name="whatsNewDesc3">- Zaktualizowano wygląd statystyk
+        \n\n- Zmieniono sposób konfigurowania powiadomień
+\n\n- Zaktualizowano wygląd strony edycji zestawu
+\n\n- Poprawiono wyświetlanie powiadomień
+\n\n- Duże/małe litery w odpowiedziach są teraz domyślnie ignorowane, niezależnie od funkcji "Ignoruj znaki specjalne"
+\n\n- Wspracie dla Androida 11
+    \n\n- Inne poprawki i usprawnienia</string>
     <string name="otherImprovements">Inne usprawnienia</string>
     <string name="browserNotFound">Nie znaleziono przeglądarki internetowej</string>
     <string name="stats">Statystyki</string>
@@ -174,9 +145,6 @@
     <string name="sortCreationDateA">daty utworzenia (rosnąco)</string>
     <string name="sortCreationDateD">daty utworzenia (malejąco)</string>
     <string name="sortBy">Sortuj według</string>
-    <string name="goodAnswersT">poprawnych odpowiedzi</string>
-    <string name="wrongAnswersT">błędnych odpowiedzi</string>
-    <string name="allAnswersT">wszystkich odpowiedzi</string>
     <string name="clickToDetails">Kliknij aby zobaczyć szczegóły</string>
     <string name="swapQwithA">Zamień pytania z odpowiedziami</string>
     <string name="contentSettings">Ustawienia zawartości</string>
@@ -242,8 +210,6 @@
     <string name="fromPhoto">Ze zdjęcia</string>
     <string name="openArchive">Otwórz archiwum</string>
     <string name="close">Zamknij</string>
-    <string name="whatsNewTitle0">Zestaw ze zdjęcia</string>
-    <string name="whatsNewTitle1">Skróty z ikony</string>
     <string name="openSourceLicences">Licencje open source</string>
     <string name="help">Pomoc</string>
     <string name="howToUseSetFromPhotoTitle">Jak korzystać z funkcji Zestaw ze zdjęcia?</string>
@@ -261,11 +227,9 @@
     <string name="regulations">Regulamin</string>
     <string name="contact">Kontakt</string>
     <string name="infoAuthors">Informacje o autorach</string>
-    <string name="specialThanks">Specjalne podziękowania dla Daniela, Marcina, Mikołaja i Piotra za propozycje funkcji</string>
     <string name="firstRunPhotoCredits">Zdjęcie w tle podczas pierwszego uruchomienia: Kevin Mueller\nŹródło: unsplash.com</string>
     <string name="info">Informacje</string>
     <string name="dataMigrate">Trwa migracja danych...\nProszę czekać</string>
-    <string name="calendar">Kalendarz</string>
     <string name="correct">poprawnych</string>
     <string name="wrong">błędnych</string>
     <string name="all">wszystkich</string>
@@ -302,12 +266,6 @@
     <string name="channelname5">Przypomnienie o sprawdzianie</string>
     <string name="channeldesc5">Powiadomienia pokazujące przypomnienia o sprawdzianach</string>
     <string name="tests_coming">Nadchodzą sprawdziany z kilku zestawów</string>
-    <string name="for_word">Za</string>
-    <string name="test_from_polish_only">sprawdzian z</string>
-    <string name="test">test</string>
-    <string name="in_lower_case">w</string>
-    <string name="tomorrow">Jutro</string>
-    <string name="days_lower_case">dni</string>
     <string name="click_to_learn">Kliknij aby rozpocząć naukę</string>
     <string name="reminders_come_at">Przypomnienia przychodzą o</string>
     <string name="reminders">Przypomnienia</string>
@@ -329,7 +287,6 @@
     <string name="change_date_to_reminder">Nieprawidłowa data. Zmień datę sprawdzianu i/lub czas przyjścia przypomnienia i spróbuj ponownie.</string>
     <string name="enter_days">Wpisz liczbę dni</string>
     <string name="invalid_date">Nieprawidłowa data</string>
-    <string name="reminder_days_before">Przypomnienie $1%d dni przed sprawdzianem</string>
     <string name="date_not_compatible">Zmieniono termin sprawdzianu. Poprzednie ustawienia nie są kompatybilne z nowym terminem. Zmień termin wysłania przypomnienia aby ponownie włączyć przypomnienia.</string>
     <string name="enter_test_date">Najpierw podaj termin sprawdzianu</string>
     <plurals name="when_test" tools:ignore="MissingQuantity">
@@ -355,7 +312,6 @@
     <string name="from_to_cannot_be_same">Godziny \"od\" i \"do\" nie mogą być takie same</string>
     <string name="frequency_cannot_be_0">Częstotliwość nie może być równa 0</string>
     <string name="error_setting_reminders">Wystąpił błąd przy konfigurowaniu przypomnień</string>
-    <string name="ok">Ok</string>
     <string name="correct_answers">Poprawne odpowiedzi:</string>
     <string name="set_rules_for_notifi">Najpierw ustaw reguły wysyłania powiadomień</string>
     <string name="do_you_like_app">Podoba Ci się aplikacja Repeats?</string>
@@ -364,5 +320,9 @@
     <string name="icons_in_app">Ikony użyte w aplikacji: Tabler Icons | Paweł Kuna</string>
     <string name="calendar_view_credit">Widok kalendarza: Material Calendar View | Applandeo</string>
     <string name="frequency_can_be_changed">Częstotliwość wysyłania powiadomień można zmienić w ustawieniach aplikacji</string>
+    <string name="privacy_policy_updated">Zaktualizowano Politykę prywatności</string>
+    <string name="click_here_to_read">Kliknij aby przeczytać</string>
+    <string name="icons_material_in_app">Niektóre ikony użyte w aplikacji: Material Design Icons | Google</string>
+    <string name="problem_connecting_to_db">Wystąpił problem z połączeniem z bazą danych. Sprawdź połączenie z internetem</string>
 
 </resources>

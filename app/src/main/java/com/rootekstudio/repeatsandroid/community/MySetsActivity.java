@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,25 +54,31 @@ public class MySetsActivity extends AppCompatActivity {
         String userID = SharedPreferencesManager.getInstance(this).getUserID();
 
         resultNames = new ArrayList<>();
-        db.collection("sets")
-                .whereEqualTo("userID", userID)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            documents.add(document);
-                            resultNames.add(document.get("displayName").toString());
-                        }
 
-                        mAdapter = new MySetsListAdapter(resultNames);
-                        mAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(mAdapter);
-                        progressBar.setVisibility(View.GONE);
-                        if (documents.size() == 0) {
-                            textView.setVisibility(View.VISIBLE);
+        if(RepeatsHelper.isOnline(this)) {
+            db.collection("sets")
+                    .whereEqualTo("userID", userID)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                documents.add(document);
+                                resultNames.add(document.get("displayName").toString());
+                            }
+
+                            mAdapter = new MySetsListAdapter(resultNames);
+                            mAdapter.notifyDataSetChanged();
+                            recyclerView.setAdapter(mAdapter);
+                            progressBar.setVisibility(View.GONE);
+                            if (documents.size() == 0) {
+                                textView.setVisibility(View.VISIBLE);
+                            }
                         }
-                    }
-                });
+                    });
+        } else {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, getString(R.string.problem_connecting_to_db), Toast.LENGTH_LONG).show();
+        }
     }
 
     public void previewSetMySets(View view) {

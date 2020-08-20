@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
-import com.rootekstudio.repeatsandroid.notifications.NotificationInfo;
-
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,7 +42,6 @@ public class MigrateDatabase {
             contentValues.put(Values.set_id, setID);
             contentValues.put(Values.set_name, setInfo.getSetName());
             contentValues.put(Values.creation_date, getCreationDateInNewFormat(setInfo.getCreateDate()));
-            contentValues.put(Values.enabled, setInfo.getIsEnabled());
             contentValues.put(Values.ignore_chars, setInfo.getIgnoreChars());
             contentValues.put(Values.first_lang, setInfo.getFirstLanguage());
             contentValues.put(Values.second_lang, setInfo.getSecondLanguage());

@@ -22,20 +22,13 @@
     <string name="Settings">Settings</string>
     <string name="DeleteSet">Delete set</string>
     <string name="notifications">Notifications</string>
-    <string name="EnableTitle">Notifications from specific sets</string>
-    <string name="EnableSummary">Select specific set from which will be sending notifications</string>
     <string name="FreqAskPref">Change the frequency of sending notifications</string>
-    <string name="FreqText">Notifications are delivered every</string>
     <string name="minutes">minutes</string>
     <string name="changeTheme">Change theme</string>
     <string name="Theme">Theme</string>
     <string name="Light">Light</string>
     <string name="Dark">Dark</string>
     <string name="search_hint">Search</string>
-    <string name="channelname2">Notifications with answer</string>
-    <string name="channeldesc2">This channel is responsible for delivery notification with answer</string>
-    <string name="channelname3">Next Question Notifications</string>
-    <string name="channeldesc3">This channel is responsible for Next Question feature</string>
     <string name="SendFeedback">Send feedback</string>
     <string name="FeedbackSubject">Feedback about Repeats for Android version</string>
     <string name="EmptyHere">\nIt\'s a bit empty here…\nCreate new set by clicking on +</string>
@@ -47,7 +40,6 @@
     <string name="IgnoreChars">Ignore special characters</string>
     <string name="AddSet">Add set</string>
     <string name="share">Share</string>
-    <string name="notifiFromSets">Notifications from sets</string>
     <string name="loading">Loading...</string>
     <string name="rateApp">Rate app</string>
     <string name="savingInProgress">Saving set in progress</string>
@@ -63,8 +55,8 @@
     <string name="Continue">Continue</string>
     <string name="SystemTheme">System default</string>
     <string name="backup">Backup</string>
-    <string name="createBackup">Create backup</string>
-    <string name="restoreBackup">Restore backup</string>
+    <string name="createBackup">Create sets backup</string>
+    <string name="restoreBackup">Restore sets backup</string>
     <string name="localBackup">On your device</string>
     <string name="cloudBackup">In the cloud or other apps</string>
     <string name="where_Backup">Where do you want to save the backup?</string>
@@ -86,32 +78,11 @@
     <string name="from">From:</string>
     <string name="to">To:</string>
     <string name="turned_off">Turned off</string>
-    <string name="const_freq">Constant frequency</string>
-    <string name="advanced_notifi">Advanced delivery settings</string>
-    <string name="notifi_mode">Notifications mode</string>
     <string name="silenceHours">Silence Hours</string>
-    <string name="silenceHoursSummary">When enabled, notifications will not be delivered at certain times</string>
-    <string name="changeSilenceHours">Change silence hours</string>
     <string name="batteryOptimization">Battery optimization</string>
-    <string name="changeDelivery">Change notification delivery settings</string>
-    <string name="frequency">Frequency:</string>
-    <string name="days">Days:</string>
     <string name="sets">Sets</string>
-    <string name="sun">Sun</string>
-    <string name="mon">Mon</string>
-    <string name="tue">Tue</string>
-    <string name="wed">Wed</string>
-    <string name="thu">Thu</string>
-    <string name="fri">Fri</string>
-    <string name="sat">Sat</string>
-    <string name="deliverySettings">Delivery settings</string>
-    <string name="editRule">Edit rule</string>
-    <string name="addRule">Add rule</string>
-    <string name="noSetsInfoSettings">Add at least one set to enable notifications</string>
-    <string name="selectDays">Select days:</string>
     <string name="cantLoadSet">Can\'t load any set</string>
     <string name="checkSetSettings">Check your settings</string>
-    <string name="specialThanksDawid">Special thanks to Dawid Poradziński for being a very good tester</string>
     <string name="welcome">Welcome to</string>
     <string name="startQuestionRC">What do you want to learn today?</string>
     <string name="repeatsCommunity">Repeats Community</string>
@@ -147,26 +118,25 @@
     <string name="playing_set">Playing set:</string>
     <string name="click_here_read_notifi">Click here to go to the player</string>
     <string name="see_whats_now">See what\'s new</string>
-    <string name="welcome_to_update">Welcome to Repeats 2.7</string>
+    <string name="welcome_to_update">Welcome to Repeats 2.8</string>
     <string name="app_updated_info">App has been updated to the latest version</string>
     <string name="channelname4">Read Aloud notification</string>
     <string name="channeldesc4">This notification will show up when you are listening to the set</string>
     <string name="checking_answers">Checking answers</string>
     <string name="set_languages">Set languages</string>
-    <string name="ignore_chars_info">When this feature is enabled, case sensitive characters, spaces, and diacritics will be ignored when checking the correctness of the answer. Note: This function does not work properly with Chinese script.</string>
+    <string name="ignore_chars_info">When this feature is enabled, spaces and diacritics will be ignored when checking the correctness of the answer. Note: This function does not work properly with Chinese script.</string>
     <string name="whatsNew">What\'s new</string>
     <string name="otherCorrectAnswers">Other correct answers:</string>
     <string name="cannotLoadLangList">We could not load the list of languages</string>
     <string name="cannotLoadTTS">We were unable to load Text-to-Speech. Check if you have this app installed on your device.</string>
-    <string name="whatsNewDesc0">The new function allows you to create a set of text detected from a photo.\n\nAfter selecting and scanning the photo,
-        the user is presented with a list of detected words from which they can select questions and answers.
-        You can take a photo from the application, as well as select a previously taken photo from the gallery.</string>
-    <string name="whatsNewDesc1">For Android version 7.1 and newer you can now quick access the most important functions of the application
-     (Fast learning, Reading aloud, search) from the icon on the main page of the launcher. Just hold the Repeats application icon for longer.</string>
-    <string name="whatsNewDesc3">- The Fast Learning look has been improved, especially for devices with smaller screens
-\n\n- New appearance of the "Add set" window
-        \n\n-The Repeats Community appearance and the set preview page have been improved
-\n\n- Improved app stability</string>
+    <string name="whatsNewDesc0">Repeats will remind you of an upcoming test. Select the day of the test, and then set how many days before the test the app should send a reminder.</string>
+    <string name="whatsNewDesc3">- The appearance of the statistics has been updated
+        \n\n -The way of configuring notifications has been changed
+\n\n- The layout of the set edit page has been updated
+\n\n- The display of notifications has been improved
+\n\n- Upper / lower case letters in responses are now ignored by default, regardless of the "Ignore special characters" function
+\n\n- Android 11 support
+    \n\n- Other fixes and improvements</string>
     <string name="otherImprovements">Other improvements</string>
     <string name="browserNotFound">Browser not found</string>
     <string name="stats">Stats</string>
@@ -177,9 +147,6 @@
     <string name="sortCreationDateA">creation date (ascending)</string>
     <string name="sortCreationDateD">creation date (descending)</string>
     <string name="sortBy">Sort by</string>
-    <string name="goodAnswersT">good answers</string>
-    <string name="wrongAnswersT">wrong answers</string>
-    <string name="allAnswersT">all answers</string>
     <string name="clickToDetails">Click to see details</string>
     <string name="swapQwithA">Swap questions with answers</string>
     <string name="contentSettings">Content settings</string>
@@ -246,8 +213,6 @@
     <string name="fromPhoto">From photo</string>
     <string name="openArchive">Open archive</string>
     <string name="close">Close</string>
-    <string name="whatsNewTitle0">Set from photo</string>
-    <string name="whatsNewTitle1">Icon shortcuts</string>
     <string name="openSourceLicences">Open source licences</string>
     <string name="help">Help</string>
     <string name="howToUseSetFromPhotoTitle">How to use the Set from photo function?</string>
@@ -266,11 +231,9 @@
     <string name="infoAuthors">Authors</string>
     <string name="developer" translatable="false">Developer: Jakub Sieradzki</string>
     <string name="tester" translatable="false">Tester: Dawid Poradziński</string>
-    <string name="specialThanks">Special thanks to Daniel, Marcin, Mikołaj and Piotr for feature suggestions</string>
     <string name="firstRunPhotoCredits">Background image during the first start: Kevin Mueller\nSource: unsplash.com</string>
     <string name="info">Information</string>
     <string name="dataMigrate">Data migration in progres...\nPlease wait</string>
-    <string name="calendar">Calendar</string>
     <string name="correct">correct</string>
     <string name="wrong">wrong</string>
     <string name="all">all</string>
@@ -307,12 +270,6 @@
     <string name="channelname5">Test reminder</string>
     <string name="channeldesc5">Notifications showing tests reminders</string>
     <string name="tests_coming">There are tests coming from several sets</string>
-    <string name="for_word">For</string>
-    <string name="test_from_polish_only">test from</string>
-    <string name="test">test</string>
-    <string name="in_lower_case">in</string>
-    <string name="tomorrow">Tomorrow</string>
-    <string name="days_lower_case">days</string>
     <string name="click_to_learn">Click to start learning</string>
     <string name="reminders_come_at">Reminders come at</string>
     <string name="reminders">Reminders</string>
@@ -334,7 +291,6 @@
     <string name="change_date_to_reminder">Invalid date. Change the test date and/or reminder time and try again.</string>
     <string name="enter_days">Enter the number of days</string>
     <string name="invalid_date">Invalid date</string>
-    <string name="reminder_days_before">Reminder $1%d days before the test</string>
     <string name="date_not_compatible">The date of the test has been changed. The previous settings are not compatible with the new date. Change the date when the reminder is sent to turn the reminders back on.</string>
     <string name="enter_test_date">First, enter the date of the test</string>
 
@@ -359,14 +315,17 @@
     <string name="from_to_cannot_be_same">Hours \"from\" and \"to\" cannot be the same</string>
     <string name="frequency_cannot_be_0">The frequency cannot be 0</string>
     <string name="error_setting_reminders">There was an error setting up reminders</string>
-    <string name="ok">Ok</string>
     <string name="correct_answers">Correct answers:</string>
     <string name="set_rules_for_notifi">First, set the rules for sending notifications</string>
     <string name="do_you_like_app">Do you like the Repeats app?</string>
     <string name="rate_app_in_google_play">Please rate it on the Google Play Store</string>
     <string name="rate">Rate</string>
-    <string name="icons_in_app">Icons used in the application: Tabler Icons by Paweł Kuna</string>
+    <string name="icons_in_app">Icons used in the app:\nTabler Icons by Paweł Kuna\nMaterial Design Icons</string>
     <string name="calendar_view_credit">Calendar View: Material Calendar View | Applandeo</string>
     <string name="frequency_can_be_changed">The frequency of sending notifications can be changed in the application settings</string>
+    <string name="privacy_policy_updated">Privacy policy has been updated</string>
+    <string name="click_here_to_read">Click here to read</string>
+    <string name="icons_material_in_app">Some icons used in the app: Material Design Icons | Google</string>
+    <string name="problem_connecting_to_db">There was a problem connecting to the database. Check internet connection</string>
 
 </resources>

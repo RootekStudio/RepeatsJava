@@ -16,10 +16,6 @@
             app:iconSpaceReserved="false"
             app:key="manageNotifications"
             app:title="@string/manage_notifications"/>
-        <Preference
-            app:key="noSetsInDatabaseInfo"
-            app:summary="@string/noSetsInfoSettings"
-            app:isPreferenceVisible="false"/>
     </PreferenceCategory>
 
     <PreferenceCategory

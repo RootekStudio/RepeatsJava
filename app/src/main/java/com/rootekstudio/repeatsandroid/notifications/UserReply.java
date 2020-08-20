@@ -4,16 +4,12 @@ import android.app.RemoteInput;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.RequiresApi;
 
 import com.rootekstudio.repeatsandroid.CheckAnswer;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
 import com.rootekstudio.repeatsandroid.database.Values;
-import com.rootekstudio.repeatsandroid.notifications.RepeatsNotificationTemplate;
 
 public class UserReply extends BroadcastReceiver {
     @Override
