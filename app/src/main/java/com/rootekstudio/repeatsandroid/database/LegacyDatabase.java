@@ -189,7 +189,7 @@ public class LegacyDatabase extends SQLiteOpenHelper {
         SQLiteDatabase DB = this.getReadableDatabase();
         List<SetSingleItem> itemsInSet = new ArrayList<>();
         SetSingleItem singleItem;
-        if(DB.getVersion() == 4) {
+        if(version == 4) {
             String query = "SELECT question, answer, image, goodAnswers, wrongAnswers FROM " + setID + " ;";
             Cursor cursor = DB.rawQuery(query, null);
 
