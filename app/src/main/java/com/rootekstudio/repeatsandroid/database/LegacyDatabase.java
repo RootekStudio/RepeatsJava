@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Set;
 
 public class LegacyDatabase extends SQLiteOpenHelper {
+    int version = 4;
     public LegacyDatabase(Context context) {
         super(context, "repeats", null, 4);
     }
@@ -21,6 +22,7 @@ public class LegacyDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        version = oldVersion;
     }
 
     public List<SingleSetInfo> allSetsInfo() {
@@ -39,7 +41,7 @@ public class LegacyDatabase extends SQLiteOpenHelper {
         SQLiteDatabase DB = this.getReadableDatabase();
         List<SingleSetInfo> setInfo = new ArrayList<>();
         SingleSetInfo singleSetInfo;
-        if(DB.getVersion() == 4) {
+        if(version == 4) {
             String query = "SELECT TableName, title, CreateDate, IsEnabled, IgnoreChars, firstLanguage, secondLanguage, goodAnswers, wrongAnswers FROM TitleTable;";
             Cursor cursor = DB.rawQuery(query, null);
             if(cursor.moveToFirst()) {
@@ -74,7 +76,7 @@ public class LegacyDatabase extends SQLiteOpenHelper {
             cursor.close();
             DB.close();
         }
-        else if(DB.getVersion() == 3) {
+        else if(version == 3) {
             String query = "SELECT TableName, title, CreateDate, IsEnabled, IgnoreChars, firstLanguage, secondLanguage FROM TitleTable;";
             Cursor cursor = DB.rawQuery(query, null);
             if(cursor.moveToFirst()) {
@@ -111,7 +113,7 @@ public class LegacyDatabase extends SQLiteOpenHelper {
             DB.close();
         }
 
-        else if(DB.getVersion() == 2) {
+        else if(version == 2) {
             String query = "SELECT TableName, title, CreateDate, IsEnabled, IgnoreChars FROM TitleTable;";
             Cursor cursor = DB.rawQuery(query, null);
 
@@ -148,7 +150,7 @@ public class LegacyDatabase extends SQLiteOpenHelper {
             cursor.close();
             DB.close();
 
-        } else if(DB.getVersion() == 1) {
+        } else if(version == 1) {
             String query = "SELECT TableName, title, CreateDate, IsEnabled FROM TitleTable;";
             Cursor cursor = DB.rawQuery(query, null);
 
