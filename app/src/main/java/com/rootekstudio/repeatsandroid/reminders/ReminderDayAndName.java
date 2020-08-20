@@ -2,11 +2,11 @@ package com.rootekstudio.repeatsandroid.reminders;
 
 public class ReminderDayAndName implements Comparable<ReminderDayAndName> {
     private int daysBefore;
-    private String setName;
+    private String setID;
 
     public ReminderDayAndName(int daysBefore, String setID) {
         this.daysBefore = daysBefore;
-        this.setName = setID;
+        this.setID = setID;
     }
 
     public int getDaysBefore() {
@@ -17,12 +17,12 @@ public class ReminderDayAndName implements Comparable<ReminderDayAndName> {
         this.daysBefore = daysBefore;
     }
 
-    public String getSetName() {
-        return setName;
+    public String getSetID() {
+        return setID;
     }
 
-    public void setSetName(String setName) {
-        this.setName = setName;
+    public void setSetID(String setID) {
+        this.setID = setID;
     }
 
     @Override

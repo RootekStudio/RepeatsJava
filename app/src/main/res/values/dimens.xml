@@ -2,4 +2,6 @@
 <resources>
     <dimen name="text_size_stats_app">15sp</dimen>
     <dimen name="text_size_stats_set">15sp</dimen>
+    <dimen name="text_size_app_info_details">15sp</dimen>
+    <dimen name="text_size_app_info_header">18sp</dimen>
 </resources>

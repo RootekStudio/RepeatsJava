@@ -7,23 +7,22 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.Task;
 import com.rootekstudio.repeatsandroid.OnSystemBoot;
 import com.rootekstudio.repeatsandroid.R;
-import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.UIHelper;
 import com.rootekstudio.repeatsandroid.settings.SharedPreferencesManager;
 import com.rootekstudio.repeatsandroid.firstrun.FirstRunActivity;
 import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 
 public class SplashScreenActivity extends AppCompatActivity {
     @Override
@@ -50,6 +49,41 @@ public class SplashScreenActivity extends AppCompatActivity {
                 PackageManager.DONT_KILL_APP);
 
         createNotificationChannels();
+
+        int requestForAppReview = SharedPreferencesManager.getInstance(this).getRequestForAppReview();
+        if(requestForAppReview == 3 || requestForAppReview == 10) {
+
+            MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(this);
+            alertDialog.setBackground(getDrawable(R.drawable.dialog_shape))
+                    .setTitle(R.string.do_you_like_app)
+                    .setMessage(R.string.rate_app_in_google_play)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.Cancel, (dialogInterface, i) -> {
+                        SharedPreferencesManager.getInstance(this).setRequestForAppReview(requestForAppReview + 1);
+                    })
+                    .setPositiveButton(R.string.rate, (dialogInterface, i) -> {
+                        ReviewManager manager = ReviewManagerFactory.create(this);
+                        Task<ReviewInfo> request = manager.requestReviewFlow();
+
+                        request.addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                ReviewInfo reviewInfo = task.getResult();
+
+                                Task<Void> flow = manager.launchReviewFlow(this, reviewInfo);
+                                flow.addOnCompleteListener(reviewTask -> {});
+                            }
+                        });
+
+                        SharedPreferencesManager.getInstance(this).setRequestForAppReview(-1);
+                    });
+
+
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
+        } else if(requestForAppReview > -1 && requestForAppReview < 10) {
+            SharedPreferencesManager.getInstance(this).setRequestForAppReview(requestForAppReview + 1);
+        }
+
         startActivity(intent);
         finish();
     }

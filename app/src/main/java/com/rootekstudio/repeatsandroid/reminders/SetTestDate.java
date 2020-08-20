@@ -82,22 +82,23 @@ public class SetTestDate {
                 TextView textView = parent.findViewById(R.id.testDate);
                 textView.setText(view.getContext().getString(R.string.test_date, DateFormat.getDateInstance().format(selectedDate.getTime())));
 
-                if(selectedDate.getTimeInMillis() - reminderInfo.getReminderDaysBefore() * 1000 * 60 * 60 * 24 < Calendar.getInstance().getTimeInMillis()) {
-                    Toast.makeText(v.getContext(), v.getContext().getString(R.string.date_not_compatible), Toast.LENGTH_LONG).show();
-                    if(isSettings) {
-                        View viewParent = (View)view.getParent();
-                        Switch switchReminder = viewParent.findViewById(R.id.reminderSwitchSettings);
-                        switchReminder.setChecked(false);
-                    }
-                    else {
-                        TextView reminderStatus = parent.getRootView().findViewById(R.id.reminderStatus);
-                        reminderStatus.setText(view.getContext().getResources().getString(R.string.reminder_not_set));
-                        reminderStatus.setTextColor(view.getContext().getResources().getColor(R.color.redRepeats));
-                    }
+                if(reminderInfo.getDeadline() != null) {
+                    if(selectedDate.getTimeInMillis() - reminderInfo.getReminderDaysBefore() * 1000 * 60 * 60 * 24 < Calendar.getInstance().getTimeInMillis()) {
+                        Toast.makeText(v.getContext(), v.getContext().getString(R.string.date_not_compatible), Toast.LENGTH_LONG).show();
+                        if(isSettings) {
+                            View viewParent = (View)view.getParent();
+                            Switch switchReminder = viewParent.findViewById(R.id.reminderSwitchSettings);
+                            switchReminder.setChecked(false);
+                        }
+                        else {
+                            TextView reminderStatus = parent.getRootView().findViewById(R.id.reminderStatus);
+                            reminderStatus.setText(view.getContext().getResources().getString(R.string.reminder_not_set));
+                            reminderStatus.setTextColor(view.getContext().getResources().getColor(R.color.redRepeats));
+                        }
 
-                    RepeatsDatabase.getInstance(view.getContext()).updateReminderEnabled(setID, false);
+                        RepeatsDatabase.getInstance(view.getContext()).updateReminderEnabled(setID, false);
+                    }
                 }
-
                 popupWindow.dismiss();
             }
         });

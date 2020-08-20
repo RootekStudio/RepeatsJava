@@ -188,10 +188,8 @@ public class RepeatsDatabase extends SQLiteOpenHelper {
                     Values.set_id + " TEXT PRIMARY KEY NOT NULL, " +
                     Values.deadline + " TEXT, " +
                     Values.reminder_days_before + " INTEGER DEFAULT 2, " +
-                    Values.notifications_days + " TEXT, " +
                     Values.notifications_days_of_week + " TEXT, " +
                     Values.notifications_hours + " TEXT, " +
-                    Values.notifications_silent_hours + " TEXT, " +
                     Values.notifications_mode + " INTEGER DEFAULT 0, " +
                     Values.reminder_enabled + " INTEGER DEFAULT 0);";
 

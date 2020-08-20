@@ -31,9 +31,6 @@
             android:name=".settings.ManageRemindersActivity"
             android:label="@string/manage_reminders" />
         <activity
-            android:name=".backup.CreateBackupActivity"
-            android:label="@string/createBackup" />
-        <activity
             android:name=".activities.AppInfoActivity"
             android:label="@string/About" />
         <activity
@@ -153,21 +150,11 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name=".settings.EnableSetsListActivity"
-            android:label="@string/notifiFromSets" />
-        <activity
             android:name=".fastlearning.FastLearningConfigActivity"
             android:label="@string/FastLearning" />
         <activity
             android:name=".settings.SilenceHoursActivity"
             android:label="@string/silenceHours" />
-        <activity
-            android:name=".settings.AdvancedDeliveryListActivity"
-            android:label="@string/deliverySettings" />
-        <activity
-            android:name=".settings.AdvancedDeliveryEditActivity"
-            android:label="@string/editRule"
-            android:windowSoftInputMode="stateHidden" />
 
         <service android:name=".readaloud.ReadAloudService" />
     </application>

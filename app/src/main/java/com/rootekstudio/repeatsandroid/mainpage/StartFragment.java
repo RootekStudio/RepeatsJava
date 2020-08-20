@@ -38,14 +38,10 @@ public class StartFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setEnterTransition(new MaterialFadeThrough());
-        setExitTransition(new MaterialFadeThrough());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setExitTransition(new MaterialFadeThrough());
         generateData();
         View view = inflater.inflate(R.layout.mainfragment_start, container, false);
         RelativeLayout fastLearningRecommendation = view.findViewById(R.id.fastLearningRecommendation);
@@ -61,9 +57,9 @@ public class StartFragment extends Fragment {
 
         sharedPreferencesManager = SharedPreferencesManager.getInstance(requireContext());
 
-        String notifiMode = sharedPreferencesManager.getListNotifi();
+        boolean notificationsEnabled = sharedPreferencesManager.getNotificationsEnabled();
 
-        if (notifiMode.equals("0") && setsInfo.size() != 0) {
+        if (!notificationsEnabled && setsInfo.size() != 0) {
             turnOnNotificationsRecommendation.setVisibility(View.VISIBLE);
         }
 
@@ -77,7 +73,7 @@ public class StartFragment extends Fragment {
             suggestionsLinear.setVisibility(View.GONE);
         }
 
-        if (!notifiMode.equals("0") && setsInfo.size() >= 4) {
+        if (notificationsEnabled && setsInfo.size() >= 4) {
             recommendedLinear.setVisibility(View.GONE);
         }
 

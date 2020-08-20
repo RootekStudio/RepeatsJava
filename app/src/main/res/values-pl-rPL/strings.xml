@@ -361,5 +361,8 @@
     <string name="do_you_like_app">Podoba Ci się aplikacja Repeats?</string>
     <string name="rate_app_in_google_play">Oceń ją w sklepie Google Play</string>
     <string name="rate">Oceń</string>
+    <string name="icons_in_app">Ikony użyte w aplikacji: Tabler Icons | Paweł Kuna</string>
+    <string name="calendar_view_credit">Widok kalendarza: Material Calendar View | Applandeo</string>
+    <string name="frequency_can_be_changed">Częstotliwość wysyłania powiadomień można zmienić w ustawieniach aplikacji</string>
 
 </resources>

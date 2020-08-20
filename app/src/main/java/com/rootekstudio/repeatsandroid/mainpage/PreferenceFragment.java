@@ -67,9 +67,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setEnterTransition(new MaterialFadeThrough());
-        setExitTransition(new MaterialFadeThrough());
     }
 
     @Override

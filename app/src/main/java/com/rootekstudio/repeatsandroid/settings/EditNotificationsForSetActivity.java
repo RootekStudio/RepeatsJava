@@ -1,6 +1,7 @@
 package com.rootekstudio.repeatsandroid.settings;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
+import com.rootekstudio.repeatsandroid.mainpage.MainActivity;
 import com.rootekstudio.repeatsandroid.notifications.NotificationHelper;
 import com.rootekstudio.repeatsandroid.notifications.NotificationInfo;
 import com.rootekstudio.repeatsandroid.notifications.NotificationsScheduler;
@@ -393,6 +395,12 @@ public class EditNotificationsForSetActivity extends AppCompatActivity {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, timeSetListener, oldHour,
                 oldMinute, is24HourFormat);
         timePickerDialog.show();
+    }
+
+    public void changeFrequencyClick(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("showSettings", true);
+        startActivity(intent);
     }
 
     @Override

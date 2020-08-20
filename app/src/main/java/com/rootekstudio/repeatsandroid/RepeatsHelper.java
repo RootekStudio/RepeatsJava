@@ -15,7 +15,7 @@ import java.io.File;
 
 public class RepeatsHelper {
     public static final String breakLine = "\r\n";
-    public static String version = "2.7";
+    public static String version = "2.8";
 
     public static void CheckDir(Context cnt) {
         File file = new File(cnt.getFilesDir(), "shared");

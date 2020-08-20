@@ -52,29 +52,29 @@ public class SetReminders {
 
                 int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
                 if(dayOfYear < earliestDay) {
-                    setsIDsBuilder = new StringBuilder();
-                    setsIDsBuilder.append(reminders.get(i).getSetID());
-
                     setsNamesAndDaysBefore.clear();
-                    setsNamesAndDaysBefore.add(new ReminderDayAndName(reminders.get(i).getReminderDaysBefore(), DB.setNameResolver(reminders.get(i).getSetID())));
+                    setsNamesAndDaysBefore.add(new ReminderDayAndName(reminders.get(i).getReminderDaysBefore(), reminders.get(i).getSetID()));
 
                     earliestDay = dayOfYear;
                 }
                 else if(dayOfYear == earliestDay) {
-                    setsIDsBuilder.append("\n").append(reminders.get(i).getSetID());
-                    setsNamesAndDaysBefore.add(new ReminderDayAndName(reminders.get(i).getReminderDaysBefore(), DB.setNameResolver(reminders.get(i).getSetID())));
+                    setsNamesAndDaysBefore.add(new ReminderDayAndName(reminders.get(i).getReminderDaysBefore(), reminders.get(i).getSetID()));
                 }
             }
 
             Collections.sort(setsNamesAndDaysBefore);
 
             for(int i = 0; i < setsNamesAndDaysBefore.size(); i++) {
+                setsIDsBuilder.append("\n").append(setsNamesAndDaysBefore.get(i).getSetID());
                 daysBeforeBuilder.append("\n").append(setsNamesAndDaysBefore.get(i).getDaysBefore());
             }
 
+            String setsIDs = setsIDsBuilder.toString().replaceFirst("\n", "");
             String days = daysBeforeBuilder.toString().replaceFirst("\n", "");
 
             Calendar reminderCalendar = Calendar.getInstance();
+            reminderCalendar.set(Calendar.SECOND, 0);
+            reminderCalendar.set(Calendar.MILLISECOND, 0);
             reminderCalendar.set(Calendar.DAY_OF_YEAR, earliestDay);
 
             SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(context);
@@ -88,7 +88,7 @@ public class SetReminders {
             long millis = reminderCalendar.getTimeInMillis();
 
             Intent intent = new Intent(context, ReminderBroadcastReceiver.class);
-            intent.putExtra("setsIDs", setsIDsBuilder.toString());
+            intent.putExtra("setsIDs", setsIDs);
             intent.putExtra("daysBefore", days);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, REMINDER_ALARM_ID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

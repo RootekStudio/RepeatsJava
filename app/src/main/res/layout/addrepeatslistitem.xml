@@ -26,11 +26,12 @@
 
     <ImageButton
         android:id="@+id/deleteImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_toEndOf="@id/imageView"
         android:src="@drawable/clear"
         android:visibility="gone"
+        android:background="@drawable/circle_button_background"
         android:layout_marginTop="15dp"/>
 
     <ImageButton

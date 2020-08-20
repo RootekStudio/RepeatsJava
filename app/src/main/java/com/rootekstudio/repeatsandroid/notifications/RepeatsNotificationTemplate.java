@@ -93,10 +93,10 @@ public class RepeatsNotificationTemplate {
                     .build();
 
             notificationBuilder.addAction(action);
-
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            notificationManager.notify(RequestCodes.QUESTION_NOTIFICATION_ID, notificationBuilder.build());
         }
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(RequestCodes.QUESTION_NOTIFICATION_ID, notificationBuilder.build());
     }
 
     public static void AnswerNotifi(Context context, String Title, String Text, String setsIDs) {

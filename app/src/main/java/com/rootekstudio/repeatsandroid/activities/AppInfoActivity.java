@@ -99,6 +99,22 @@ public class AppInfoActivity extends AppCompatActivity {
         startActivity(new Intent(this, OssLicensesMenuActivity.class));
     }
 
+    public void iconsCreditClick(View view) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/tabler/tabler-icons/blob/master/LICENSE")));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.browserNotFound, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void calendarViewCreditClick(View view) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Applandeo/Material-Calendar-View/blob/master/LICENSE.md")));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.browserNotFound, Toast.LENGTH_LONG).show();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

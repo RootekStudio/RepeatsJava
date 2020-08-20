@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
+import com.rootekstudio.repeatsandroid.notifications.NotificationInfo;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,7 +53,7 @@ public class MigrateDatabase {
 
             writableNewDB.insert(Values.sets_info, null, contentValues);
 
-            String calendarQuery = "INSERT INTO " + Values.calendar + " (" + Values.set_id + ") VALUES (" + setID + ");";
+            String calendarQuery = "INSERT INTO " + Values.calendar + " (" + Values.set_id + ") VALUES ('" + setID + "');";
             writableNewDB.execSQL(calendarQuery);
 
             String CREATE_SET = "CREATE TABLE IF NOT EXISTS " + setID + " (" +

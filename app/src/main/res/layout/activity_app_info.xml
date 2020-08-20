@@ -49,7 +49,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="20dp"
                     android:text="@string/infoVersion"
-                    android:textSize="9pt" />
+                    android:textSize="@dimen/text_size_app_info_header" />
             </LinearLayout>
 
             <RelativeLayout
@@ -65,7 +65,7 @@
                     android:layout_marginStart="75dp"
                     android:gravity="center"
                     android:text="@string/name"
-                    android:textSize="7.5pt"/>
+                    android:textSize="@dimen/text_size_app_info_details"/>
 
                 <TextView
                     android:id="@+id/versionNameTextView"
@@ -73,7 +73,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:gravity="center"
-                    android:textSize="7.5pt"
+                    android:textSize="@dimen/text_size_app_info_details"
                     android:layout_marginEnd="20dp"/>
             </RelativeLayout>
 
@@ -91,7 +91,7 @@
                     android:layout_marginStart="75dp"
                     android:gravity="center"
                     android:text="@string/number"
-                    android:textSize="7.5pt"/>
+                    android:textSize="@dimen/text_size_app_info_details"/>
 
                 <TextView
                     android:id="@+id/versionNumberTextView"
@@ -99,7 +99,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:gravity="center"
-                    android:textSize="7.5pt"
+                    android:textSize="@dimen/text_size_app_info_details"
                     android:layout_marginEnd="20dp"/>
             </RelativeLayout>
         </LinearLayout>
@@ -131,7 +131,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="20dp"
                     android:text="@string/regulations"
-                    android:textSize="9pt" />
+                    android:textSize="@dimen/text_size_app_info_header" />
             </LinearLayout>
 
             <RelativeLayout
@@ -149,7 +149,7 @@
                     android:layout_marginStart="75dp"
                     android:gravity="center"
                     android:text="@string/termsOfUse"
-                    android:textSize="7.5pt"/>
+                    android:textSize="@dimen/text_size_app_info_details"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -166,7 +166,7 @@
                     android:layout_marginStart="75dp"
                     android:gravity="center"
                     android:text="@string/privacyPolicy"
-                    android:textSize="7.5pt"/>
+                    android:textSize="@dimen/text_size_app_info_details"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -197,7 +197,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="20dp"
                     android:text="@string/contact"
-                    android:textSize="9pt" />
+                    android:textSize="@dimen/text_size_app_info_header" />
             </LinearLayout>
 
             <RelativeLayout
@@ -215,7 +215,7 @@
                     android:layout_marginStart="75dp"
                     android:gravity="center"
                     android:text="@string/SendFeedback"
-                    android:textSize="7.5pt"/>
+                    android:textSize="@dimen/text_size_app_info_details"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -230,9 +230,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="75dp"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:text="@string/rateApp"
-                    android:textSize="7.5pt"/>
+                    android:textSize="@dimen/text_size_app_info_details"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -263,7 +263,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="20dp"
                     android:text="@string/infoAuthors"
-                    android:textSize="9pt" />
+                    android:textSize="@dimen/text_size_app_info_header" />
             </LinearLayout>
 
             <RelativeLayout
@@ -278,7 +278,7 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center"
                     android:text="@string/developer"
-                    android:textSize="7.5pt"/>
+                    android:textSize="@dimen/text_size_app_info_details"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -292,21 +292,45 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center"
                     android:text="@string/tester"
-                    android:textSize="7.5pt"/>
+                    android:textSize="@dimen/text_size_app_info_details"/>
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:onClick="iconsCreditClick">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="75dp"
                     android:layout_marginEnd="20dp"
-                    android:textSize="7.5pt"
-                    android:text="@string/specialThanks" />
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/text_size_app_info_details"
+                    android:text="@string/icons_in_app" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:onClick="calendarViewCreditClick">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="75dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/text_size_app_info_details"
+                    android:text="@string/calendar_view_credit" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -319,7 +343,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="75dp"
                     android:layout_marginEnd="20dp"
-                    android:textSize="7.5pt"
+                    android:textSize="@dimen/text_size_app_info_details"
                     android:text="@string/firstRunPhotoCredits" />
             </RelativeLayout>
 
@@ -338,7 +362,7 @@
                     android:layout_marginStart="75dp"
                     android:layout_marginEnd="20dp"
                     android:gravity="center"
-                    android:textSize="7.5pt"
+                    android:textSize="@dimen/text_size_app_info_details"
                     android:text="@string/openSourceLicences" />
             </RelativeLayout>
         </LinearLayout>

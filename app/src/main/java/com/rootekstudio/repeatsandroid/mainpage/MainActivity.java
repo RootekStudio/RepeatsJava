@@ -28,6 +28,8 @@ import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.tasks.Task;
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.utils.async.AppCenterFuture;
 import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
@@ -105,38 +107,8 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.app_bar_settings);
         }
 
-        int requestForAppReview = SharedPreferencesManager.getInstance(this).getRequestForAppReview();
-        if(requestForAppReview == 3 || requestForAppReview == 10) {
-
-            MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(this);
-            alertDialog.setBackground(getDrawable(R.drawable.dialog_shape))
-                    .setTitle(R.string.do_you_like_app)
-                    .setMessage(R.string.rate_app_in_google_play)
-                    .setCancelable(false)
-                    .setNegativeButton(R.string.Cancel, (dialogInterface, i) -> {
-                        SharedPreferencesManager.getInstance(this).setRequestForAppReview(requestForAppReview + 1);
-                    })
-                    .setPositiveButton(R.string.rate, (dialogInterface, i) -> {
-                        ReviewManager manager = ReviewManagerFactory.create(this);
-                        Task<ReviewInfo> request = manager.requestReviewFlow();
-
-                        request.addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                ReviewInfo reviewInfo = task.getResult();
-
-                                Task<Void> flow = manager.launchReviewFlow(this, reviewInfo);
-                                flow.addOnCompleteListener(reviewTask -> {
-                                    SharedPreferencesManager.getInstance(this).setRequestForAppReview(-1);
-                                });
-                            }
-                        });
-                    });
-
-
-            AlertDialog dialog = alertDialog.create();
-            dialog.show();
-        } else if(requestForAppReview > -1 && requestForAppReview < 10) {
-            SharedPreferencesManager.getInstance(this).setRequestForAppReview(requestForAppReview + 1);
+        if(getIntent().getBooleanExtra("showSettings", false)) {
+            bottomNavigationView.setSelectedItemId(R.id.app_bar_settings);
         }
     }
 

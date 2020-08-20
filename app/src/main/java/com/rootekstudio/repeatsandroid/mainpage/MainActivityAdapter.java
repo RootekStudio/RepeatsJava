@@ -28,7 +28,12 @@ import com.rootekstudio.repeatsandroid.settings.SetSettingsActivity;
 import com.rootekstudio.repeatsandroid.activities.ShareActivity;
 import com.rootekstudio.repeatsandroid.database.SingleSetInfo;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.MainViewHolder> {
     private List<SingleSetInfo> repeatsList;
@@ -82,7 +87,15 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         TextView Date = view.findViewById(R.id.DateTextView);
 
         Name.setText(Item.getSetName());
-        Date.setText(Item.getCreateDate());
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat creationDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            calendar.setTime(Objects.requireNonNull(creationDateFormat.parse(Item.getCreateDate())));
+            Date.setText(DateFormat.getDateInstance().format(calendar.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

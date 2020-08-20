@@ -41,9 +41,6 @@ public class StatsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setEnterTransition(new MaterialFadeThrough());
-        setExitTransition(new MaterialFadeThrough());
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
