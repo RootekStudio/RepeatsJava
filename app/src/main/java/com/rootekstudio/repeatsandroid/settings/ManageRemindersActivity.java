@@ -120,7 +120,7 @@ public class ManageRemindersActivity extends AppCompatActivity {
                     View viewParent = (View)v.getParent().getParent();
                     String setID = (String)viewParent.getTag();
                     try {
-                        new SetTestDate(v, setID, true);
+//                        new SetTestDate(v, setID, true);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -132,7 +132,7 @@ public class ManageRemindersActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     View viewParent = (View)v.getParent().getParent();
                     String setID = (String)viewParent.getTag();
-                    new EditReminder(v, setID, true);
+//                    new EditReminder(v, setID, true);
                 }
             });
 
