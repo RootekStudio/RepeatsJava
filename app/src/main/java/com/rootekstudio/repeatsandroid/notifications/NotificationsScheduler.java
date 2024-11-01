@@ -174,7 +174,7 @@ public class NotificationsScheduler {
     private static void scheduleAlarm(Context context, String setsIDs, long millis) {
         Intent intent = new Intent(context, NotificationBroadcastReceiver.class);
         intent.putExtra("setsIDs", setsIDs);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RequestCodes.PENDING_INTENT_QUESTION_NOTIFICATION_REQUEST_CODE, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RequestCodes.PENDING_INTENT_QUESTION_NOTIFICATION_REQUEST_CODE, intent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -190,7 +190,7 @@ public class NotificationsScheduler {
 
     public static void stopNotifications(Context context) {
         Intent intent = new Intent(context, NotificationBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RequestCodes.PENDING_INTENT_QUESTION_NOTIFICATION_REQUEST_CODE, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RequestCodes.PENDING_INTENT_QUESTION_NOTIFICATION_REQUEST_CODE, intent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
     }

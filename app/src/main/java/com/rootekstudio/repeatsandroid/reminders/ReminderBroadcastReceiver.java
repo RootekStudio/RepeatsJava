@@ -72,7 +72,7 @@ public class ReminderBroadcastReceiver extends BroadcastReceiver {
 
         Intent fastLearning = new Intent(context, FastLearningConfigActivity.class);
         fastLearning.putExtra("reminderRequest", setsIDs);
-        PendingIntent FL = PendingIntent.getActivity(context, RequestCodes.REMINDER_NOTIFICATION_CLICK_ID, fastLearning, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent FL = PendingIntent.getActivity(context, RequestCodes.REMINDER_NOTIFICATION_CLICK_ID, fastLearning, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         mBuilder.setContentIntent(FL);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);

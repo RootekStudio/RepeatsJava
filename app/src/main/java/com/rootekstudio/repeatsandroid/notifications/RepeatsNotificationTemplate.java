@@ -61,7 +61,7 @@ public class RepeatsNotificationTemplate {
         answerActivity.putExtra("setsIDs", setsIDs);
         answerActivity.putExtra("itemID", getQuestion.getItemID());
         PendingIntent notificationClickPendingIntent = PendingIntent.getActivity(context, RequestCodes.PENDING_INTENT_QUESTION_NOTIFICATION_CLICK_REQUEST_CODE,
-                answerActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                answerActivity, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         notificationBuilder.setContentIntent(notificationClickPendingIntent);
 
@@ -79,7 +79,7 @@ public class RepeatsNotificationTemplate {
             userReplyIntent.putExtra("itemID", getQuestion.getItemID());
 
             PendingIntent replyPendingIntent = PendingIntent.getBroadcast(context,
-                    RequestCodes.PENDING_INTENT_USER_REPLY_REQUEST_CODE, userReplyIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    RequestCodes.PENDING_INTENT_USER_REPLY_REQUEST_CODE, userReplyIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
             NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_notifi_icon,
                     context.getString(R.string.Reply), replyPendingIntent)
@@ -98,7 +98,7 @@ public class RepeatsNotificationTemplate {
         nextQuestionIntent.putExtra("setsIDs", setsIDs);
 
         PendingIntent replyPendingIntent = PendingIntent.getBroadcast(context,
-                RequestCodes.PENDING_INTENT_NEXT_QUESTION_REQUEST_CODE, nextQuestionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                RequestCodes.PENDING_INTENT_NEXT_QUESTION_REQUEST_CODE, nextQuestionIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_notifi_icon,
                 context.getString(R.string.Next), replyPendingIntent)

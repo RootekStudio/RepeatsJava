@@ -87,7 +87,7 @@ public class SetReminders {
             Intent intent = new Intent(context, ReminderBroadcastReceiver.class);
             intent.putExtra("setsIDs", setsIDs);
             intent.putExtra("daysBefore", days);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, REMINDER_ALARM_ID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, REMINDER_ALARM_ID, intent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -104,7 +104,7 @@ public class SetReminders {
 
     public static void stopReminders(Context context) {
         Intent intent = new Intent(context, ReminderBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, REMINDER_ALARM_ID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, REMINDER_ALARM_ID, intent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
     }
@@ -115,6 +115,6 @@ public class SetReminders {
     }
 
     public static boolean checkIfReminderIsRegistered(Context context) {
-        return (PendingIntent.getBroadcast(context, REMINDER_ALARM_ID, new Intent(context, ReminderBroadcastReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
+        return (PendingIntent.getBroadcast(context, REMINDER_ALARM_ID, new Intent(context, ReminderBroadcastReceiver.class), PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE) != null);
     }
 }

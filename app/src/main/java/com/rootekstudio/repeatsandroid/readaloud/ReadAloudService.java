@@ -52,7 +52,7 @@ public class ReadAloudService extends Service {
         readAloudIntent.putExtra("speedRate", ReadAloudConnector.speechRate);
 
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, readAloudIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(this, 0, readAloudIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         builder = new NotificationCompat.Builder(this, "RepeatsReadAloudChannel")
                 .setContentTitle(getString(R.string.playing_set) + " " + ReadAloudConnector.setName)

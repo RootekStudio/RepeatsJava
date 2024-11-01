@@ -78,7 +78,8 @@
             android:label="@string/mySets" />
         <activity
             android:name=".community.DynamicLinks"
-            android:theme="@style/SplashScreenTheme">
+            android:theme="@style/SplashScreenTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -147,7 +148,8 @@
         <activity
             android:name=".activities.SplashScreenActivity"
             android:noHistory="true"
-            android:theme="@style/SplashScreenTheme">
+            android:theme="@style/SplashScreenTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
