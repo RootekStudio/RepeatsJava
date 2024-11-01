@@ -4,8 +4,8 @@ android {
     defaultConfig {
         applicationId "com.rootekstudio.repeatsandroid"
         minSdkVersion 21
-        compileSdk 31
-        targetSdkVersion 31
+        compileSdk 32
+        targetSdkVersion 32
         versionCode 2080013
         versionName "2.8.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
