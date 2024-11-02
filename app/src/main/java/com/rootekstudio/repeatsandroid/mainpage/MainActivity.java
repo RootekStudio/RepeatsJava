@@ -28,7 +28,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
-import com.google.android.play.core.tasks.Task;
+//import com.google.android.play.core.tasks.Task;
 import com.rootekstudio.repeatsandroid.Backup;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsAnalytics;
@@ -84,16 +84,17 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .setPositiveButton(R.string.rate, (dialogInterface, i) -> {
                         ReviewManager manager = ReviewManagerFactory.create(this);
-                        Task<ReviewInfo> request = manager.requestReviewFlow();
-
-                        request.addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                ReviewInfo reviewInfo = task.getResult();
-
-                                Task<Void> flow = manager.launchReviewFlow(this, reviewInfo);
-                                flow.addOnCompleteListener(reviewTask -> {});
-                            }
-                        });
+//                        Task<ReviewInfo> request = manager.requestReviewFlow();
+//
+//                        request.addOnCompleteListener(task -> {
+//                            if (task.isSuccessful()) {
+//                                ReviewInfo reviewInfo = task.getResult();
+//
+//                                Task<Void> flow = manager.launchReviewFlow(this, reviewInfo);
+//                                flow.addOnCompleteListener(reviewTask -> {});
+//                            }
+//                        });
+                        //TO-DO reimplement in-app review
 
                         SharedPreferencesManager.getInstance(this).setRequestForAppReview(-1);
                     });
