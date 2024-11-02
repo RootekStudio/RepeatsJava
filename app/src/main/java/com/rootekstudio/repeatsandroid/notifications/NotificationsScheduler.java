@@ -5,7 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.widget.Toast;
 
+import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
 import com.rootekstudio.repeatsandroid.RequestCodes;
 import com.rootekstudio.repeatsandroid.database.RepeatsDatabase;
@@ -178,9 +180,21 @@ public class NotificationsScheduler {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
-                    millis,
-                    pendingIntent);
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if(alarmManager.canScheduleExactAlarms()) {
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                            millis,
+                            pendingIntent);
+                } else {
+                    Toast.makeText(context, context.getString(R.string.error_allow_exact_alarms), Toast.LENGTH_SHORT).show();
+                    //TO-DO: request user to allow exact alarms
+                }
+            } else {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                        millis,
+                        pendingIntent);
+            }
+
         } else {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP,
                     millis,
