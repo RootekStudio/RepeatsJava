@@ -327,5 +327,6 @@
     <string name="click_here_to_read">Click here to read</string>
     <string name="icons_material_in_app">Some icons used in the app: Material Design Icons | Google</string>
     <string name="problem_connecting_to_db">There was a problem connecting to the database. Check internet connection</string>
+    <string name="error_allow_exact_alarms">Notifications cannot be send. Please allow alarms permission in permissions settings</string>
 
 </resources>

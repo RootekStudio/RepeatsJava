@@ -324,5 +324,6 @@
     <string name="click_here_to_read">Kliknij aby przeczytać</string>
     <string name="icons_material_in_app">Niektóre ikony użyte w aplikacji: Material Design Icons | Google</string>
     <string name="problem_connecting_to_db">Wystąpił problem z połączeniem z bazą danych. Sprawdź połączenie z internetem</string>
+    <string name="error_allow_exact_alarms">Powiadomienia nie mogą być wysyłane. Zezwól na ustawianie alarmów dla aplikacji w ustawieniach urządzenia</string>
 
 </resources>
