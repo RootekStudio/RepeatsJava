@@ -79,7 +79,7 @@ public class RepeatsNotificationTemplate {
             userReplyIntent.putExtra("itemID", getQuestion.getItemID());
 
             PendingIntent replyPendingIntent = PendingIntent.getBroadcast(context,
-                    RequestCodes.PENDING_INTENT_USER_REPLY_REQUEST_CODE, userReplyIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    RequestCodes.PENDING_INTENT_USER_REPLY_REQUEST_CODE, userReplyIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_MUTABLE);
 
             NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_notifi_icon,
                     context.getString(R.string.Reply), replyPendingIntent)
