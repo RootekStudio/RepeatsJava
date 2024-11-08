@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-//import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rootekstudio.repeatsandroid.R;
 import com.rootekstudio.repeatsandroid.RepeatsHelper;
@@ -181,9 +181,9 @@ public class AddEditSetActivity extends AppCompatActivity {
     }
     //endregion
 
-//    public void changeTestDate(View view) throws OutOfDateRangeException, ParseException {
-//        new SetTestDate(view, id, false);
-//    }
+    public void changeTestDate(View view) throws OutOfDateRangeException, ParseException {
+        new SetTestDate(view, id, false);
+    }
 
     public void setReminders(View view) {
         if (SharedPreferencesManager.getInstance(this).getRemindersEnabled()) {
